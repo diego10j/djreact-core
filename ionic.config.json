@@ -1,7 +1,0 @@
-{
-  "name": "djreact-core",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
-}
