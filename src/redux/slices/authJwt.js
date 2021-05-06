@@ -64,10 +64,12 @@ const isValidToken = (accessToken) => {
 const setSession = (accessToken) => {
   if (accessToken) {
     localStorage.setItem('accessToken', accessToken);
+    axios.defaults.headers.common['x-token'] = accessToken;
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   } else {
     localStorage.removeItem('accessToken');
     delete axios.defaults.headers.common.Authorization;
+    delete axios.defaults.headers.common['x-token'];
   }
 };
 
@@ -82,7 +84,7 @@ export function login({ email, password }) {
       ip: '127.0.0.1',
       dispositivo: 'Web React'
     });
-    const { accessToken, datos } = response.data;
+    const { token, datos } = response.data;
     const user = {
       id: datos.ide_usua,
       displayName: datos.nom_usua,
@@ -99,7 +101,7 @@ export function login({ email, password }) {
       role: 'admin',
       isPublic: true
     };
-    setSession(accessToken);
+    setSession(token);
     dispatch(slice.actions.loginSuccess({ user }));
   };
 }
@@ -115,7 +117,6 @@ export function register({ email, password, firstName, lastName }) {
       lastName
     });
     const { token, datos } = response.data;
-
     window.localStorage.setItem('accessToken', token);
     dispatch(slice.actions.registerSuccess({ datos }));
   };
@@ -135,18 +136,33 @@ export function logout() {
 export function getInitialize() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
-
     try {
       const accessToken = window.localStorage.getItem('accessToken');
-
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
+        const response = await axios.get('/api/seguridad/renew');
+        const { datos } = response.data;
+        const user = {
+          id: datos.ide_usua,
+          displayName: datos.nom_usua,
+          email: datos.mail_usua,
+          password: '*******',
+          photoURL: '/static/mock-images/avatars/avatar_default.jpg',
+          phoneNumber: '+40 777666555',
+          country: 'Ecuador',
+          address: 'Sin Dirección',
+          state: 'Pichincha',
+          city: 'Quito',
+          zipCode: '710001',
+          about: '',
+          role: 'admin',
+          isPublic: true
+        };
 
-        const response = await axios.get('/api/account/my-account');
         dispatch(
           slice.actions.getInitialize({
             isAuthenticated: true,
-            user: response.data.user
+            user
           })
         );
       } else {
