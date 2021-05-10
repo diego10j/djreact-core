@@ -24,6 +24,9 @@ export default function Simple() {
           numeroTabla={1}
           nombreTabla="sis_usuario"
           campoPrimario="ide_usua"
+          opcionesColumnas={[
+            { nombre: 'ide_empr', visible: false, lectura: false }
+          ]}
         />
         <Tabla
           numeroTabla={2}

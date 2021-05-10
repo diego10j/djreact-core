@@ -12,6 +12,7 @@ export default function Tabla({
   nombreTabla,
   campoPrimario,
   campoOrden,
+  opcionesColumnas,
   pageSize = 15,
   rowHeight = 25
 }) {
@@ -103,6 +104,23 @@ Tabla.propTypes = {
   nombreTabla: PropTypes.string.isRequired,
   campoPrimario: PropTypes.string.isRequired,
   campoOrden: PropTypes.string,
+  opcionesColumnas: PropTypes.arrayOf(
+    PropTypes.shape({
+      nombre: PropTypes.string.isRequired,
+      nombreVisual: PropTypes.string,
+      valorDefecto: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+      requerida: PropTypes.bool,
+      visible: PropTypes.bool,
+      lectura: PropTypes.bool,
+      orden: PropTypes.number,
+      anchoColumna: PropTypes.number,
+      decimales: PropTypes.number,
+      comentario: PropTypes.string,
+      mayusculas: PropTypes.bool,
+      alinear: PropTypes.oneOf(['izquierda', 'derecha', 'centro']),
+      ordenable: PropTypes.bool
+    })
+  ),
   pageSize: PropTypes.number,
   rowHeight: PropTypes.number
 };
