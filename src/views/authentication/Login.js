@@ -119,7 +119,7 @@ export default function Login() {
               <Box
                 component="img"
                 src={`/static/icons/${
-                  method === 'firebase' ? 'ic_firebase' : 'ic_jwt'
+                  method === 'firebase' ? 'ic_firebase' : 'ic_react'
                 }.png`}
                 sx={{ width: 32, height: 32 }}
               />

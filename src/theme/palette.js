@@ -31,8 +31,8 @@ const INFO = {
 const SUCCESS = {
   lighter: '#E9FCD4',
   light: '#AAF27F',
-  main: '#54D62C',
-  dark: '#229A16',
+  main: '#00ac14',
+  dark: '#1ab42c',
   darker: '#08660D'
 };
 const WARNING = {

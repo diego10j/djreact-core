@@ -11,7 +11,6 @@ import { experimentalStyled as styled } from '@material-ui/core/styles';
 import { Tab, Box, Card, Tabs, Container } from '@material-ui/core';
 // redux
 import {
-  getPosts,
   getGallery,
   getFriends,
   getProfile,
@@ -55,7 +54,7 @@ const TabsWrapperStyle = styled('div')(({ theme }) => ({
 
 export default function UserProfile() {
   const dispatch = useDispatch();
-  const { myProfile, posts, followers, friends, gallery } = useSelector(
+  const { myProfile, followers, friends, gallery } = useSelector(
     (state) => state.user
   );
   const { user } = useAuth();
@@ -64,7 +63,6 @@ export default function UserProfile() {
 
   useEffect(() => {
     dispatch(getProfile());
-    dispatch(getPosts());
     dispatch(getFollowers());
     dispatch(getFriends());
     dispatch(getGallery());
@@ -90,7 +88,7 @@ export default function UserProfile() {
     {
       value: 'profile',
       icon: <Icon icon={roundAccountBox} width={20} height={20} />,
-      component: <Profile myProfile={myProfile} posts={posts} authUser={user} />
+      component: <Profile myProfile={myProfile} />
     },
     {
       value: 'followers',

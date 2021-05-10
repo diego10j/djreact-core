@@ -60,7 +60,18 @@ const sidebarConfig = [
       }
     ]
   },
-
+  // SISTEMA
+  // ----------------------------------------------------------------------
+  {
+    subheader: 'sistema',
+    items: [
+      {
+        title: 'simple',
+        href: PATH_DASHBOARD.sistema.simple,
+        icon: ICONS.analytics
+      }
+    ]
+  },
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {

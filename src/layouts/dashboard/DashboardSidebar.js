@@ -2,24 +2,10 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { Link as RouterLink, useLocation, matchPath } from 'react-router-dom';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import {
-  Box,
-  Link,
-  List,
-  Button,
-  Drawer,
-  Hidden,
-  Typography,
-  ListSubheader
-} from '@material-ui/core';
-// hooks
-import useAuth from '../../hooks/useAuth';
-// routes
-import { PATH_DASHBOARD, PATH_DOCS } from '../../routes/paths';
+import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { Box, List, Drawer, Hidden, ListSubheader } from '@material-ui/core';
 // components
 import Logo from '../../components/Logo';
-import MyAvatar from '../../components/MyAvatar';
 import Scrollbar from '../../components/Scrollbar';
 //
 import MenuLinks from './SidebarConfig';
@@ -34,24 +20,6 @@ const RootStyle = styled('div')(({ theme }) => ({
     flexShrink: 0,
     width: DRAWER_WIDTH
   }
-}));
-
-const AccountStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  margin: theme.spacing(1, 2.5, 5),
-  borderRadius: theme.shape.borderRadiusSm,
-  backgroundColor: theme.palette.grey[500_12]
-}));
-
-const DocStyle = styled('div')(({ theme }) => ({
-  padding: theme.spacing(2.5),
-  borderRadius: theme.shape.borderRadiusMd,
-  backgroundColor:
-    theme.palette.mode === 'light'
-      ? alpha(theme.palette.primary.main, 0.08)
-      : theme.palette.primary.lighter
 }));
 
 // ----------------------------------------------------------------------
@@ -115,7 +83,6 @@ DashboardSidebar.propTypes = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
-  const { user } = useAuth();
 
   useEffect(() => {
     if (isOpenSidebar && onCloseSidebar) {
@@ -131,24 +98,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           <Logo />
         </RouterLink>
       </Box>
-
-      <Link
-        underline="none"
-        component={RouterLink}
-        to={PATH_DASHBOARD.user.account}
-      >
-        <AccountStyle>
-          <MyAvatar />
-          <Box sx={{ ml: 2 }}>
-            <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-              {user.displayName}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {user.role}
-            </Typography>
-          </Box>
-        </AccountStyle>
-      </Link>
 
       {MenuLinks.map((list) => (
         <List
@@ -176,36 +125,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           })}
         </List>
       ))}
-
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-        <DocStyle>
-          <Box
-            component="img"
-            alt="doc"
-            src="/static/icons/ic_doc.svg"
-            sx={{ width: 36, height: 36, mb: 2 }}
-          />
-          <Typography
-            gutterBottom
-            variant="subtitle1"
-            sx={{ color: 'grey.800' }}
-          >
-            Hi, {user.displayName}
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 2, color: 'grey.600' }}>
-            Need help?
-            <br /> Please check our docs
-          </Typography>
-          <Button
-            fullWidth
-            to={PATH_DOCS.root}
-            variant="contained"
-            component={RouterLink}
-          >
-            Documentation
-          </Button>
-        </DocStyle>
-      </Box>
     </Scrollbar>
   );
 

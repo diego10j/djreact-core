@@ -97,7 +97,7 @@ export default function AccountPopover() {
         open={open}
         onClose={handleClose}
         anchorEl={anchorRef.current}
-        sx={{ width: 220 }}
+        sx={{ width: 250 }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>

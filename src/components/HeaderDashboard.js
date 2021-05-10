@@ -24,10 +24,10 @@ export default function HeaderDashboard({
   ...other
 }) {
   return (
-    <Box sx={{ mb: 5, ...sx }}>
+    <Box sx={{ mb: 1, ...sx }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom color="primary">
             {heading}
           </Typography>
           <MBreadcrumbs links={links} {...other} />

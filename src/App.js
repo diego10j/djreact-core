@@ -16,7 +16,6 @@ import ThemeConfig from './theme';
 import RtlLayout from './components/RtlLayout';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingScreen from './components/LoadingScreen';
-import GoogleAnalytics from './components/GoogleAnalytics';
 import NotistackProvider from './components/NotistackProvider';
 
 // Using for Auth (Check doc https://minimals.cc/docs/authentication)
@@ -39,7 +38,6 @@ export default function App() {
                   <Router history={history}>
                     <JwtProvider>
                       <ScrollToTop />
-                      <GoogleAnalytics />
                       {renderRoutes(routes)}
                     </JwtProvider>
                   </Router>

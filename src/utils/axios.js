@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { backendUrl } from '../config';
 
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({
-  baseURL: 'https://djnode-api.produapps.com'
+  baseURL: backendUrl
 });
 
 axiosInstance.interceptors.response.use(

@@ -36,7 +36,13 @@ const DashboardRoutes = {
       path: PATH_DASHBOARD.root,
       component: () => <Redirect to={PATH_DASHBOARD.general.app} />
     },
-
+    // SISTEMA
+    // ----------------------------------------------------------------------
+    {
+      exact: true,
+      path: PATH_DASHBOARD.sistema.simple,
+      component: lazy(() => import('../pages/sistema/simple'))
+    },
     // MANAGEMENT : E-COMMERCE
     // ----------------------------------------------------------------------
     {

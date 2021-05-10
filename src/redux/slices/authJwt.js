@@ -87,10 +87,10 @@ export function login({ email, password }) {
     const { token, datos } = response.data;
     const user = {
       id: datos.ide_usua,
-      displayName: datos.nom_usua,
-      email: datos.mail_usua,
+      displayName: datos.nombre,
+      email: datos.email,
       password: '*******',
-      photoURL: '/static/mock-images/avatars/avatar_default.jpg',
+      photoURL: datos.avatar,
       phoneNumber: '+40 777666555',
       country: 'Ecuador',
       address: 'Sin Dirección',
@@ -144,10 +144,10 @@ export function getInitialize() {
         const { datos } = response.data;
         const user = {
           id: datos.ide_usua,
-          displayName: datos.nom_usua,
-          email: datos.mail_usua,
+          displayName: datos.nombre,
+          email: datos.email,
           password: '*******',
-          photoURL: '/static/mock-images/avatars/avatar_default.jpg',
+          photoURL: datos.avatar,
           phoneNumber: '+40 777666555',
           country: 'Ecuador',
           address: 'Sin Dirección',
