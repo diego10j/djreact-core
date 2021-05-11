@@ -6,11 +6,13 @@ import axios from '../../../utils/axios';
 import ToolbarTabla from './ToolbarTabla';
 import { TextosLocaleEsp } from './TextosLocaleEsp';
 import PaginationTabla from './PaginationTabla';
+import { renderRating } from '../CuerpoTabla';
 
 export default function Tabla({
   numeroTabla,
   nombreTabla,
   campoPrimario,
+  lectura,
   campoOrden,
   opcionesColumnas,
   pageSize = 15,
@@ -18,70 +20,137 @@ export default function Tabla({
 }) {
   const [cargando, setCargando] = useState(false);
   const [columnas, setColumnas] = useState([]);
+  const [tablaColumnas, setTablaColumnas] = useState([]);
 
   const [datos, setDatos] = useState([]);
 
   useEffect(() => {
-    console.log('---CARGA COLUMNAS');
-    const getColumnas = async () => {
-      try {
-        const { data } = await axios.post('/api/sistema/getColumnas', {
-          nombreTabla,
-          campoPrimario,
-          ide_opci: 0,
-          numero_tabl: numeroTabla
-        });
-        const columnasDef = data.datos.map((columna, index) => ({
-          field: columna.nombre,
-          headerName: columna.nombrevisual,
-          width: columna.anchocolumna * 17,
-          hide: !columna.visible,
-          filterable: true,
-          sortable: true,
-          index
-        }));
-        setColumnas(columnasDef);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     getColumnas();
-  }, [nombreTabla, campoPrimario, numeroTabla]);
+    getDatos();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    console.log('---CARGA DATOS');
-    const getDatos = async () => {
-      try {
-        setCargando(true);
-        const { data } = await axios.post('/api/sistema/consultarTabla', {
+  /**
+   * Obtiene la data de la tabla
+   */
+  const getDatos = () => {
+    try {
+      console.log('---CARGA DATOS');
+      setCargando(true);
+      axios
+        .post('/api/sistema/consultarTabla', {
           nombreTabla,
           campoOrden: campoOrden || campoPrimario,
           condiciones: []
+        })
+        .then((response) => {
+          const { data } = response;
+          const datosDef = data.datos.map((element) => ({
+            id: element[campoPrimario],
+            ...element
+          }));
+          setDatos(datosDef);
+          setCargando(false);
         });
+    } catch (error) {
+      setCargando(false);
+      console.error(error);
+    }
+  };
 
-        const datosDef = data.datos.map((element) => ({
-          id: element[campoPrimario],
-          ...element
-        }));
-        setDatos(datosDef);
-        setCargando(false);
-      } catch (error) {
-        setCargando(false);
-        console.error(error);
-      }
-    };
-    getDatos();
-  }, [nombreTabla, campoPrimario, numeroTabla, campoOrden]);
+  /**
+   * Obtiene las columnas del servicio web
+   */
+  const getColumnas = async () => {
+    console.log('---CARGA COLUMNAS');
+    try {
+      const { data } = await axios.post('/api/sistema/getColumnas', {
+        nombreTabla,
+        campoPrimario,
+        ide_opci: 0,
+        numero_tabl: numeroTabla
+      });
+      formarColumnas(data.datos);
+      const columnasDef = data.datos.map((_columna, _index) => ({
+        field: _columna.nombre,
+        type: _columna.type,
+        headerName: _columna.nombrevisual,
+        width: _columna.anchocolumna * 17,
+        hide: !_columna.visible,
+        filterable: true,
+        sortable: _columna.ordenable,
+        editable: !_columna.lectura,
+        index: _index,
+        renderCell: renderRating
+      }));
+
+      setTablaColumnas(columnasDef);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const formarColumnas = (cols) => {
+    if (opcionesColumnas) {
+      console.log('---FORMAR COLUMNAS');
+      // Aplica cada configuración realizada a las columnas
+      opcionesColumnas.forEach((_columna) => {
+        const colActual = cols.find((_col) => _col.nombre === _columna.nombre);
+        colActual.visible =
+          'visible' in _columna ? _columna.visible : colActual.visible;
+        colActual.nombrevisual =
+          'nombreVisual' in _columna
+            ? _columna.nombreVisual
+            : colActual.nombrevisual;
+        colActual.valordefecto =
+          'valorDefecto' in _columna
+            ? _columna.valorDefecto
+            : colActual.valordefecto;
+        colActual.requerida =
+          'requerida' in _columna ? _columna.requerida : colActual.requerida;
+        colActual.lectura =
+          'lectura' in _columna ? _columna.lectura : colActual.lectura;
+        colActual.orden =
+          'orden' in _columna ? _columna.orden : colActual.orden;
+        colActual.anchocolumna =
+          'anchoColumna' in _columna
+            ? _columna.anchoColumna
+            : colActual.anchocolumna;
+        colActual.decimales =
+          'decimales' in _columna ? _columna.decimales : colActual.decimales;
+        colActual.comentario =
+          'comentario' in _columna ? _columna.comentario : colActual.comentario;
+        colActual.mayuscula =
+          'mayuscula' in _columna ? _columna.mayuscula : colActual.mayuscula;
+        colActual.alinear =
+          'alinear' in _columna ? _columna.alinear : colActual.alinear;
+        colActual.ordenable =
+          'ordenable' in _columna ? _columna.ordenable : colActual.ordenable;
+      });
+      // ordena las columnas
+      cols.sort((a, b) => (a.orden < b.orden ? -1 : 1));
+    }
+    // Si la tabla es de lectura todas las columnas son de lectura
+    if (lectura === true) {
+      cols.forEach((_columna) => {
+        _columna.lectura = true;
+      });
+    }
+    setColumnas(cols);
+  };
 
   const insertar = () => {
     console.log('insertar');
+    console.log(columnas);
   };
 
   return (
     <div style={{ width: '100%' }}>
       <DataGrid
+        showCellRightBorder
+        disableColumnMenu
+        hideFooterSelectedRowCount
         localeText={TextosLocaleEsp}
-        columns={columnas}
+        columns={tablaColumnas}
         rows={datos}
         pageSize={pageSize}
         loading={cargando}
@@ -103,6 +172,7 @@ Tabla.propTypes = {
   numeroTabla: PropTypes.number.isRequired,
   nombreTabla: PropTypes.string.isRequired,
   campoPrimario: PropTypes.string.isRequired,
+  lectura: PropTypes.bool.isRequired,
   campoOrden: PropTypes.string,
   opcionesColumnas: PropTypes.arrayOf(
     PropTypes.shape({

@@ -22,13 +22,21 @@ export default function Simple() {
         />
         <Tabla
           numeroTabla={1}
+          lectura={false}
           nombreTabla="sis_usuario"
           campoPrimario="ide_usua"
           opcionesColumnas={[
-            { nombre: 'ide_empr', visible: false, lectura: false }
+            { nombre: 'ide_empr', visible: false },
+            {
+              nombre: 'ide_perf',
+              nombreVisual: 'COD PERFIL',
+              ordenable: false
+            },
+            { nombre: 'nom_usua', nombreVisual: 'USUARIO', orden: 0 }
           ]}
         />
         <Tabla
+          lectura
           numeroTabla={2}
           nombreTabla="sis_opcion"
           campoPrimario="ide_opci"
