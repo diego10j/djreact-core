@@ -7,8 +7,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TableContainer from '@material-ui/core/TableContainer';
+import Paper from '@material-ui/core/Paper';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
+import { withStyles } from '@material-ui/core/styles';
 import {
   useTable,
   useSortBy,
@@ -17,6 +20,49 @@ import {
   useAsyncDebounce
 } from 'react-table';
 import axios from '../../../utils/axios';
+
+// Estilo
+
+const StyledTable = withStyles((theme) => ({
+  root: {
+    width: '100%',
+    color: '#212B36',
+    border: `solid 1px ${theme.palette.divider}`,
+    height: '100%',
+    outline: 'none',
+    fontSize: '0.875rem',
+    boxSizing: 'border-box',
+    fontWeight: 400,
+    lineHeight: '1.5714285714285714',
+    borderRadius: '8px'
+  }
+}))(Table);
+
+const StyledTableCellHeader = withStyles((theme) => ({
+  root: {
+    backgroundColor: 'transparent',
+    borderBottom: `solid 1px ${theme.palette.divider}`,
+    height: 'auto',
+    padding: '3px 10px 3px 10px'
+  }
+}))(TableCell);
+
+const StyledTableCellBody = withStyles((theme) => ({
+  root: {
+    padding: '0px 10px 0px 10px'
+  }
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    height: 25,
+    padding: '0px 10px 0px 10px',
+    width: '-moz-fit-content',
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover
+    }
+  }
+}))(TableRow);
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -39,7 +85,6 @@ function GlobalFilter({
           setValue(e.target.value);
           onChange(e.target.value);
         }}
-        placeholder={`${count} records...`}
         style={{
           fontSize: '1.1rem',
           border: '0'
@@ -61,7 +106,6 @@ function DefaultColumnFilter({
       onChange={(e) => {
         setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
-      placeholder={`Search ${count} records...`}
     />
   );
 }
@@ -103,7 +147,10 @@ export default function TablaE({
   const defaultColumn = React.useMemo(
     () => ({
       // Let's set up our default Filter UI
-      Filter: DefaultColumnFilter
+      Filter: DefaultColumnFilter,
+      minWidth: 30,
+      width: 150,
+      maxWidth: 400
     }),
     []
   );
@@ -161,6 +208,7 @@ export default function TablaE({
       const columnasDef = data.datos.map((element) => ({
         accessor: element.nombre,
         filter: 'includes',
+        width: element.anchocolumna * 16,
         ...element
       }));
       setColumns(columnasDef);
@@ -193,45 +241,59 @@ export default function TablaE({
 
   // Render the UI for your table
   return (
-    <div style={{ width: '100%' }}>
-      <Table {...getTableProps()}>
+    <TableContainer component={Paper}>
+      <StyledTable {...getTableProps()} size="small">
         <TableHead>
           {headerGroups.map((headerGroup, index) => (
             <TableRow key={index} {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((columna, index) => (
-                <TableCell
+                <StyledTableCellHeader
                   key={index}
-                  {...columna.getHeaderProps(columna.getSortByToggleProps())}
+                  component="th"
+                  padding="none"
+                  style={{ minWidth: columna.anchocolumna * 17 }}
+                  {...columna.getHeaderProps()}
                 >
-                  {columna.nombrevisual}
-                  {columna.ordenable && (
+                  {columna.ordenable ? (
                     <TableSortLabel
+                      {...columna.getSortByToggleProps()}
                       active={columna.isSorted}
                       direction={columna.isSortedDesc ? 'desc' : 'asc'}
-                    />
+                    >
+                      {columna.nombrevisual}
+                    </TableSortLabel>
+                  ) : (
+                    <div>HOLA</div>
                   )}
-                  <div> {columna.render('Filter')} </div>
-                </TableCell>
+
+                  <div key={index}>{columna.render('Filter')} </div>
+                </StyledTableCellHeader>
               ))}
             </TableRow>
           ))}
         </TableHead>
+
         <TableBody {...getTableBodyProps()}>
           {rows.map((row, index) => {
             prepareRow(row);
             return (
-              <TableRow key={index} {...row.getRowProps()}>
+              <StyledTableRow key={index} {...row.getRowProps()}>
                 {row.cells.map((cell, index) => (
-                  <TableCell key={index} {...cell.getCellProps()}>
+                  <StyledTableCellBody
+                    size="small"
+                    padding="none"
+                    key={index}
+                    {...cell.getCellProps()}
+                  >
                     {cell.render('Cell')}
-                  </TableCell>
+                  </StyledTableCellBody>
                 ))}
-              </TableRow>
+              </StyledTableRow>
             );
           })}
         </TableBody>
-      </Table>
-    </div>
+      </StyledTable>
+    </TableContainer>
   );
 }
 
