@@ -37,7 +37,11 @@ export default function Simple() {
           ]}
         />
 
-        <TablaE />
+        <TablaE
+          numeroTabla={2}
+          nombreTabla="sis_usuario"
+          campoPrimario="ide_usua"
+        />
       </Container>
     </Page>
   );
