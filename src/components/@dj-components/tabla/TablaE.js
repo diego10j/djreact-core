@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+// react-table
+import {
+  useTable,
+  useSortBy,
+  useFilters,
+  useGlobalFilter,
+  useAsyncDebounce
+} from 'react-table';
 // componentes
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,46 +17,40 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
-import { withStyles } from '@material-ui/core/styles';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {
-  useTable,
-  useSortBy,
-  useFilters,
-  useGlobalFilter,
-  useAsyncDebounce
-} from 'react-table';
-import { MIconButton } from '../../@material-extend';
+  withStyles,
+  experimentalStyled as styled
+} from '@material-ui/core/styles';
+import Scrollbar from '../../Scrollbar';
 import axios from '../../../utils/axios';
+import ToolbarTabla from './ToolbarTabla';
 
 // Estilo
 
-const StyledTableContainer = withStyles((theme) => ({
-  root: {
-    width: '100%',
-    border: `solid 1px ${theme.palette.divider}`,
-    height: '100%',
-    outline: 'none',
-    fontSize: '0.875rem',
-    boxSizing: 'border-box',
-    lineHeight: '1.5714285714285714',
-    borderRadius: '8px'
-  }
-}))(TableContainer);
+const StyledDiv = styled('div')(({ theme }) => ({
+  border: `solid 1px ${theme.palette.divider}`,
+  height: '100%',
+  outline: 'none',
+  lineHeight: '1.5714285714285714',
+  borderRadius: '8px',
+  display: 'flex',
+  position: 'relative',
+  boxSizing: 'border-box',
+  flexDirection: 'column'
+}));
 
 const StyledTable = withStyles(() => ({
   root: {
+    width: '100%',
     fontSize: '0.875rem'
   }
 }))(Table);
 
 const StyledTableCellHeader = withStyles((theme) => ({
   root: {
-    backgroundColor: 'transparent',
+    backgroundColor: theme.palette.background.paper,
     borderBottom: `solid 1px ${theme.palette.divider}`,
     height: 'auto',
     padding: '3px 10px 3px 10px'
@@ -249,66 +251,64 @@ export default function TablaE({
 
   // Render the UI for your table
   return (
-    <StyledTableContainer component={Paper}>
-      <Toolbar variant="dense">
-        <Tooltip title="Opciones">
-          <MIconButton>
-            <MoreVertIcon />
-          </MIconButton>
-        </Tooltip>
-      </Toolbar>
-      <StyledTable {...getTableProps()} size="small">
-        <TableHead>
-          {headerGroups.map((headerGroup, index) => (
-            <TableRow key={index} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((columna, index) => (
-                <StyledTableCellHeader
-                  key={index}
-                  component="th"
-                  padding="none"
-                  style={{ minWidth: columna.anchocolumna * 17 }}
-                  {...columna.getHeaderProps()}
-                >
-                  {columna.ordenable ? (
-                    <TableSortLabel
-                      {...columna.getSortByToggleProps()}
-                      active={columna.isSorted}
-                      direction={columna.isSortedDesc ? 'desc' : 'asc'}
+    <StyledDiv>
+      <ToolbarTabla />
+      <Scrollbar>
+        <TableContainer component={Paper}>
+          <StyledTable {...getTableProps()} size="small">
+            <TableHead>
+              {headerGroups.map((headerGroup, index) => (
+                <TableRow key={index} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((columna, index) => (
+                    <StyledTableCellHeader
+                      key={index}
+                      component="th"
+                      padding="none"
+                      style={{ minWidth: columna.anchocolumna * 17 }}
+                      {...columna.getHeaderProps()}
                     >
-                      {columna.nombrevisual}
-                    </TableSortLabel>
-                  ) : (
-                    <div>HOLA</div>
-                  )}
+                      {columna.ordenable ? (
+                        <TableSortLabel
+                          {...columna.getSortByToggleProps()}
+                          active={columna.isSorted}
+                          direction={columna.isSortedDesc ? 'desc' : 'asc'}
+                        >
+                          {columna.nombrevisual}
+                        </TableSortLabel>
+                      ) : (
+                        <div>HOLA</div>
+                      )}
 
-                  <div key={index}>{columna.render('Filter')} </div>
-                </StyledTableCellHeader>
+                      <div key={index}>{columna.render('Filter')} </div>
+                    </StyledTableCellHeader>
+                  ))}
+                </TableRow>
               ))}
-            </TableRow>
-          ))}
-        </TableHead>
+            </TableHead>
 
-        <TableBody {...getTableBodyProps()}>
-          {rows.map((row, index) => {
-            prepareRow(row);
-            return (
-              <StyledTableRow key={index} {...row.getRowProps()}>
-                {row.cells.map((cell, index) => (
-                  <StyledTableCellBody
-                    size="small"
-                    padding="none"
-                    key={index}
-                    {...cell.getCellProps()}
-                  >
-                    {cell.render('Cell')}
-                  </StyledTableCellBody>
-                ))}
-              </StyledTableRow>
-            );
-          })}
-        </TableBody>
-      </StyledTable>
-    </StyledTableContainer>
+            <TableBody {...getTableBodyProps()}>
+              {rows.map((row, index) => {
+                prepareRow(row);
+                return (
+                  <StyledTableRow key={index} {...row.getRowProps()}>
+                    {row.cells.map((cell, index) => (
+                      <StyledTableCellBody
+                        size="small"
+                        padding="none"
+                        key={index}
+                        {...cell.getCellProps()}
+                      >
+                        {cell.render('Cell')}
+                      </StyledTableCellBody>
+                    ))}
+                  </StyledTableRow>
+                );
+              })}
+            </TableBody>
+          </StyledTable>
+        </TableContainer>
+      </Scrollbar>
+    </StyledDiv>
   );
 }
 

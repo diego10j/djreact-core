@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 // icons
 import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -9,14 +11,27 @@ import brushOutline from '@iconify/icons-eva/brush-outline';
 import refreshOutline from '@iconify/icons-eva/refresh-outline';
 
 // components
-import { Box, MenuItem, Tooltip, Divider } from '@material-ui/core';
+import {
+  Box,
+  MenuItem,
+  Tooltip,
+  Divider,
+  Toolbar,
+  InputAdornment,
+  TextField
+} from '@material-ui/core';
 import { Icon } from '@iconify/react';
-import { GridToolbarContainer } from '@material-ui/data-grid';
 import { MIconButton } from '../../@material-extend';
 import MenuPopover from '../../MenuPopover';
 import SvgIconStyle from '../../SvgIconStyle';
 
 export default function ToolbarTabla({ insertar }) {
+  const StyledToolbar = withStyles((theme) => ({
+    root: {
+      padding: '4px 4px 0'
+    }
+  }))(Toolbar);
+
   const anchorRef = useRef(null);
 
   const [open, setOpen] = useState(false);
@@ -24,7 +39,7 @@ export default function ToolbarTabla({ insertar }) {
     setOpen(false);
   };
 
-  const handleOpciones = () => {
+  const handleOpciones = (event) => {
     setOpen(true);
   };
 
@@ -54,17 +69,8 @@ export default function ToolbarTabla({ insertar }) {
   };
 
   return (
-    <>
-      <GridToolbarContainer>
-        <Tooltip title="Opciones">
-          <MIconButton
-            ref={anchorRef}
-            aria-label="opciones"
-            onClick={handleOpciones}
-          >
-            <MoreVertIcon />
-          </MIconButton>
-        </Tooltip>
+    <StyledToolbar variant="dense">
+      <Box display="flex" flexGrow={1} sx={{ ml: 2 }}>
         <Tooltip title="Insertar">
           <MIconButton
             aria-label="insertar"
@@ -92,7 +98,30 @@ export default function ToolbarTabla({ insertar }) {
             <DeleteIcon fontSize="inherit" />
           </MIconButton>
         </Tooltip>
-      </GridToolbarContainer>
+      </Box>
+
+      <TextField
+        placeholder="Buscar"
+        variant="standard"
+        size="small"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon size="small" />
+            </InputAdornment>
+          )
+        }}
+      />
+
+      <Tooltip title="Opciones">
+        <MIconButton
+          aria-label="opciones"
+          onClick={handleOpciones}
+          ref={anchorRef}
+        >
+          <MoreVertIcon />
+        </MIconButton>
+      </Tooltip>
 
       <MenuPopover
         open={open}
@@ -148,7 +177,7 @@ export default function ToolbarTabla({ insertar }) {
           Personalizar
         </MenuItem>
       </MenuPopover>
-    </>
+    </StyledToolbar>
   );
 }
 
