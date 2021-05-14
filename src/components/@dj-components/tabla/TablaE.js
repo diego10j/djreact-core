@@ -9,9 +9,12 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 import { withStyles } from '@material-ui/core/styles';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {
   useTable,
   useSortBy,
@@ -19,22 +22,27 @@ import {
   useGlobalFilter,
   useAsyncDebounce
 } from 'react-table';
+import { MIconButton } from '../../@material-extend';
 import axios from '../../../utils/axios';
 
 // Estilo
 
-const StyledTable = withStyles((theme) => ({
+const StyledTableContainer = withStyles((theme) => ({
   root: {
     width: '100%',
-    color: '#212B36',
     border: `solid 1px ${theme.palette.divider}`,
     height: '100%',
     outline: 'none',
     fontSize: '0.875rem',
     boxSizing: 'border-box',
-    fontWeight: 400,
     lineHeight: '1.5714285714285714',
     borderRadius: '8px'
+  }
+}))(TableContainer);
+
+const StyledTable = withStyles(() => ({
+  root: {
+    fontSize: '0.875rem'
   }
 }))(Table);
 
@@ -47,7 +55,7 @@ const StyledTableCellHeader = withStyles((theme) => ({
   }
 }))(TableCell);
 
-const StyledTableCellBody = withStyles((theme) => ({
+const StyledTableCellBody = withStyles(() => ({
   root: {
     padding: '0px 10px 0px 10px'
   }
@@ -241,7 +249,14 @@ export default function TablaE({
 
   // Render the UI for your table
   return (
-    <TableContainer component={Paper}>
+    <StyledTableContainer component={Paper}>
+      <Toolbar variant="dense">
+        <Tooltip title="Opciones">
+          <MIconButton>
+            <MoreVertIcon />
+          </MIconButton>
+        </Tooltip>
+      </Toolbar>
       <StyledTable {...getTableProps()} size="small">
         <TableHead>
           {headerGroups.map((headerGroup, index) => (
@@ -293,7 +308,7 @@ export default function TablaE({
           })}
         </TableBody>
       </StyledTable>
-    </TableContainer>
+    </StyledTableContainer>
   );
 }
 
