@@ -1,33 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // components
-import { DataGrid } from '@material-ui/data-grid';
 import axios from '../../../utils/axios';
-import ToolbarTabla from './ToolbarTabla';
-import { TextosLocaleEsp } from './TextosLocaleEsp';
-import PaginationTabla from './PaginationTabla';
-import { renderRating } from '../CuerpoTabla';
+import TablaReact from './TablaReact';
 
 export default function Tabla({
   numeroTabla,
   nombreTabla,
   campoPrimario,
-  lectura,
+  lectura = true,
+  tipoFormulario = false,
   campoOrden,
   opcionesColumnas,
-  pageSize = 15,
-  rowHeight = 25
+  filasPorPagina = 15
 }) {
+  const [isColumnas, setIsColumnas] = useState(false);
   const [cargando, setCargando] = useState(false);
-  const [columnas, setColumnas] = useState([]);
-  const [tablaColumnas, setTablaColumnas] = useState([]);
-
-  const [datos, setDatos] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [columnasOcultas, setColumnasOcultas] = useState([]);
+  const [data, setData] = useState([]);
+  const [skipPageReset, setSkipPageReset] = useState(false);
+  const [filasModificadas, setFilasModificadas] = useState([]);
 
   useEffect(() => {
     getColumnas();
     getDatos();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!tipoFormulario) {
+      const colOcultas = columns
+        .filter((_col) => _col.visible === false)
+        .map((_element) => _element.nombre);
+      setColumnasOcultas(colOcultas);
+    }
+  }, [columns]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Obtiene la data de la tabla
@@ -48,7 +55,7 @@ export default function Tabla({
             id: element[campoPrimario],
             ...element
           }));
-          setDatos(datosDef);
+          setData(datosDef);
           setCargando(false);
         });
     } catch (error) {
@@ -70,20 +77,6 @@ export default function Tabla({
         numero_tabl: numeroTabla
       });
       formarColumnas(data.datos);
-      const columnasDef = data.datos.map((_columna, _index) => ({
-        field: _columna.nombre,
-        type: _columna.type,
-        headerName: _columna.nombrevisual,
-        width: _columna.anchocolumna * 17,
-        hide: !_columna.visible,
-        filterable: true,
-        sortable: _columna.ordenable,
-        editable: !_columna.lectura,
-        index: _index,
-        renderCell: renderRating
-      }));
-
-      setTablaColumnas(columnasDef);
     } catch (error) {
       console.error(error);
     }
@@ -94,77 +87,115 @@ export default function Tabla({
       console.log('---FORMAR COLUMNAS');
       // Aplica cada configuración realizada a las columnas
       opcionesColumnas.forEach((_columna) => {
-        const colActual = cols.find((_col) => _col.nombre === _columna.nombre);
-        colActual.visible =
-          'visible' in _columna ? _columna.visible : colActual.visible;
-        colActual.nombrevisual =
-          'nombreVisual' in _columna
-            ? _columna.nombreVisual
-            : colActual.nombrevisual;
-        colActual.valordefecto =
-          'valorDefecto' in _columna
-            ? _columna.valorDefecto
-            : colActual.valordefecto;
-        colActual.requerida =
-          'requerida' in _columna ? _columna.requerida : colActual.requerida;
-        colActual.lectura =
-          'lectura' in _columna ? _columna.lectura : colActual.lectura;
-        colActual.orden =
-          'orden' in _columna ? _columna.orden : colActual.orden;
-        colActual.anchocolumna =
-          'anchoColumna' in _columna
-            ? _columna.anchoColumna
-            : colActual.anchocolumna;
-        colActual.decimales =
-          'decimales' in _columna ? _columna.decimales : colActual.decimales;
-        colActual.comentario =
-          'comentario' in _columna ? _columna.comentario : colActual.comentario;
-        colActual.mayuscula =
-          'mayuscula' in _columna ? _columna.mayuscula : colActual.mayuscula;
-        colActual.alinear =
-          'alinear' in _columna ? _columna.alinear : colActual.alinear;
-        colActual.ordenable =
-          'ordenable' in _columna ? _columna.ordenable : colActual.ordenable;
+        const colActual = cols.find(
+          (_col) => _col.nombre === _columna.nombre.toLowerCase()
+        );
+        if (colActual) {
+          colActual.visible =
+            'visible' in _columna ? _columna.visible : colActual.visible;
+          colActual.filtro =
+            'filtro' in _columna ? _columna.filtro : colActual.filtro;
+          colActual.nombrevisual =
+            'nombreVisual' in _columna
+              ? _columna.nombreVisual.toUpperCase()
+              : colActual.nombrevisual;
+          colActual.valordefecto =
+            'valorDefecto' in _columna
+              ? _columna.valorDefecto
+              : colActual.valordefecto;
+          colActual.requerida =
+            'requerida' in _columna ? _columna.requerida : colActual.requerida;
+          colActual.lectura =
+            'lectura' in _columna ? _columna.lectura : colActual.lectura;
+          colActual.orden =
+            'orden' in _columna ? _columna.orden : colActual.orden;
+          colActual.anchocolumna =
+            'anchoColumna' in _columna
+              ? _columna.anchoColumna
+              : colActual.anchocolumna;
+          colActual.decimales =
+            'decimales' in _columna ? _columna.decimales : colActual.decimales;
+          colActual.comentario =
+            'comentario' in _columna
+              ? _columna.comentario
+              : colActual.comentario;
+          colActual.mayuscula =
+            'mayuscula' in _columna ? _columna.mayuscula : colActual.mayuscula;
+          colActual.alinear =
+            'alinear' in _columna ? _columna.alinear : colActual.alinear;
+          colActual.ordenable =
+            'ordenable' in _columna ? _columna.ordenable : colActual.ordenable;
+        } else {
+          throw new Error(`Error la columna ${_columna.nombre} no existe`);
+        }
       });
-      // ordena las columnas
-      cols.sort((a, b) => (a.orden < b.orden ? -1 : 1));
     }
-    // Si la tabla es de lectura todas las columnas son de lectura
-    if (lectura === true) {
-      cols.forEach((_columna) => {
-        _columna.lectura = true;
+    // ordena las columnas
+    cols.sort((a, b) => (a.orden < b.orden ? -1 : 1));
+
+    // configuraciones para React Table
+    if (!tipoFormulario) {
+      cols.forEach((_columna, index) => {
+        // Si la tabla es de lectura todas las columnas son de lectura
+        if (lectura) {
+          _columna.lectura = true;
+        }
+        _columna.accessor = _columna.nombre;
+        _columna.filter = 'fuzzyText';
+        _columna.width = _columna.anchocolumna * 16;
       });
     }
-    setColumnas(cols);
+    setColumns(cols);
+    setIsColumnas(true);
   };
 
-  const insertar = () => {
-    console.log('insertar');
-    console.log(columnas);
+  // When our cell renderer calls updateMyData, we'll use
+  // the rowIndex, columnId and new value to update the
+  // original data
+  const updateMyData = (rowIndex, columnId, value) => {
+    // We also turn on the flag to not reset the page
+    setSkipPageReset(true);
+    setData((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            [columnId]: value
+          };
+        }
+        return row;
+      })
+    );
   };
+
+  const modificarFila = (rowIndex, columnId, value) => {
+    console.log(columnId);
+    console.log(rowIndex);
+    console.log(value);
+  };
+
+  // After data chagnes, we turn the flag back off
+  // so that if data actually changes when we're not
+  // editing it, the page is reset
+  useEffect(() => {
+    setSkipPageReset(false);
+  }, [data]);
 
   return (
-    <div style={{ width: '100%' }}>
-      <DataGrid
-        showCellRightBorder
-        disableColumnMenu
-        hideFooterSelectedRowCount
-        localeText={TextosLocaleEsp}
-        columns={tablaColumnas}
-        rows={datos}
-        pageSize={pageSize}
-        loading={cargando}
-        rowHeight={rowHeight}
-        disableColumnSelector
-        autoHeight
-        pagination
-        components={{
-          Toolbar: ToolbarTabla,
-          Pagination: PaginationTabla
-        }}
-        componentsProps={{ toolbar: { insertar } }}
+    <>
+      <TablaReact
+        columns={columns}
+        data={data}
+        isColumnas={isColumnas}
+        setData={setData}
+        updateMyData={updateMyData}
+        skipPageReset={skipPageReset}
+        columnasOcultas={columnasOcultas}
+        filasPorPagina={filasPorPagina}
+        modificarFila={modificarFila}
       />
-    </div>
+      <code>{JSON.stringify(filasModificadas, null, 2)}</code>
+    </>
   );
 }
 
@@ -172,8 +203,10 @@ Tabla.propTypes = {
   numeroTabla: PropTypes.number.isRequired,
   nombreTabla: PropTypes.string.isRequired,
   campoPrimario: PropTypes.string.isRequired,
-  lectura: PropTypes.bool.isRequired,
   campoOrden: PropTypes.string,
+  tipoFormulario: PropTypes.bool,
+  filasPorPagina: PropTypes.number,
+  lectura: PropTypes.bool,
   opcionesColumnas: PropTypes.arrayOf(
     PropTypes.shape({
       nombre: PropTypes.string.isRequired,
@@ -181,6 +214,7 @@ Tabla.propTypes = {
       valorDefecto: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
       requerida: PropTypes.bool,
       visible: PropTypes.bool,
+      filtro: PropTypes.bool,
       lectura: PropTypes.bool,
       orden: PropTypes.number,
       anchoColumna: PropTypes.number,
@@ -190,7 +224,5 @@ Tabla.propTypes = {
       alinear: PropTypes.oneOf(['izquierda', 'derecha', 'centro']),
       ordenable: PropTypes.bool
     })
-  ),
-  pageSize: PropTypes.number,
-  rowHeight: PropTypes.number
+  )
 };

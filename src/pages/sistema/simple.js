@@ -5,7 +5,7 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Page from '../../components/Page';
 import HeaderDashboard from '../../components/HeaderDashboard';
-import TablaE from '../../components/@dj-components/tabla/TablaE';
+import Tabla from '../../components/@dj-components/tabla/Tabla';
 
 // ----------------------------------------------------------------------
 
@@ -21,8 +21,8 @@ export default function Simple() {
           ]}
         />
 
-        <TablaE
-          numeroTabla={2}
+        <Tabla
+          numeroTabla={1}
           nombreTabla="sis_opcion"
           campoPrimario="ide_opci"
           opcionesColumnas={[

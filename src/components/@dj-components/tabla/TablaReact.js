@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 // react-table
 import {
@@ -6,6 +6,7 @@ import {
   usePagination,
   useSortBy,
   useFilters,
+  useRowSelect,
   useTable
 } from 'react-table';
 // componentes
@@ -18,8 +19,6 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
-import Skeleton from '@material-ui/core/Skeleton';
-import Grid from '@material-ui/core/Grid';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 import {
@@ -27,10 +26,10 @@ import {
   experimentalStyled as styled
 } from '@material-ui/core/styles';
 import Scrollbar from '../../Scrollbar';
-import axios from '../../../utils/axios';
 import ToolbarTabla from './ToolbarTabla';
 import { DefaultColumnFilter } from './FiltrosTabla';
 import TablePaginationActions from './PaginationTabla';
+import SkeletonTabla from './SkeletonTabla';
 
 // Estilos
 const StyledDiv = styled('div')(({ theme }) => ({
@@ -74,6 +73,9 @@ const StyledTableRow = withStyles((theme) => ({
     width: '-moz-fit-content',
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.action.focus
     }
   }
 }))(TableRow);
@@ -85,15 +87,61 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
-export default function TablaE({
-  numeroTabla,
-  nombreTabla,
-  campoPrimario,
-  lectura = false,
-  campoOrden,
-  opcionesColumnas,
-  filasPorPagina = 15
+
+// Create an editable cell renderer
+const EditableCell = ({
+  value: initialValue,
+  row: { index },
+  column: { id },
+  modificarFila,
+  updateMyData // This is a custom function that we supplied to our table instance
+}) => {
+  // We need to keep and update the state of the cell normally
+  const [value, setValue] = React.useState(initialValue);
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  // We'll only update the external data when the input is blurred
+  const onBlur = () => {
+    updateMyData(index, id, value);
+    modificarFila([index, id, value]);
+  };
+
+  // If the initialValue is changed externall, sync it up with our state
+  React.useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  return <input value={value || ''} onChange={onChange} onBlur={onBlur} />;
+};
+
+// Configuracion columna por defecto
+// Configuración por defecto de las columnas
+const defaultColumn = {
+  // Let's set up our default Filter UI
+  Filter: DefaultColumnFilter,
+  Cell: EditableCell,
+  minWidth: 30,
+  width: 150,
+  maxWidth: 400
+};
+
+export default function TablaReact({
+  columns,
+  data,
+  isColumnas,
+  updateMyData,
+  skipPageReset,
+  filasPorPagina = 15,
+  columnasOcultas,
+  modificarFila
 }) {
+  useEffect(() => {
+    setHiddenColumns(columnasOcultas);
+  }, [columnasOcultas]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Función filtrar
   const filterTypes = React.useMemo(
     () => ({
@@ -115,148 +163,6 @@ export default function TablaE({
     []
   );
 
-  // Configuración por defecto de las columnas
-  const defaultColumn = useMemo(
-    () => ({
-      // Let's set up our default Filter UI
-      Filter: DefaultColumnFilter,
-      minWidth: 30,
-      width: 150,
-      maxWidth: 400
-    }),
-    []
-  );
-
-  const [isColumnas, setIsColumnas] = useState(false);
-
-  const [cargando, setCargando] = useState(false);
-  const [columns, setColumns] = useState([]);
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    getColumnas();
-    getDatos();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    // Oculta las columnas no visibles
-    const columnasOcultas = columns
-      .filter((_col) => _col.visible === false)
-      .map((_element) => _element.nombre);
-    setHiddenColumns(columnasOcultas);
-  }, [columns]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  /**
-   * Obtiene la data de la tabla
-   */
-  const getDatos = () => {
-    try {
-      console.log('---CARGA DATOS');
-      setCargando(true);
-      axios
-        .post('/api/sistema/consultarTabla', {
-          nombreTabla,
-          campoOrden: campoOrden || campoPrimario,
-          condiciones: []
-        })
-        .then((response) => {
-          const { data } = response;
-          const datosDef = data.datos.map((element) => ({
-            id: element[campoPrimario],
-            ...element
-          }));
-          setData(datosDef);
-          setCargando(false);
-        });
-    } catch (error) {
-      setCargando(false);
-      console.error(error);
-    }
-  };
-
-  /**
-   * Obtiene las columnas del servicio web
-   */
-  const getColumnas = async () => {
-    console.log('---CARGA COLUMNAS');
-    try {
-      const { data } = await axios.post('/api/sistema/getColumnas', {
-        nombreTabla,
-        campoPrimario,
-        ide_opci: 0,
-        numero_tabl: numeroTabla
-      });
-      formarColumnas(data.datos);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const formarColumnas = (cols) => {
-    if (opcionesColumnas) {
-      console.log('---FORMAR COLUMNAS');
-      // Aplica cada configuración realizada a las columnas
-      opcionesColumnas.forEach((_columna) => {
-        const colActual = cols.find(
-          (_col) => _col.nombre === _columna.nombre.toLowerCase()
-        );
-        if (colActual) {
-          colActual.visible =
-            'visible' in _columna ? _columna.visible : colActual.visible;
-          colActual.filtro =
-            'filtro' in _columna ? _columna.filtro : colActual.filtro;
-          colActual.nombrevisual =
-            'nombreVisual' in _columna
-              ? _columna.nombreVisual.toUpperCase()
-              : colActual.nombrevisual;
-          colActual.valordefecto =
-            'valorDefecto' in _columna
-              ? _columna.valorDefecto
-              : colActual.valordefecto;
-          colActual.requerida =
-            'requerida' in _columna ? _columna.requerida : colActual.requerida;
-          colActual.lectura =
-            'lectura' in _columna ? _columna.lectura : colActual.lectura;
-          colActual.orden =
-            'orden' in _columna ? _columna.orden : colActual.orden;
-          colActual.anchocolumna =
-            'anchoColumna' in _columna
-              ? _columna.anchoColumna
-              : colActual.anchocolumna;
-          colActual.decimales =
-            'decimales' in _columna ? _columna.decimales : colActual.decimales;
-          colActual.comentario =
-            'comentario' in _columna
-              ? _columna.comentario
-              : colActual.comentario;
-          colActual.mayuscula =
-            'mayuscula' in _columna ? _columna.mayuscula : colActual.mayuscula;
-          colActual.alinear =
-            'alinear' in _columna ? _columna.alinear : colActual.alinear;
-          colActual.ordenable =
-            'ordenable' in _columna ? _columna.ordenable : colActual.ordenable;
-        } else {
-          throw new Error(`Error la columna ${_columna.nombre} no existe`);
-        }
-      });
-    }
-    // ordena las columnas
-    cols.sort((a, b) => (a.orden < b.orden ? -1 : 1));
-
-    cols.forEach((_columna) => {
-      // Si la tabla es de lectura todas las columnas son de lectura
-      if (lectura) {
-        _columna.lectura = true;
-      }
-      _columna.accessor = _columna.nombre;
-      _columna.filter = 'fuzzyText';
-      _columna.width = _columna.anchocolumna * 16;
-    });
-    setColumns(cols);
-    setIsColumnas(true);
-  };
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -266,20 +172,31 @@ export default function TablaE({
     setHiddenColumns,
     page,
     gotoPage,
+    toggleAllRowsSelected,
     setPageSize,
-    state: { pageIndex, pageSize, globalFilter }
+    state: { pageIndex, pageSize, globalFilter, selectedRowIds }
   } = useTable(
     {
+      autoResetSelectedRows: false,
       columns,
       data,
       defaultColumn, // Be sure to pass the defaultColumn option
+      autoResetPage: !skipPageReset,
+      // updateMyData isn't part of the API, but
+      // anything we put into these options will
+      // automatically be available on the instance.
+      // That way we can call this function from our
+      // cell renderer!
+      updateMyData,
+      modificarFila,
       filterTypes,
       initialState: { pageSize: filasPorPagina }
     },
     useGlobalFilter, // useGlobalFilter!
     useFilters, // useFilters!
     useSortBy,
-    usePagination
+    usePagination,
+    useRowSelect
   );
 
   const handleChangePage = (event, newPage) => {
@@ -300,13 +217,7 @@ export default function TablaE({
       <Scrollbar>
         <TableContainer component={Paper}>
           {!isColumnas ? (
-            <Grid item xs={12} sm={6} md={3}>
-              <Skeleton
-                variant="rectangular"
-                width="100%"
-                height={filasPorPagina * 25}
-              />
-            </Grid>
+            <SkeletonTabla filasPorPagina={filasPorPagina} />
           ) : (
             <StyledTable {...getTableProps()} size="small">
               <TableHead>
@@ -342,7 +253,20 @@ export default function TablaE({
                 {page.map((row, index) => {
                   prepareRow(row);
                   return (
-                    <StyledTableRow key={index} {...row.getRowProps()}>
+                    <StyledTableRow
+                      key={index}
+                      {...row.getRowProps({
+                        style: {
+                          backgroundColor: row.isSelected
+                            ? 'rgba(45, 182, 150, 0.16)'
+                            : ''
+                        },
+                        onClick: () => {
+                          toggleAllRowsSelected(false);
+                          row.toggleRowSelected();
+                        }
+                      })}
+                    >
                       {row.cells.map((cell, index) => (
                         <StyledTableCellBody
                           size="small"
@@ -359,6 +283,10 @@ export default function TablaE({
               </TableBody>
             </StyledTable>
           )}
+
+          <pre>
+            <code>{JSON.stringify(selectedRowIds, null, 2)}</code>
+          </pre>
         </TableContainer>
       </Scrollbar>
       {data.length > filasPorPagina && (
@@ -385,28 +313,14 @@ export default function TablaE({
   );
 }
 
-TablaE.propTypes = {
-  numeroTabla: PropTypes.number.isRequired,
-  nombreTabla: PropTypes.string.isRequired,
-  campoPrimario: PropTypes.string.isRequired,
-  campoOrden: PropTypes.string,
+TablaReact.propTypes = {
+  columns: PropTypes.array.isRequired,
   filasPorPagina: PropTypes.number,
-  lectura: PropTypes.bool,
-  opcionesColumnas: PropTypes.arrayOf(
-    PropTypes.shape({
-      nombre: PropTypes.string.isRequired,
-      nombreVisual: PropTypes.string,
-      valorDefecto: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-      requerida: PropTypes.bool,
-      visible: PropTypes.bool,
-      lectura: PropTypes.bool,
-      orden: PropTypes.number,
-      anchoColumna: PropTypes.number,
-      decimales: PropTypes.number,
-      comentario: PropTypes.string,
-      mayusculas: PropTypes.bool,
-      alinear: PropTypes.oneOf(['izquierda', 'derecha', 'centro']),
-      ordenable: PropTypes.bool
-    })
-  )
+  data: PropTypes.array.isRequired,
+  updateMyData: PropTypes.func.isRequired,
+  setData: PropTypes.func.isRequired,
+  skipPageReset: PropTypes.bool.isRequired,
+  isColumnas: PropTypes.bool.isRequired,
+  modificarFila: PropTypes.func.isRequired,
+  columnasOcultas: PropTypes.array
 };
