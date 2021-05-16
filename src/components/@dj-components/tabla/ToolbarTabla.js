@@ -1,9 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 // icons
 import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -11,27 +9,18 @@ import brushOutline from '@iconify/icons-eva/brush-outline';
 import refreshOutline from '@iconify/icons-eva/refresh-outline';
 
 // components
-import {
-  Box,
-  MenuItem,
-  Tooltip,
-  Divider,
-  Toolbar,
-  InputAdornment,
-  TextField
-} from '@material-ui/core';
+import { Box, MenuItem, Tooltip, Divider } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import { MIconButton } from '../../@material-extend';
 import MenuPopover from '../../MenuPopover';
 import SvgIconStyle from '../../SvgIconStyle';
+import FiltroGlobalTabla from './FiltroGlobalTabla';
 
-export default function ToolbarTabla({ insertar }) {
-  const StyledToolbar = withStyles((theme) => ({
-    root: {
-      padding: '4px 4px 0'
-    }
-  }))(Toolbar);
-
+export default function ToolbarTabla({
+  globalFilter,
+  setGlobalFilter,
+  insertar
+}) {
   const anchorRef = useRef(null);
 
   const [open, setOpen] = useState(false);
@@ -39,7 +28,7 @@ export default function ToolbarTabla({ insertar }) {
     setOpen(false);
   };
 
-  const handleOpciones = (event) => {
+  const handleOpciones = () => {
     setOpen(true);
   };
 
@@ -69,60 +58,65 @@ export default function ToolbarTabla({ insertar }) {
   };
 
   return (
-    <StyledToolbar variant="dense">
-      <Box display="flex" flexGrow={1} sx={{ ml: 2 }}>
-        <Tooltip title="Insertar">
-          <MIconButton
-            aria-label="insertar"
-            color="success"
-            onClick={handleInsertar}
-          >
-            <AddIcon fontSize="inherit" />
-          </MIconButton>
-        </Tooltip>
-        <Tooltip title="Modificar">
-          <MIconButton
-            aria-label="modificar"
-            color="info"
-            onClick={handleModificar}
-          >
-            <CreateIcon fontSize="inherit" />
-          </MIconButton>
-        </Tooltip>
-        <Tooltip title="Eliminar">
-          <MIconButton
-            aria-label="eliminar"
-            color="error"
-            onClick={handleEliminar}
-          >
-            <DeleteIcon fontSize="inherit" />
-          </MIconButton>
-        </Tooltip>
-      </Box>
-
-      <TextField
-        placeholder="Buscar"
-        variant="standard"
-        size="small"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon size="small" />
-            </InputAdornment>
-          )
-        }}
-      />
-
-      <Tooltip title="Opciones">
-        <MIconButton
-          aria-label="opciones"
-          onClick={handleOpciones}
-          ref={anchorRef}
+    <>
+      <div style={{ width: '100%', padding: 0 }}>
+        <Box
+          sx={{
+            pt: 0,
+            pb: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
         >
-          <MoreVertIcon />
-        </MIconButton>
-      </Tooltip>
-
+          <Box width="75%" flexGrow={1} sx={{ pt: 0, pb: 0 }}>
+            <Tooltip title="Insertar">
+              <MIconButton
+                aria-label="insertar"
+                color="success"
+                onClick={handleInsertar}
+              >
+                <AddIcon fontSize="inherit" />
+              </MIconButton>
+            </Tooltip>
+            <Tooltip title="Modificar">
+              <MIconButton
+                aria-label="modificar"
+                color="info"
+                onClick={handleModificar}
+              >
+                <CreateIcon fontSize="inherit" />
+              </MIconButton>
+            </Tooltip>
+            <Tooltip title="Eliminar">
+              <MIconButton
+                aria-label="eliminar"
+                color="error"
+                onClick={handleEliminar}
+              >
+                <DeleteIcon fontSize="inherit" />
+              </MIconButton>
+            </Tooltip>
+          </Box>
+          <Box sx={{ pt: 0, pb: 0 }}>
+            <FiltroGlobalTabla
+              globalFilter={globalFilter}
+              setGlobalFilter={setGlobalFilter}
+            />
+          </Box>
+          <Box sx={{ pt: 0, pb: 0 }}>
+            <Tooltip title="Opciones">
+              <MIconButton
+                aria-label="opciones"
+                onClick={handleOpciones}
+                ref={anchorRef}
+              >
+                <MoreVertIcon />
+              </MIconButton>
+            </Tooltip>
+          </Box>
+        </Box>
+      </div>
       <MenuPopover
         open={open}
         onClose={handleCerrar}
@@ -177,10 +171,12 @@ export default function ToolbarTabla({ insertar }) {
           Personalizar
         </MenuItem>
       </MenuPopover>
-    </StyledToolbar>
+    </>
   );
 }
 
 ToolbarTabla.propTypes = {
-  insertar: PropTypes.func
+  insertar: PropTypes.func,
+  globalFilter: PropTypes.string,
+  setGlobalFilter: PropTypes.func.isRequired
 };

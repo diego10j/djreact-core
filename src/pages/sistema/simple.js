@@ -5,7 +5,6 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Page from '../../components/Page';
 import HeaderDashboard from '../../components/HeaderDashboard';
-import Tabla from '../../components/@dj-components/tabla/Tabla';
 import TablaE from '../../components/@dj-components/tabla/TablaE';
 
 // ----------------------------------------------------------------------
@@ -21,26 +20,26 @@ export default function Simple() {
             { name: 'Simple' }
           ]}
         />
-        <Tabla
-          numeroTabla={1}
-          lectura
-          nombreTabla="sis_usuario"
-          campoPrimario="ide_usua"
-          opcionesColumnas={[
-            { nombre: 'ide_empr', visible: false },
-            {
-              nombre: 'ide_perf',
-              nombreVisual: 'COD PERFIL',
-              ordenable: false
-            },
-            { nombre: 'nom_usua', nombreVisual: 'USUARIO', orden: 0 }
-          ]}
-        />
 
         <TablaE
           numeroTabla={2}
           nombreTabla="sis_opcion"
           campoPrimario="ide_opci"
+          opcionesColumnas={[
+            { nombre: 'manual_opci', visible: false },
+            {
+              nombre: 'nom_opci',
+              nombreVisual: 'NOMBRE OPCION',
+              ordenable: false,
+              filtro: true,
+              orden: 0
+            },
+            {
+              nombre: 'tipo_opci',
+              nombreVisual: 'Path',
+              filtro: true
+            }
+          ]}
         />
       </Container>
     </Page>
