@@ -23,20 +23,20 @@ export default function Simple() {
 
         <Tabla
           numeroTabla={1}
-          nombreTabla="sis_opcion"
-          campoPrimario="ide_opci"
+          nombreTabla="sis_auditoria_acceso"
+          campoPrimario="ide_auac"
           opcionesColumnas={[
-            { nombre: 'manual_opci', visible: false },
+            { nombre: 'ide_usua', visible: false },
             {
-              nombre: 'nom_opci',
-              nombreVisual: 'NOMBRE OPCION',
+              nombre: 'detalle_auac',
+              nombreVisual: 'DETALLE',
               ordenable: false,
               filtro: true,
               orden: 0
             },
             {
-              nombre: 'tipo_opci',
-              nombreVisual: 'Path',
+              nombre: 'ip_auac',
+              nombreVisual: 'IP',
               filtro: true
             }
           ]}

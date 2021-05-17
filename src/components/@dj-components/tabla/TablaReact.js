@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // react-table
 import {
@@ -19,6 +19,9 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
+import { TextField } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import { DatePicker } from '@material-ui/lab';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 import {
@@ -43,6 +46,25 @@ const StyledDiv = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
   flexDirection: 'column'
 }));
+
+const StyledTexto = styled('input')(({ theme }) => ({
+  border: 'none',
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'transparent',
+  outline: 'none'
+}));
+
+const StyledTextField = withStyles((theme) => ({
+  root: {
+    border: 'none',
+    fontSize: '0.875rem',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'transparent',
+    outline: 'none'
+  }
+}))(TextField);
 
 const StyledTable = withStyles(() => ({
   root: {
@@ -93,11 +115,15 @@ const EditableCell = ({
   value: initialValue,
   row: { index },
   column: { id },
+  columns,
   modificarFila,
   updateMyData // This is a custom function that we supplied to our table instance
 }) => {
   // We need to keep and update the state of the cell normally
-  const [value, setValue] = React.useState(initialValue);
+  const [value, setValue] = useState(initialValue);
+  const [columna, setColumna] = useState(
+    columns.find((_col) => _col.nombre === id)
+  );
 
   const onChange = (e) => {
     setValue(e.target.value);
@@ -106,7 +132,7 @@ const EditableCell = ({
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     updateMyData(index, id, value);
-    modificarFila([index, id, value]);
+    // modificarFila([index, id, value]);
   };
 
   // If the initialValue is changed externall, sync it up with our state
@@ -114,7 +140,39 @@ const EditableCell = ({
     setValue(initialValue);
   }, [initialValue]);
 
-  return <input value={value || ''} onChange={onChange} onBlur={onBlur} />;
+  return (
+    <>
+      {columna.componente === 'Texto' && (
+        <StyledTexto
+          value={value || ''}
+          onChange={onChange}
+          onBlur={onBlur}
+          variant="filled"
+        />
+      )}
+
+      {columna.componente === 'Calendario' && (
+        <DatePicker
+          views={['date']}
+          value={value}
+          onChange={(newValue) => {
+            setValue(newValue || '');
+          }}
+          onBlur={onBlur}
+          renderInput={(params) => (
+            <StyledTextField
+              {...params}
+              fullWidth
+              size="small"
+              variant="standard"
+              margin="none"
+              helperText={null}
+            />
+          )}
+        />
+      )}
+    </>
+  );
 };
 
 // Configuracion columna por defecto
