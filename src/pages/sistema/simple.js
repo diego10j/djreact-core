@@ -23,6 +23,7 @@ export default function Simple() {
 
         <Tabla
           numeroTabla={1}
+          lectura={false}
           nombreTabla="sis_auditoria_acceso"
           campoPrimario="ide_auac"
           opcionesColumnas={[

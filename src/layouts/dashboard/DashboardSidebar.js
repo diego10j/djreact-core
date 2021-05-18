@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Link as RouterLink, useLocation, matchPath } from 'react-router-dom';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, List, Drawer, Hidden, ListSubheader } from '@material-ui/core';
+import { Box, List, Drawer, ListSubheader } from '@material-ui/core';
 // components
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
@@ -130,28 +130,15 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
   return (
     <RootStyle>
-      <Hidden lgUp>
-        <Drawer
-          open={isOpenSidebar}
-          onClose={onCloseSidebar}
-          PaperProps={{
-            sx: { width: DRAWER_WIDTH }
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      </Hidden>
-      <Hidden lgDown>
-        <Drawer
-          open
-          variant="persistent"
-          PaperProps={{
-            sx: { width: DRAWER_WIDTH, bgcolor: 'background.default' }
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      </Hidden>
+      <Drawer
+        open={isOpenSidebar}
+        onClose={onCloseSidebar}
+        PaperProps={{
+          sx: { width: DRAWER_WIDTH }
+        }}
+      >
+        {renderContent}
+      </Drawer>
     </RootStyle>
   );
 }

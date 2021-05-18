@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // components
-import axios from '../../../utils/axios';
 import TablaReact from './TablaReact';
+import { TextoTabla } from './FilaEditable';
+import axios from '../../../utils/axios';
+import { isDefined } from '../../../utils/utilitario';
 
 export default function Tabla({
   numeroTabla,
@@ -20,7 +22,10 @@ export default function Tabla({
   const [columnasOcultas, setColumnasOcultas] = useState([]);
   const [data, setData] = useState([]);
   const [skipPageReset, setSkipPageReset] = useState(false);
-  const [filasModificadas, setFilasModificadas] = useState([]);
+  const [filaSeleccionada, setFilaSeleccionada] = useState(undefined);
+  const [modificadas, setModificadas] = useState([]);
+  const [insertadas, setInsertadas] = useState([]);
+  const [eliminadas, setEliminadas] = useState([]);
 
   useEffect(() => {
     getColumnas();
@@ -46,16 +51,13 @@ export default function Tabla({
       axios
         .post('/api/sistema/consultarTabla', {
           nombreTabla,
+          campoPrimario,
           campoOrden: campoOrden || campoPrimario,
           condiciones: []
         })
         .then((response) => {
           const { data } = response;
-          const datosDef = data.datos.map((element) => ({
-            id: element[campoPrimario],
-            ...element
-          }));
-          setData(datosDef);
+          setData(data.datos);
           setCargando(false);
         });
     } catch (error) {
@@ -143,6 +145,10 @@ export default function Tabla({
         _columna.accessor = _columna.nombre;
         _columna.filter = 'fuzzyText';
         _columna.width = _columna.anchocolumna * 16;
+
+        if (!_columna.lectura) {
+          _columna.Cell = TextoTabla;
+        }
       });
     }
     setColumns(cols);
@@ -158,6 +164,10 @@ export default function Tabla({
     setData((old) =>
       old.map((row, index) => {
         if (index === rowIndex) {
+          // console.log(rowIndex);
+          // console.log(columnId);
+          // console.log(row);
+          // console.log(value);
           return {
             ...old[rowIndex],
             [columnId]: value
@@ -168,10 +178,102 @@ export default function Tabla({
     );
   };
 
+  /**
+   * Retorna un objeto columna
+   * @param nombreColumna
+   */
+  const getColumna = (nombreColumna) => {
+    nombreColumna = nombreColumna.toLowerCase();
+    const col = columns.find((col) => col.nombre === nombreColumna);
+    if (!isDefined(col)) {
+      throw new Error(`Error la columna ${nombreColumna} no existe`);
+    }
+    return col;
+  };
+
+  /**
+   * Retorna el valor del campo primario de la fila seleccionada
+   * @returns
+   */
+  const getValorSeleccionado = () => {
+    if (isDefined(filaSeleccionada)) {
+      return filaSeleccionada[campoPrimario];
+    }
+  };
+
+  /**
+   * Retorna si una fila es insertada
+   * @param {*} valorPrimario
+   * @returns
+   */
+  const isFilaInsertada = (valorPrimario) => {
+    const fila = insertadas.find((col) => col[campoPrimario] === valorPrimario);
+    if (isDefined(fila)) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * Retorna si una fila es modificada
+   * @param {*} valorPrimario
+   * @returns
+   */
+  const isFilaModificada = (valorPrimario) => {
+    const fila = modificadas.find(
+      (col) => col[campoPrimario] === valorPrimario
+    );
+    if (isDefined(fila)) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * Retorna si una fila es eliminada
+   * @param {*} valorPrimario
+   * @returns
+   */
+  const isFilaEliminada = (valorPrimario) => {
+    const fila = eliminadas.find((col) => col[campoPrimario] === valorPrimario);
+    if (isDefined(fila)) {
+      return true;
+    }
+    return false;
+  };
+
   const modificarFila = (rowIndex, columnId, value) => {
-    console.log(columnId);
-    console.log(rowIndex);
-    console.log(value);
+    const columna = getColumna(columnId);
+    const valorSeleccionado = getValorSeleccionado();
+    // Valida que la columna no sea solo lectura
+    if (columna.lectura === false) {
+      // si no es fila insertada
+      if (!isFilaInsertada(valorSeleccionado)) {
+        // busca si ya se a modificado la fila
+        const fila = modificadas.find(
+          (col) => col[campoPrimario] === valorSeleccionado
+        );
+        if (!isDefined(fila)) {
+          let colModificadas = [];
+          const valoresModificados = {};
+          if (isDefined(fila?.colModificadas)) {
+            colModificadas = fila.colModificadas;
+          }
+          if (colModificadas.indexOf(columna.nombre) === -1) {
+            colModificadas.push(columna.nombre);
+            valoresModificados[columna.nombre] = value;
+          }
+          console.log(colModificadas);
+          const newFilaM = {};
+          // no se a modificado
+          newFilaM[campoPrimario] = valorSeleccionado;
+          newFilaM.valoresModificados = valoresModificados;
+          console.log(newFilaM);
+        }
+      }
+      // Propagar si tiene evento
+      // .....
+    }
   };
 
   // After data chagnes, we turn the flag back off
@@ -193,8 +295,8 @@ export default function Tabla({
         columnasOcultas={columnasOcultas}
         filasPorPagina={filasPorPagina}
         modificarFila={modificarFila}
+        setFilaSeleccionada={setFilaSeleccionada}
       />
-      <code>{JSON.stringify(filasModificadas, null, 2)}</code>
     </>
   );
 }

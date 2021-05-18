@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 // react-table
 import {
@@ -19,9 +19,6 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
-import { TextField } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import { DatePicker } from '@material-ui/lab';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 import {
@@ -46,42 +43,6 @@ const StyledDiv = styled('div')(({ theme }) => ({
   boxSizing: 'border-box',
   flexDirection: 'column'
 }));
-
-const StyledTexto = styled('input')(({ theme }) => ({
-  border: 'none',
-  width: '100%',
-  height: '100%',
-  backgroundColor: 'transparent',
-  outline: 'none'
-}));
-
-const StyledTextField = withStyles((theme) => ({
-  root: {
-    border: 'none',
-    fontSize: '0.875rem',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'transparent',
-    outline: 'none',
-    padding: 0,
-    marggin: 0,
-    '& .MuiInputBase-root': {
-      padding: 0,
-      marggin: 0,
-      fontSize: '0.875rem',
-      borderColor: 'blue',
-      fontWeight: '400',
-      '&:before': {
-        border: 'none'
-      }
-    },
-    '& .MuiInputBase-root:hover': {
-      '&:before': {
-        border: 'none'
-      }
-    }
-  }
-}))(TextField);
 
 const StyledTable = withStyles(() => ({
   root: {
@@ -123,84 +84,14 @@ const StyledTableRow = withStyles((theme) => ({
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
 }
-
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
-
-// Create an editable cell renderer
-const EditableCell = ({
-  value: initialValue,
-  row: { index },
-  column: { id },
-  columns,
-  modificarFila,
-  updateMyData // This is a custom function that we supplied to our table instance
-}) => {
-  // We need to keep and update the state of the cell normally
-  const [value, setValue] = useState(initialValue);
-  const [columna, setColumna] = useState(
-    columns.find((_col) => _col.nombre === id)
-  );
-
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
-
-  // We'll only update the external data when the input is blurred
-  const onBlur = () => {
-    updateMyData(index, id, value);
-    // modificarFila([index, id, value]);
-  };
-
-  // If the initialValue is changed externall, sync it up with our state
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  return (
-    <>
-      {columna.componente === 'Texto' && (
-        <StyledTextField
-          value={value || ''}
-          onChange={onChange}
-          onBlur={onBlur}
-          fullWidth
-          size="small"
-          variant="standard"
-          margin="none"
-        />
-      )}
-
-      {columna.componente === 'Calendario' && (
-        <DatePicker
-          views={['date']}
-          value={value}
-          onChange={(newValue) => {
-            setValue(newValue || '');
-          }}
-          onBlur={onBlur}
-          renderInput={(params) => (
-            <StyledTextField
-              {...params}
-              fullWidth
-              size="small"
-              variant="standard"
-              margin="none"
-              helperText={null}
-            />
-          )}
-        />
-      )}
-    </>
-  );
-};
 
 // Configuracion columna por defecto
 // Configuración por defecto de las columnas
 const defaultColumn = {
   // Let's set up our default Filter UI
   Filter: DefaultColumnFilter,
-  Cell: EditableCell,
   minWidth: 30,
   width: 150,
   maxWidth: 400
@@ -211,10 +102,11 @@ export default function TablaReact({
   data,
   isColumnas,
   updateMyData,
+  modificarFila,
   skipPageReset,
   filasPorPagina = 15,
   columnasOcultas,
-  modificarFila
+  setFilaSeleccionada
 }) {
   useEffect(() => {
     setHiddenColumns(columnasOcultas);
@@ -342,6 +234,7 @@ export default function TablaReact({
                         onClick: () => {
                           toggleAllRowsSelected(false);
                           row.toggleRowSelected();
+                          setFilaSeleccionada(row.values);
                         }
                       })}
                     >
@@ -396,9 +289,10 @@ TablaReact.propTypes = {
   filasPorPagina: PropTypes.number,
   data: PropTypes.array.isRequired,
   updateMyData: PropTypes.func.isRequired,
+  modificarFila: PropTypes.func.isRequired,
   setData: PropTypes.func.isRequired,
   skipPageReset: PropTypes.bool.isRequired,
   isColumnas: PropTypes.bool.isRequired,
-  modificarFila: PropTypes.func.isRequired,
-  columnasOcultas: PropTypes.array
+  columnasOcultas: PropTypes.array.isRequired,
+  setFilaSeleccionada: PropTypes.func.isRequired
 };
