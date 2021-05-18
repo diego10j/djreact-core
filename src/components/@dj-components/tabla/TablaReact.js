@@ -62,7 +62,24 @@ const StyledTextField = withStyles((theme) => ({
     width: '100%',
     height: '100%',
     backgroundColor: 'transparent',
-    outline: 'none'
+    outline: 'none',
+    padding: 0,
+    marggin: 0,
+    '& .MuiInputBase-root': {
+      padding: 0,
+      marggin: 0,
+      fontSize: '0.875rem',
+      borderColor: 'blue',
+      fontWeight: '400',
+      '&:before': {
+        border: 'none'
+      }
+    },
+    '& .MuiInputBase-root:hover': {
+      '&:before': {
+        border: 'none'
+      }
+    }
   }
 }))(TextField);
 
@@ -143,11 +160,14 @@ const EditableCell = ({
   return (
     <>
       {columna.componente === 'Texto' && (
-        <StyledTexto
+        <StyledTextField
           value={value || ''}
           onChange={onChange}
           onBlur={onBlur}
-          variant="filled"
+          fullWidth
+          size="small"
+          variant="standard"
+          margin="none"
         />
       )}
 
