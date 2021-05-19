@@ -34,13 +34,7 @@ const StyledTextField = withStyles(() => ({
 }))(TextField);
 
 // Create an editable cell renderer
-export const TextoTabla = ({
-  value: initialValue,
-  row: { index },
-  column: { id },
-  modificarFila,
-  updateMyData // This is a custom function that we supplied to our table instance
-}) => {
+export const TextoTabla = ({ value: initialValue, column, modificarFila }) => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = useState(initialValue);
   const [isModifico, setIsModificado] = useState(false);
@@ -53,8 +47,7 @@ export const TextoTabla = ({
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     if (isModifico) {
-      // updateMyData(index, id, value);
-      modificarFila(index, id, value);
+      modificarFila(column, value);
       setIsModificado(false);
     }
   };
@@ -85,12 +78,8 @@ TextoTabla.propTypes = {
   cell: PropTypes.shape({
     value: PropTypes.any
   }),
-  row: PropTypes.shape({
-    index: PropTypes.number.isRequired
-  }),
   column: PropTypes.shape({
     id: PropTypes.string.isRequired
   }),
-  updateMyData: PropTypes.func.isRequired,
   modificarFila: PropTypes.func.isRequired
 };

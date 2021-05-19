@@ -19,7 +19,7 @@ import FiltroGlobalTabla from './FiltroGlobalTabla';
 export default function ToolbarTabla({
   globalFilter,
   setGlobalFilter,
-  insertar
+  actualizar
 }) {
   const anchorRef = useRef(null);
 
@@ -33,7 +33,7 @@ export default function ToolbarTabla({
   };
 
   const handleInsertar = () => {
-    insertar();
+    console.log('insertar');
   };
   const handleModificar = () => {
     console.log('modificar');
@@ -43,7 +43,7 @@ export default function ToolbarTabla({
   };
 
   const handleActualizar = () => {
-    console.log('actualizar');
+    actualizar();
     setOpen(false);
   };
 
@@ -176,7 +176,7 @@ export default function ToolbarTabla({
 }
 
 ToolbarTabla.propTypes = {
-  insertar: PropTypes.func,
   globalFilter: PropTypes.string,
-  setGlobalFilter: PropTypes.func.isRequired
+  setGlobalFilter: PropTypes.func.isRequired,
+  actualizar: PropTypes.func.isRequired
 };

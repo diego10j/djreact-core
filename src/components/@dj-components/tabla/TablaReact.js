@@ -19,6 +19,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
+import CircularProgress from '@material-ui/core/CircularProgress';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 import {
@@ -100,13 +101,14 @@ const defaultColumn = {
 export default function TablaReact({
   columns,
   data,
+  cargando,
   isColumnas,
-  updateMyData,
   modificarFila,
   skipPageReset,
   filasPorPagina = 15,
   columnasOcultas,
-  setFilaSeleccionada
+  setFilaSeleccionada,
+  actualizar
 }) {
   useEffect(() => {
     setHiddenColumns(columnasOcultas);
@@ -144,7 +146,7 @@ export default function TablaReact({
     gotoPage,
     toggleAllRowsSelected,
     setPageSize,
-    state: { pageIndex, pageSize, globalFilter, selectedRowIds }
+    state: { pageIndex, pageSize, globalFilter }
   } = useTable(
     {
       autoResetSelectedRows: false,
@@ -152,12 +154,11 @@ export default function TablaReact({
       data,
       defaultColumn, // Be sure to pass the defaultColumn option
       autoResetPage: !skipPageReset,
-      // updateMyData isn't part of the API, but
+      // modificarFila isn't part of the API, but
       // anything we put into these options will
       // automatically be available on the instance.
       // That way we can call this function from our
       // cell renderer!
-      updateMyData,
       modificarFila,
       filterTypes,
       initialState: { pageSize: filasPorPagina }
@@ -180,9 +181,11 @@ export default function TablaReact({
   // Render the UI for your table
   return (
     <StyledDiv>
+      {isColumnas && cargando && <CircularProgress />}
       <ToolbarTabla
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
+        actualizar={actualizar}
       />
       <Scrollbar>
         <TableContainer component={Paper}>
@@ -218,7 +221,6 @@ export default function TablaReact({
                   </TableRow>
                 ))}
               </TableHead>
-
               <TableBody {...getTableBodyProps()}>
                 {page.map((row, index) => {
                   prepareRow(row);
@@ -254,10 +256,6 @@ export default function TablaReact({
               </TableBody>
             </StyledTable>
           )}
-
-          <pre>
-            <code>{JSON.stringify(selectedRowIds, null, 2)}</code>
-          </pre>
         </TableContainer>
       </Scrollbar>
       {data.length > filasPorPagina && (
@@ -288,11 +286,12 @@ TablaReact.propTypes = {
   columns: PropTypes.array.isRequired,
   filasPorPagina: PropTypes.number,
   data: PropTypes.array.isRequired,
-  updateMyData: PropTypes.func.isRequired,
+  cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   setData: PropTypes.func.isRequired,
   skipPageReset: PropTypes.bool.isRequired,
   isColumnas: PropTypes.bool.isRequired,
   columnasOcultas: PropTypes.array.isRequired,
-  setFilaSeleccionada: PropTypes.func.isRequired
+  setFilaSeleccionada: PropTypes.func.isRequired,
+  actualizar: PropTypes.func.isRequired
 };

@@ -1,5 +1,10 @@
+import { useRef } from 'react';
+
 // material
-import { Container } from '@material-ui/core';
+import { Container, Button } from '@material-ui/core';
+import { Icon } from '@iconify/react';
+// iconos
+import saveFill from '@iconify/icons-eva/save-fill';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components
@@ -10,6 +15,13 @@ import Tabla from '../../components/@dj-components/tabla/Tabla';
 // ----------------------------------------------------------------------
 
 export default function Simple() {
+  const tabTabla1 = useRef();
+
+  const guardar = () => {
+    console.log('guardar');
+    console.log(tabTabla1.current.getFilaSeleccionada());
+  };
+
   return (
     <Page title="Simple">
       <Container maxWidth="xl">
@@ -19,9 +31,19 @@ export default function Simple() {
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             { name: 'Simple' }
           ]}
+          action={
+            <Button
+              variant="contained"
+              startIcon={<Icon icon={saveFill} width={20} height={20} />}
+              onClick={guardar}
+            >
+              Guardar
+            </Button>
+          }
         />
 
         <Tabla
+          ref={tabTabla1}
           numeroTabla={1}
           lectura={false}
           nombreTabla="sis_auditoria_acceso"
@@ -38,7 +60,8 @@ export default function Simple() {
             {
               nombre: 'ip_auac',
               nombreVisual: 'IP',
-              filtro: true
+              filtro: true,
+              lectura: true
             }
           ]}
         />
