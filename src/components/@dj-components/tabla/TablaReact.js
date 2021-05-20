@@ -20,10 +20,13 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 import {
   withStyles,
+  makeStyles,
+  createStyles,
   experimentalStyled as styled
 } from '@material-ui/core/styles';
 import Scrollbar from '../../Scrollbar';
@@ -31,6 +34,17 @@ import ToolbarTabla from './ToolbarTabla';
 import { DefaultColumnFilter } from './FiltrosTabla';
 import TablePaginationActions from './PaginationTabla';
 import SkeletonTabla from './SkeletonTabla';
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    root: {
+      color: '#fff',
+      position: 'absolute',
+      zIndex: theme.zIndex.drawer - 1,
+      opacity: 1
+    }
+  })
+);
 
 // Estilos
 const StyledDiv = styled('div')(({ theme }) => ({
@@ -135,6 +149,8 @@ export default function TablaReact({
     []
   );
 
+  const classes = useStyles();
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -178,10 +194,9 @@ export default function TablaReact({
     setPageSize(Number(event.target.value));
   };
 
-  // Render the UI for your table
+  // Render the UI for your table isColumnas && cargando
   return (
     <StyledDiv>
-      {isColumnas && cargando && <CircularProgress />}
       <ToolbarTabla
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
@@ -221,7 +236,12 @@ export default function TablaReact({
                   </TableRow>
                 ))}
               </TableHead>
-              <TableBody {...getTableBodyProps()}>
+              <TableBody
+                style={{
+                  minHeight: 25 * filasPorPagina
+                }}
+                {...getTableBodyProps()}
+              >
                 {page.map((row, index) => {
                   prepareRow(row);
                   return (
@@ -257,7 +277,11 @@ export default function TablaReact({
             </StyledTable>
           )}
         </TableContainer>
+        <Backdrop className={classes.root} open={isColumnas && cargando}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Scrollbar>
+
       {data.length > filasPorPagina && (
         <TablePagination
           component="div"
