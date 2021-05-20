@@ -17,7 +17,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableContainer from '@material-ui/core/TableContainer';
-import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -34,14 +33,16 @@ import ToolbarTabla from './ToolbarTabla';
 import { DefaultColumnFilter } from './FiltrosTabla';
 import TablePaginationActions from './PaginationTabla';
 import SkeletonTabla from './SkeletonTabla';
+import { TextoTabla } from './FilaEditable';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
-      color: '#fff',
+      color: theme.palette.primary.main,
       position: 'absolute',
-      zIndex: theme.zIndex.drawer - 1,
-      opacity: 1
+      zIndex: theme.zIndex.drawer + 1,
+      opacity: '0.6 !important',
+      transition: 'none !important'
     }
   })
 );
@@ -118,11 +119,11 @@ export default function TablaReact({
   cargando,
   isColumnas,
   modificarFila,
-  skipPageReset,
   filasPorPagina = 15,
   columnasOcultas,
   setFilaSeleccionada,
-  actualizar
+  actualizar,
+  insertar
 }) {
   useEffect(() => {
     setHiddenColumns(columnasOcultas);
@@ -161,15 +162,15 @@ export default function TablaReact({
     page,
     gotoPage,
     toggleAllRowsSelected,
+    toggleRowSelected,
     setPageSize,
-    state: { pageIndex, pageSize, globalFilter }
+    state: { pageIndex, pageSize, globalFilter, selectedRowIds }
   } = useTable(
     {
       autoResetSelectedRows: false,
       columns,
       data,
       defaultColumn, // Be sure to pass the defaultColumn option
-      autoResetPage: !skipPageReset,
       // modificarFila isn't part of the API, but
       // anything we put into these options will
       // automatically be available on the instance.
@@ -186,6 +187,10 @@ export default function TablaReact({
     useRowSelect
   );
 
+  useEffect(() => {
+    console.log('cambiaron');
+  }, [selectedRowIds]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);
   };
@@ -193,6 +198,8 @@ export default function TablaReact({
   const handleChangeRowsPerPage = (event) => {
     setPageSize(Number(event.target.value));
   };
+  // Ancho del body cuando todabia esta cargando la data
+  const minHeightBody = filasPorPagina * 30;
 
   // Render the UI for your table isColumnas && cargando
   return (
@@ -201,9 +208,16 @@ export default function TablaReact({
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
         actualizar={actualizar}
+        insertar={insertar}
+        toggleAllRowsSelected={toggleAllRowsSelected}
+        toggleRowSelected={toggleRowSelected}
       />
       <Scrollbar>
-        <TableContainer component={Paper}>
+        <TableContainer
+          sx={{
+            minHeight: `${minHeightBody}px  !important`
+          }}
+        >
           {!isColumnas ? (
             <SkeletonTabla filasPorPagina={filasPorPagina} />
           ) : (
@@ -236,12 +250,7 @@ export default function TablaReact({
                   </TableRow>
                 ))}
               </TableHead>
-              <TableBody
-                style={{
-                  minHeight: 25 * filasPorPagina
-                }}
-                {...getTableBodyProps()}
-              >
+              <TableBody {...getTableBodyProps()}>
                 {page.map((row, index) => {
                   prepareRow(row);
                   return (
@@ -257,6 +266,11 @@ export default function TablaReact({
                           toggleAllRowsSelected(false);
                           row.toggleRowSelected();
                           setFilaSeleccionada(row.values);
+                          console.log(row.cells);
+
+                          row.cells.forEach((_columna) => {
+                            _columna.Cell = TextoTabla;
+                          });
                         }
                       })}
                     >
@@ -313,9 +327,9 @@ TablaReact.propTypes = {
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   setData: PropTypes.func.isRequired,
-  skipPageReset: PropTypes.bool.isRequired,
   isColumnas: PropTypes.bool.isRequired,
   columnasOcultas: PropTypes.array.isRequired,
   setFilaSeleccionada: PropTypes.func.isRequired,
-  actualizar: PropTypes.func.isRequired
+  actualizar: PropTypes.func.isRequired,
+  insertar: PropTypes.func.isRequired
 };

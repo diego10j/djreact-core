@@ -44,7 +44,6 @@ const Tabla = forwardRef(
     const [columns, setColumns] = useState([]);
     const [columnasOcultas, setColumnasOcultas] = useState([]);
     const [data, setData] = useState([]);
-    const [skipPageReset, setSkipPageReset] = useState(false);
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [modificadas, setModificadas] = useState([]);
     const [insertadas, setInsertadas] = useState([]);
@@ -74,9 +73,9 @@ const Tabla = forwardRef(
           campoOrden: campoOrden || campoPrimario,
           condiciones: []
         });
+        setCargando(false);
         setData([]);
         setData(data.datos);
-        setCargando(false);
       } catch (error) {
         setCargando(false);
         console.error(error);
@@ -297,12 +296,48 @@ const Tabla = forwardRef(
       }
     };
 
-    // After data chagnes, we turn the flag back off
-    // so that if data actually changes when we're not
-    // editing it, the page is reset
-    useEffect(() => {
-      setSkipPageReset(false);
-    }, [data]);
+    /**
+     * Crea una fila, con los columnas de la tabla
+     */
+    const crearFila = () => {
+      // PK temporal negativa
+      const tmpPK = 0 - (insertadas.length + 1);
+      const filaNueva = {};
+      columns.forEach((_columna) => {
+        const { nombre, valorDefecto } = _columna;
+        filaNueva[nombre] = valorDefecto;
+        if (nombre === campoPrimario) {
+          filaNueva[nombre] = tmpPK;
+        }
+      });
+      //  Asigna valor a las relaciones
+      // for (const relacion of this.relaciones) {
+      // relacion.setValorForanea(this.getValorSeleccionado());
+      // relacion.limpiar();
+      // }
+      //  Asigna valor si tiene campoPadre
+      // if (this.utilitario.isDefined(this.tabla.campoPadre)) {
+      // filaNueva[this.tabla.campoPadre] = this.tabla.valorPadre;
+      // }
+
+      setInsertadas((elements) => [filaNueva, ...elements]);
+      setData((elements) => [filaNueva, ...elements]);
+      setFilaSeleccionada(filaNueva);
+    };
+
+    const insertar = () => {
+      if (lectura === false) {
+        if (isColumnas) {
+          //   if (this.validarInsertar && this.getInsertadas().length > 0 && this.getTotalFilas() > 0) {
+          //     this.utilitario.agregarMensajeAdvertencia('Ya existe un registro insertado',
+          //       'No se puede insertar');
+          //   }
+          //   else {
+          crearFila();
+          //   }
+        }
+      }
+    };
 
     return (
       <>
@@ -312,12 +347,12 @@ const Tabla = forwardRef(
           cargando={cargando}
           isColumnas={isColumnas}
           setData={setData}
-          skipPageReset={skipPageReset}
           columnasOcultas={columnasOcultas}
           filasPorPagina={filasPorPagina}
           modificarFila={modificarFila}
           setFilaSeleccionada={setFilaSeleccionada}
           actualizar={actualizar}
+          insertar={insertar}
         />
       </>
     );

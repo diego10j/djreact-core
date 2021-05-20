@@ -45,7 +45,7 @@ export default function Simple() {
         <Tabla
           ref={tabTabla1}
           numeroTabla={1}
-          lectura={false}
+          lectura
           nombreTabla="sis_auditoria_acceso"
           campoPrimario="ide_auac"
           opcionesColumnas={[
