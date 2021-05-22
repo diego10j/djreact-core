@@ -164,7 +164,7 @@ export default function TablaReact({
     toggleAllRowsSelected,
     toggleRowSelected,
     setPageSize,
-    state: { pageIndex, pageSize, globalFilter, selectedRowIds }
+    state: { pageIndex, pageSize, globalFilter }
   } = useTable(
     {
       autoResetSelectedRows: false,
@@ -187,10 +187,6 @@ export default function TablaReact({
     useRowSelect
   );
 
-  useEffect(() => {
-    console.log('cambiaron');
-  }, [selectedRowIds]); // eslint-disable-line react-hooks/exhaustive-deps
-
   const handleChangePage = (event, newPage) => {
     gotoPage(newPage);
   };
@@ -200,6 +196,19 @@ export default function TablaReact({
   };
   // Ancho del body cuando todabia esta cargando la data
   const minHeightBody = filasPorPagina * 30;
+
+  const CustomTableCell = ({ row: { cells, values } }) => {
+    // console.log(cells);
+    // console.log(values);
+    const isSelected = true;
+    return (
+      <>
+        {cells.map((cell, index) => (
+          <td key={index}>xxxx</td>
+        ))}
+      </>
+    );
+  };
 
   // Render the UI for your table isColumnas && cargando
   return (
@@ -266,24 +275,23 @@ export default function TablaReact({
                           toggleAllRowsSelected(false);
                           row.toggleRowSelected();
                           setFilaSeleccionada(row.values);
-                          console.log(row.cells);
-
-                          row.cells.forEach((_columna) => {
-                            _columna.Cell = TextoTabla;
-                          });
                         }
                       })}
                     >
-                      {row.cells.map((cell, index) => (
-                        <StyledTableCellBody
-                          size="small"
-                          padding="none"
-                          key={index}
-                          {...cell.getCellProps()}
-                        >
-                          {cell.render('Cell')}
-                        </StyledTableCellBody>
-                      ))}
+                      {!row.isSelected ? (
+                        row.cells.map((cell, index) => (
+                          <StyledTableCellBody
+                            size="small"
+                            padding="none"
+                            key={index}
+                            {...cell.getCellProps()}
+                          >
+                            {cell.render('Cell')}
+                          </StyledTableCellBody>
+                        ))
+                      ) : (
+                        <CustomTableCell row={row} />
+                      )}
                     </StyledTableRow>
                   );
                 })}
