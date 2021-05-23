@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // react-table
 import {
@@ -33,7 +33,7 @@ import ToolbarTabla from './ToolbarTabla';
 import { DefaultColumnFilter } from './FiltrosTabla';
 import TablePaginationActions from './PaginationTabla';
 import SkeletonTabla from './SkeletonTabla';
-import { TextoTabla } from './FilaEditable';
+import FilaEditable from './FilaEditable';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -72,13 +72,13 @@ const StyledTableCellHeader = withStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderBottom: `solid 1px ${theme.palette.divider}`,
     height: 'auto',
-    padding: '3px 10px 3px 10px'
+    padding: '3px 5px 3px 5px !important'
   }
 }))(TableCell);
 
 const StyledTableCellBody = withStyles(() => ({
   root: {
-    padding: '0px 10px 0px 10px'
+    padding: '0px 5px 0px 5px !important'
   }
 }))(TableCell);
 
@@ -116,6 +116,7 @@ const defaultColumn = {
 export default function TablaReact({
   columns,
   data,
+  lectura,
   cargando,
   isColumnas,
   modificarFila,
@@ -123,8 +124,13 @@ export default function TablaReact({
   columnasOcultas,
   setFilaSeleccionada,
   actualizar,
-  insertar
+  insertar,
+  // setData,
+  updateMyData,
+  skipPageReset
 }) {
+  const [columnaSeleccionada, setColumnaSeleccionada] = useState();
+
   useEffect(() => {
     setHiddenColumns(columnasOcultas);
   }, [columnasOcultas]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -170,12 +176,14 @@ export default function TablaReact({
       autoResetSelectedRows: false,
       columns,
       data,
-      defaultColumn, // Be sure to pass the defaultColumn option
-      // modificarFila isn't part of the API, but
+      defaultColumn,
+      autoResetPage: !skipPageReset,
+      // updateMyData isn't part of the API, but
       // anything we put into these options will
       // automatically be available on the instance.
       // That way we can call this function from our
       // cell renderer!
+      updateMyData,
       modificarFila,
       filterTypes,
       initialState: { pageSize: filasPorPagina }
@@ -197,19 +205,6 @@ export default function TablaReact({
   // Ancho del body cuando todabia esta cargando la data
   const minHeightBody = filasPorPagina * 30;
 
-  const CustomTableCell = ({ row: { cells, values } }) => {
-    // console.log(cells);
-    // console.log(values);
-    const isSelected = true;
-    return (
-      <>
-        {cells.map((cell, index) => (
-          <td key={index}>xxxx</td>
-        ))}
-      </>
-    );
-  };
-
   // Render the UI for your table isColumnas && cargando
   return (
     <StyledDiv>
@@ -220,6 +215,10 @@ export default function TablaReact({
         insertar={insertar}
         toggleAllRowsSelected={toggleAllRowsSelected}
         toggleRowSelected={toggleRowSelected}
+        lectura={lectura}
+        page={page}
+        prepareRow={prepareRow}
+        setColumnaSeleccionada={setColumnaSeleccionada}
       />
       <Scrollbar>
         <TableContainer
@@ -281,8 +280,12 @@ export default function TablaReact({
                       {!row.isSelected ? (
                         row.cells.map((cell, index) => (
                           <StyledTableCellBody
+                            onClick={() =>
+                              setColumnaSeleccionada(cell.column.nombre)
+                            }
                             size="small"
                             padding="none"
+                            align={cell.column.alinear}
                             key={index}
                             {...cell.getCellProps()}
                           >
@@ -290,7 +293,12 @@ export default function TablaReact({
                           </StyledTableCellBody>
                         ))
                       ) : (
-                        <CustomTableCell row={row} />
+                        <FilaEditable
+                          row={row}
+                          columnaSeleccionada={columnaSeleccionada}
+                          modificarFila={modificarFila}
+                          updateMyData={updateMyData}
+                        />
                       )}
                     </StyledTableRow>
                   );
@@ -334,10 +342,13 @@ TablaReact.propTypes = {
   data: PropTypes.array.isRequired,
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
-  setData: PropTypes.func.isRequired,
+  updateMyData: PropTypes.func.isRequired,
+  // setData: PropTypes.func.isRequired,
+  skipPageReset: PropTypes.bool.isRequired,
   isColumnas: PropTypes.bool.isRequired,
   columnasOcultas: PropTypes.array.isRequired,
   setFilaSeleccionada: PropTypes.func.isRequired,
   actualizar: PropTypes.func.isRequired,
-  insertar: PropTypes.func.isRequired
+  insertar: PropTypes.func.isRequired,
+  lectura: PropTypes.bool.isRequired
 };

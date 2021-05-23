@@ -7,7 +7,7 @@ import React, {
 import PropTypes from 'prop-types';
 // components
 import TablaReact from './TablaReact';
-import { TextoTabla } from './FilaEditable';
+import { CheckLectura } from './FilaLectura';
 import axios from '../../../utils/axios';
 import { isDefined } from '../../../utils/utilitario';
 
@@ -36,9 +36,12 @@ const Tabla = forwardRef(
       getModificadas,
       isFilaModificada,
       isFilaEliminada,
-      isFilaInsertada
+      isFilaInsertada,
+      isEmpty,
+      getTotalFilas
     }));
 
+    const [skipPageReset, setSkipPageReset] = useState(false);
     const [isColumnas, setIsColumnas] = useState(false);
     const [cargando, setCargando] = useState(false);
     const [columns, setColumns] = useState([]);
@@ -166,12 +169,44 @@ const Tabla = forwardRef(
           if (lectura) {
             _columna.lectura = true;
           }
+          // alinear
+          if (isDefined(_columna.alinear)) {
+            _columna.alinear =
+              _columna.alinear === 'derecha' ? 'right' : _columna.alinear;
+            _columna.alinear =
+              _columna.alinear === 'izquierda' ? 'left' : _columna.alinear;
+            _columna.alinear =
+              _columna.alinear === 'centro' ? 'center' : _columna.alinear;
+          } else {
+            _columna.alinear = 'left'; // por defecto
+            _columna.alinear =
+              _columna.componente === 'Check' ? 'center' : _columna.alinear;
+            _columna.alinear =
+              _columna.componente === 'TextoEntero'
+                ? 'right'
+                : _columna.alinear;
+            _columna.alinear =
+              _columna.componente === 'TextoNumero'
+                ? 'right'
+                : _columna.alinear;
+            _columna.alinear =
+              _columna.componente === 'Calendario'
+                ? 'center'
+                : _columna.alinear;
+            _columna.alinear =
+              _columna.componente === 'Hora' ? 'center' : _columna.alinear;
+            _columna.alinear =
+              _columna.componente === 'CalendarioHora'
+                ? 'center'
+                : _columna.alinear;
+          }
+
           _columna.accessor = _columna.nombre;
           _columna.filter = 'fuzzyText';
           _columna.width = _columna.anchocolumna * 16;
-
-          if (!_columna.lectura) {
-            _columna.Cell = TextoTabla;
+          if (_columna.componente === 'Check') {
+            // CheckBox de lectura
+            _columna.Cell = CheckLectura;
           }
         });
       }
@@ -202,6 +237,8 @@ const Tabla = forwardRef(
     const getInsertadas = () => insertadas;
     const getEliminadas = () => eliminadas;
     const getModificadas = () => modificadas;
+    const getTotalFilas = () => data.length;
+    const isEmpty = () => data.length === 0;
 
     /**
      * Retorna si una fila es insertada
@@ -308,6 +345,7 @@ const Tabla = forwardRef(
         filaNueva[nombre] = valorDefecto;
         if (nombre === campoPrimario) {
           filaNueva[nombre] = tmpPK;
+          filaNueva.id = tmpPK;
         }
       });
       //  Asigna valor a las relaciones
@@ -321,6 +359,7 @@ const Tabla = forwardRef(
       // }
 
       setInsertadas((elements) => [filaNueva, ...elements]);
+      setSkipPageReset(true);
       setData((elements) => [filaNueva, ...elements]);
       setFilaSeleccionada(filaNueva);
     };
@@ -334,9 +373,33 @@ const Tabla = forwardRef(
           //   }
           //   else {
           crearFila();
+          return true;
           //   }
         }
       }
+      return false;
+    };
+
+    // We need to keep the table from resetting the pageIndex when we
+    // Update data. So we can keep track of that flag with a ref.
+
+    // When our cell renderer calls updateMyData, we'll use
+    // the rowIndex, columnId and new value to update the
+    // original data
+    const updateMyData = (rowIndex, columnId, value) => {
+      // We also turn on the flag to not reset the page
+      setSkipPageReset(true);
+      setData((old) =>
+        old.map((row, index) => {
+          if (index === rowIndex) {
+            return {
+              ...old[rowIndex],
+              [columnId]: value
+            };
+          }
+          return row;
+        })
+      );
     };
 
     return (
@@ -344,6 +407,8 @@ const Tabla = forwardRef(
         <TablaReact
           columns={columns}
           data={data}
+          updateMyData={updateMyData}
+          skipPageReset={skipPageReset}
           cargando={cargando}
           isColumnas={isColumnas}
           setData={setData}
@@ -353,6 +418,7 @@ const Tabla = forwardRef(
           setFilaSeleccionada={setFilaSeleccionada}
           actualizar={actualizar}
           insertar={insertar}
+          lectura={lectura}
         />
       </>
     );
@@ -381,9 +447,21 @@ Tabla.propTypes = {
       comentario: PropTypes.string,
       mayusculas: PropTypes.bool,
       alinear: PropTypes.oneOf(['izquierda', 'derecha', 'centro']),
-      ordenable: PropTypes.bool
+      ordenable: PropTypes.bool,
+      combo: PropTypes.shape({
+        nombreTabla: PropTypes.string.isRequired,
+        campoPrimario: PropTypes.string.isRequired,
+        campoNombre: PropTypes.string.isRequired,
+        condicion: PropTypes.string
+      })
     })
-  )
+  ),
+  showToolbar: PropTypes.bool,
+  showPaginador: PropTypes.bool,
+  showBotonInsertar: PropTypes.bool,
+  showBotonEliminar: PropTypes.bool,
+  showBotonModificar: PropTypes.bool,
+  showBuscar: PropTypes.bool
 };
 
 export default Tabla;

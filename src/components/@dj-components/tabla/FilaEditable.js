@@ -2,8 +2,41 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // componentes
 import { TextField } from '@material-ui/core';
-
 import { withStyles } from '@material-ui/core/styles';
+
+export default function FilaEditable({
+  row: { cells, values, index },
+  columnaSeleccionada,
+  modificarFila,
+  updateMyData
+}) {
+  // console.log(cells);
+  // console.log(values);
+  return (
+    <>
+      {cells.map((cell, i) => (
+        <td key={i}>
+          <TextoTabla
+            valor={values[cell.column.nombre]}
+            column={cell.column}
+            foco={columnaSeleccionada === cell.column.nombre}
+            modificarFila={modificarFila}
+            updateMyData={updateMyData}
+            index={index}
+            alinear={cell.column.alinear}
+          />
+        </td>
+      ))}
+    </>
+  );
+}
+
+FilaEditable.propTypes = {
+  row: PropTypes.object.isRequired,
+  columnaSeleccionada: PropTypes.string.isRequired,
+  modificarFila: PropTypes.func,
+  updateMyData: PropTypes.func
+};
 
 const StyledTextField = withStyles(() => ({
   root: {
@@ -16,14 +49,17 @@ const StyledTextField = withStyles(() => ({
     padding: 0,
     marggin: 0,
     '& .MuiInputBase-root': {
-      padding: 0,
       marggin: 0,
       fontSize: '0.875rem',
       borderColor: 'blue',
-      fontWeight: '400',
+      fontWeight: '500',
+      padding: '0 5px 0 5px !important',
       '&:before': {
         border: 'none'
       }
+    },
+    '& .MuiInputBase-input': {
+      padding: '0 0 3px 0 !important'
     },
     '& .MuiInputBase-root:hover': {
       '&:before': {
@@ -34,9 +70,17 @@ const StyledTextField = withStyles(() => ({
 }))(TextField);
 
 // Create an editable cell renderer
-export const TextoTabla = ({ value: initialValue, column, modificarFila }) => {
+const TextoTabla = ({
+  valor,
+  column,
+  modificarFila,
+  foco,
+  updateMyData,
+  index,
+  alinear
+}) => {
   // We need to keep and update the state of the cell normally
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(valor === null ? '' : valor);
   const [isModifico, setIsModificado] = useState(false);
 
   const onChange = (e) => {
@@ -47,27 +91,25 @@ export const TextoTabla = ({ value: initialValue, column, modificarFila }) => {
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     if (isModifico) {
+      updateMyData(index, column.id, value);
       modificarFila(column, value);
       setIsModificado(false);
     }
   };
 
-  // If the initialValue is changed externall, sync it up with our state
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
   return (
     <>
       {true && (
         <StyledTextField
-          value={value || ''}
+          value={value}
           onChange={onChange}
           onBlur={onBlur}
           fullWidth
           size="small"
           variant="standard"
           margin="none"
+          autoFocus={foco}
+          inputProps={{ style: { textAlign: `${alinear}` } }} // the change is here
         />
       )}
     </>
@@ -75,11 +117,14 @@ export const TextoTabla = ({ value: initialValue, column, modificarFila }) => {
 };
 
 TextoTabla.propTypes = {
-  cell: PropTypes.shape({
-    value: PropTypes.any
-  }),
-  column: PropTypes.shape({
-    id: PropTypes.string.isRequired
-  }),
-  modificarFila: PropTypes.func.isRequired
+  valor: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool
+  ]),
+  column: PropTypes.object.isRequired,
+  modificarFila: PropTypes.func,
+  updateMyData: PropTypes.func,
+  foco: PropTypes.bool,
+  index: PropTypes.number
 };

@@ -19,7 +19,7 @@ export default function Simple() {
 
   const guardar = () => {
     console.log('guardar');
-    console.log(tabTabla1.current.getFilaSeleccionada());
+    console.log(tabTabla1.current.getModificadas());
   };
 
   return (
@@ -45,11 +45,19 @@ export default function Simple() {
         <Tabla
           ref={tabTabla1}
           numeroTabla={1}
-          lectura
+          lectura={false}
           nombreTabla="sis_auditoria_acceso"
           campoPrimario="ide_auac"
           opcionesColumnas={[
-            { nombre: 'ide_usua', visible: false },
+            {
+              nombre: 'ide_usua',
+              combo: {
+                nombreTabla: 'sis_usuario',
+                campoPrimario: 'ide_usua',
+                campoNombre: 'nom_usua',
+                condicion: 'activo_usua = true'
+              }
+            },
             {
               nombre: 'detalle_auac',
               nombreVisual: 'DETALLE',

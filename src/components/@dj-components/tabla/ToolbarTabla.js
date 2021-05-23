@@ -19,10 +19,14 @@ import FiltroGlobalTabla from './FiltroGlobalTabla';
 export default function ToolbarTabla({
   globalFilter,
   setGlobalFilter,
+  lectura,
   actualizar,
   insertar,
   toggleAllRowsSelected,
-  toggleRowSelected
+  toggleRowSelected,
+  page,
+  prepareRow,
+  setColumnaSeleccionada
 }) {
   const anchorRef = useRef(null);
 
@@ -35,11 +39,19 @@ export default function ToolbarTabla({
     setOpen(true);
   };
 
-  const handleInsertar = () => {
-    insertar();
-    toggleAllRowsSelected(false); // clear seleccionadas
-    toggleRowSelected('0', true); // select fila 0
+  const handleInsertar = async () => {
+    if (!lectura) {
+      if (insertar()) {
+        const row = page[0]; // selecciona fila insertada
+        // selecciona columna 1 para que ponga el autofocus si es Texto
+        setColumnaSeleccionada(row.cells[0].column.nombre);
+        await prepareRow(row);
+        toggleAllRowsSelected(false); // clear seleccionadas
+        toggleRowSelected(row.id, true); // select última fila
+      }
+    }
   };
+
   const handleModificar = () => {
     console.log('modificar');
   };
@@ -187,5 +199,9 @@ ToolbarTabla.propTypes = {
   actualizar: PropTypes.func.isRequired,
   insertar: PropTypes.func.isRequired,
   toggleAllRowsSelected: PropTypes.func.isRequired,
-  toggleRowSelected: PropTypes.func.isRequired
+  toggleRowSelected: PropTypes.func.isRequired,
+  lectura: PropTypes.bool.isRequired,
+  page: PropTypes.array,
+  prepareRow: PropTypes.func.isRequired,
+  setColumnaSeleccionada: PropTypes.func.isRequired
 };
