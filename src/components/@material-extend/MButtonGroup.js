@@ -26,10 +26,7 @@ const ButtonGroupStyle = styled(ButtonGroup)(({ theme, styleProps }) => {
       borderColor: `${alpha(theme.palette[color].main, 0.48)} !important`,
       '&:hover': {
         borderColor: `${theme.palette[color].main} !important`,
-        backgroundColor: alpha(
-          theme.palette[color].main,
-          theme.palette.action.hoverOpacity
-        )
+        backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity)
       }
     }
   });
@@ -39,10 +36,7 @@ const ButtonGroupStyle = styled(ButtonGroup)(({ theme, styleProps }) => {
       color: theme.palette[color].main,
       borderColor: `${theme.palette[color].main} !important`,
       '&:hover': {
-        backgroundColor: alpha(
-          theme.palette[color].main,
-          theme.palette.action.hoverOpacity
-        )
+        backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity)
       }
     }
   });
@@ -55,12 +49,7 @@ const ButtonGroupStyle = styled(ButtonGroup)(({ theme, styleProps }) => {
 
 // ----------------------------------------------------------------------
 
-function MButtonGroup({
-  color = 'primary',
-  variant = 'outlined',
-  children,
-  ...other
-}) {
+function MButtonGroup({ color = 'primary', variant = 'outlined', children, ...other }) {
   if (color === 'inherit' || color === 'primary' || color === 'secondary') {
     return (
       <ButtonGroup color={color} variant={variant} {...other}>
@@ -70,11 +59,7 @@ function MButtonGroup({
   }
 
   return (
-    <ButtonGroupStyle
-      variant={variant}
-      styleProps={{ color, variant }}
-      {...other}
-    >
+    <ButtonGroupStyle variant={variant} styleProps={{ color, variant }} {...other}>
       {children}
     </ButtonGroupStyle>
   );
@@ -82,19 +67,8 @@ function MButtonGroup({
 
 MButtonGroup.propTypes = {
   children: PropTypes.node,
-  color: PropTypes.oneOf([
-    'inherit',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ]),
-  variant: PropTypes.oneOfType([
-    PropTypes.oneOf(['contained', 'outlined', 'text']),
-    PropTypes.string
-  ])
+  color: PropTypes.oneOf(['inherit', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
+  variant: PropTypes.oneOfType([PropTypes.oneOf(['contained', 'outlined', 'text']), PropTypes.string])
 };
 
 export default MButtonGroup;

@@ -5,10 +5,6 @@ export default function Switch(theme) {
 
   return {
     MuiSwitch: {
-      defaultProps: {
-        color: 'primary'
-      },
-
       styleOverrides: {
         thumb: {
           boxShadow: theme.customShadows.z1
@@ -26,9 +22,9 @@ export default function Switch(theme) {
           '&.Mui-checked.Mui-disabled, &.Mui-disabled': {
             color: theme.palette.grey[isLight ? 400 : 600]
           },
-          '&.Mui-disabled + .MuiSwitch-track': {
+          '&.Mui-disabled+.MuiSwitch-track': {
             opacity: 1,
-            backgroundColor: theme.palette.action.disabledBackground
+            backgroundColor: `${theme.palette.action.disabledBackground} !important`
           }
         }
       }

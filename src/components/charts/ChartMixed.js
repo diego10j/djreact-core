@@ -57,12 +57,5 @@ export default function ChartMixed() {
     }
   });
 
-  return (
-    <ReactApexChart
-      type="line"
-      series={CHART_DATA}
-      options={chartOptions}
-      height={320}
-    />
-  );
+  return <ReactApexChart type="line" series={CHART_DATA} options={chartOptions} height={320} />;
 }

@@ -16,11 +16,5 @@ const GeolocateControlStyle = styled(GeolocateControl)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function MapControlGeolocate({ ...other }) {
-  return (
-    <GeolocateControlStyle
-      positionOptions={{ enableHighAccuracy: true }}
-      trackUserLocation
-      {...other}
-    />
-  );
+  return <GeolocateControlStyle positionOptions={{ enableHighAccuracy: true }} trackUserLocation {...other} />;
 }

@@ -28,22 +28,13 @@ CarouselItem.propTypes = {
 function CarouselItem({ item }) {
   const { image, title } = item;
 
-  return (
-    <Box
-      component="img"
-      alt={title}
-      src={image}
-      sx={{ width: '100%', height: 480, objectFit: 'cover' }}
-    />
-  );
+  return <Box component="img" alt={title} src={image} sx={{ width: '100%', height: 480, objectFit: 'cover' }} />;
 }
 
 export default function CarouselBasic1() {
   const theme = useTheme();
   const carouselRef = useRef();
-  const [currentIndex, setCurrentIndex] = useState(
-    theme.direction === 'rtl' ? CAROUSELS.length - 1 : 0
-  );
+  const [currentIndex, setCurrentIndex] = useState(theme.direction === 'rtl' ? CAROUSELS.length - 1 : 0);
 
   const settings = {
     speed: 500,

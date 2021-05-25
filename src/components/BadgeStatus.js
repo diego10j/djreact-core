@@ -66,22 +66,11 @@ const RootStyle = styled('span')(({ theme, styleProps }) => {
 
 // ----------------------------------------------------------------------
 
-export default function BadgeStatus({
-  size = 'medium',
-  status = 'offline',
-  ...other
-}) {
+export default function BadgeStatus({ size = 'medium', status = 'offline', ...other }) {
   return <RootStyle styleProps={{ status, size }} {...other} />;
 }
 
 BadgeStatus.propTypes = {
   size: PropTypes.oneOf(['small', 'medium']),
-  status: PropTypes.oneOf([
-    'away',
-    'busy',
-    'unread',
-    'online',
-    'offline',
-    'invisible'
-  ])
+  status: PropTypes.oneOf(['away', 'busy', 'unread', 'online', 'offline', 'invisible'])
 };

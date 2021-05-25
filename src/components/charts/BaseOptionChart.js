@@ -1,4 +1,5 @@
-import { useTheme, makeStyles, createStyles } from '@material-ui/core/styles';
+import createStyles from '@material-ui/styles/createStyles';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
 
 // ----------------------------------------------------------------------
 
@@ -17,10 +18,7 @@ const useStyles = makeStyles((theme) =>
         border: '0 !important',
         fontWeight: theme.typography.fontWeightBold,
         backgroundColor: `${theme.palette.grey[500_16]} !important`,
-        color:
-          theme.palette.text[
-            theme.palette.mode === 'light' ? 'secondary' : 'primary'
-          ]
+        color: theme.palette.text[theme.palette.mode === 'light' ? 'secondary' : 'primary']
       },
       '.apexcharts-xaxistooltip-bottom': {
         '&:before': {
@@ -40,7 +38,7 @@ const useStyles = makeStyles((theme) =>
         display: 'flex !important'
       },
       '.apexcharts-legend-marker': {
-        marginTop: '2px !important',
+        marginTop: '-2px !important',
         marginRight: '8px !important'
       },
       '.apexcharts-legend-text': {

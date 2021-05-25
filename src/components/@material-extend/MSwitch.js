@@ -15,16 +15,13 @@ export default function MSwitch({ color = 'primary', sx, ...other }) {
   return (
     <Switch
       sx={{
-        '&.Mui-checked': {
+        '& .Mui-checked': {
           color: theme.palette[color].main,
           '&:hover': {
-            bgcolor: alpha(
-              theme.palette[color].main,
-              theme.palette.action.hoverOpacity
-            )
+            bgcolor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity)
           }
         },
-        '&.Mui-checked + .MuiSwitch-track': {
+        '& .Mui-checked+.MuiSwitch-track': {
           bgcolor: theme.palette[color].main
         },
         ...sx
@@ -36,13 +33,5 @@ export default function MSwitch({ color = 'primary', sx, ...other }) {
 
 MSwitch.propTypes = {
   sx: PropTypes.object,
-  color: PropTypes.oneOf([
-    'default',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ])
+  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 };

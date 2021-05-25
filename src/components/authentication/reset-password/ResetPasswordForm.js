@@ -2,13 +2,11 @@ import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { TextField } from '@material-ui/core';
+import { TextField, Alert, Stack } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-// utils
-import { emailError } from '../../../utils/helpError';
 
 // ----------------------------------------------------------------------
 
@@ -22,9 +20,7 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
   const isMountedRef = useIsMountedRef();
 
   const ResetPasswordSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('Email must be a valid email address')
-      .required('Email is required')
+    email: Yup.string().email('Email must be a valid email address').required('Email is required')
   });
 
   const formik = useFormik({
@@ -41,8 +37,9 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
           setSubmitting(false);
         }
       } catch (error) {
+        console.error(error);
         if (isMountedRef.current) {
-          setErrors({ afterSubmit: error.code });
+          setErrors({ afterSubmit: error.message });
           setSubmitting(false);
         }
       }
@@ -54,30 +51,22 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <TextField
-          fullWidth
-          {...getFieldProps('email')}
-          type="email"
-          label="Email address"
-          error={
-            Boolean(touched.email && errors.email) ||
-            emailError(errors.afterSubmit).error
-          }
-          helperText={
-            (touched.email && errors.email) ||
-            emailError(errors.afterSubmit).helperText
-          }
-          sx={{ mb: 3 }}
-        />
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          pending={isSubmitting}
-        >
-          Reset Password
-        </LoadingButton>
+        <Stack spacing={3}>
+          {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
+
+          <TextField
+            fullWidth
+            {...getFieldProps('email')}
+            type="email"
+            label="Email address"
+            error={Boolean(touched.email && errors.email)}
+            helperText={touched.email && errors.email}
+          />
+
+          <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+            Reset Password
+          </LoadingButton>
+        </Stack>
       </Form>
     </FormikProvider>
   );

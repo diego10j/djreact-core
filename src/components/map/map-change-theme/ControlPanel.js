@@ -1,12 +1,7 @@
 import PropTypes from 'prop-types';
 // material
 import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import {
-  Radio,
-  Typography,
-  RadioGroup,
-  FormControlLabel
-} from '@material-ui/core';
+import { Radio, Typography, RadioGroup, FormControlLabel } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
@@ -40,11 +35,7 @@ export default function ControlPanel({
 }) {
   return (
     <RootStyle>
-      <Typography
-        gutterBottom
-        variant="subtitle2"
-        sx={{ color: 'common.white' }}
-      >
+      <Typography gutterBottom variant="subtitle2" sx={{ color: 'common.white' }}>
         Select Theme:
       </Typography>
       <RadioGroup value={selectTheme} onChange={onChangeTheme} {...other}>

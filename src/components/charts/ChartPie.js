@@ -23,12 +23,5 @@ export default function ChartPie() {
     }
   });
 
-  return (
-    <ReactApexChart
-      type="pie"
-      series={CHART_DATA}
-      options={chartOptions}
-      width={400}
-    />
-  );
+  return <ReactApexChart type="pie" series={CHART_DATA} options={chartOptions} width={400} />;
 }

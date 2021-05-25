@@ -102,15 +102,7 @@ FilaEditable.propTypes = {
 };
 
 // Create an editable cell renderer
-const ComponenteEditable = ({
-  valor,
-  column,
-  modificarFila,
-  foco,
-  updateMyData,
-  index,
-  combos
-}) => {
+const ComponenteEditable = ({ valor, column, modificarFila, foco, updateMyData, index, combos }) => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = useState(valor === null ? '' : valor);
   const [isModifico, setIsModificado] = useState(false);
@@ -118,6 +110,10 @@ const ComponenteEditable = ({
   const onChange = (e) => {
     setValue(e.target.value);
     setIsModificado(true);
+  };
+
+  const onChangeDate = (e) => {
+    console.log(e);
   };
 
   const onChangeCheck = (e) => {
@@ -182,12 +178,7 @@ const ComponenteEditable = ({
       )}
 
       {column.componente === 'Combo' && (
-        <StyledSelect
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          fullWidth
-        >
+        <StyledSelect value={value} onChange={onChange} onBlur={onBlur} fullWidth variant="standard">
           <MenuItem value="">
             <em>&nbsp;</em>
           </MenuItem>
@@ -215,9 +206,9 @@ const ComponenteEditable = ({
 
       {column.componente === 'Calendario' && (
         <DatePicker
-          views={['date']}
+          views={['day', 'month', 'year']}
           value={value}
-          onChange={onChange}
+          onChange={onChangeDate}
           onBlur={onBlur}
           inputProps={{ style: { textAlign: `${column.alinear}` } }}
           renderInput={(params) => (
@@ -238,11 +229,7 @@ const ComponenteEditable = ({
 };
 
 ComponenteEditable.propTypes = {
-  valor: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.bool
-  ]),
+  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,

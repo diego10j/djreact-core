@@ -2,8 +2,7 @@ export const cities = [
   {
     city: 'New York',
     population: '8,175,133',
-    image:
-      'http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/240px-Above_Gotham.jpg',
+    image: 'http://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/240px-Above_Gotham.jpg',
     state: 'New York',
     latitude: 40.6643,
     longitude: -73.9385
@@ -47,8 +46,7 @@ export const cities = [
   {
     city: 'Philadelphia',
     population: '1,526,006',
-    image:
-      'http://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Philly_skyline.jpg/240px-Philly_skyline.jpg',
+    image: 'http://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Philly_skyline.jpg/240px-Philly_skyline.jpg',
     state: 'Pennsylvania',
     latitude: 40.0094,
     longitude: -75.1333
@@ -92,8 +90,7 @@ export const cities = [
   {
     city: 'Austin',
     population: '790,390',
-    image:
-      'http://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Austin2012-12-01.JPG/240px-Austin2012-12-01.JPG',
+    image: 'http://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Austin2012-12-01.JPG/240px-Austin2012-12-01.JPG',
     state: 'Texas',
     latitude: 30.3072,
     longitude: -97.756
@@ -155,8 +152,7 @@ export const cities = [
   {
     city: 'Seattle',
     population: '608,660',
-    image:
-      'http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/SeattleI5Skyline.jpg/240px-SeattleI5Skyline.jpg',
+    image: 'http://upload.wikimedia.org/wikipedia/commons/thumb/3/36/SeattleI5Skyline.jpg/240px-SeattleI5Skyline.jpg',
     state: 'Washington',
     latitude: 47.6205,
     longitude: -122.3509
@@ -164,8 +160,7 @@ export const cities = [
   {
     city: 'Denver',
     population: '600,158',
-    image:
-      'http://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/DenverCP.JPG/240px-DenverCP.JPG',
+    image: 'http://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/DenverCP.JPG/240px-DenverCP.JPG',
     state: 'Colorado',
     latitude: 39.7618,
     longitude: -104.8806

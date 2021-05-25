@@ -2,8 +2,9 @@ import faker from 'faker';
 import { sample } from 'lodash';
 import { paramCase } from 'change-case';
 // utils
-import mock from '../utils/mock';
 import { mockImgProduct } from '../utils/mockImages';
+//
+import mock from './mock';
 
 // ----------------------------------------------------------------------
 
@@ -33,18 +34,22 @@ const PRODUCT_NAME = [
   'Nike React Art3mis',
   'Nike React Infinity Run Flyknit A.I.R. Chaz Bear'
 ];
-
-const PRODUCT_COLOR = [
-  '#00AB55',
-  '#000000',
-  '#FFFFFF',
-  '#FFC0CB',
-  '#FF4842',
-  '#1890FF',
-  '#94D82D',
-  '#FFC107'
+const PRODUCT_COLOR = ['#00AB55', '#000000', '#FFFFFF', '#FFC0CB', '#FF4842', '#1890FF', '#94D82D', '#FFC107'];
+const PRODUCT_TAGS = ['Dangal', 'The Sting', '2001: A Space Odyssey', "Singin' in the Rain"];
+const PRODUCT_CATEGORY = [
+  'Shirts',
+  'T-shirts',
+  'Jeans',
+  'Leather',
+  'Suits',
+  'Blazers',
+  'Trousers',
+  'Waistcoats',
+  'Shoes',
+  'Backpacks and bags',
+  'Bracelets',
+  'Face masks'
 ];
-
 const PRODUCT_DESCRIPTION = `
 <p><strong><small> SPECIFICATION</small></strong></p>
 <p>Leather panels. Laces. Rounded toe. Rubber sole.
@@ -52,21 +57,9 @@ const PRODUCT_DESCRIPTION = `
 <p><strong><small> MATERIAL AND WASHING INSTRUCTIONS</small></strong></p>
 <p>Shoeupper: 54% bovine leather,46% polyurethane. Lining: 65% polyester,35% cotton. Insole: 100% polyurethane. Sole: 100% thermoplastic. Fixing sole: 100% glued.</p>
 `;
+const PRODUCT_SIZE = ['6', '7', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12', '13'];
 
-const PRODUCT_SIZE = [
-  '6',
-  '7',
-  '8',
-  '8.5',
-  '9',
-  '9.5',
-  '10',
-  '10.5',
-  '11',
-  '11.5',
-  '12',
-  '13'
-];
+// ----------------------------------------------------------------------
 
 const products = [...Array(24)].map((_, index) => {
   const setIndex = index + 1;
@@ -79,11 +72,11 @@ const products = [...Array(24)].map((_, index) => {
       return mockImgProduct(setIndex);
     }),
     name: PRODUCT_NAME[index],
+    code: `38BEE27${setIndex}`,
+    sku: `WW75K521${setIndex}YW/SV`,
+    tags: PRODUCT_TAGS,
     price: faker.datatype.number({ min: 4, max: 99, precision: 0.01 }),
-    priceSale:
-      setIndex % 3
-        ? null
-        : faker.datatype.number({ min: 19, max: 29, precision: 0.01 }),
+    priceSale: setIndex % 3 ? null : faker.datatype.number({ min: 19, max: 29, precision: 0.01 }),
     totalRating: faker.datatype.number({ min: 0, max: 5, precision: 0.1 }),
     totalReview: faker.datatype.number(),
     ratings: [...Array(5)].map((_, index) => ({
@@ -112,12 +105,11 @@ const products = [...Array(24)].map((_, index) => {
     status: sample(['sale', 'new', '', '']),
     inventoryType: sample(['in_stock', 'out_of_stock', 'low_stock']),
     sizes: PRODUCT_SIZE,
-    available:
-      setIndex % 3 === 0 ? faker.datatype.number({ min: 19, max: 100 }) : 2,
+    available: setIndex % 3 === 0 ? faker.datatype.number({ min: 19, max: 100 }) : 2,
     description: PRODUCT_DESCRIPTION,
     sold: faker.datatype.number(),
     createdAt: faker.date.past(),
-    category: sample(['Accessories', 'Apparel', 'Shose']),
+    category: sample(PRODUCT_CATEGORY),
     gender: sample(['Men', 'Women', 'Kids'])
   };
 });
@@ -131,9 +123,7 @@ mock.onGet('/api/products').reply(200, { products });
 mock.onGet('/api/products/product').reply((config) => {
   try {
     const { name } = config.params;
-    const product = products.find(
-      (_product) => paramCase(_product.name) === name
-    );
+    const product = products.find((_product) => paramCase(_product.name) === name);
 
     if (!product) {
       return [404, { message: 'product not found' }];

@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 // material
 import { Container, Box } from '@material-ui/core';
 //
@@ -8,11 +8,7 @@ import DocsNavbar from './DocsNavbar';
 
 // ----------------------------------------------------------------------
 
-DocsLayout.propTypes = {
-  children: PropTypes.node
-};
-
-export default function DocsLayout({ children }) {
+export default function DocsLayout() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -29,7 +25,7 @@ export default function DocsLayout({ children }) {
           minHeight: '100%'
         }}
       >
-        {children}
+        <Outlet />
       </Container>
     </Box>
   );

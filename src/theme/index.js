@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 // material
 import { CssBaseline } from '@material-ui/core';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
+import { ThemeProvider, createTheme, StyledEngineProvider } from '@material-ui/core/styles';
 // hooks
 import useSettings from '../hooks/useSettings';
 //
@@ -27,9 +26,7 @@ export default function ThemeConfig({ children }) {
 
   const themeOptions = useMemo(
     () => ({
-      palette: isLight
-        ? { ...palette.light, mode: 'light' }
-        : { ...palette.dark, mode: 'dark' },
+      palette: isLight ? { ...palette.light, mode: 'light' } : { ...palette.dark, mode: 'dark' },
       shape,
       typography,
       breakpoints,
@@ -40,7 +37,7 @@ export default function ThemeConfig({ children }) {
     [isLight, themeDirection]
   );
 
-  const theme = createMuiTheme(themeOptions);
+  const theme = createTheme(themeOptions);
   theme.components = componentsOverride(theme);
 
   return (

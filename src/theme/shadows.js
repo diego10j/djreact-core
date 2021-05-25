@@ -1,3 +1,4 @@
+// material
 import { alpha } from '@material-ui/core/styles';
 import palette from './palette';
 
@@ -41,6 +42,7 @@ const createShadow = (color) => {
 
 const createCustomShadow = (color) => {
   const transparent = alpha(color, 0.24);
+
   return {
     z1: `0 1px 2px 0 ${transparent}`,
     z8: `0 8px 16px 0 ${transparent}`,

@@ -1,8 +1,11 @@
+/* eslint-disable no-irregular-whitespace */
+/* eslint-disable no-useless-escape */
 import faker from 'faker';
 import { paramCase } from 'change-case';
 // utils
-import mock from '../utils/mock';
 import { mockImgCover } from '../utils/mockImages';
+//
+import mock from './mock';
 
 // ----------------------------------------------------------------------
 
@@ -49,10 +52,7 @@ const POST_BODY = `
 <br/>
 <p><strong>This is strong text.</strong></p>
 <p><em>This is italic text</em></p>
-${
-  /* eslint-disable-next-line */
-  `<p><u>This is underline text</u><span class=\"ql-cursor\">﻿</span></p>`
-}
+${`<p><u>This is underline text</u><span class=\"ql-cursor\">﻿</span></p>`}
 
 <hr>
 <h3>Unordered list</h3><br/>
@@ -83,26 +83,17 @@ ${
 
 <hr>
 <h3>Block Code</h3><br/>
-${
-  /* eslint-disable-next-line */
-  `<pre class=\"ql-syntax\" spellcheck=\"false\">cd project-folder\nnpm install\n</pre>`
-}
+${`<pre class=\"ql-syntax\" spellcheck=\"false\">cd project-folder\nnpm install\n</pre>`}
 
 <br/>
 <br/>
 
-${
-  /* eslint-disable-next-line */
-  `<pre class=\"ql-syntax\" spellcheck=\"false\"><span class=\"hljs-keyword\">var</span> React = <span class=\"hljs-built_in\">require</span>(<span class=\"hljs-string\">'react'</span>);\n<span class=\"hljs-keyword\">var</span> Markdown = <span class=\"hljs-built_in\">require</span>(<span class=\"hljs-string\">'react-markdown'</span>);\n\nReact.render(\n  <span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">Markdown1</span> <span class=\"hljs-attr\">source</span>=<span class=\"hljs-string\">\"# Your markdown here\"</span> /&gt;</span>,\n  <span class=\"hljs-built_in\">document</span>.getElementById(<span class=\"hljs-string\">'content'</span>)\n);\n</pre>`
-}
+${`<pre class=\"ql-syntax\" spellcheck=\"false\"><span class=\"hljs-keyword\">var</span> React = <span class=\"hljs-built_in\">require</span>(<span class=\"hljs-string\">'react'</span>);\n<span class=\"hljs-keyword\">var</span> Markdown = <span class=\"hljs-built_in\">require</span>(<span class=\"hljs-string\">'react-markdown'</span>);\n\nReact.render(\n  <span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">Markdown1</span> <span class=\"hljs-attr\">source</span>=<span class=\"hljs-string\">\"# Your markdown here\"</span> /&gt;</span>,\n  <span class=\"hljs-built_in\">document</span>.getElementById(<span class=\"hljs-string\">'content'</span>)\n);\n</pre>`}
 
 <br/>
 <br/>
 
-${
-  /* eslint-disable-next-line */
-  `<pre class=\"ql-syntax\" spellcheck=\"false\"><span class=\"hljs-function\"><span class=\"hljs-keyword\">function</span> <span class=\"hljs-title\">createStyleObject</span>(<span class=\"hljs-params\">classNames, style</span>) </span>{\n  <span class=\"hljs-keyword\">return</span> classNames.reduce(<span class=\"hljs-function\">(<span class=\"hljs-params\">styleObject, className</span>) =&gt;</span> {\n   <span class=\"hljs-keyword\">return</span> {...styleObject, ...style[className]};\n  }, {});\n }\n</pre>`
-}
+${`<pre class=\"ql-syntax\" spellcheck=\"false\"><span class=\"hljs-function\"><span class=\"hljs-keyword\">function</span> <span class=\"hljs-title\">createStyleObject</span>(<span class=\"hljs-params\">classNames, style</span>) </span>{\n  <span class=\"hljs-keyword\">return</span> classNames.reduce(<span class=\"hljs-function\">(<span class=\"hljs-params\">styleObject, className</span>) =&gt;</span> {\n   <span class=\"hljs-keyword\">return</span> {...styleObject, ...style[className]};\n  }, {});\n }\n</pre>`}
 
 <br/>
 <br/>
@@ -297,9 +288,7 @@ mock.onGet('/api/blog/posts/recent').reply((config) => {
   try {
     const { title } = config.params;
 
-    const recentPosts = posts
-      .filter((_post) => paramCase(_post.title) !== title)
-      .slice(posts.length - 5, posts.length);
+    const recentPosts = posts.filter((_post) => paramCase(_post.title) !== title).slice(posts.length - 5, posts.length);
 
     if (!recentPosts) {
       return [404, { message: 'Post not found' }];

@@ -1,82 +1,92 @@
+import { useState } from 'react';
 import { Icon } from '@iconify/react';
-import { useState, useRef } from 'react';
 import closeFill from '@iconify/icons-eva/close-fill';
-import optionsOutline from '@iconify/icons-eva/options-outline';
+import options2Fill from '@iconify/icons-eva/options-2-fill';
 // material
-import { Box, Drawer, Tooltip, Divider, Typography } from '@material-ui/core';
+import { Box, Backdrop, Paper, Tooltip, Divider, Typography, Stack } from '@material-ui/core';
 //
+import Scrollbar from '../Scrollbar';
 import { MIconButton } from '../@material-extend';
 import SettingMode from './SettingMode';
+import SettingColor from './SettingColor';
 import SettingDirection from './SettingDirection';
+import SettingFullscreen from './SettingFullscreen';
 
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 260;
 
 export default function Settings() {
-  const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
-  const handleOpenSettings = () => {
-    setOpen(true);
+  const handleToggle = () => {
+    setOpen((prev) => !prev);
   };
 
-  const handleCloseSettings = () => {
+  const handleClose = () => {
     setOpen(false);
   };
 
   return (
     <>
-      <Tooltip title="Configurar Tema">
-        <MIconButton
-          ref={anchorRef}
-          onClick={handleOpenSettings}
-          color={open ? 'primary' : 'default'}
-        >
-          <Icon icon={optionsOutline} width={20} height={20} />
+      <Tooltip title="Settings">
+        <MIconButton color={open ? 'primary' : 'default'} onClick={handleToggle}>
+          <Icon icon={options2Fill} width={20} height={20} />
         </MIconButton>
       </Tooltip>
 
-      <Drawer
-        open={open}
-        anchor="right"
-        onClose={handleCloseSettings}
-        sx={{ zIndex: 1999 }}
-        PaperProps={{
-          sx: { width: DRAWER_WIDTH }
+      <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open} onClick={handleClose} />
+
+      <Box
+        sx={{
+          top: 12,
+          bottom: 12,
+          right: 0,
+          position: 'fixed',
+          zIndex: (theme) => theme.zIndex.drawer + 2,
+          ...(open && { right: 12 })
         }}
       >
-        <Box
+        <Paper
           sx={{
-            py: 2,
-            pr: 1,
-            pl: 2.5,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
+            height: 1,
+            width: '0px',
+            overflow: 'hidden',
+            boxShadow: (theme) => theme.customShadows.z24,
+            transition: (theme) => theme.transitions.create('width'),
+            ...(open && { width: DRAWER_WIDTH })
           }}
         >
-          <Typography variant="subtitle1">Settings</Typography>
-          <MIconButton onClick={handleCloseSettings}>
-            <Icon icon={closeFill} width={20} height={20} />
-          </MIconButton>
-        </Box>
-        <Divider />
+          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
+            <Typography variant="subtitle1">Settings</Typography>
+            <MIconButton onClick={handleClose}>
+              <Icon icon={closeFill} width={20} height={20} />
+            </MIconButton>
+          </Stack>
+          <Divider />
 
-        <Box sx={{ pt: 3, px: 3 }}>
-          <Typography variant="subtitle2" sx={{ mb: 1.5 }}>
-            Mode
-          </Typography>
-          <SettingMode />
+          <Scrollbar sx={{ height: 1 }}>
+            <Stack spacing={4} sx={{ pt: 3, px: 3, pb: 15 }}>
+              <Stack spacing={1.5}>
+                <Typography variant="subtitle2">Mode</Typography>
+                <SettingMode />
+              </Stack>
 
-          <Box sx={{ my: 3 }} />
+              <Stack spacing={1.5}>
+                <Typography variant="subtitle2">Direction</Typography>
+                <SettingDirection />
+              </Stack>
 
-          <Typography variant="subtitle2" sx={{ mb: 1.5 }}>
-            Direction
-          </Typography>
-          <SettingDirection />
-        </Box>
-      </Drawer>
+              <Stack spacing={1.5}>
+                <Typography variant="subtitle2">Color</Typography>
+                <SettingColor />
+              </Stack>
+
+              <SettingFullscreen />
+            </Stack>
+          </Scrollbar>
+        </Paper>
+      </Box>
     </>
   );
 }

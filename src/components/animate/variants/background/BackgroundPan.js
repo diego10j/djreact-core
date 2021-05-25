@@ -5,8 +5,7 @@ const TRANSITION = {
   ease: 'linear'
 };
 
-const gradient = (deg) =>
-  `linear-gradient(${deg}deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)`;
+const gradient = (deg) => `linear-gradient(${deg}deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)`;
 
 export const varPanTop = {
   animate: {

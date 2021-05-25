@@ -4,6 +4,11 @@ export default function Input(theme) {
   return {
     MuiInputBase: {
       styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            '& svg': { color: theme.palette.text.disabled }
+          }
+        },
         input: {
           '&::placeholder': {
             opacity: 1,

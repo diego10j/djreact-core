@@ -1,32 +1,22 @@
-import {
-  Box,
-  Grid,
-  Paper,
-  Radio,
-  RadioGroup,
-  CardActionArea,
-  FormControlLabel
-} from '@material-ui/core';
+import { Box, Grid, Paper, Radio, RadioGroup, CardActionArea, FormControlLabel } from '@material-ui/core';
 // hooks
 import useSettings from '../../hooks/useSettings';
 
 // ----------------------------------------------------------------------
 
 export default function SettingDirection() {
-  const { themeDirection, selectDirection } = useSettings();
+  const { themeDirection, onChangeDirection } = useSettings();
 
   return (
-    <RadioGroup
-      name="themeDirection"
-      value={themeDirection}
-      onChange={selectDirection}
-    >
+    <RadioGroup name="themeDirection" value={themeDirection} onChange={onChangeDirection}>
       <Grid container spacing={2.5} dir="ltr">
         {['ltr', 'rtl'].map((direction, index) => (
           <Grid item xs={6} key={direction}>
             <Paper
+              key={direction}
               variant={themeDirection === direction ? 'elevation' : 'outlined'}
               sx={{
+                width: 1,
                 zIndex: 0,
                 overflow: 'hidden',
                 position: 'relative',
@@ -35,62 +25,45 @@ export default function SettingDirection() {
                 })
               }}
             >
-              <CardActionArea>
+              <CardActionArea sx={{ color: 'primary.main' }}>
                 <Box
                   sx={{
-                    py: 2.5,
-                    px: 1.5,
+                    p: 1.5,
                     display: 'flex',
                     flexDirection: 'column',
                     ...(index === 1 && { alignItems: 'flex-end' })
                   }}
                 >
-                  {[48, 32, 20].map((size, index) => (
+                  {[56, 36, 24].map((size, index) => (
                     <Box
                       key={size}
                       sx={{
-                        mb: 0.75,
+                        my: 0.5,
                         width: size,
-                        height: size / 2,
+                        height: size / 2.5,
                         borderRadius: 0.75,
-                        bgcolor:
-                          themeDirection === direction
-                            ? 'primary.main'
-                            : 'grey.500',
+                        bgcolor: themeDirection === direction ? 'primary.main' : 'grey.500',
                         ...(index === 0 && { opacity: 0.64 }),
-                        ...(index === 1 && { opacity: 0.32 }),
-                        ...(index === 2 && { opacity: 0.16 })
+                        ...(index === 1 && { opacity: 0.32, borderRadius: '4px' }),
+                        ...(index === 2 && { opacity: 0.16, borderRadius: '3px' })
                       }}
                     />
                   ))}
                 </Box>
                 <FormControlLabel
-                  label={null}
+                  label=""
                   value={direction}
-                  control={<Radio />}
+                  control={<Radio sx={{ display: 'none' }} />}
                   sx={{
                     top: 0,
                     margin: 0,
                     width: '100%',
                     height: '100%',
-                    position: 'absolute',
-                    '& .MuiRadio-root': { display: 'none' }
+                    position: 'absolute'
                   }}
                 />
               </CardActionArea>
             </Paper>
-            <Box
-              sx={{
-                mt: 2,
-                mx: 'auto',
-                borderRadius: '50%',
-                backgroundColor: 'primary.main',
-                ...(themeDirection === direction && {
-                  width: 10,
-                  height: 10
-                })
-              }}
-            />
           </Grid>
         ))}
       </Grid>

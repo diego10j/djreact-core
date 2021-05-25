@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
 //
@@ -21,30 +21,25 @@ const MainStyle = styled('div')(({ theme }) => ({
   minHeight: '100%',
   paddingTop: APP_BAR_MOBILE,
   paddingBottom: theme.spacing(5),
+  paddingLeft: '0 !important',
+  paddingRight: '0 !important',
   [theme.breakpoints.up('lg')]: {
-    paddingTop: APP_BAR_DESKTOP + 15,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2)
+    paddingTop: APP_BAR_DESKTOP + 5
   }
 }));
 
 // ----------------------------------------------------------------------
 
-DashboardLayout.propTypes = {
-  children: PropTypes.node
-};
-
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
 
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar
-        isOpenSidebar={open}
-        onCloseSidebar={() => setOpen(false)}
-      />
-      <MainStyle>{children}</MainStyle>
+      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      <MainStyle>
+        <Outlet />
+      </MainStyle>
     </RootStyle>
   );
 }

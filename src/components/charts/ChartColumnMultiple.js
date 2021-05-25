@@ -14,17 +14,7 @@ export default function ChartColumnMultiple() {
   const chartOptions = merge(BaseOptionChart(), {
     stroke: { show: true, width: 2, colors: ['transparent'] },
     xaxis: {
-      categories: [
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct'
-      ]
+      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct']
     },
     tooltip: {
       y: {
@@ -36,12 +26,5 @@ export default function ChartColumnMultiple() {
     plotOptions: { bar: { columnWidth: '34%', borderRadius: 4 } }
   });
 
-  return (
-    <ReactApexChart
-      type="bar"
-      series={CHART_DATA}
-      options={chartOptions}
-      height={320}
-    />
-  );
+  return <ReactApexChart type="bar" series={CHART_DATA} options={chartOptions} height={320} />;
 }

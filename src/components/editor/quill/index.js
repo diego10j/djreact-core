@@ -3,11 +3,7 @@ import ReactQuill from 'react-quill';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
 //
-import EditorToolbar, {
-  formats,
-  redoChange,
-  undoChange
-} from './QuillEditorToolbar';
+import EditorToolbar, { formats, redoChange, undoChange } from './QuillEditorToolbar';
 
 // ----------------------------------------------------------------------
 
@@ -45,15 +41,7 @@ QuillEditor.propTypes = {
   sx: PropTypes.object
 };
 
-export default function QuillEditor({
-  id,
-  error,
-  value,
-  onChange,
-  simple = false,
-  sx,
-  ...other
-}) {
+export default function QuillEditor({ id, error, value, onChange, simple = false, sx, ...other }) {
   const modules = {
     toolbar: {
       container: `#${id}`,

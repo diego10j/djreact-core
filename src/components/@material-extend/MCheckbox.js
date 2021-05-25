@@ -24,10 +24,7 @@ const MCheckbox = forwardRef(({ color = 'primary', sx, ...other }, ref) => {
           color: theme.palette[color].main
         },
         '&:hover, &.Mui-checked:hover': {
-          backgroundColor: alpha(
-            theme.palette[color].main,
-            theme.palette.action.hoverOpacity
-          )
+          backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity)
         },
         ...sx
       }}
@@ -38,15 +35,7 @@ const MCheckbox = forwardRef(({ color = 'primary', sx, ...other }, ref) => {
 
 MCheckbox.propTypes = {
   sx: PropTypes.object,
-  color: PropTypes.oneOf([
-    'default',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ])
+  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 };
 
 export default MCheckbox;

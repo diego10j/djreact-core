@@ -15,13 +15,7 @@ MotionInView.propTypes = {
   threshold: PropTypes.oneOfType([PropTypes.number, PropTypes.array])
 };
 
-export default function MotionInView({
-  children,
-  variants,
-  transition,
-  threshold,
-  ...other
-}) {
+export default function MotionInView({ children, variants, transition, threshold, ...other }) {
   const controls = useAnimation();
   const [ref, inView] = useInView({
     threshold: threshold || 0,

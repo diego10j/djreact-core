@@ -1,8 +1,9 @@
 import faker from 'faker';
 import { sample } from 'lodash';
 // utils
-import mock from '../utils/mock';
 import { mockImgFeed, mockImgAvatar } from '../utils/mockImages';
+//
+import mock from './mock';
 
 // ----------------------------------------------------------------------
 
@@ -97,18 +98,13 @@ const mails = [...Array(9)].map((_, index) => {
     isUnread: faker.datatype.boolean(),
     subject: faker.lorem.words(),
     message: faker.lorem.paragraphs(),
-
     createdAt: faker.date.past(),
     files: createAttachment(setIndex),
     from: {
       name: faker.name.findName(),
       email: faker.internet.email(),
       avatar:
-        setIndex === 1 ||
-        setIndex === 2 ||
-        setIndex === 5 ||
-        setIndex === 6 ||
-        setIndex === 8
+        setIndex === 1 || setIndex === 2 || setIndex === 5 || setIndex === 6 || setIndex === 8
           ? null
           : mockImgAvatar(setIndex)
     },
@@ -146,11 +142,7 @@ const filterMails = (mails, labels, systemLabel, customLabel) => {
     }
   }
 
-  if (
-    ['inbox', 'sent', 'drafts', 'trash', 'spam', 'starred'].includes(
-      systemLabel
-    )
-  ) {
+  if (['inbox', 'sent', 'drafts', 'trash', 'spam', 'starred'].includes(systemLabel)) {
     return mails.filter((mail) => mail.folder === systemLabel);
   }
 

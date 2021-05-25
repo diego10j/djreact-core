@@ -59,14 +59,7 @@ MapControlPopup.propTypes = {
 
 export default function MapControlPopup({ children, onClose, ...other }) {
   return (
-    <PopupStyle
-      tipSize={8}
-      anchor="bottom"
-      onClose={onClose}
-      closeButton
-      closeOnClick={false}
-      {...other}
-    >
+    <PopupStyle tipSize={8} anchor="bottom" onClose={onClose} closeButton closeOnClick={false} {...other}>
       {children}
     </PopupStyle>
   );

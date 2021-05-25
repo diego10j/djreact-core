@@ -27,9 +27,7 @@ export default function MapHighlightByFilter({ ...other }) {
   });
 
   const selectedCounty = (hoverInfo && hoverInfo.countyName) || '';
-  const filter = useMemo(() => ['in', 'COUNTY', selectedCounty], [
-    selectedCounty
-  ]);
+  const filter = useMemo(() => ['in', 'COUNTY', selectedCounty], [selectedCounty]);
 
   const countiesLayer = {
     id: 'counties',
@@ -80,19 +78,11 @@ export default function MapHighlightByFilter({ ...other }) {
 
         <Source type="vector" url="mapbox://mapbox.82pkq93d">
           <Layer beforeId="waterway-label" {...countiesLayer} />
-          <Layer
-            beforeId="waterway-label"
-            {...highlightLayer}
-            filter={filter}
-          />
+          <Layer beforeId="waterway-label" {...highlightLayer} filter={filter} />
         </Source>
 
         {selectedCounty && (
-          <MapControlPopup
-            longitude={hoverInfo.longitude}
-            latitude={hoverInfo.latitude}
-            closeButton={false}
-          >
+          <MapControlPopup longitude={hoverInfo.longitude} latitude={hoverInfo.latitude} closeButton={false}>
             <Typography variant="body2" sx={{ color: 'common.white' }}>
               {selectedCounty}
             </Typography>

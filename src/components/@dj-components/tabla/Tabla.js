@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle
-} from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 // components
 import TablaReact from './TablaReact';
@@ -61,9 +56,7 @@ const Tabla = forwardRef(
     useEffect(() => {
       if (!tipoFormulario) {
         // Oculta columnas para la TablaReact
-        const colOcultas = columns
-          .filter((_col) => _col.visible === false)
-          .map((_element) => _element.nombre);
+        const colOcultas = columns.filter((_col) => _col.visible === false).map((_element) => _element.nombre);
         setColumnasOcultas(colOcultas);
       }
     }, [columns]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -134,50 +127,22 @@ const Tabla = forwardRef(
         console.log('---FORMAR COLUMNAS');
         // Aplica cada configuración realizada a las columnas
         opcionesColumnas.forEach(async (_columna) => {
-          const colActual = cols.find(
-            (_col) => _col.nombre === _columna.nombre.toLowerCase()
-          );
+          const colActual = cols.find((_col) => _col.nombre === _columna.nombre.toLowerCase());
           if (colActual) {
-            colActual.visible =
-              'visible' in _columna ? _columna.visible : colActual.visible;
-            colActual.filtro =
-              'filtro' in _columna ? _columna.filtro : colActual.filtro;
+            colActual.visible = 'visible' in _columna ? _columna.visible : colActual.visible;
+            colActual.filtro = 'filtro' in _columna ? _columna.filtro : colActual.filtro;
             colActual.nombrevisual =
-              'nombreVisual' in _columna
-                ? _columna.nombreVisual.toUpperCase()
-                : colActual.nombrevisual;
-            colActual.valordefecto =
-              'valorDefecto' in _columna
-                ? _columna.valorDefecto
-                : colActual.valordefecto;
-            colActual.requerida =
-              'requerida' in _columna
-                ? _columna.requerida
-                : colActual.requerida;
-            colActual.lectura =
-              'lectura' in _columna ? _columna.lectura : colActual.lectura;
-            colActual.orden =
-              'orden' in _columna ? _columna.orden : colActual.orden;
-            colActual.decimales =
-              'decimales' in _columna
-                ? _columna.decimales
-                : colActual.decimales;
-            colActual.comentario =
-              'comentario' in _columna
-                ? _columna.comentario
-                : colActual.comentario;
-            colActual.mayuscula =
-              'mayuscula' in _columna
-                ? _columna.mayuscula
-                : colActual.mayuscula;
-            colActual.alinear =
-              'alinear' in _columna ? _columna.alinear : colActual.alinear;
-            colActual.ordenable =
-              'ordenable' in _columna
-                ? _columna.ordenable
-                : colActual.ordenable;
-            colActual.width =
-              'width' in _columna ? _columna.width : colActual.width;
+              'nombreVisual' in _columna ? _columna.nombreVisual.toUpperCase() : colActual.nombrevisual;
+            colActual.valordefecto = 'valorDefecto' in _columna ? _columna.valorDefecto : colActual.valordefecto;
+            colActual.requerida = 'requerida' in _columna ? _columna.requerida : colActual.requerida;
+            colActual.lectura = 'lectura' in _columna ? _columna.lectura : colActual.lectura;
+            colActual.orden = 'orden' in _columna ? _columna.orden : colActual.orden;
+            colActual.decimales = 'decimales' in _columna ? _columna.decimales : colActual.decimales;
+            colActual.comentario = 'comentario' in _columna ? _columna.comentario : colActual.comentario;
+            colActual.mayuscula = 'mayuscula' in _columna ? _columna.mayuscula : colActual.mayuscula;
+            colActual.alinear = 'alinear' in _columna ? _columna.alinear : colActual.alinear;
+            colActual.ordenable = 'ordenable' in _columna ? _columna.ordenable : colActual.ordenable;
+            colActual.width = 'width' in _columna ? _columna.width : colActual.width;
           } else {
             throw new Error(`Error la columna ${_columna.nombre} no existe`);
           }
@@ -213,34 +178,14 @@ const Tabla = forwardRef(
           }
           // alinear
           if (isDefined(_columna.alinear)) {
-            _columna.alinear =
-              _columna.alinear === 'derecha' ? 'right' : _columna.alinear;
-            _columna.alinear =
-              _columna.alinear === 'izquierda' ? 'left' : _columna.alinear;
-            _columna.alinear =
-              _columna.alinear === 'centro' ? 'center' : _columna.alinear;
+            _columna.alinear = _columna.alinear === 'derecha' ? 'right' : _columna.alinear;
+            _columna.alinear = _columna.alinear === 'izquierda' ? 'left' : _columna.alinear;
+            _columna.alinear = _columna.alinear === 'centro' ? 'center' : _columna.alinear;
           } else {
             _columna.alinear = 'left'; // por defecto
-            _columna.alinear =
-              _columna.componente === 'Check' ? 'center' : _columna.alinear;
-            _columna.alinear =
-              _columna.componente === 'TextoEntero'
-                ? 'right'
-                : _columna.alinear;
-            _columna.alinear =
-              _columna.componente === 'TextoNumero'
-                ? 'right'
-                : _columna.alinear;
-            _columna.alinear =
-              _columna.componente === 'Calendario'
-                ? 'center'
-                : _columna.alinear;
-            _columna.alinear =
-              _columna.componente === 'Hora' ? 'center' : _columna.alinear;
-            _columna.alinear =
-              _columna.componente === 'CalendarioHora'
-                ? 'center'
-                : _columna.alinear;
+            _columna.alinear = _columna.componente === 'Check' ? 'center' : _columna.alinear;
+            _columna.alinear = _columna.componente === 'TextoEntero' ? 'right' : _columna.alinear;
+            _columna.alinear = _columna.componente === 'TextoNumero' ? 'right' : _columna.alinear;
           }
 
           _columna.accessor = _columna.nombre;
@@ -296,9 +241,7 @@ const Tabla = forwardRef(
      * @returns
      */
     const isFilaInsertada = (valorPrimario) => {
-      const fila = insertadas.find(
-        (col) => col[campoPrimario] === valorPrimario
-      );
+      const fila = insertadas.find((col) => col[campoPrimario] === valorPrimario);
       if (isDefined(fila)) {
         return true;
       }
@@ -311,9 +254,7 @@ const Tabla = forwardRef(
      * @returns
      */
     const isFilaModificada = (valorPrimario) => {
-      const fila = modificadas.find(
-        (col) => col[campoPrimario] === valorPrimario
-      );
+      const fila = modificadas.find((col) => col[campoPrimario] === valorPrimario);
       if (isDefined(fila)) {
         return true;
       }
@@ -326,9 +267,7 @@ const Tabla = forwardRef(
      * @returns
      */
     const isFilaEliminada = (valorPrimario) => {
-      const fila = eliminadas.find(
-        (col) => col[campoPrimario] === valorPrimario
-      );
+      const fila = eliminadas.find((col) => col[campoPrimario] === valorPrimario);
       if (isDefined(fila)) {
         return true;
       }
@@ -372,10 +311,7 @@ const Tabla = forwardRef(
             // Agrega modificaciones
             const { colModificadas } = fila;
             colModificadas[nombre] = value;
-            setModificadas((elements) => [
-              ...elements.filter((item) => item.id !== valorSeleccionado),
-              fila
-            ]);
+            setModificadas((elements) => [...elements.filter((item) => item.id !== valorSeleccionado), fila]);
           }
         }
         // Propagar si tiene evento
@@ -489,12 +425,7 @@ Tabla.propTypes = {
     PropTypes.shape({
       nombre: PropTypes.string.isRequired,
       nombreVisual: PropTypes.string,
-      valorDefecto: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.number,
-        PropTypes.object
-      ]),
+      valorDefecto: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.object]),
       requerida: PropTypes.bool,
       visible: PropTypes.bool,
       filtro: PropTypes.bool,

@@ -1,12 +1,7 @@
 import MapGL from 'react-map-gl';
 import { useState, useCallback } from 'react';
 //
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen
-} from '../controls';
+import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from '../controls';
 import ControlPanel from './ControlPanel';
 
 // ----------------------------------------------------------------------
@@ -49,9 +44,7 @@ export default function MapInteraction({ ...other }) {
         {...viewport}
         {...settings}
         onViewportChange={setViewport}
-        onInteractionStateChange={(interactionState) =>
-          setInteractionState(interactionState)
-        }
+        onInteractionStateChange={(interactionState) => setInteractionState(interactionState)}
         {...other}
       >
         <MapControlScale />
@@ -59,11 +52,7 @@ export default function MapInteraction({ ...other }) {
         <MapControlFullscreen />
         <MapControlGeolocate />
 
-        <ControlPanel
-          settings={settings}
-          interactionState={interactionState}
-          onChange={handleChangeSetting}
-        />
+        <ControlPanel settings={settings} interactionState={interactionState} onChange={handleChangeSetting} />
       </MapGL>
     </>
   );

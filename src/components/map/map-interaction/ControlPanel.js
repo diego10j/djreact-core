@@ -58,11 +58,7 @@ export default function ControlPanel({ settings, interactionState, onChange }) {
         return (
           <RowStyle key={name}>
             <Typography variant="body2">{formatSettingName(name)}</Typography>
-            <Switch
-              size="small"
-              checked={value}
-              onChange={(event) => onChange(name, event.target.checked)}
-            />
+            <Switch size="small" checked={value} onChange={(event) => onChange(name, event.target.checked)} />
           </RowStyle>
         );
       case 'number':
@@ -104,9 +100,7 @@ export default function ControlPanel({ settings, interactionState, onChange }) {
               width: 22,
               height: 22,
               borderRadius: 1,
-              bgcolor: interactionState[event.value]
-                ? 'primary.main'
-                : 'error.main'
+              bgcolor: interactionState[event.value] ? 'primary.main' : 'error.main'
             }}
           />
         </RowStyle>

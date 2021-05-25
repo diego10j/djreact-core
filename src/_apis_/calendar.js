@@ -1,8 +1,8 @@
 import faker from 'faker';
 import { add, set, sub } from 'date-fns';
 import { map, assign, reject } from 'lodash';
-// utils
-import mock from '../utils/mock';
+//
+import mock from './mock';
 
 // ----------------------------------------------------------------------
 
@@ -88,9 +88,7 @@ mock.onGet('/api/calendar/events').reply(200, { events });
 
 mock.onPost('/api/calendar/events/new').reply((request) => {
   try {
-    const { title, description, textColor, allDay, end, start } = JSON.parse(
-      request.data
-    );
+    const { title, description, textColor, allDay, end, start } = JSON.parse(request.data);
     const event = {
       id: faker.datatype.uuid(),
       title,

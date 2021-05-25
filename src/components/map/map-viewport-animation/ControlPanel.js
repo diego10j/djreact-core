@@ -30,11 +30,7 @@ export default function ControlPanel({ data, selectedCity, handleChange }) {
   return (
     <RootStyle>
       {data.map((city) => (
-        <RadioGroup
-          key={city.city}
-          value={selectedCity}
-          onChange={(event) => handleChange(event, city)}
-        >
+        <RadioGroup key={city.city} value={selectedCity} onChange={(event) => handleChange(event, city)}>
           <FormControlLabel
             value={city.city}
             label={city.city}

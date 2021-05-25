@@ -19,10 +19,7 @@ export default function MRadio({ color = 'primary', sx, ...other }) {
           color: theme.palette[color].main
         },
         '&:hover, &.Mui-checked:hover': {
-          bgcolor: alpha(
-            theme.palette[color].main,
-            theme.palette.action.hoverOpacity
-          )
+          bgcolor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity)
         },
         ...sx
       }}
@@ -33,13 +30,5 @@ export default function MRadio({ color = 'primary', sx, ...other }) {
 
 MRadio.propTypes = {
   sx: PropTypes.object,
-  color: PropTypes.oneOf([
-    'default',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ])
+  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 };

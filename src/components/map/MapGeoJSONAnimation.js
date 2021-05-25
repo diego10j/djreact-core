@@ -3,22 +3,14 @@ import MapGL, { Layer, Source } from 'react-map-gl';
 // material
 import { useTheme } from '@material-ui/core/styles';
 //
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen
-} from './controls';
+import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from './controls';
 
 // ----------------------------------------------------------------------
 
 function pointOnCircle({ center, angle, radius }) {
   return {
     type: 'Point',
-    coordinates: [
-      center[0] + Math.cos(angle) * radius,
-      center[1] + Math.sin(angle) * radius
-    ]
+    coordinates: [center[0] + Math.cos(angle) * radius, center[1] + Math.sin(angle) * radius]
   };
 }
 

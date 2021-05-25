@@ -2,12 +2,7 @@ import PropTypes from 'prop-types';
 import ReactMapGL from 'react-map-gl';
 import { useState, useCallback } from 'react';
 //
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen
-} from '../controls';
+import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from '../controls';
 import ControlPanel from './ControlPanel';
 
 // ----------------------------------------------------------------------
@@ -26,30 +21,18 @@ export default function MapChangeTheme({ themes, ...other }) {
     pitch: 0
   });
 
-  const handleChangeTheme = useCallback(
-    (event) => setSelectTheme(event.target.value),
-    []
-  );
+  const handleChangeTheme = useCallback((event) => setSelectTheme(event.target.value), []);
 
   return (
     <>
-      <ReactMapGL
-        {...viewport}
-        onViewportChange={setViewport}
-        mapStyle={themes[selectTheme]}
-        {...other}
-      >
+      <ReactMapGL {...viewport} onViewportChange={setViewport} mapStyle={themes[selectTheme]} {...other}>
         <MapControlScale />
         <MapControlNavigation />
         <MapControlFullscreen />
         <MapControlGeolocate />
       </ReactMapGL>
 
-      <ControlPanel
-        themes={themes}
-        selectTheme={selectTheme}
-        onChangeTheme={handleChangeTheme}
-      />
+      <ControlPanel themes={themes} selectTheme={selectTheme} onChangeTheme={handleChangeTheme} />
     </>
   );
 }

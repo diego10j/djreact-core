@@ -6,15 +6,7 @@ import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
-import {
-  Box,
-  Link,
-  Checkbox,
-  TextField,
-  IconButton,
-  InputAdornment,
-  FormControlLabel
-} from '@material-ui/core';
+import { Link, Stack, Checkbox, TextField, IconButton, InputAdornment, FormControlLabel } from '@material-ui/core';
 import { LoadingButton } from '@material-ui/lab';
 // routes
 import { PATH_AUTH } from '../../../routes/paths';
@@ -22,20 +14,16 @@ import { PATH_AUTH } from '../../../routes/paths';
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMensaje from '../../../hooks/useMensaje';
-// utils
-import { passwordError, emailError } from '../../../utils/helpError';
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const { login } = useAuth();
-  const msg = useMensaje();
   const isMountedRef = useIsMountedRef();
+  const msg = useMensaje();
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('Email must be a valid email address')
-      .required('Email is required'),
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required')
   });
 
@@ -48,33 +36,23 @@ export default function LoginForm() {
     validationSchema: LoginSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
-        await login({
-          email: values.email,
-          password: values.password
-        });
-        msg.mensajeExito('Login success');
+        await login(values.email, values.password);
         if (isMountedRef.current) {
           setSubmitting(false);
         }
       } catch (error) {
-        msg.mensajeError(error.mensaje);
+        console.error(error);
         resetForm();
         if (isMountedRef.current) {
+          msg.mensajeError(error.mensaje);
           setSubmitting(false);
-          setErrors({ afterSubmit: error.code || error.message });
+          setErrors({ afterSubmit: error.code || error.mensaje });
         }
       }
     }
   });
 
-  const {
-    errors,
-    touched,
-    values,
-    isSubmitting,
-    handleSubmit,
-    getFieldProps
-  } = formik;
+  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
@@ -83,81 +61,49 @@ export default function LoginForm() {
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <TextField
-          fullWidth
-          autoComplete="username"
-          type="email"
-          label="Email address"
-          {...getFieldProps('email')}
-          error={
-            Boolean(touched.email && errors.email) ||
-            emailError(errors.afterSubmit).error
-          }
-          helperText={
-            (touched.email && errors.email) ||
-            emailError(errors.afterSubmit).helperText
-          }
-          sx={{ mb: 3 }}
-        />
+        <Stack spacing={3}>
+          <TextField
+            fullWidth
+            autoComplete="username"
+            type="email"
+            label="Email address"
+            {...getFieldProps('email')}
+            error={Boolean(touched.email && errors.email)}
+            helperText={touched.email && errors.email}
+          />
 
-        <TextField
-          fullWidth
-          autoComplete="current-password"
-          type={showPassword ? 'text' : 'password'}
-          label="Password"
-          {...getFieldProps('password')}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment>
-                <IconButton onClick={handleShowPassword} edge="end">
-                  <Icon icon={showPassword ? eyeFill : eyeOffFill} />
-                </IconButton>
-              </InputAdornment>
-            )
-          }}
-          error={
-            Boolean(touched.password && errors.password) ||
-            passwordError(errors.afterSubmit).error
-          }
-          helperText={
-            (touched.password && errors.password) ||
-            passwordError(errors.afterSubmit).helperText
-          }
-        />
-        <Box
-          sx={{
-            my: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
+          <TextField
+            fullWidth
+            autoComplete="current-password"
+            type={showPassword ? 'text' : 'password'}
+            label="Password"
+            {...getFieldProps('password')}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleShowPassword} edge="end">
+                    <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+            error={Boolean(touched.password && errors.password)}
+            helperText={touched.password && errors.password}
+          />
+        </Stack>
+
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
           <FormControlLabel
-            control={
-              <Checkbox
-                {...getFieldProps('remember')}
-                checked={values.remember}
-              />
-            }
+            control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
             label="Remember me"
           />
 
-          <Link
-            component={RouterLink}
-            variant="subtitle2"
-            to={PATH_AUTH.resetPassword}
-          >
+          <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
             Forgot password?
           </Link>
-        </Box>
+        </Stack>
 
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          pending={isSubmitting}
-        >
+        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
           Login
         </LoadingButton>
       </Form>

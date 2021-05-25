@@ -1,67 +1,37 @@
 import PropTypes from 'prop-types';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import { TimelineDot } from '@material-ui/lab';
 
 // ----------------------------------------------------------------------
 
-const TimelineDotStyle = styled(TimelineDot)(({ theme, styleProps }) => {
-  const { color, variant } = styleProps;
+export default function MTimelineDot({ color = 'grey', variant = 'filled', sx, ...other }) {
+  const theme = useTheme();
 
-  return {
-    ...(variant === 'filled'
-      ? {
-          '&.MuiTimelineDot-filled': {
-            color: theme.palette[color].contrastText,
-            backgroundColor: theme.palette[color].main
-          }
-        }
-      : {
-          '&.MuiTimelineDot-outlined': {
-            borderColor: theme.palette[color].main
-          }
-        })
-  };
-});
-
-// ----------------------------------------------------------------------
-
-export default function MTimelineDot({
-  color = 'grey',
-  variant = 'filled',
-  ...other
-}) {
-  if (
-    color === 'grey' ||
-    color === 'inherit' ||
-    color === 'primary' ||
-    color === 'secondary'
-  ) {
-    return <TimelineDot color={color} variant={variant} {...other} />;
+  if (color === 'grey' || color === 'inherit' || color === 'primary' || color === 'secondary') {
+    return <TimelineDot color={color} variant={variant} sx={sx} {...other} />;
   }
 
   return (
-    <TimelineDotStyle
+    <TimelineDot
       variant={variant}
-      styleProps={{ color, variant }}
+      sx={{
+        ...(variant === 'filled' && {
+          color: theme.palette[color].contrastText,
+          backgroundColor: theme.palette[color].main
+        }),
+        ...(variant === 'outlined' && {
+          borderColor: theme.palette[color].main
+        }),
+        ...sx
+      }}
       {...other}
     />
   );
 }
 
 MTimelineDot.propTypes = {
-  color: PropTypes.oneOf([
-    'grey',
-    'inherit',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ]),
-  variant: PropTypes.oneOfType([
-    PropTypes.oneOf(['filled', 'outlined']),
-    PropTypes.string
-  ])
+  sx: PropTypes.object,
+  color: PropTypes.oneOf(['grey', 'inherit', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
+  variant: PropTypes.oneOfType([PropTypes.oneOf(['filled', 'outlined']), PropTypes.string])
 };

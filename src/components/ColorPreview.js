@@ -37,9 +37,7 @@ export default function ColorPreview({ colors, limit = 3, ...other }) {
         <IconStyle key={color + index} sx={{ bgcolor: color }} />
       ))}
 
-      {colors.length > limit && (
-        <Typography variant="subtitle2">{`+${moreColor}`}</Typography>
-      )}
+      {colors.length > limit && <Typography variant="subtitle2">{`+${moreColor}`}</Typography>}
     </RootStyle>
   );
 }

@@ -13,12 +13,7 @@ ButtonAnimate.propTypes = {
   sx: PropTypes.object
 };
 
-export default function ButtonAnimate({
-  mediumClick = false,
-  children,
-  sx,
-  ...other
-}) {
+export default function ButtonAnimate({ mediumClick = false, children, sx, ...other }) {
   return (
     <Box
       component={motion.div}

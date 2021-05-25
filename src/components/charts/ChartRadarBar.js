@@ -47,12 +47,5 @@ export default function ChartsRadarBar() {
     }
   });
 
-  return (
-    <ReactApexChart
-      type="radar"
-      series={CHART_DATA}
-      options={chartOptions}
-      width={540}
-    />
-  );
+  return <ReactApexChart type="radar" series={CHART_DATA} options={chartOptions} width={540} />;
 }

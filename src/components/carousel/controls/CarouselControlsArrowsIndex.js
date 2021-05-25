@@ -3,11 +3,7 @@ import { Icon } from '@iconify/react';
 import arrowLeftFill from '@iconify/icons-eva/arrow-left-fill';
 import arrowRightFill from '@iconify/icons-eva/arrow-right-fill';
 // material
-import {
-  alpha,
-  useTheme,
-  experimentalStyled as styled
-} from '@material-ui/core/styles';
+import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 //
 import { MIconButton } from '../../@material-extend';
@@ -42,24 +38,14 @@ CarouselControlsArrowsIndex.propTypes = {
   onPrevious: PropTypes.func
 };
 
-export default function CarouselControlsArrowsIndex({
-  index,
-  total,
-  onNext,
-  onPrevious,
-  ...other
-}) {
+export default function CarouselControlsArrowsIndex({ index, total, onNext, onPrevious, ...other }) {
   const theme = useTheme();
   const isRTL = theme.direction === 'rtl';
 
   return (
     <RootStyle {...other}>
       <ArrowStyle size="small" onClick={onPrevious}>
-        <Icon
-          width={20}
-          height={20}
-          icon={isRTL ? arrowRightFill : arrowLeftFill}
-        />
+        <Icon width={20} height={20} icon={isRTL ? arrowRightFill : arrowLeftFill} />
       </ArrowStyle>
 
       <Typography variant="subtitle2">
@@ -67,11 +53,7 @@ export default function CarouselControlsArrowsIndex({
       </Typography>
 
       <ArrowStyle size="small" onClick={onNext}>
-        <Icon
-          width={20}
-          height={20}
-          icon={isRTL ? arrowLeftFill : arrowRightFill}
-        />
+        <Icon width={20} height={20} icon={isRTL ? arrowLeftFill : arrowRightFill} />
       </ArrowStyle>
     </RootStyle>
   );

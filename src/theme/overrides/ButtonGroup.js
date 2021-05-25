@@ -15,6 +15,10 @@ export default function ButtonGroup(theme) {
           style: { boxShadow: theme.customShadows.primary }
         },
         {
+          props: { variant: 'contained', color: 'secondary' },
+          style: { boxShadow: theme.customShadows.secondary }
+        },
+        {
           props: { disabled: true },
           style: {
             boxShadow: 'none !important',
@@ -50,6 +54,16 @@ export default function ButtonGroup(theme) {
         },
         groupedTextPrimary: {
           borderColor: `${theme.palette.primary.main} !important`
+        },
+        groupedContainedSecondary: {
+          color: theme.palette.secondary.contrastText,
+          borderColor: `${theme.palette.secondary.dark} !important`
+        },
+        groupedOutlinedSecondary: {
+          borderColor: `${alpha(theme.palette.secondary.main, 0.48)} !important`
+        },
+        groupedTextSecondary: {
+          borderColor: `${theme.palette.secondary.main} !important`
         }
       }
     }

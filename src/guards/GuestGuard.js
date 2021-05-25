@@ -1,27 +1,21 @@
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 // hooks
 import useAuth from '../hooks/useAuth';
 // routes
 import { PATH_DASHBOARD } from '../routes/paths';
-// components
-import LoadingScreen from '../components/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
-GuestProtect.propTypes = {
+GuestGuard.propTypes = {
   children: PropTypes.node
 };
 
-export default function GuestProtect({ children }) {
-  const { isLoading, isAuthenticated } = useAuth();
-
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+export default function GuestGuard({ children }) {
+  const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
-    return <Redirect to={PATH_DASHBOARD.root} />;
+    return <Navigate to={PATH_DASHBOARD.root} />;
   }
 
   return <>{children}</>;

@@ -1,12 +1,7 @@
 import MapGL, { Source, Layer } from 'react-map-gl';
 import { useEffect, useState, useMemo } from 'react';
 //
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen
-} from '../controls';
+import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from '../controls';
 import ControlPanel from './ControlPanel';
 
 // ----------------------------------------------------------------------
@@ -48,11 +43,7 @@ function filterFeaturesByDay(featureCollection, time) {
   const day = date.getDate();
   const features = featureCollection.features.filter((feature) => {
     const featureDate = new Date(feature.properties.time);
-    return (
-      featureDate.getFullYear() === year &&
-      featureDate.getMonth() === month &&
-      featureDate.getDate() === day
-    );
+    return featureDate.getFullYear() === year && featureDate.getMonth() === month && featureDate.getDate() === day;
   });
   return { type: 'FeatureCollection', features };
 }
@@ -85,8 +76,7 @@ export default function MapHeatmap({ ...other }) {
   }, []);
 
   const data = useMemo(
-    () =>
-      allDays ? earthquakes : filterFeaturesByDay(earthquakes, selectedTime),
+    () => (allDays ? earthquakes : filterFeaturesByDay(earthquakes, selectedTime)),
     [earthquakes, allDays, selectedTime]
   );
 

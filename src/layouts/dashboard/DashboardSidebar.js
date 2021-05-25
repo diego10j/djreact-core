@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { Link as RouterLink, useLocation, matchPath } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, List, Drawer, ListSubheader } from '@material-ui/core';
+import { Box, Drawer } from '@material-ui/core';
 // components
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
+import NavSection from '../../components/NavSection';
 //
-import MenuLinks from './SidebarConfig';
-import SidebarItem from './SidebarItem';
+import sidebarConfig from './SidebarConfig';
 
 // ----------------------------------------------------------------------
 
@@ -24,58 +24,6 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-function reduceChild({ array, item, pathname, level }) {
-  const key = item.href + level;
-
-  if (item.items) {
-    const match = matchPath(pathname, {
-      path: item.href,
-      exact: false
-    });
-
-    return [
-      ...array,
-      <SidebarItem
-        key={key}
-        level={level}
-        icon={item.icon}
-        info={item.info}
-        href={item.href}
-        title={item.title}
-        open={Boolean(match)}
-      >
-        {renderSidebarItems({
-          pathname,
-          level: level + 1,
-          items: item.items
-        })}
-      </SidebarItem>
-    ];
-  }
-  return [
-    ...array,
-    <SidebarItem
-      key={key}
-      level={level}
-      href={item.href}
-      icon={item.icon}
-      info={item.info}
-      title={item.title}
-    />
-  ];
-}
-
-function renderSidebarItems({ items, pathname, level = 0 }) {
-  return (
-    <List disablePadding>
-      {items.reduce(
-        (array, item) => reduceChild({ array, item, pathname, level }),
-        []
-      )}
-    </List>
-  );
-}
-
 DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func
@@ -85,46 +33,22 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (isOpenSidebar && onCloseSidebar) {
+    if (isOpenSidebar) {
       onCloseSidebar();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderContent = (
-    <Scrollbar>
+    <Scrollbar
+      sx={{ height: '100%', '& .simplebar-content': { height: '100%', display: 'flex', flexDirection: 'column' } }}
+    >
       <Box sx={{ px: 2.5, py: 3 }}>
-        <RouterLink to="/">
+        <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
           <Logo />
-        </RouterLink>
+        </Box>
       </Box>
-
-      {MenuLinks.map((list) => (
-        <List
-          disablePadding
-          key={list.subheader}
-          subheader={
-            <ListSubheader
-              disableSticky
-              disableGutters
-              sx={{
-                mt: 3,
-                mb: 2,
-                pl: 5,
-                color: 'text.primary',
-                typography: 'overline'
-              }}
-            >
-              {list.subheader}
-            </ListSubheader>
-          }
-        >
-          {renderSidebarItems({
-            items: list.items,
-            pathname
-          })}
-        </List>
-      ))}
+      <NavSection navConfig={sidebarConfig} />
     </Scrollbar>
   );
 

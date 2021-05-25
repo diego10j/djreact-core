@@ -2,12 +2,7 @@ import PropTypes from 'prop-types';
 import { useState, useCallback } from 'react';
 import MapGL, { FlyToInterpolator } from 'react-map-gl';
 //
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen
-} from '../controls';
+import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from '../controls';
 import ControlPanel from './ControlPanel';
 
 // ----------------------------------------------------------------------
@@ -39,22 +34,13 @@ export default function MapViewportAnimation({ data, ...other }) {
 
   return (
     <>
-      <MapGL
-        {...viewport}
-        onViewportChange={setViewport}
-        dragRotate={false}
-        {...other}
-      >
+      <MapGL {...viewport} onViewportChange={setViewport} dragRotate={false} {...other}>
         <MapControlScale />
         <MapControlNavigation />
         <MapControlFullscreen />
         <MapControlGeolocate />
 
-        <ControlPanel
-          data={data}
-          selectedCity={selectedCity}
-          handleChange={handleChangeCity}
-        />
+        <ControlPanel data={data} selectedCity={selectedCity} handleChange={handleChangeCity} />
       </MapGL>
     </>
   );

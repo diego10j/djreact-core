@@ -51,14 +51,7 @@ const FONT_SIZE = [
   '84px',
   '98px'
 ];
-const HEADINGS = [
-  'Heading 1',
-  'Heading 2',
-  'Heading 3',
-  'Heading 4',
-  'Heading 5',
-  'Heading 6'
-];
+const HEADINGS = ['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5', 'Heading 6'];
 
 const Size = Quill.import('attributors/style/size');
 Size.whitelist = FONT_SIZE;
@@ -70,9 +63,7 @@ Quill.register(Font, true);
 
 const Icons = Quill.import('ui/icons');
 function renderIcon(icon) {
-  return ReactDOMServer.renderToString(
-    <Icon icon={icon} width={18} height={18} />
-  );
+  return ReactDOMServer.renderToString(<Icon icon={icon} width={18} height={18} />);
 }
 
 Icons.bold = renderIcon(roundFormatBold);
@@ -194,12 +185,8 @@ export default function QuillEditorToolbar({ id, isSimple, ...other }) {
         <div className="ql-formats">
           <button type="button" className="ql-list" value="ordered" />
           <button type="button" className="ql-list" value="bullet" />
-          {!isSimple && (
-            <button type="button" className="ql-indent" value="-1" />
-          )}
-          {!isSimple && (
-            <button type="button" className="ql-indent" value="+1" />
-          )}
+          {!isSimple && <button type="button" className="ql-indent" value="-1" />}
+          {!isSimple && <button type="button" className="ql-indent" value="+1" />}
         </div>
 
         {!isSimple && (

@@ -1,9 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 // utils
 import axios from '../../utils/axios';
-import objFromArray from '../../utils/objFromArray';
 
 // ----------------------------------------------------------------------
+
+function objFromArray(array, key = 'id') {
+  return array.reduce((accumulator, current) => {
+    accumulator[current[key]] = current;
+    return accumulator;
+  }, {});
+}
 
 const initialState = {
   isLoading: false,

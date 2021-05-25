@@ -1,10 +1,4 @@
-import {
-  varBounceOut,
-  varBounceOutUp,
-  varBounceOutDown,
-  varBounceOutLeft,
-  varBounceOutRight
-} from './BounceOut';
+import { varBounceOut, varBounceOutUp, varBounceOutDown, varBounceOutLeft, varBounceOutRight } from './BounceOut';
 
 // ----------------------------------------------------------------------
 

@@ -1,11 +1,7 @@
 import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
 // material
-import {
-  alpha,
-  experimentalStyled as styled,
-  emphasize
-} from '@material-ui/core/styles';
+import { alpha, experimentalStyled as styled, emphasize } from '@material-ui/core/styles';
 import { Chip } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
@@ -30,19 +26,13 @@ const ChipStyle = styled(Chip)(({ theme, styleProps }) => {
 
   const styleFilledClickable = (color) => ({
     '&:hover, &:focus': {
-      backgroundColor: emphasize(
-        theme.palette[color].main,
-        theme.palette.action.hoverOpacity
-      )
+      backgroundColor: emphasize(theme.palette[color].main, theme.palette.action.hoverOpacity)
     }
   });
 
   const styleFilledDeletable = (color) => ({
     '&:focus': {
-      backgroundColor: emphasize(
-        theme.palette[color].main,
-        theme.palette.action.focusOpacity
-      )
+      backgroundColor: emphasize(theme.palette[color].main, theme.palette.action.focusOpacity)
     }
   });
 
@@ -51,10 +41,7 @@ const ChipStyle = styled(Chip)(({ theme, styleProps }) => {
     color: theme.palette[color].main,
     border: `1px solid ${theme.palette[color].main}`,
     '&:focus, &.MuiChip-clickable:hover': {
-      backgroundColor: alpha(
-        theme.palette[color].main,
-        theme.palette.action.hoverOpacity
-      )
+      backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity)
     },
     '& .MuiChip-icon': { color: 'currentColor' },
     '& .MuiChip-avatar': {
@@ -83,16 +70,7 @@ const ChipStyle = styled(Chip)(({ theme, styleProps }) => {
 // ----------------------------------------------------------------------
 
 const Mchip = forwardRef(
-  (
-    {
-      color = 'default',
-      variant = 'filled',
-      clickable: clickableProp,
-      onDelete: onDeleteProp,
-      ...other
-    },
-    ref
-  ) => {
+  ({ color = 'default', variant = 'filled', clickable: clickableProp, onDelete: onDeleteProp, ...other }, ref) => {
     if (color === 'default' || color === 'primary' || color === 'secondary') {
       return (
         <Chip
@@ -127,19 +105,8 @@ const Mchip = forwardRef(
 Mchip.propTypes = {
   clickable: PropTypes.bool,
   onDelete: PropTypes.func,
-  color: PropTypes.oneOf([
-    'default',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ]),
-  variant: PropTypes.oneOfType([
-    PropTypes.oneOf(['filled', 'outlined']),
-    PropTypes.string
-  ])
+  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
+  variant: PropTypes.oneOfType([PropTypes.oneOf(['filled', 'outlined']), PropTypes.string])
 };
 
 export default Mchip;

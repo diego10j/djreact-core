@@ -1,4 +1,4 @@
-import { map, reject } from 'lodash';
+import { map, filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 // utils
 import axios from '../../utils/axios';
@@ -59,8 +59,7 @@ const slice = createSlice({
     // DELETE EVENT
     deleteEventSuccess(state, action) {
       const { eventId } = action.payload;
-      const deleteEvent = reject(state.events, { id: eventId });
-
+      const deleteEvent = filter(state.events, (user) => user.id !== eventId);
       state.isLoading = false;
       state.events = deleteEvent;
     },

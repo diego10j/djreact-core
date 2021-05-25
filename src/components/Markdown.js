@@ -1,10 +1,11 @@
-import hljs from 'highlight.js';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+// markdown plugins
+import rehypeRaw from 'rehype-raw';
+import rehypeHighlight from 'rehype-highlight';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Link } from '@material-ui/core';
+import { Link, Typography, Divider } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
@@ -12,26 +13,6 @@ const MarkdownWrapperStyle = styled('div')(({ theme }) => {
   const isLight = theme.palette.mode === 'light';
 
   return {
-    '& h1': { ...theme.typography.h1 },
-    '& h2': { ...theme.typography.h2 },
-    '& h3': { ...theme.typography.h3 },
-    '& h4': { ...theme.typography.h4 },
-    '& h5': { ...theme.typography.h5 },
-    '& h6': { ...theme.typography.h6 },
-
-    // Paragraph
-    '& p': {
-      ...theme.typography.body1,
-      lineHeight: 1.6
-    },
-
-    // Hr
-    '& hr': {
-      border: 'none',
-      margin: theme.spacing(3, 0),
-      borderTop: `1px solid ${theme.palette.divider}`
-    },
-
     // List
     '& ul, & ol': {
       ...theme.typography.body1,
@@ -94,46 +75,39 @@ const MarkdownWrapperStyle = styled('div')(({ theme }) => {
   };
 });
 
-// ----------------------------------------------------------------------
-
-CodeBlock.propTypes = {
-  value: PropTypes.string
-};
-
-function CodeBlock({ value }) {
-  useEffect(() => {
-    document.querySelectorAll('pre > code').forEach((block) => {
-      hljs.highlightElement(block);
-    });
-  }, [value]);
-
-  return (
-    <pre dir="ltr">
-      <code>{value}</code>
-    </pre>
-  );
-}
-
 LinkTo.propTypes = {
   href: PropTypes.string,
   children: PropTypes.node
 };
 
 function LinkTo({ href, children }) {
-  const isHttp = href.includes('http');
-  return (
-    <Link href={href} target={isHttp ? '_blank' : '_self'}>
+  return !href.includes('http') ? (
+    <Link href={href}>{children}</Link>
+  ) : (
+    <Link href={href} target="_blank" rel="nofollow noreferrer noopener">
       {children}
     </Link>
   );
 }
 
+// ----------------------------------------------------------------------
+
 export default function Markdown({ ...other }) {
   return (
     <MarkdownWrapperStyle>
       <ReactMarkdown
-        allowDangerousHtml
-        renderers={{ code: CodeBlock, link: LinkTo }}
+        rehypePlugins={[rehypeRaw, rehypeHighlight]}
+        components={{
+          h1: (props) => <Typography variant="h1" {...props} />,
+          h2: (props) => <Typography variant="h2" {...props} />,
+          h3: (props) => <Typography variant="h3" {...props} />,
+          h4: (props) => <Typography variant="h4" {...props} />,
+          h5: (props) => <Typography variant="h5" {...props} />,
+          h6: (props) => <Typography variant="h6" {...props} />,
+          p: (props) => <Typography variant="body1" {...props} />,
+          hr: (props) => <Divider sx={{ my: 3 }} {...props} />,
+          a: LinkTo
+        }}
         {...other}
       />
     </MarkdownWrapperStyle>

@@ -14,13 +14,7 @@ DialogAnimate.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-export default function DialogAnimate({
-  open = false,
-  animate,
-  onClose,
-  children,
-  ...other
-}) {
+export default function DialogAnimate({ open = false, animate, onClose, children, ...other }) {
   return (
     <AnimatePresence>
       {open && (

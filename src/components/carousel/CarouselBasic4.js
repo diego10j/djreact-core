@@ -5,11 +5,7 @@ import { useRef } from 'react';
 import { Icon } from '@iconify/react';
 import moreHorizontalFill from '@iconify/icons-eva/more-horizontal-fill';
 // material
-import {
-  alpha,
-  useTheme,
-  experimentalStyled as styled
-} from '@material-ui/core/styles';
+import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
 import { Box, Card, Typography } from '@material-ui/core';
 // utils
 import { mockImgFeed } from '../../utils/mockImages';
@@ -57,27 +53,18 @@ function CarouselItem({ item }) {
 
   return (
     <Box sx={{ position: 'relative', zIndex: 0 }}>
-      <Box
-        component="img"
-        alt={title}
-        src={image}
-        sx={{ width: '100%', height: 480, objectFit: 'cover' }}
-      />
+      <Box component="img" alt={title} src={image} sx={{ width: '100%', height: 480, objectFit: 'cover' }} />
 
       <ContentItemStyle>
         <Typography variant="h6" sx={{ color: 'common.white' }}>
           {item.title}
         </Typography>
         <MIconButton
-          onClick={() => console.log('123')}
+          onClick={() => {}}
           sx={{
             color: 'common.white',
             '&:hover': {
-              bgcolor: (theme) =>
-                alpha(
-                  theme.palette.common.white,
-                  theme.palette.action.hoverOpacity
-                )
+              bgcolor: (theme) => alpha(theme.palette.common.white, theme.palette.action.hoverOpacity)
             }
           }}
         >
@@ -118,10 +105,7 @@ export default function CarouselBasic4() {
           <CarouselItem key={item.title} item={item} />
         ))}
       </Slider>
-      <CarouselControlsArrowsBasic2
-        onNext={handleNext}
-        onPrevious={handlePrevious}
-      />
+      <CarouselControlsArrowsBasic2 onNext={handleNext} onPrevious={handlePrevious} />
     </Card>
   );
 }

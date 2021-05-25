@@ -1,9 +1,13 @@
+import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
-import { useCallback, useEffect } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
+import { Paper, Box, Typography } from '@material-ui/core';
+// utils
+import { fData } from '../../utils/formatNumber';
+//
+import { UploadIllustration } from '../../assets';
 
 // ----------------------------------------------------------------------
 
@@ -25,67 +29,54 @@ const DropZoneStyle = styled('div')(({ theme }) => ({
     opacity: 0.72,
     cursor: 'pointer'
   },
-  [theme.breakpoints.up('md')]: {
-    textAlign: 'left',
-    flexDirection: 'row'
-  }
+  [theme.breakpoints.up('md')]: { textAlign: 'left', flexDirection: 'row' }
 }));
 
 // ----------------------------------------------------------------------
 
 UploadSingleFile.propTypes = {
-  caption: PropTypes.string,
   error: PropTypes.bool,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  onChange: PropTypes.func,
+  file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   sx: PropTypes.object
 };
 
-export default function UploadSingleFile({
-  caption,
-  error = false,
-  value: file,
-  onChange: setFile,
-  sx,
-  ...other
-}) {
-  const handleDrop = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-
-      if (file) {
-        setFile({
-          ...file,
-          size: file.size,
-          type: file.type,
-          preview: URL.createObjectURL(file)
-        });
-      }
-    },
-    [setFile]
-  );
-
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragReject
-  } = useDropzone({
-    onDrop: handleDrop,
-    multiple: false
+export default function UploadSingleFile({ error, file, sx, ...other }) {
+  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+    multiple: false,
+    ...other
   });
 
-  useEffect(
-    () => () => {
-      if (file) {
-        URL.revokeObjectURL(file.preview);
-      }
-    },
-    [file]
+  const ShowRejectionItems = () => (
+    <Paper
+      variant="outlined"
+      sx={{
+        py: 1,
+        px: 2,
+        mt: 3,
+        borderColor: 'error.light',
+        bgcolor: (theme) => alpha(theme.palette.error.main, 0.08)
+      }}
+    >
+      {fileRejections.map(({ file, errors }) => {
+        const { path, size } = file;
+        return (
+          <Box key={path} sx={{ my: 1 }}>
+            <Typography variant="subtitle2" noWrap>
+              {path} - {fData(size)}
+            </Typography>
+            {errors.map((e) => (
+              <Typography key={e.code} variant="caption" component="p">
+                - {e.message}
+              </Typography>
+            ))}
+          </Box>
+        );
+      })}
+    </Paper>
   );
 
   return (
-    <Box sx={{ width: '100%', ...sx }} {...other}>
+    <Box sx={{ width: '100%', ...sx }}>
       <DropZoneStyle
         {...getRootProps()}
         sx={{
@@ -100,42 +91,27 @@ export default function UploadSingleFile({
       >
         <input {...getInputProps()} />
 
-        <Box
-          component="img"
-          alt="select file"
-          src="/static/illustrations/illustration_upload.svg"
-          sx={{ height: 160 }}
-        />
+        <UploadIllustration sx={{ width: 220 }} />
 
         <Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography gutterBottom variant="h5">
             Drop or Select file
           </Typography>
 
-          {caption ? (
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {caption}
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Drop files here or click&nbsp;
+            <Typography variant="body2" component="span" sx={{ color: 'primary.main' }}>
+              browse
             </Typography>
-          ) : (
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Drop files here or click&nbsp;
-              <Typography
-                variant="body2"
-                component="span"
-                sx={{ color: 'primary.main' }}
-              >
-                browse
-              </Typography>
-              &nbsp;thorough your machine
-            </Typography>
-          )}
+            &nbsp;thorough your machine
+          </Typography>
         </Box>
 
         {file && (
           <Box
             component="img"
             alt="file preview"
-            src={file.preview}
+            src={isString(file) ? file : file.preview}
             sx={{
               top: 8,
               borderRadius: 1,
@@ -147,6 +123,8 @@ export default function UploadSingleFile({
           />
         )}
       </DropZoneStyle>
+
+      {fileRejections.length > 0 && <ShowRejectionItems />}
     </Box>
   );
 }

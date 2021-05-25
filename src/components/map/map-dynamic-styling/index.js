@@ -1,12 +1,7 @@
 import MapGL from 'react-map-gl';
 import { useState } from 'react';
 //
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen
-} from '../controls';
+import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from '../controls';
 import ControlPanel from './ControlPanel';
 
 // ----------------------------------------------------------------------
@@ -23,12 +18,7 @@ export default function MapDynamicStyling({ ...other }) {
 
   return (
     <>
-      <MapGL
-        {...viewport}
-        mapStyle={mapStyle}
-        onViewportChange={setViewport}
-        {...other}
-      >
+      <MapGL {...viewport} mapStyle={mapStyle} onViewportChange={setViewport} {...other}>
         <MapControlScale />
         <MapControlNavigation />
         <MapControlFullscreen />

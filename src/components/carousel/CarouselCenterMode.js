@@ -1,16 +1,12 @@
 import faker from 'faker';
+import { useRef } from 'react';
 import Slider from 'react-slick';
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
 import { Icon } from '@iconify/react';
 import { Link as RouterLink } from 'react-router-dom';
 import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
 // material
-import {
-  alpha,
-  useTheme,
-  experimentalStyled as styled
-} from '@material-ui/core/styles';
+import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
 import { Box, Paper, Link, Typography, CardContent } from '@material-ui/core';
 // utils
 import { mockImgFeed } from '../../utils/mockImages';
@@ -40,8 +36,7 @@ const RootStyle = styled('div')(({ theme }) => ({
     height: '100%',
     display: 'none',
     position: 'absolute',
-    backgroundImage:
-      'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)',
+    backgroundImage: 'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%)',
     [theme.breakpoints.up(480)]: {
       display: 'block'
     }
@@ -95,10 +90,7 @@ function CarouselItem({ item }) {
           position: 'absolute',
           color: 'common.white',
           backgroundImage: (theme) =>
-            `linear-gradient(to top, ${theme.palette.grey[900]} 0%,${alpha(
-              theme.palette.grey[900],
-              0
-            )} 100%)`
+            `linear-gradient(to top, ${theme.palette.grey[900]} 0%,${alpha(theme.palette.grey[900], 0)} 100%)`
         }}
       >
         <Typography variant="h4" paragraph>
@@ -118,11 +110,7 @@ function CarouselItem({ item }) {
           }}
         >
           learn More
-          <Box
-            component={Icon}
-            icon={arrowForwardFill}
-            sx={{ width: 16, height: 16, ml: 1 }}
-          />
+          <Box component={Icon} icon={arrowForwardFill} sx={{ width: 16, height: 16, ml: 1 }} />
         </Link>
       </CardContent>
     </Paper>
@@ -170,10 +158,7 @@ export default function CarouselCenterMode() {
           <CarouselItem key={item.title} item={item} />
         ))}
       </Slider>
-      <CarouselControlsArrowsBasic2
-        onNext={handleNext}
-        onPrevious={handlePrevious}
-      />
+      <CarouselControlsArrowsBasic2 onNext={handleNext} onPrevious={handlePrevious} />
     </RootStyle>
   );
 }

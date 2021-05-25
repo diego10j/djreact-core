@@ -15,6 +15,18 @@ export default function Stepper(theme) {
           borderColor: theme.palette.divider
         }
       }
+    },
+    MuiStepLabel: {
+      styleOverrides: {
+        iconContainer: {
+          '& .MuiStepIcon-text': {
+            fill: theme.palette.common.white
+          },
+          '& .MuiStepIcon-root:not(.Mui-active)': {
+            fill: theme.palette.text.disabled
+          }
+        }
+      }
     }
   };
 }

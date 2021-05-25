@@ -45,14 +45,7 @@ export function ComboLectura({ value: initialValue, cell: column, combos }) {
     }
   }, [combos]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
-    <>
-      {
-        listaCombo.find((element) => element.value === String(initialValue))
-          ?.label
-      }
-    </>
-  );
+  return <>{listaCombo.find((element) => element.value === String(initialValue))?.label}</>;
 }
 
 ComboLectura.propTypes = {

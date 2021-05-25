@@ -5,11 +5,7 @@ import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import smilingFaceFill from '@iconify/icons-eva/smiling-face-fill';
 // material
-import {
-  alpha,
-  useTheme,
-  experimentalStyled as styled
-} from '@material-ui/core/styles';
+import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
 import { IconButton, ClickAwayListener } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
@@ -78,13 +74,7 @@ EmojiPicker.propTypes = {
   alignRight: PropTypes.bool
 };
 
-export default function EmojiPicker({
-  disabled,
-  value,
-  setValue,
-  alignRight = false,
-  ...other
-}) {
+export default function EmojiPicker({ disabled, value, setValue, alignRight = false, ...other }) {
   const theme = useTheme();
   const [emojiPickerState, SetEmojiPicker] = useState(false);
 

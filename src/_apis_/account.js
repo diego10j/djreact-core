@@ -1,9 +1,9 @@
 import faker from 'faker';
-import jwt from 'jsonwebtoken';
 // utils
-import mock from '../utils/mock';
-import { codes } from '../utils/helpError';
 import fakeRequest from '../utils/fakeRequest';
+import { verify, sign } from '../utils/jwt';
+//
+import mock from './mock';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ const users = [
     state: 'California',
     city: 'San Francisco',
     zipCode: '94116',
-    about: '',
+    about: faker.lorem.paragraphs(),
     role: 'admin',
     isPublic: true
   }
@@ -34,18 +34,19 @@ const users = [
 mock.onPost('/api/account/login').reply(async (config) => {
   try {
     await fakeRequest(1000);
+
     const { email, password } = JSON.parse(config.data);
     const user = users.find((_user) => _user.email === email);
 
     if (!user) {
-      return [400, { message: codes.userNotFound.code }];
+      return [400, { message: 'There is no user corresponding to the email address.' }];
     }
 
     if (user.password !== password) {
-      return [400, { message: codes.wrongPassword.code }];
+      return [400, { message: 'Wrong password' }];
     }
 
-    const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+    const accessToken = sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: JWT_EXPIRES_IN
     });
 
@@ -66,7 +67,7 @@ mock.onPost('/api/account/register').reply(async (config) => {
     let user = users.find((_user) => _user.email === email);
 
     if (user) {
-      return [400, { message: codes.emailAlreadyinUse.code }];
+      return [400, { message: 'There already exists an account with the given email address.' }];
     }
 
     user = {
@@ -86,7 +87,7 @@ mock.onPost('/api/account/register').reply(async (config) => {
       isPublic: true
     };
 
-    const accessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+    const accessToken = sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: JWT_EXPIRES_IN
     });
 
@@ -108,7 +109,7 @@ mock.onGet('/api/account/my-account').reply((config) => {
     }
 
     const accessToken = Authorization.split(' ')[1];
-    const { userId } = jwt.verify(accessToken, JWT_SECRET);
+    const { userId } = verify(accessToken, JWT_SECRET);
     const user = users.find((_user) => _user.id === userId);
 
     if (!user) {

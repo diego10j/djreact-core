@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Skeleton } from '@material-ui/core';
-import withWidth from '@material-ui/core/withWidth';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const SkeletonTabla = ({ filasPorPagina, width }) => {
-  const numColumnas =
-    (width === 'xl' && 6) ||
-    (width === 'lg' && 4) ||
-    (width === 'md' && 3) ||
-    2;
+const SkeletonTabla = ({ filasPorPagina }) => {
+  const width = useWidth();
+
+  const numColumnas = (width === 'xl' && 6) || (width === 'lg' && 4) || (width === 'md' && 3) || 2;
   return (
     <>
       <Grid container spacing={1}>
@@ -39,8 +38,24 @@ const SkeletonTabla = ({ filasPorPagina, width }) => {
   );
 };
 SkeletonTabla.propTypes = {
-  filasPorPagina: PropTypes.number.isRequired,
-  width: PropTypes.string.isRequired
+  filasPorPagina: PropTypes.number.isRequired
 };
 
-export default withWidth()(SkeletonTabla);
+export default SkeletonTabla;
+
+/**
+ * Be careful using this hook. It only works because the number of
+ * breakpoints in theme is static. It will break once you change the number of
+ * breakpoints. See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
+ */
+function useWidth() {
+  const theme = useTheme();
+  const keys = [...theme.breakpoints.keys].reverse();
+  return (
+    keys.reduce((output, key) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const matches = useMediaQuery(theme.breakpoints.up(key));
+      return !output && matches ? key : output;
+    }, null) || 'xs'
+  );
+}

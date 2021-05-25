@@ -31,14 +31,7 @@ ControlPanel.propTypes = {
   onChangeAllDays: PropTypes.func
 };
 
-export default function ControlPanel({
-  startTime,
-  endTime,
-  allDays,
-  selectedTime,
-  onChangeTime,
-  onChangeAllDays
-}) {
+export default function ControlPanel({ startTime, endTime, allDays, selectedTime, onChangeTime, onChangeAllDays }) {
   const day = 24 * 60 * 60 * 1000;
   const days = Math.round((endTime - startTime) / day);
   const selectedDay = Math.round((selectedTime - startTime) / day);
@@ -62,28 +55,13 @@ export default function ControlPanel({
         <Typography variant="subtitle2" sx={{ color: 'common.white' }}>
           All Days
         </Typography>
-        <Switch
-          size="small"
-          checked={allDays}
-          onChange={(event) => onChangeAllDays(event.target.checked)}
-        />
+        <Switch size="small" checked={allDays} onChange={(event) => onChangeAllDays(event.target.checked)} />
       </Box>
       <br />
-      <Typography
-        gutterBottom
-        variant="body2"
-        sx={{ color: allDays ? 'text.disabled' : 'common.white' }}
-      >
+      <Typography gutterBottom variant="body2" sx={{ color: allDays ? 'text.disabled' : 'common.white' }}>
         Each Day: {fDate(selectedTime)}
       </Typography>
-      <Slider
-        min={1}
-        step={1}
-        max={days}
-        disabled={allDays}
-        value={selectedDay}
-        onChange={handleChangeDays}
-      />
+      <Slider min={1} step={1} max={days} disabled={allDays} value={selectedDay} onChange={handleChangeDays} />
     </RootStyle>
   );
 }

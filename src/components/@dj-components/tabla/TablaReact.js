@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // react-table
-import {
-  useGlobalFilter,
-  usePagination,
-  useSortBy,
-  useFilters,
-  useRowSelect,
-  useTable
-} from 'react-table';
+import { useGlobalFilter, usePagination, useSortBy, useFilters, useRowSelect, useTable } from 'react-table';
 // componentes
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -22,12 +15,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
-import {
-  withStyles,
-  makeStyles,
-  createStyles,
-  experimentalStyled as styled
-} from '@material-ui/core/styles';
+import { withStyles, makeStyles, experimentalStyled as styled, useTheme, alpha } from '@material-ui/core/styles';
 import Scrollbar from '../../Scrollbar';
 import ToolbarTabla from './ToolbarTabla';
 import { DefaultColumnFilter } from './FiltrosTabla';
@@ -35,17 +23,15 @@ import TablePaginationActions from './PaginationTabla';
 import SkeletonTabla from './SkeletonTabla';
 import FilaEditable from './FilaEditable';
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      color: theme.palette.primary.main,
-      position: 'absolute',
-      zIndex: theme.zIndex.drawer + 1,
-      opacity: '0.6 !important',
-      transition: 'none !important'
-    }
-  })
-);
+const useStyles = makeStyles((theme) => ({
+  root: {
+    color: theme.palette.primary.main,
+    position: 'absolute',
+    zIndex: theme.zIndex.drawer + 1,
+    opacity: '0.6 !important',
+    transition: 'none !important'
+  }
+}));
 
 // Estilos
 const StyledDiv = styled('div')(({ theme }) => ({
@@ -133,6 +119,8 @@ export default function TablaReact({
   updateMyData,
   skipPageReset
 }) {
+  const theme = useTheme();
+
   const [columnaSeleccionada, setColumnaSeleccionada] = useState();
 
   useEffect(() => {
@@ -150,9 +138,7 @@ export default function TablaReact({
         rows.filter((row) => {
           const rowValue = row.values[id];
           return rowValue !== undefined
-            ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
+            ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
             : true;
         });
       }
@@ -274,9 +260,7 @@ export default function TablaReact({
                       key={index}
                       {...row.getRowProps({
                         style: {
-                          backgroundColor: row.isSelected
-                            ? 'rgba(45, 182, 150, 0.16)'
-                            : ''
+                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.48) : ''
                         },
                         onClick: () => {
                           toggleAllRowsSelected(false);
@@ -288,9 +272,7 @@ export default function TablaReact({
                       {!row.isSelected ? (
                         row.cells.map((cell, index) => (
                           <StyledTableCellBody
-                            onClick={() =>
-                              setColumnaSeleccionada(cell.column.nombre)
-                            }
+                            onClick={() => setColumnaSeleccionada(cell.column.nombre)}
                             size="small"
                             padding="none"
                             align={cell.column.alinear}
@@ -337,9 +319,7 @@ export default function TablaReact({
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           ActionsComponent={TablePaginationActions}
-          labelDisplayedRows={({ from, to, count }) =>
-            `${from}-${to} de ${count} filas`
-          }
+          labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count} filas`}
         />
       )}
     </StyledDiv>

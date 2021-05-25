@@ -24,7 +24,7 @@ or
 yarn start
 ```
 
-## 2.Build
+## 3.Build
 
 ```sh
 npm run build or yarn build

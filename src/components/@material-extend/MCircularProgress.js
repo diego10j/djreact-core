@@ -25,13 +25,5 @@ export default function MCircularProgress({ color = 'primary', sx, ...other }) {
 
 MCircularProgress.propTypes = {
   sx: PropTypes.object,
-  color: PropTypes.oneOf([
-    'inherit',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ])
+  color: PropTypes.oneOf(['inherit', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 };

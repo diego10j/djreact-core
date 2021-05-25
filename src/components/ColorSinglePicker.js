@@ -75,8 +75,7 @@ export default function ColorSinglePicker({ colors, ...other }) {
                   '& svg': { width: 12, height: 12, color: 'common.white' },
                   ...(isWhite && {
                     border: (theme) => `solid 1px ${theme.palette.divider}`,
-                    boxShadow: (theme) =>
-                      `4px 4px 8px 0 ${theme.palette.grey[500_24]}`,
+                    boxShadow: (theme) => `4px 4px 8px 0 ${theme.palette.grey[500_24]}`,
                     '& svg': { width: 12, height: 12, color: 'common.black' }
                   })
                 }}

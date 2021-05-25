@@ -27,11 +27,10 @@ export default function MLinearProgress({ color = 'primary', sx, ...other }) {
         '& .MuiLinearProgress-dashed': {
           backgroundImage: gradientDashed(theme.palette[color].main)
         },
-        '&.MuiLinearProgress-indeterminate, &.MuiLinearProgress-determinate, & .MuiLinearProgress-bar2Buffer, &.MuiLinearProgress-query': {
-          bgcolor: isLight
-            ? theme.palette[color].lighter
-            : theme.palette[color].darker
-        },
+        '&.MuiLinearProgress-indeterminate, &.MuiLinearProgress-determinate, & .MuiLinearProgress-bar2Buffer, &.MuiLinearProgress-query':
+          {
+            bgcolor: isLight ? theme.palette[color].lighter : theme.palette[color].darker
+          },
         ...sx
       }}
       {...other}
@@ -41,13 +40,5 @@ export default function MLinearProgress({ color = 'primary', sx, ...other }) {
 
 MLinearProgress.propTypes = {
   sx: PropTypes.object,
-  color: PropTypes.oneOf([
-    'inherit',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ])
+  color: PropTypes.oneOf(['inherit', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 };

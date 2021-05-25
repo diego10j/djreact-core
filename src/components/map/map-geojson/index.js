@@ -6,12 +6,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useTheme, alpha } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
 //
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen
-} from '../controls';
+import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from '../controls';
 import ControlPanel from './ControlPanel';
 
 // ----------------------------------------------------------------------
@@ -70,9 +65,7 @@ export default function MapGeojson({ ...other }) {
   };
 
   useEffect(() => {
-    fetch(
-      'https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson'
-    )
+    fetch('https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/us-income.geojson')
       .then((resp) => resp.json())
       .then((json) => setAllData(json));
   }, []);
@@ -95,21 +88,11 @@ export default function MapGeojson({ ...other }) {
     );
   }, []);
 
-  const data = useMemo(
-    () =>
-      allData && updatePercentiles(allData, (f) => f.properties.income[year]),
-    [allData, year]
-  );
+  const data = useMemo(() => allData && updatePercentiles(allData, (f) => f.properties.income[year]), [allData, year]);
 
   return (
     <>
-      <MapGL
-        {...viewport}
-        onViewportChange={setViewport}
-        interactiveLayerIds={['data']}
-        onHover={onHover}
-        {...other}
-      >
+      <MapGL {...viewport} onViewportChange={setViewport} interactiveLayerIds={['data']} onHover={onHover} {...other}>
         <MapControlScale />
         <MapControlNavigation />
         <MapControlFullscreen />
@@ -147,10 +130,7 @@ export default function MapGeojson({ ...other }) {
         )}
       </MapGL>
 
-      <ControlPanel
-        year={year}
-        onChange={(event) => setYear(event.target.value)}
-      />
+      <ControlPanel year={year} onChange={(event) => setYear(event.target.value)} />
     </>
   );
 }

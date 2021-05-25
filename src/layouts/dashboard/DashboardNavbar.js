@@ -3,11 +3,12 @@ import { Icon } from '@iconify/react';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
 import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { Box, Stack, AppBar, Toolbar, IconButton } from '@material-ui/core';
+// components
+import Settings from '../../components/settings';
 //
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
-import Settings from '../../components/settings';
 
 // ----------------------------------------------------------------------
 
@@ -43,28 +44,15 @@ export default function DashboardNavbar({ onOpenSidebar }) {
   return (
     <RootStyle>
       <ToolbarStyle>
-        <IconButton
-          onClick={onOpenSidebar}
-          sx={{ mr: 1, color: 'text.primary' }}
-        >
+        <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
           <Icon icon={menu2Fill} />
         </IconButton>
-
         <Box sx={{ flexGrow: 1 }} />
-
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            '& > *:not(:first-of-type)': {
-              ml: { xs: 1.5, sm: 2, lg: 3 }
-            }
-          }}
-        >
+        <Stack direction="row" spacing={{ xs: 0.5, sm: 1.5 }}>
           <Settings />
           <NotificationsPopover />
           <AccountPopover />
-        </Box>
+        </Stack>
       </ToolbarStyle>
     </RootStyle>
   );

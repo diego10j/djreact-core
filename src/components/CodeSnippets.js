@@ -3,13 +3,7 @@ import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import codeFill from '@iconify/icons-eva/code-fill';
 // material
-import {
-  Box,
-  Tooltip,
-  IconButton,
-  DialogTitle,
-  DialogContent
-} from '@material-ui/core';
+import { Box, Tooltip, IconButton, DialogTitle, DialogContent } from '@material-ui/core';
 //
 import Markdown from './Markdown';
 import { DialogAnimate } from './animate';
@@ -41,16 +35,10 @@ export default function CodeSnippets({ source, title, sx }) {
         </IconButton>
       </Tooltip>
 
-      <DialogAnimate
-        fullWidth
-        open={open}
-        maxWidth="md"
-        scroll="paper"
-        onClose={() => setOpen(false)}
-      >
+      <DialogAnimate fullWidth open={open} maxWidth="md" scroll="paper" onClose={() => setOpen(false)}>
         {title && <DialogTitle>{title}</DialogTitle>}
         <DialogContent>
-          <Markdown source={source} />
+          <Markdown children={source} />
         </DialogContent>
       </DialogAnimate>
     </Box>

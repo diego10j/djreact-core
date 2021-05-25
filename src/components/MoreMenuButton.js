@@ -6,13 +6,7 @@ import downloadFill from '@iconify/icons-eva/download-fill';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 import filePdfFilled from '@iconify/icons-ant-design/file-pdf-filled';
 // material
-import {
-  Menu,
-  MenuItem,
-  IconButton,
-  ListItemIcon,
-  ListItemText
-} from '@material-ui/core';
+import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
@@ -64,18 +58,11 @@ export default function MoreMenuButton() {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         {OPTIONS.map((item) => (
-          <MenuItem
-            key={item.text}
-            onClick={item.action}
-            sx={{ color: 'text.secondary' }}
-          >
+          <MenuItem key={item.text} onClick={item.action} sx={{ color: 'text.secondary' }}>
             <ListItemIcon>
               <Icon icon={item.icon} width={24} height={24} />
             </ListItemIcon>
-            <ListItemText
-              primary={item.text}
-              primaryTypographyProps={{ variant: 'body2' }}
-            />
+            <ListItemText primary={item.text} primaryTypographyProps={{ variant: 'body2' }} />
           </MenuItem>
         ))}
       </Menu>

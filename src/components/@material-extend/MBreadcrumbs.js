@@ -6,17 +6,7 @@ import { Typography, Box, Link, Breadcrumbs } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
-const Separator = (
-  <Box
-    component="span"
-    sx={{
-      width: 4,
-      height: 4,
-      borderRadius: '50%',
-      bgcolor: 'text.disabled'
-    }}
-  />
-);
+const Separator = <Box component="span" sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: 'text.disabled' }} />;
 
 LinkItem.propTypes = {
   link: PropTypes.object
@@ -61,9 +51,7 @@ MBreadcrumbs.propTypes = {
 export default function MBreadcrumbs({ links, activeLast = false, ...other }) {
   const currentLink = last(links).name;
 
-  const listDefault = links.map((link) => (
-    <LinkItem key={link.name} link={link} />
-  ));
+  const listDefault = links.map((link) => <LinkItem key={link.name} link={link} />);
   const listActiveLast = links.map((link) => (
     <div key={link.name}>
       {link.name !== currentLink ? (

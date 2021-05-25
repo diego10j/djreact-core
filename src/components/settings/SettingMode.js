@@ -1,28 +1,24 @@
+import { Icon } from '@iconify/react';
+import moonFill from '@iconify/icons-eva/moon-fill';
+import sunFill from '@iconify/icons-eva/sun-fill';
 // material
-import {
-  Box,
-  Grid,
-  Radio,
-  Paper,
-  RadioGroup,
-  CardActionArea,
-  FormControlLabel
-} from '@material-ui/core';
+import { Box, Grid, Radio, Paper, RadioGroup, CardActionArea, FormControlLabel } from '@material-ui/core';
 // hooks
 import useSettings from '../../hooks/useSettings';
 
 // ----------------------------------------------------------------------
 
 export default function SettingMode() {
-  const { themeMode, selectMode } = useSettings();
+  const { themeMode, onChangeMode } = useSettings();
 
   return (
-    <RadioGroup name="themeMode" value={themeMode} onChange={selectMode}>
+    <RadioGroup name="themeMode" value={themeMode} onChange={onChangeMode}>
       <Grid container spacing={2.5} dir="ltr">
-        {['light', 'dark'].map((mode) => (
+        {['light', 'dark'].map((mode, index) => (
           <Grid item xs={6} key={mode}>
             <Paper
               sx={{
+                width: 1,
                 zIndex: 0,
                 overflow: 'hidden',
                 position: 'relative',
@@ -32,61 +28,35 @@ export default function SettingMode() {
                 })
               }}
             >
-              <CardActionArea>
-                <Box sx={{ pt: 2, pb: 1, px: 1.5, mb: 3 }}>
-                  {[40, 28, 16].map((size, index) => (
-                    <Box
-                      key={size}
-                      sx={{
-                        mb: 0.75,
-                        height: size,
-                        borderRadius: 0.75,
-                        backgroundColor:
-                          themeMode === mode ? 'primary.main' : 'grey.500',
-                        ...(index === 0 && { opacity: 0.64 }),
-                        ...(index === 1 && { opacity: 0.32 }),
-                        ...(index === 2 && { opacity: 0.16 })
-                      }}
-                    />
-                  ))}
-                </Box>
+              <CardActionArea sx={{ color: 'primary.main' }}>
                 <Box
                   sx={{
-                    mb: 1,
-                    mx: 'auto',
-                    height: 4,
-                    width: '32%',
-                    borderRadius: 1,
-                    backgroundColor: 'grey.50032'
+                    py: 4,
+                    display: 'flex',
+                    color: 'text.disabled',
+                    justifyContent: 'center',
+                    ...(themeMode === mode && {
+                      color: 'primary.main'
+                    })
                   }}
-                />
+                >
+                  <Icon icon={index === 0 ? sunFill : moonFill} width={24} height={24} />
+                </Box>
+
                 <FormControlLabel
-                  label={null}
+                  label=""
                   value={mode}
-                  control={<Radio />}
+                  control={<Radio sx={{ display: 'none' }} />}
                   sx={{
                     top: 0,
                     margin: 0,
                     width: '100%',
                     height: '100%',
-                    position: 'absolute',
-                    '& .MuiRadio-root': { display: 'none' }
+                    position: 'absolute'
                   }}
                 />
               </CardActionArea>
             </Paper>
-            <Box
-              sx={{
-                mt: 2,
-                mx: 'auto',
-                borderRadius: '50%',
-                backgroundColor: 'primary.main',
-                ...(themeMode === mode && {
-                  width: 10,
-                  height: 10
-                })
-              }}
-            />
           </Grid>
         ))}
       </Grid>

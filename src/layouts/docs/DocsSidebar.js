@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation, Link as RouterLink } from 'react-router-dom';
-
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { List, Box, Drawer, Hidden, ListSubheader } from '@material-ui/core';
+import { Box, Drawer } from '@material-ui/core';
 // components
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
+import NavSection from '../../components/NavSection';
+import { MHidden } from '../../components/@material-extend';
 //
-import NavItem from './SidebarItem';
-import menuLists from './SidebarConfig';
+import sidebarConfig from './SidebarConfig';
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ export default function DocsSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (isOpenSidebar && onCloseSidebar) {
+    if (isOpenSidebar) {
       onCloseSidebar();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,50 +43,34 @@ export default function DocsSidebar({ isOpenSidebar, onCloseSidebar }) {
   const renderContent = (
     <Scrollbar>
       <Box sx={{ p: 1, pb: 5 }}>
-        <Hidden mdUp>
+        <MHidden width="mdUp">
           <Box sx={{ px: 2, py: 3 }}>
             <RouterLink to="/">
               <Logo />
             </RouterLink>
           </Box>
-        </Hidden>
+        </MHidden>
 
-        {menuLists.map((list) => (
-          <List
-            disablePadding
-            key={list.subheader}
-            subheader={
-              <ListSubheader
-                disableSticky
-                disableGutters
-                sx={{
-                  pl: 2,
-                  height: 44,
-                  display: 'flex',
-                  alignItems: 'center',
-                  color: 'text.primary',
-                  typography: 'overline'
-                }}
-              >
-                {list.subheader}
-              </ListSubheader>
-            }
-            sx={{
-              '&:not(:last-of-type)': { mb: 5 }
-            }}
-          >
-            {list.items.map((item) => (
-              <NavItem key={item.title} link={item} />
-            ))}
-          </List>
-        ))}
+        <NavSection
+          navConfig={sidebarConfig}
+          sx={{
+            '& .MuiListSubheader-root': { pl: 2 },
+            '& .MuiListItem-root': {
+              pl: 2,
+              height: 44,
+              borderRadius: 1,
+              '&:before': { display: 'none' }
+            },
+            '& .MuiListItemIcon-root': { display: 'none' }
+          }}
+        />
       </Box>
     </Scrollbar>
   );
 
   return (
     <RootStyle>
-      <Hidden mdUp>
+      <MHidden width="mdUp">
         <Drawer
           open={isOpenSidebar}
           onClose={onCloseSidebar}
@@ -96,9 +80,9 @@ export default function DocsSidebar({ isOpenSidebar, onCloseSidebar }) {
         >
           {renderContent}
         </Drawer>
-      </Hidden>
+      </MHidden>
 
-      <Hidden mdDown>
+      <MHidden width="mdDown">
         <Drawer
           open
           variant="permanent"
@@ -108,7 +92,7 @@ export default function DocsSidebar({ isOpenSidebar, onCloseSidebar }) {
         >
           <Box sx={{ pt: 10, height: '100%' }}>{renderContent}</Box>
         </Drawer>
-      </Hidden>
+      </MHidden>
     </RootStyle>
   );
 }

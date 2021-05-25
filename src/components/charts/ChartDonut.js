@@ -15,12 +15,5 @@ export default function ChartDonut() {
     plotOptions: { pie: { donut: { size: '90%' } } }
   });
 
-  return (
-    <ReactApexChart
-      type="donut"
-      series={CHART_DATA}
-      options={chartOptions}
-      width={400}
-    />
-  );
+  return <ReactApexChart type="donut" series={CHART_DATA} options={chartOptions} width={400} />;
 }

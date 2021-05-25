@@ -2,12 +2,7 @@ import bbox from '@turf/bbox';
 import { useState } from 'react';
 import MapGL, { LinearInterpolator, WebMercatorViewport } from 'react-map-gl';
 //
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen
-} from './controls';
+import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from './controls';
 import MAP_STYLE from './assets/map-style-basic-v8.json';
 
 // ----------------------------------------------------------------------
@@ -20,8 +15,7 @@ const mapStyle = {
 
 mapStyle.sources['sf-neighborhoods'] = {
   type: 'geojson',
-  data:
-    'https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/feature-example-sf.json'
+  data: 'https://raw.githubusercontent.com/uber/react-map-gl/master/examples/.data/feature-example-sf.json'
 };
 
 mapStyle.layers.push(

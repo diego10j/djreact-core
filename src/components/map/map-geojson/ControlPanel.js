@@ -31,15 +31,7 @@ export default function ControlPanel({ year, onChange, ...other }) {
       <Typography variant="body2" sx={{ color: 'common.white' }}>
         Year: {year}
       </Typography>
-      <Slider
-        name="year"
-        value={year}
-        step={1}
-        min={1995}
-        max={2015}
-        onChange={onChange}
-        {...other}
-      />
+      <Slider name="year" value={year} step={1} min={1995} max={2015} onChange={onChange} {...other} />
     </RootStyle>
   );
 }

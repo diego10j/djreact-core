@@ -2,12 +2,7 @@ import MapGL from 'react-map-gl';
 import { useState } from 'react';
 import DeckGL, { ArcLayer } from 'deck.gl';
 //
-import {
-  MapControlScale,
-  MapControlGeolocate,
-  MapControlNavigation,
-  MapControlFullscreen
-} from './controls';
+import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from './controls';
 
 // ----------------------------------------------------------------------
 
@@ -22,12 +17,7 @@ export default function MapDeckglOverlay({ ...other }) {
 
   return (
     <>
-      <MapGL
-        {...viewport}
-        onViewportChange={setViewport}
-        maxPitch={85}
-        {...other}
-      >
+      <MapGL {...viewport} onViewportChange={setViewport} maxPitch={85} {...other}>
         <MapControlScale />
         <MapControlNavigation />
         <MapControlFullscreen />

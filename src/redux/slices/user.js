@@ -1,4 +1,4 @@
-import { map } from 'lodash';
+import { map, filter } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 // utils
 import axios from '../../utils/axios';
@@ -52,6 +52,12 @@ const slice = createSlice({
     getUsersSuccess(state, action) {
       state.isLoading = false;
       state.users = action.payload;
+    },
+
+    // DELETE USERS
+    deleteUser(state, action) {
+      const deleteUser = filter(state.userList, (user) => user.id !== action.payload);
+      state.userList = deleteUser;
     },
 
     // GET FOLLOWERS
@@ -125,7 +131,7 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Actions
-export const { onToggleFollow } = slice.actions;
+export const { onToggleFollow, deleteUser } = slice.actions;
 
 // ----------------------------------------------------------------------
 
@@ -133,24 +139,8 @@ export function getProfile() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const profile = {
-        id: `fc68bad5-d430-4033-b8f8-4bc069dc0ba0-1`,
-        cover: '/static/mock-images/covers/cover_1.jpg',
-        position: 'UI Designer',
-        follower: 1234,
-        following: 45678,
-        quote:
-          'Tart I love sugar plum I love oat cake. Sweet roll caramels I love jujubes. Topping cake wafer..',
-        country: 'Ecuador',
-        email: 'diego10j.89@hotmail.com',
-        company: 'ProduApps',
-        school: 'Universidad',
-        facebookLink: `https://www.facebook.com/caitlyn.kerluke`,
-        instagramLink: `https://www.instagram.com/caitlyn.kerluke`,
-        linkedinLink: `https://www.linkedin.com/in/caitlyn.kerluke`,
-        twitterLink: `https://www.twitter.com/caitlyn.kerluke`
-      };
-      dispatch(slice.actions.getProfileSuccess(profile));
+      const response = await axios.get('/api/user/profile');
+      dispatch(slice.actions.getProfileSuccess(response.data.profile));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -163,39 +153,8 @@ export function getPosts() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const posts = [...Array(3)].map((_, index) => {
-        const setIndex = index + 1;
-        return {
-          id: `fc68bad5-d430-4033-b8f8-4bc069dc0ba0-${index + 1}`,
-          author: {
-            id: `fc68bad5-d430-4033-b8f8-4bc069dc0ba8-${index + 2}`,
-            avatarUrl: `/static/mock-images/avatars/avatar_1.jpg`,
-            name: 'Caitlyn Kerluke'
-          },
-          isLiked: true,
-          createdAt: new Date(),
-          media: `/static/mock-images/feeds/feed_${index}.jpg`,
-          message: 'msg',
-          personLikes: [...Array(50)].map((_, index) => ({
-            name: 'name',
-            avatarUrl: `/static/mock-images/avatars/avatar_${index + 2}.jpg`
-          })),
-          comments: (setIndex === 2 && []) || [
-            {
-              id: `fc68bad5-d430-4033-b8f8-4bc069dc0ba0-${index + 6}`,
-              author: {
-                id: `fc68bad5-d430-4033-b8f8-4bc069dc0ba0-${index + 3}`,
-                avatarUrl: `/static/mock-images/avatars/avatar_${index}.jpg`,
-                name: 'name'
-              },
-              createdAt: new Date(),
-              message: 'msg'
-            }
-          ]
-        };
-      });
-
-      dispatch(slice.actions.getPostsSuccess(posts));
+      const response = await axios.get('/api/user/posts');
+      dispatch(slice.actions.getPostsSuccess(response.data.posts));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -208,17 +167,8 @@ export function getFollowers() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const followers = [...Array(18)].map((_, index) => {
-        const setIndex = index + 2;
-        return {
-          id: `fc68bad5-d430-4033-b8f8-4bc069dc0ba0-${index + 1}`,
-          avatarUrl: `/static/mock-images/covers/cover_${setIndex}.jpg`,
-          name: 'name',
-          country: 'country',
-          isFollowed: true
-        };
-      });
-      dispatch(slice.actions.getFollowersSuccess(followers));
+      const response = await axios.get('/api/user/social/followers');
+      dispatch(slice.actions.getFollowersSuccess(response.data.followers));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -231,16 +181,8 @@ export function getFriends() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const friends = [...Array(18)].map((_, index) => {
-        const setIndex = index + 2;
-        return {
-          id: `fc68bad5-d430-4033-b8f8-4bc069dc0ba0-${setIndex + 2}`,
-          avatarUrl: `/static/mock-images/avatars/avatar_${setIndex}.jpg`,
-          name: 'name',
-          role: null
-        };
-      });
-      dispatch(slice.actions.getFriendsSuccess(friends));
+      const response = await axios.get('/api/user/social/friends');
+      dispatch(slice.actions.getFriendsSuccess(response.data.friends));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -253,17 +195,8 @@ export function getGallery() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const gallery = [...Array(18)].map((_, index) => {
-        const setIndex = index + 2;
-        return {
-          id: `fc68bad5-d430-4033-b8f8-4bc069dc0ba0-${setIndex + 1}`,
-          title: 'title',
-          postAt: new Date(),
-          imageUrl: `/static/mock-images/covers/cover_${setIndex}.jpg`
-        };
-      });
-
-      dispatch(slice.actions.getGallerySuccess(gallery));
+      const response = await axios.get('/api/user/social/gallery');
+      dispatch(slice.actions.getGallerySuccess(response.data.gallery));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
@@ -332,12 +265,8 @@ export function getNotifications() {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get(
-        '/api/user/account/notifications-settings'
-      );
-      dispatch(
-        slice.actions.getNotificationsSuccess(response.data.notifications)
-      );
+      const response = await axios.get('/api/user/account/notifications-settings');
+      dispatch(slice.actions.getNotificationsSuccess(response.data.notifications));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

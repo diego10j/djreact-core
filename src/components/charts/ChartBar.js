@@ -5,9 +5,7 @@ import BaseOptionChart from './BaseOptionChart';
 
 // ----------------------------------------------------------------------
 
-const CHART_DATA = [
-  { data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380] }
-];
+const CHART_DATA = [{ data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380] }];
 
 export default function ChartBar() {
   const chartOptions = merge(BaseOptionChart(), {
@@ -31,12 +29,5 @@ export default function ChartBar() {
     }
   });
 
-  return (
-    <ReactApexChart
-      type="bar"
-      series={CHART_DATA}
-      options={chartOptions}
-      height={320}
-    />
-  );
+  return <ReactApexChart type="bar" series={CHART_DATA} options={chartOptions} height={320} />;
 }

@@ -23,20 +23,14 @@ const ButtonStyle = styled(Button)(({ theme, styleProps }) => {
     border: `1px solid ${alpha(theme.palette[color].main, 0.48)}`,
     '&:hover': {
       border: `1px solid ${theme.palette[color].main}`,
-      backgroundColor: alpha(
-        theme.palette[color].main,
-        theme.palette.action.hoverOpacity
-      )
+      backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity)
     }
   });
 
   const styleText = (color) => ({
     color: theme.palette[color].main,
     '&:hover': {
-      backgroundColor: alpha(
-        theme.palette[color].main,
-        theme.palette.action.hoverOpacity
-      )
+      backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity)
     }
   });
   return {
@@ -48,44 +42,26 @@ const ButtonStyle = styled(Button)(({ theme, styleProps }) => {
 
 // ----------------------------------------------------------------------
 
-const MButton = forwardRef(
-  ({ color = 'primary', variant = 'text', children, ...other }, ref) => {
-    if (color === 'inherit' || color === 'primary' || color === 'secondary') {
-      return (
-        <Button ref={ref} color={color} variant={variant} {...other}>
-          {children}
-        </Button>
-      );
-    }
-
+const MButton = forwardRef(({ color = 'primary', variant = 'text', children, ...other }, ref) => {
+  if (color === 'inherit' || color === 'primary' || color === 'secondary') {
     return (
-      <ButtonStyle
-        ref={ref}
-        variant={variant}
-        styleProps={{ color, variant }}
-        {...other}
-      >
+      <Button ref={ref} color={color} variant={variant} {...other}>
         {children}
-      </ButtonStyle>
+      </Button>
     );
   }
-);
+
+  return (
+    <ButtonStyle ref={ref} variant={variant} styleProps={{ color, variant }} {...other}>
+      {children}
+    </ButtonStyle>
+  );
+});
 
 MButton.propTypes = {
   children: PropTypes.node,
-  color: PropTypes.oneOf([
-    'inherit',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ]),
-  variant: PropTypes.oneOfType([
-    PropTypes.oneOf(['contained', 'outlined', 'text']),
-    PropTypes.string
-  ])
+  color: PropTypes.oneOf(['inherit', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
+  variant: PropTypes.oneOfType([PropTypes.oneOf(['contained', 'outlined', 'text']), PropTypes.string])
 };
 
 export default MButton;

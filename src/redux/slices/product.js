@@ -1,4 +1,4 @@
-import { sum, map, filter, uniqBy } from 'lodash';
+import { sum, map, filter, uniqBy, reject } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 // utils
 import axios from '../../utils/axios';
@@ -56,6 +56,11 @@ const slice = createSlice({
       state.product = action.payload;
     },
 
+    // DELETE PRODUCT
+    deleteProduct(state, action) {
+      state.products = reject(state.products, { id: action.payload });
+    },
+
     //  SORT & FILTER PRODUCTS
     sortByProducts(state, action) {
       state.sortBy = action.payload;
@@ -73,9 +78,7 @@ const slice = createSlice({
     getCart(state, action) {
       const cart = action.payload;
 
-      const subtotal = sum(
-        cart.map((product) => product.price * product.quantity)
-      );
+      const subtotal = sum(cart.map((product) => product.price * product.quantity));
       const discount = cart.length === 0 ? 0 : state.checkout.discount;
       const shipping = cart.length === 0 ? 0 : state.checkout.shipping;
       const billing = cart.length === 0 ? null : state.checkout.billing;
@@ -110,10 +113,7 @@ const slice = createSlice({
     },
 
     deleteCart(state, action) {
-      const updateCart = filter(
-        state.checkout.cart,
-        (item) => item.id !== action.payload
-      );
+      const updateCart = filter(state.checkout.cart, (item) => item.id !== action.payload);
 
       state.checkout.cart = updateCart;
     },
@@ -184,8 +184,7 @@ const slice = createSlice({
     applyShipping(state, action) {
       const shipping = action.payload;
       state.checkout.shipping = shipping;
-      state.checkout.total =
-        state.checkout.subtotal - state.checkout.discount + shipping;
+      state.checkout.total = state.checkout.subtotal - state.checkout.discount + shipping;
     }
   }
 });
@@ -202,13 +201,14 @@ export const {
   onBackStep,
   onNextStep,
   deleteCart,
+  deleteProduct,
   createBilling,
   applyShipping,
   applyDiscount,
-  increaseQuantity,
-  decreaseQuantity,
+  filterProducts,
   sortByProducts,
-  filterProducts
+  increaseQuantity,
+  decreaseQuantity
 } = slice.actions;
 
 // ----------------------------------------------------------------------

@@ -11,9 +11,6 @@ export default function Chip(theme) {
       },
 
       styleOverrides: {
-        label: {
-          marginTop: -4
-        },
         colorDefault: {
           '& .MuiChip-avatarMedium, .MuiChip-avatarSmall': {
             color: theme.palette.text.secondary
@@ -23,6 +20,9 @@ export default function Chip(theme) {
           borderColor: theme.palette.grey[500_32],
           '&.MuiChip-colorPrimary': {
             borderColor: theme.palette.primary.main
+          },
+          '&.MuiChip-colorSecondary': {
+            borderColor: theme.palette.secondary.main
           }
         }
       }

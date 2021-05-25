@@ -1,8 +1,9 @@
 import faker from 'faker';
 import { sample } from 'lodash';
 // utils
-import mock from '../utils/mock';
 import { mockImgCover, mockImgFeed, mockImgAvatar } from '../utils/mockImages';
+//
+import mock from './mock';
 
 // ----------------------------------------------------------------------
 
@@ -17,12 +18,12 @@ mock.onGet('/api/user/profile').reply(() => {
     position: 'UI Designer',
     follower: faker.datatype.number(),
     following: faker.datatype.number(),
-    quote:
-      'Tart I love sugar plum I love oat cake. Sweet roll caramels I love jujubes. Topping cake wafer..',
+    quote: 'Tart I love sugar plum I love oat cake. Sweet roll caramels I love jujubes. Topping cake wafer..',
     country: faker.address.country(),
     email: faker.internet.email(),
     company: faker.company.companyName(),
     school: faker.company.companyName(),
+    role: 'Manager',
     facebookLink: `https://www.facebook.com/caitlyn.kerluke`,
     instagramLink: `https://www.instagram.com/caitlyn.kerluke`,
     linkedinLink: `https://www.linkedin.com/in/caitlyn.kerluke`,
@@ -65,13 +66,47 @@ mock.onGet('/api/user/all').reply(() => {
 
 // ----------------------------------------------------------------------
 
+const NAME = [
+  'Craig Okuneva',
+  'Jacquelyn Schimmel',
+  'Olive Stokes',
+  'Holly Denesik',
+  'Julie Haag MD',
+  'Mrs. Desiree Senger',
+  'Gerardo Gutkowski',
+  'Joanne Emard',
+  'Mr. Terrence Zieme',
+  'Ronnie Mann',
+  'Ramon Ebert',
+  'Julie Kautzer',
+  'Kristin Funk PhD',
+  'Mr. Jon Jacobson',
+  'Ada Lindgren',
+  'Dr. Willie Renner',
+  'Pat Conroy',
+  'Jonathan Rippin',
+  'Gordon Reilly',
+  'Jim Schultz DDS',
+  'Tommie Weber',
+  'Doris Walsh',
+  'Ginger Abernathy',
+  'Deanna Gerlach'
+];
+
 mock.onGet('/api/user/manage-users').reply(() => {
   const users = [...Array(24)].map((_, index) => {
     const setIndex = index + 1;
     return {
       id: createId(setIndex),
       avatarUrl: mockImgAvatar(setIndex),
-      name: faker.name.findName(),
+      name: NAME[index],
+      email: faker.internet.email(),
+      phoneNumber: faker.phone.phoneNumber(),
+      address: faker.address.streetAddress(),
+      country: faker.address.country(),
+      state: faker.address.state(),
+      city: faker.address.city(),
+      zipCode: faker.address.zipCodeByState(),
       company: faker.company.companyName(),
       isVerified: faker.datatype.boolean(),
       status: sample(['active', 'banned']),
@@ -158,9 +193,7 @@ mock.onGet('/api/user/social/gallery').reply(() => {
 mock.onGet('/api/user/account/cards').reply(() => {
   const cards = [...Array(2)].map((_, index) => ({
     id: faker.datatype.uuid(),
-    cardNumber:
-      (index === 0 && '**** **** **** 1234') ||
-      (index === 1 && '**** **** **** 5678'),
+    cardNumber: (index === 0 && '**** **** **** 1234') || (index === 1 && '**** **** **** 5678'),
     cardType: (index === 0 && 'master_card') || (index === 1 && 'visa')
   }));
 

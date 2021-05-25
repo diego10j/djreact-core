@@ -90,62 +90,35 @@ export default function ToolbarTabla({
         >
           <Box width="75%" flexGrow={1} sx={{ pt: 0, pb: 0 }}>
             <Tooltip title="Insertar">
-              <MIconButton
-                aria-label="insertar"
-                color="success"
-                onClick={handleInsertar}
-              >
+              <MIconButton aria-label="insertar" color="success" onClick={handleInsertar}>
                 <AddIcon fontSize="inherit" />
               </MIconButton>
             </Tooltip>
             <Tooltip title="Modificar">
-              <MIconButton
-                aria-label="modificar"
-                color="info"
-                onClick={handleModificar}
-              >
+              <MIconButton aria-label="modificar" color="info" onClick={handleModificar}>
                 <CreateIcon fontSize="inherit" />
               </MIconButton>
             </Tooltip>
             <Tooltip title="Eliminar">
-              <MIconButton
-                aria-label="eliminar"
-                color="error"
-                onClick={handleEliminar}
-              >
+              <MIconButton aria-label="eliminar" color="error" onClick={handleEliminar}>
                 <DeleteIcon fontSize="inherit" />
               </MIconButton>
             </Tooltip>
           </Box>
           <Box sx={{ pt: 0, pb: 0 }}>
-            <FiltroGlobalTabla
-              globalFilter={globalFilter}
-              setGlobalFilter={setGlobalFilter}
-            />
+            <FiltroGlobalTabla globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
           </Box>
           <Box sx={{ pt: 0, pb: 0 }}>
             <Tooltip title="Opciones">
-              <MIconButton
-                aria-label="opciones"
-                onClick={handleOpciones}
-                ref={anchorRef}
-              >
+              <MIconButton aria-label="opciones" onClick={handleOpciones} ref={anchorRef}>
                 <MoreVertIcon />
               </MIconButton>
             </Tooltip>
           </Box>
         </Box>
       </div>
-      <MenuPopover
-        open={open}
-        onClose={handleCerrar}
-        anchorEl={anchorRef.current}
-        sx={{ width: 230 }}
-      >
-        <MenuItem
-          sx={{ typography: 'body2', py: 1, px: 2.5 }}
-          onClick={handleActualizar}
-        >
+      <MenuPopover open={open} onClose={handleCerrar} anchorEl={anchorRef.current} sx={{ width: 230 }}>
+        <MenuItem sx={{ typography: 'body2', py: 1, px: 2.5 }} onClick={handleActualizar}>
           <Box
             component={Icon}
             icon={refreshOutline}
@@ -157,10 +130,7 @@ export default function ToolbarTabla({
           />
           Actualizar
         </MenuItem>
-        <MenuItem
-          sx={{ typography: 'body2', py: 1, px: 2.5 }}
-          onClick={handleExportarExcel}
-        >
+        <MenuItem sx={{ typography: 'body2', py: 1, px: 2.5 }} onClick={handleExportarExcel}>
           <Box
             component={SvgIconStyle}
             src="/static/icons/ic_excel.svg"
@@ -174,10 +144,7 @@ export default function ToolbarTabla({
           Exportar Excel
         </MenuItem>
         <Divider sx={{ my: 1 }} />
-        <MenuItem
-          sx={{ typography: 'body2', py: 1, px: 2.5 }}
-          onClick={handlePersonalizar}
-        >
+        <MenuItem sx={{ typography: 'body2', py: 1, px: 2.5 }} onClick={handlePersonalizar}>
           <Box
             component={Icon}
             icon={brushOutline}

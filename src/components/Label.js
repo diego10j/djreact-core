@@ -54,9 +54,7 @@ const RootStyle = styled('span')(({ theme, styleProps }) => {
             border: `1px solid ${theme.palette.grey[500_32]}`
           }),
           ...(variant === 'ghost' && {
-            color: isLight
-              ? theme.palette.text.secondary
-              : theme.palette.common.white,
+            color: isLight ? theme.palette.text.secondary : theme.palette.common.white,
             backgroundColor: theme.palette.grey[500_16]
           })
         })
@@ -65,12 +63,7 @@ const RootStyle = styled('span')(({ theme, styleProps }) => {
 
 // ----------------------------------------------------------------------
 
-export default function Label({
-  color = 'default',
-  variant = 'ghost',
-  children,
-  ...other
-}) {
+export default function Label({ color = 'default', variant = 'ghost', children, ...other }) {
   return (
     <RootStyle styleProps={{ color, variant }} {...other}>
       {children}
@@ -80,14 +73,6 @@ export default function Label({
 
 Label.propTypes = {
   children: PropTypes.node,
-  color: PropTypes.oneOf([
-    'default',
-    'primary',
-    'secondary',
-    'info',
-    'success',
-    'warning',
-    'error'
-  ]),
+  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
   variant: PropTypes.oneOf(['filled', 'outlined', 'ghost'])
 };

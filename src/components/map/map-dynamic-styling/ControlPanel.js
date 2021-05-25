@@ -2,11 +2,7 @@ import { fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 // material
-import {
-  alpha,
-  useTheme,
-  experimentalStyled as styled
-} from '@material-ui/core/styles';
+import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
 import { Box, Switch, Typography } from '@material-ui/core';
 //
 import MAP_STYLE from '../assets/map-style-basic-v8.json';
@@ -15,14 +11,7 @@ import MAP_STYLE from '../assets/map-style-basic-v8.json';
 
 const defaultMapStyle = fromJS(MAP_STYLE);
 
-const CATEGORIES = [
-  'labels',
-  'roads',
-  'buildings',
-  'parks',
-  'water',
-  'background'
-];
+const CATEGORIES = ['labels', 'roads', 'buildings', 'parks', 'water', 'background'];
 
 const LAYER_SELECTOR = {
   background: /background/,
@@ -135,16 +124,12 @@ export default function ControlPanel({ onChange }) {
       .get('layers')
       .filter((layer) => {
         const id = layer.get('id');
-        return CATEGORIES.every(
-          (name) => visibility[name] || !LAYER_SELECTOR[name].test(id)
-        );
+        return CATEGORIES.every((name) => visibility[name] || !LAYER_SELECTOR[name].test(id));
       })
       .map((layer) => {
         const id = layer.get('id');
         const type = layer.get('type');
-        const category = CATEGORIES.find((name) =>
-          LAYER_SELECTOR[name].test(id)
-        );
+        const category = CATEGORIES.find((name) => LAYER_SELECTOR[name].test(id));
         if (category && COLOR_CLASS[type]) {
           return layer.setIn(['paint', COLOR_CLASS[type]], color[category]);
         }
@@ -175,11 +160,7 @@ export default function ControlPanel({ onChange }) {
           >
             {name}
           </Typography>
-          <Switch
-            size="small"
-            checked={visibility[name]}
-            onChange={(e) => onVisibilityChange(e, name)}
-          />
+          <Switch size="small" checked={visibility[name]} onChange={(e) => onVisibilityChange(e, name)} />
         </Box>
       ))}
     </RootStyle>

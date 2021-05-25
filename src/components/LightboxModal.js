@@ -89,14 +89,7 @@ LightboxModal.propTypes = {
   onClose: PropTypes.func
 };
 
-export default function LightboxModal({
-  images,
-  photoIndex,
-  setPhotoIndex,
-  isOpen,
-  onClose,
-  ...other
-}) {
+export default function LightboxModal({ images, photoIndex, setPhotoIndex, isOpen, onClose, ...other }) {
   const classes = useStyles();
 
   useEffect(() => {
@@ -107,11 +100,7 @@ export default function LightboxModal({
     }
   }, [isOpen]);
 
-  const showIndex = (
-    <Typography variant="subtitle2">{`${photoIndex + 1} / ${
-      images.length
-    }`}</Typography>
-  );
+  const showIndex = <Typography variant="subtitle2">{`${photoIndex + 1} / ${images.length}`}</Typography>;
 
   const toolbarButtons = [showIndex];
   const customStyles = {
@@ -128,12 +117,8 @@ export default function LightboxModal({
           nextSrc={images[(photoIndex + 1) % images.length]}
           prevSrc={images[(photoIndex + images.length - 1) % images.length]}
           onCloseRequest={onClose}
-          onMovePrevRequest={() =>
-            setPhotoIndex((photoIndex + images.length - 1) % images.length)
-          }
-          onMoveNextRequest={() =>
-            setPhotoIndex((photoIndex + 1) % images.length)
-          }
+          onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images.length)}
+          onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)}
           toolbarButtons={toolbarButtons}
           reactModalStyle={customStyles}
           wrapperClassName={classes.root}

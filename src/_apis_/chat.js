@@ -3,8 +3,9 @@ import { sub } from 'date-fns';
 import { dotCase } from 'change-case';
 import { sample, isEmpty, xor } from 'lodash';
 // utils
-import mock from '../utils/mock';
 import { mockImgFeed, mockImgAvatar } from '../utils/mockImages';
+//
+import mock from './mock';
 
 // ----------------------------------------------------------------------
 
@@ -388,13 +389,7 @@ const conversations = [
   },
   {
     id: createId(7),
-    participants: [
-      MY_CONTACT,
-      contacts[1],
-      contacts[2],
-      contacts[4],
-      contacts[3]
-    ],
+    participants: [MY_CONTACT, contacts[1], contacts[2], contacts[4], contacts[3]],
     type: 'GROUP',
     unreadCount: 5,
     messages: [
@@ -528,14 +523,7 @@ const conversations = [
   },
   {
     id: createId(11),
-    participants: [
-      MY_CONTACT,
-      contacts[6],
-      contacts[7],
-      contacts[8],
-      contacts[9],
-      contacts[10]
-    ],
+    participants: [MY_CONTACT, contacts[6], contacts[7], contacts[8], contacts[9], contacts[10]],
     type: 'GROUP',
     unreadCount: 0,
     messages: [
@@ -631,9 +619,7 @@ const findContactByUsername = (username) => {
 };
 
 const findConversationById = (conversationId) => {
-  const conversation = conversations.find(
-    (_conversationId) => _conversationId.id === conversationId
-  );
+  const conversation = conversations.find((_conversationId) => _conversationId.id === conversationId);
   return conversation || null;
 };
 
@@ -642,9 +628,7 @@ const findConversationByOtherParticipantId = (participantId) => {
     if (_conversation.type !== 'ONE_TO_ONE') {
       return false;
     }
-    const participant = _conversation.participants.find(
-      (_participant) => _participant.id === participantId
-    );
+    const participant = _conversation.participants.find((_participant) => _participant.id === participantId);
     return !!participant;
   });
   return conversation || null;
@@ -677,9 +661,7 @@ mock.onGet('/api/chat/search').reply((config) => {
     let results = contacts;
     if (query) {
       const cleanQuery = query.toLowerCase().trim();
-      results = results.filter((contact) =>
-        contact.name.toLowerCase().includes(cleanQuery)
-      );
+      results = results.filter((contact) => contact.name.toLowerCase().includes(cleanQuery));
     }
     return [200, { results }];
   } catch (error) {
@@ -755,9 +737,7 @@ mock.onGet('/api/chat/conversation').reply((config) => {
 mock.onGet('/api/chat/conversation/mark-as-seen').reply((config) => {
   try {
     const { conversationId } = config.params;
-    const conversation = conversations.find(
-      (_conversation) => _conversation.id === conversationId
-    );
+    const conversation = conversations.find((_conversation) => _conversation.id === conversationId);
     if (conversation) {
       conversation.unreadCount = 0;
     }
@@ -804,9 +784,7 @@ mock.onPost('/api/chat/messages/new').reply((request) => {
       const participants = [user];
 
       recipientIds.forEach((recipientId) => {
-        const contact = contacts.find(
-          (_contact) => _contact.id === recipientId
-        );
+        const contact = contacts.find((_contact) => _contact.id === recipientId);
 
         if (!contact) {
           throw new Error('Contact not found');

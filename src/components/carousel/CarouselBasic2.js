@@ -30,12 +30,7 @@ function CarouselItem({ item }) {
 
   return (
     <>
-      <Box
-        component="img"
-        alt={title}
-        src={image}
-        sx={{ width: '100%', height: 370, objectFit: 'cover' }}
-      />
+      <Box component="img" alt={title} src={image} sx={{ width: '100%', height: 370, objectFit: 'cover' }} />
 
       <CardContent sx={{ textAlign: 'left' }}>
         <Typography variant="h6" noWrap gutterBottom>

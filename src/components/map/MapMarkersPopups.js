@@ -43,11 +43,7 @@ export default function MapMarkersPopups({ data, ...other }) {
         ))}
 
         {tooltip && (
-          <MapControlPopup
-            longitude={tooltip.latlng[1]}
-            latitude={tooltip.latlng[0]}
-            onClose={() => setTooltip(false)}
-          >
+          <MapControlPopup longitude={tooltip.latlng[1]} latitude={tooltip.latlng[0]} onClose={() => setTooltip(false)}>
             <Box sx={{ color: 'common.white' }}>
               <Box
                 sx={{

@@ -9,7 +9,7 @@ import saveFill from '@iconify/icons-eva/save-fill';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Page from '../../components/Page';
-import HeaderDashboard from '../../components/HeaderDashboard';
+import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Tabla from '../../components/@dj-components/tabla/Tabla';
 
 // ----------------------------------------------------------------------
@@ -25,18 +25,11 @@ export default function Simple() {
   return (
     <Page title="Simple">
       <Container maxWidth="xl">
-        <HeaderDashboard
+        <HeaderBreadcrumbs
           heading="Simple"
-          links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Simple' }
-          ]}
+          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Simple' }]}
           action={
-            <Button
-              variant="contained"
-              startIcon={<Icon icon={saveFill} width={20} height={20} />}
-              onClick={guardar}
-            >
+            <Button variant="contained" startIcon={<Icon icon={saveFill} width={20} height={20} />} onClick={guardar}>
               Guardar
             </Button>
           }

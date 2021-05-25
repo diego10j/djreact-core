@@ -5,16 +5,10 @@ import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
 import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import {
-  Box,
-  Button,
-  AppBar,
-  Hidden,
-  Toolbar,
-  IconButton
-} from '@material-ui/core';
+import { Box, Button, AppBar, Toolbar, IconButton } from '@material-ui/core';
 // components
 import Logo from '../../components/Logo';
+import { MHidden } from '../../components/@material-extend';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 
@@ -42,17 +36,17 @@ export default function DocsNavbar({ onOpenSidebar }) {
   return (
     <RootStyle>
       <Toolbar sx={{ minHeight: APPBAR_HEIGHT }}>
-        <Hidden mdUp>
+        <MHidden width="mdUp">
           <IconButton onClick={onOpenSidebar} color="inherit">
             <Icon icon={menu2Fill} />
           </IconButton>
-        </Hidden>
+        </MHidden>
 
-        <Hidden mdDown>
+        <MHidden width="mdDown">
           <RouterLink to="/">
             <Logo />
           </RouterLink>
-        </Hidden>
+        </MHidden>
 
         <Box sx={{ flexGrow: 1 }} />
 
