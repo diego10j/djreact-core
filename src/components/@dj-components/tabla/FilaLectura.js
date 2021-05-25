@@ -1,10 +1,9 @@
-// Componente Check de Lectura
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+// Componente Check de Lectura
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-
 import { withStyles } from '@material-ui/core/styles';
 
 const StyledCheckbox = withStyles(() => ({
@@ -33,4 +32,31 @@ export function CheckLectura({ value: initialValue }) {
 
 CheckLectura.propTypes = {
   value: PropTypes.bool
+};
+
+export function ComboLectura({ value: initialValue, cell: column, combos }) {
+  // const columna = columns.find((col) => col.nombre === column.column.nombre);
+  const [listaCombo, setListaCombo] = useState([]);
+
+  useEffect(() => {
+    const combo = combos.find((col) => col.columna === column.column.nombre);
+    if (combo) {
+      setListaCombo(combo.listaCombo || []);
+    }
+  }, [combos]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <>
+      {
+        listaCombo.find((element) => element.value === String(initialValue))
+          ?.label
+      }
+    </>
+  );
+}
+
+ComboLectura.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  cell: PropTypes.object,
+  combos: PropTypes.array
 };

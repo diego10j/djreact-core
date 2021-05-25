@@ -41,13 +41,14 @@ export default function ToolbarTabla({
 
   const handleInsertar = async () => {
     if (!lectura) {
-      if (insertar()) {
+      const tmpPk = insertar();
+      if (tmpPk) {
         const row = page[0]; // selecciona fila insertada
+        await prepareRow(row);
         // selecciona columna 1 para que ponga el autofocus si es Texto
         setColumnaSeleccionada(row.cells[0].column.nombre);
-        await prepareRow(row);
         toggleAllRowsSelected(false); // clear seleccionadas
-        toggleRowSelected(row.id, true); // select última fila
+        toggleRowSelected('0');
       }
     }
   };

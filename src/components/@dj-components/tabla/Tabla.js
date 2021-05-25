@@ -7,7 +7,7 @@ import React, {
 import PropTypes from 'prop-types';
 // components
 import TablaReact from './TablaReact';
-import { CheckLectura } from './FilaLectura';
+import { CheckLectura, ComboLectura } from './FilaLectura';
 import axios from '../../../utils/axios';
 import { isDefined } from '../../../utils/utilitario';
 
@@ -51,6 +51,7 @@ const Tabla = forwardRef(
     const [modificadas, setModificadas] = useState([]);
     const [insertadas, setInsertadas] = useState([]);
     const [eliminadas, setEliminadas] = useState([]);
+    const [combos, setCombos] = useState([]);
 
     useEffect(() => {
       getServicioColumnas();
@@ -59,6 +60,7 @@ const Tabla = forwardRef(
 
     useEffect(() => {
       if (!tipoFormulario) {
+        // Oculta columnas para la TablaReact
         const colOcultas = columns
           .filter((_col) => _col.visible === false)
           .map((_element) => _element.nombre);
@@ -103,11 +105,35 @@ const Tabla = forwardRef(
       }
     };
 
+    /**
+     * Obtiene las columnas del servicio web
+     */
+    const getServicioCombo = async (columna) => {
+      console.log('---CARGA COMBO');
+      try {
+        const { data } = await axios.post('api/sistema/getCombo', {
+          nombreTabla: columna.nombreTablaCombo.toLowerCase(),
+          campoPrimario: columna.campoPrimarioCombo.toLowerCase(),
+          campoNombre: columna.campoNombreCombo.toLowerCase(),
+          condicion: columna.condicionCombo
+        });
+        setCombos((elements) => [
+          ...elements,
+          {
+            columna: columna.campoPrimarioCombo.toLowerCase(),
+            listaCombo: data.datos
+          }
+        ]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     const formarColumnas = (cols) => {
       if (opcionesColumnas) {
         console.log('---FORMAR COLUMNAS');
         // Aplica cada configuración realizada a las columnas
-        opcionesColumnas.forEach((_columna) => {
+        opcionesColumnas.forEach(async (_columna) => {
           const colActual = cols.find(
             (_col) => _col.nombre === _columna.nombre.toLowerCase()
           );
@@ -132,10 +158,6 @@ const Tabla = forwardRef(
               'lectura' in _columna ? _columna.lectura : colActual.lectura;
             colActual.orden =
               'orden' in _columna ? _columna.orden : colActual.orden;
-            colActual.anchocolumna =
-              'anchoColumna' in _columna
-                ? _columna.anchoColumna
-                : colActual.anchocolumna;
             colActual.decimales =
               'decimales' in _columna
                 ? _columna.decimales
@@ -154,8 +176,24 @@ const Tabla = forwardRef(
               'ordenable' in _columna
                 ? _columna.ordenable
                 : colActual.ordenable;
+            colActual.width =
+              'width' in _columna ? _columna.width : colActual.width;
           } else {
             throw new Error(`Error la columna ${_columna.nombre} no existe`);
+          }
+          if (isDefined(_columna.combo)) {
+            // Configuracion combo
+            // Valor por defecto ''
+            if (!isDefined(colActual.valordefecto)) {
+              colActual.valordefecto = '';
+            }
+            colActual.componente = 'Combo';
+            colActual.anchocolumna = 20;
+            colActual.nombreTablaCombo = _columna.combo.nombreTabla;
+            colActual.campoPrimarioCombo = _columna.combo.campoPrimario;
+            colActual.campoNombreCombo = _columna.combo.campoNombre;
+            colActual.condicionCombo = _columna.combo.condicion;
+            await getServicioCombo(colActual);
           }
         });
       }
@@ -168,6 +206,10 @@ const Tabla = forwardRef(
           // Si la tabla es de lectura todas las columnas son de lectura
           if (lectura) {
             _columna.lectura = true;
+          }
+          // valores por defecto
+          if (!isDefined(_columna.valordefecto)) {
+            _columna.valordefecto = '';
           }
           // alinear
           if (isDefined(_columna.alinear)) {
@@ -203,10 +245,18 @@ const Tabla = forwardRef(
 
           _columna.accessor = _columna.nombre;
           _columna.filter = 'fuzzyText';
-          _columna.width = _columna.anchocolumna * 16;
+          if (!isDefined(_columna.width)) {
+            _columna.width = _columna.anchocolumna * 17;
+          }
           if (_columna.componente === 'Check') {
             // CheckBox de lectura
             _columna.Cell = CheckLectura;
+            if (_columna.valordefecto === '') {
+              _columna.valordefecto = false;
+            }
+          } else if (_columna.componente === 'Combo') {
+            // CheckBox de lectura
+            _columna.Cell = ComboLectura;
           }
         });
       }
@@ -339,13 +389,12 @@ const Tabla = forwardRef(
     const crearFila = () => {
       // PK temporal negativa
       const tmpPK = 0 - (insertadas.length + 1);
-      const filaNueva = {};
+      const filaNueva = { id: tmpPK };
       columns.forEach((_columna) => {
-        const { nombre, valorDefecto } = _columna;
-        filaNueva[nombre] = valorDefecto;
+        const { nombre, valordefecto } = _columna;
+        filaNueva[nombre] = valordefecto;
         if (nombre === campoPrimario) {
           filaNueva[nombre] = tmpPK;
-          filaNueva.id = tmpPK;
         }
       });
       //  Asigna valor a las relaciones
@@ -359,7 +408,7 @@ const Tabla = forwardRef(
       // }
 
       setInsertadas((elements) => [filaNueva, ...elements]);
-      setSkipPageReset(true);
+      setSkipPageReset(false);
       setData((elements) => [filaNueva, ...elements]);
       setFilaSeleccionada(filaNueva);
     };
@@ -419,6 +468,10 @@ const Tabla = forwardRef(
           actualizar={actualizar}
           insertar={insertar}
           lectura={lectura}
+          combos={combos}
+          insertadas={insertadas}
+          modificadas={modificadas}
+          eliminadas={eliminadas}
         />
       </>
     );
@@ -436,13 +489,18 @@ Tabla.propTypes = {
     PropTypes.shape({
       nombre: PropTypes.string.isRequired,
       nombreVisual: PropTypes.string,
-      valorDefecto: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+      valorDefecto: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.number,
+        PropTypes.object
+      ]),
       requerida: PropTypes.bool,
       visible: PropTypes.bool,
       filtro: PropTypes.bool,
       lectura: PropTypes.bool,
       orden: PropTypes.number,
-      anchoColumna: PropTypes.number,
+      width: PropTypes.number,
       decimales: PropTypes.number,
       comentario: PropTypes.string,
       mayusculas: PropTypes.bool,
@@ -455,13 +513,13 @@ Tabla.propTypes = {
         condicion: PropTypes.string
       })
     })
-  ),
-  showToolbar: PropTypes.bool,
-  showPaginador: PropTypes.bool,
-  showBotonInsertar: PropTypes.bool,
-  showBotonEliminar: PropTypes.bool,
-  showBotonModificar: PropTypes.bool,
-  showBuscar: PropTypes.bool
+  )
+  // showToolbar: PropTypes.bool,
+  // showPaginador: PropTypes.bool,
+  // showBotonInsertar: PropTypes.bool,
+  // showBotonEliminar: PropTypes.bool,
+  // showBotonModificar: PropTypes.bool,
+  // showBuscar: PropTypes.bool
 };
 
 export default Tabla;

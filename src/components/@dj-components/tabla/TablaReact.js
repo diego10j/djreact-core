@@ -125,6 +125,10 @@ export default function TablaReact({
   setFilaSeleccionada,
   actualizar,
   insertar,
+  combos,
+  insertadas,
+  modificadas,
+  eliminadas,
   // setData,
   updateMyData,
   skipPageReset
@@ -186,6 +190,10 @@ export default function TablaReact({
       updateMyData,
       modificarFila,
       filterTypes,
+      combos,
+      insertadas,
+      modificadas,
+      eliminadas,
       initialState: { pageSize: filasPorPagina }
     },
     useGlobalFilter, // useGlobalFilter!
@@ -238,7 +246,7 @@ export default function TablaReact({
                         key={i}
                         component="th"
                         padding="none"
-                        style={{ minWidth: columna.anchocolumna * 17 }}
+                        style={{ minWidth: columna.width }}
                         {...columna.getHeaderProps()}
                       >
                         {columna.ordenable ? (
@@ -298,6 +306,8 @@ export default function TablaReact({
                           columnaSeleccionada={columnaSeleccionada}
                           modificarFila={modificarFila}
                           updateMyData={updateMyData}
+                          columns={columns}
+                          combos={combos}
                         />
                       )}
                     </StyledTableRow>
@@ -350,5 +360,9 @@ TablaReact.propTypes = {
   setFilaSeleccionada: PropTypes.func.isRequired,
   actualizar: PropTypes.func.isRequired,
   insertar: PropTypes.func.isRequired,
-  lectura: PropTypes.bool.isRequired
+  lectura: PropTypes.bool.isRequired,
+  combos: PropTypes.array,
+  insertadas: PropTypes.array,
+  modificadas: PropTypes.array,
+  eliminadas: PropTypes.array
 };
