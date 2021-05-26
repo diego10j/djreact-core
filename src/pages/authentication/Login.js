@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography, Button } from '@material-ui/core';
+import { Box, Stack, Link, Container, Typography, Button } from '@material-ui/core';
 // routes
 import { PATH_AUTH } from '../../routes/paths';
 // hooks
@@ -13,22 +13,24 @@ import Page from '../../components/Page';
 import { MHidden } from '../../components/@material-extend';
 import { LoginForm } from '../../components/authentication/login';
 import AuthFirebaseSocials from '../../components/authentication/AuthFirebaseSocial';
+import { FondoLogin, LoginIllustration } from '../../assets';
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
+  height: '100%',
+  overflow: 'hidden',
   [theme.breakpoints.up('md')]: {
     display: 'flex'
   }
 }));
 
-const SectionStyle = styled(Card)(({ theme }) => ({
-  width: '100%',
-  maxWidth: 464,
+const SectionStyle = styled('div')(() => ({
+  maxWidth: '100%',
+  minHeight: '100vh',
   display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  margin: theme.spacing(2, 0, 2, 2)
+  margin: 0,
+  overflow: 'hidden'
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
@@ -55,20 +57,31 @@ export default function Login() {
   };
 
   return (
-    <RootStyle title="Login | Minimal-UI">
+    <RootStyle title="Login">
       <AuthLayout>
-        Don’t have an account? &nbsp;
+        ¿No tienes cuenta? &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-          Get started
+          Registrarse
         </Link>
       </AuthLayout>
 
       <MHidden width="mdDown">
         <SectionStyle>
-          <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Hi, Welcome Back
-          </Typography>
-          <img src="/static/illustrations/illustration_login.png" alt="login" />
+          <FondoLogin
+            sx={{
+              marginTop: '-40px',
+              marginLeft: '-20px',
+              marginBottom: '-10px'
+            }}
+          />
+          <LoginIllustration
+            sx={{
+              width: '30%',
+              maxWidth: '30%',
+              position: 'absolute',
+              top: '35%'
+            }}
+          />
         </SectionStyle>
       </MHidden>
 
@@ -77,21 +90,15 @@ export default function Login() {
           <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h4" gutterBottom>
-                Sign in to Minimal
+                Iniciar Sesión
               </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Ingresa tus datos a continuación.</Typography>
             </Box>
 
-            <Tooltip title={method}>
-              <Box component="img" src={`/static/auth/ic_${method}.png`} sx={{ width: 32, height: 32 }} />
-            </Tooltip>
+            <Box component="img" src="/static/auth/ic_react.png" sx={{ width: 32, height: 32 }} />
           </Stack>
 
           {method === 'firebase' && <AuthFirebaseSocials />}
-
-          <Alert severity="info" sx={{ mb: 3 }}>
-            Use email : <strong>demo@minimals.cc</strong> / password :<strong>&nbsp;demo1234</strong>
-          </Alert>
 
           {method !== 'auth0' ? (
             <LoginForm />
@@ -103,9 +110,9 @@ export default function Login() {
 
           <MHidden width="smUp">
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-              Don’t have an account?&nbsp;
+              ¿No tienes cuenta?&nbsp;
               <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                Get started
+                Registrarse
               </Link>
             </Typography>
           </MHidden>

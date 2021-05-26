@@ -260,7 +260,7 @@ export default function TablaReact({
                       key={index}
                       {...row.getRowProps({
                         style: {
-                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.48) : ''
+                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.5) : ''
                         },
                         onClick: () => {
                           toggleAllRowsSelected(false);
