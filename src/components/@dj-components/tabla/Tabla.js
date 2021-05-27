@@ -292,6 +292,9 @@ const Tabla = forwardRef(
      */
     const modificarFila = ({ nombre, lectura }, value) => {
       const valorSeleccionado = getValorSeleccionado();
+      if (value === '') {
+        value = null;
+      }
       // Valida que la columna no sea solo lectura
       if (lectura === false) {
         // si no es fila insertada

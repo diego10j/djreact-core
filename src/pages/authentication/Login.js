@@ -75,17 +75,19 @@ export default function Login() {
             }}
           />
           <LoginIllustration
+            className="animate__animated animate__zoomInLeft"
             sx={{
               width: '30%',
               maxWidth: '30%',
               position: 'absolute',
-              top: '35%'
+              top: '35%',
+              animation: 'bounce'
             }}
           />
         </SectionStyle>
       </MHidden>
 
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" className="animate__animated animate__fadeIn">
         <ContentStyle>
           <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
             <Box sx={{ flexGrow: 1 }}>

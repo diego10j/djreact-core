@@ -6,7 +6,9 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { MenuItem, Select, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { DatePicker } from '@material-ui/lab';
+import DatePicker from '@material-ui/lab/DatePicker';
+import TimePicker from '@material-ui/lab/TimePicker';
+import { toDate, isFechaValida, getFormatoFecha, toHoraDate, getFormatoHora } from '../../../utils/formatTime';
 
 const StyledTextField = withStyles(() => ({
   root: {
@@ -102,7 +104,101 @@ FilaEditable.propTypes = {
 };
 
 // Create an editable cell renderer
-const ComponenteEditable = ({ valor, column, modificarFila, foco, updateMyData, index, combos }) => {
+function ComponenteEditable({ valor, column, modificarFila, foco, updateMyData, index, combos }) {
+  return (
+    <>
+      {column.componente === 'Texto' && (
+        <Texto
+          valor={valor}
+          column={column}
+          modificarFila={modificarFila}
+          foco={foco}
+          updateMyData={updateMyData}
+          index={index}
+        />
+      )}
+
+      {column.componente === 'TextoNumero' && (
+        <TextoNumero
+          valor={valor}
+          column={column}
+          modificarFila={modificarFila}
+          foco={foco}
+          updateMyData={updateMyData}
+          index={index}
+        />
+      )}
+
+      {column.componente === 'TextoEntero' && (
+        <TextoNumero
+          valor={valor}
+          column={column}
+          modificarFila={modificarFila}
+          foco={foco}
+          updateMyData={updateMyData}
+          index={index}
+        />
+      )}
+
+      {column.componente === 'Combo' && (
+        <Combo
+          valor={valor}
+          column={column}
+          modificarFila={modificarFila}
+          foco={foco}
+          updateMyData={updateMyData}
+          index={index}
+          combos={combos}
+        />
+      )}
+
+      {column.componente === 'Check' && (
+        <Check
+          valor={valor}
+          column={column}
+          modificarFila={modificarFila}
+          foco={foco}
+          updateMyData={updateMyData}
+          index={index}
+        />
+      )}
+
+      {column.componente === 'Calendario' && (
+        <Calendario
+          valor={valor}
+          column={column}
+          modificarFila={modificarFila}
+          foco={foco}
+          updateMyData={updateMyData}
+          index={index}
+        />
+      )}
+
+      {column.componente === 'Hora' && (
+        <Hora
+          valor={valor}
+          column={column}
+          modificarFila={modificarFila}
+          foco={foco}
+          updateMyData={updateMyData}
+          index={index}
+        />
+      )}
+    </>
+  );
+}
+
+ComponenteEditable.propTypes = {
+  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  column: PropTypes.object.isRequired,
+  modificarFila: PropTypes.func,
+  updateMyData: PropTypes.func,
+  foco: PropTypes.bool,
+  index: PropTypes.number,
+  combos: PropTypes.array
+};
+
+const Texto = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = useState(valor === null ? '' : valor);
   const [isModifico, setIsModificado] = useState(false);
@@ -110,16 +206,6 @@ const ComponenteEditable = ({ valor, column, modificarFila, foco, updateMyData, 
   const onChange = (e) => {
     setValue(e.target.value);
     setIsModificado(true);
-  };
-
-  const onChangeDate = (e) => {
-    console.log(e);
-  };
-
-  const onChangeCheck = (e) => {
-    setValue(e.target.checked);
-    updateMyData(index, column.nombre, value);
-    modificarFila(column, value);
   };
 
   // We'll only update the external data when the input is blurred
@@ -132,103 +218,183 @@ const ComponenteEditable = ({ valor, column, modificarFila, foco, updateMyData, 
   };
 
   return (
-    <>
-      {column.componente === 'Texto' && (
-        <StyledTextField
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          fullWidth
-          size="small"
-          variant="standard"
-          margin="none"
-          autoFocus={foco}
-          inputProps={{ style: { textAlign: `${column.alinear}` } }}
-        />
-      )}
+    <StyledTextField
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      fullWidth
+      size="small"
+      variant="standard"
+      margin="none"
+      autoFocus={foco}
+      inputProps={{ style: { textAlign: `${column.alinear}` } }}
+    />
+  );
+};
+Texto.propTypes = {
+  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  column: PropTypes.object.isRequired,
+  modificarFila: PropTypes.func,
+  updateMyData: PropTypes.func,
+  foco: PropTypes.bool,
+  index: PropTypes.number
+};
 
-      {column.componente === 'TextoNumero' && (
-        <StyledTextField
-          value={value}
-          type="number"
-          onChange={onChange}
-          onBlur={onBlur}
-          fullWidth
-          size="small"
-          variant="standard"
-          margin="none"
-          autoFocus={foco}
-          inputProps={{ style: { textAlign: `${column.alinear}` } }}
-        />
-      )}
+const TextoNumero = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
+  // We need to keep and update the state of the cell normally
+  const [value, setValue] = useState(valor === null ? '' : valor);
+  const [isModifico, setIsModificado] = useState(false);
 
-      {column.componente === 'TextoEntero' && (
-        <StyledTextField
-          value={value}
-          type="number"
-          onChange={onChange}
-          onBlur={onBlur}
-          fullWidth
-          size="small"
-          variant="standard"
-          margin="none"
-          autoFocus={foco}
-          inputProps={{ style: { textAlign: `${column.alinear}` } }}
-        />
-      )}
+  const onChange = (e) => {
+    setValue(e.target.value);
+    setIsModificado(true);
+  };
 
-      {column.componente === 'Combo' && (
-        <StyledSelect value={value} onChange={onChange} onBlur={onBlur} fullWidth variant="standard">
-          <MenuItem value="">
-            <em>&nbsp;</em>
-          </MenuItem>
-          {combos
-            .find((col) => col.columna === column.nombre)
-            .listaCombo.map((element, index) => (
-              <MenuItem key={index} value={element.value}>
-                {element.label}
-              </MenuItem>
-            ))}
-        </StyledSelect>
-      )}
+  // We'll only update the external data when the input is blurred
+  const onBlur = () => {
+    if (isModifico) {
+      updateMyData(index, column.nombre, value);
+      modificarFila(column, value);
+      setIsModificado(false);
+    }
+  };
 
-      {column.componente === 'Check' && (
-        <div align="center">
-          <StyledCheckbox
-            icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-            checked={value === '' ? false : value}
-            onChange={onChangeCheck}
-            color="primary"
-            checkedIcon={<CheckBoxIcon fontSize="small" />}
-          />
-        </div>
-      )}
-
-      {column.componente === 'Calendario' && (
-        <DatePicker
-          views={['day', 'month', 'year']}
-          value={value}
-          onChange={onChangeDate}
-          onBlur={onBlur}
-          inputProps={{ style: { textAlign: `${column.alinear}` } }}
-          renderInput={(params) => (
-            <StyledTextField
-              {...params}
-              fullWidth
-              size="small"
-              variant="standard"
-              margin="none"
-              autoFocus={foco}
-              helperText={null}
-            />
-          )}
-        />
-      )}
-    </>
+  return (
+    <StyledTextField
+      type="number"
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      fullWidth
+      size="small"
+      variant="standard"
+      margin="none"
+      autoFocus={foco}
+      inputProps={{ style: { textAlign: `${column.alinear}` } }}
+    />
   );
 };
 
-ComponenteEditable.propTypes = {
+TextoNumero.propTypes = {
+  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  column: PropTypes.object.isRequired,
+  modificarFila: PropTypes.func,
+  updateMyData: PropTypes.func,
+  foco: PropTypes.bool,
+  index: PropTypes.number
+};
+
+const Combo = ({ valor, column, modificarFila, updateMyData, index, combos }) => {
+  // We need to keep and update the state of the cell normally
+  const [value, setValue] = useState(valor === null ? '' : valor);
+  const [isModifico, setIsModificado] = useState(false);
+  const onChange = (e) => {
+    setValue(e.target.value);
+    setIsModificado(true);
+  };
+
+  // We'll only update the external data when the input is blurred
+  const onBlur = () => {
+    if (isModifico) {
+      updateMyData(index, column.nombre, value);
+      modificarFila(column, value);
+      setIsModificado(false);
+    }
+  };
+
+  return (
+    <StyledSelect value={value} onChange={onChange} onBlur={onBlur} fullWidth variant="standard">
+      <MenuItem value="">
+        <em>&nbsp;</em>
+      </MenuItem>
+      {combos
+        .find((col) => col.columna === column.nombre)
+        .listaCombo.map((element, index) => (
+          <MenuItem key={index} value={element.value}>
+            {element.label}
+          </MenuItem>
+        ))}
+    </StyledSelect>
+  );
+};
+Combo.propTypes = {
+  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  column: PropTypes.object.isRequired,
+  modificarFila: PropTypes.func,
+  updateMyData: PropTypes.func,
+  index: PropTypes.number,
+  combos: PropTypes.array
+};
+
+const Check = ({ valor, column, modificarFila, updateMyData, index }) => {
+  // We need to keep and update the state of the cell normally
+  const [value, setValue] = useState(valor === null ? false : valor);
+
+  const onChange = (e) => {
+    setValue(e.target.checked);
+    updateMyData(index, column.nombre, value);
+    modificarFila(column, value);
+  };
+
+  return (
+    <div align="center">
+      <StyledCheckbox
+        icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+        checked={value}
+        onChange={onChange}
+        color="primary"
+        checkedIcon={<CheckBoxIcon fontSize="small" />}
+      />
+    </div>
+  );
+};
+
+Check.propTypes = {
+  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  column: PropTypes.object.isRequired,
+  modificarFila: PropTypes.func,
+  updateMyData: PropTypes.func,
+  index: PropTypes.number
+};
+
+const Calendario = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
+  const [value, setValue] = useState(valor === null ? '' : toDate(valor));
+
+  const onChange = (e) => {
+    if (isFechaValida(e)) {
+      setValue(e);
+    } else {
+      setValue('');
+      e = null;
+    }
+    updateMyData(index, column.nombre, getFormatoFecha(e));
+    modificarFila(column, getFormatoFecha(e, 'YYYY-MM-DD'));
+  };
+
+  return (
+    <DatePicker
+      views={['day']}
+      inputFormat="dd/MM/yyyy"
+      mask="__/__/____"
+      value={value}
+      onChange={onChange}
+      inputProps={{ style: { textAlign: `${column.alinear}` } }}
+      renderInput={(params) => (
+        <StyledTextField
+          {...params}
+          fullWidth
+          size="small"
+          variant="standard"
+          margin="none"
+          autoFocus={foco}
+          helperText={null}
+        />
+      )}
+    />
+  );
+};
+
+Calendario.propTypes = {
   valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
@@ -236,4 +402,54 @@ ComponenteEditable.propTypes = {
   foco: PropTypes.bool,
   index: PropTypes.number,
   combos: PropTypes.array
+};
+
+const Hora = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
+  const [value, setValue] = useState(valor === null ? '' : toHoraDate(valor));
+
+  const onChange = (e) => {
+    console.log(e);
+    if (isFechaValida(e)) {
+      setValue(e);
+    } else {
+      setValue('');
+      e = null;
+    }
+    updateMyData(index, column.nombre, getFormatoHora(e));
+    modificarFila(column, getFormatoHora(e));
+  };
+
+  return (
+    <TimePicker
+      inputFormat="HH:mm:ss"
+      mask="__:__:__"
+      openTo="hours"
+      ampm={false}
+      views={['hours', 'minutes', 'seconds']}
+      ampmInClock
+      value={value}
+      onChange={onChange}
+      inputProps={{ style: { textAlign: `${column.alinear}` } }}
+      renderInput={(params) => (
+        <StyledTextField
+          {...params}
+          fullWidth
+          size="small"
+          variant="standard"
+          margin="none"
+          autoFocus={foco}
+          helperText={null}
+        />
+      )}
+    />
+  );
+};
+
+Hora.propTypes = {
+  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  column: PropTypes.object.isRequired,
+  modificarFila: PropTypes.func,
+  updateMyData: PropTypes.func,
+  foco: PropTypes.bool,
+  index: PropTypes.number
 };

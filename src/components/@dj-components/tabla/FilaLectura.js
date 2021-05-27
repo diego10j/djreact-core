@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // Componente Check de Lectura
 import Checkbox from '@material-ui/core/Checkbox';
+import Skeleton from '@material-ui/core/Skeleton';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { withStyles } from '@material-ui/core/styles';
@@ -36,16 +37,25 @@ CheckLectura.propTypes = {
 
 export function ComboLectura({ value: initialValue, cell: column, combos }) {
   // const columna = columns.find((col) => col.nombre === column.column.nombre);
-  const [listaCombo, setListaCombo] = useState([]);
+  const [listaCombo, setListaCombo] = useState(null);
 
   useEffect(() => {
     const combo = combos.find((col) => col.columna === column.column.nombre);
+
     if (combo) {
       setListaCombo(combo.listaCombo || []);
     }
   }, [combos]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <>{listaCombo.find((element) => element.value === String(initialValue))?.label}</>;
+  return (
+    <>
+      {listaCombo === null ? (
+        <Skeleton animation="wave" />
+      ) : (
+        listaCombo.find((element) => element.value === initialValue)?.label
+      )}
+    </>
+  );
 }
 
 ComboLectura.propTypes = {

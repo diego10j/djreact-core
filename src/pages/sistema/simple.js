@@ -52,6 +52,14 @@ export default function Simple() {
               }
             },
             {
+              nombre: 'IDE_ACAU',
+              combo: {
+                nombreTabla: 'sis_accion_auditoria',
+                campoPrimario: 'IDE_ACAU',
+                campoNombre: 'nom_ACAU'
+              }
+            },
+            {
               nombre: 'detalle_auac',
               nombreVisual: 'DETALLE',
               ordenable: false,

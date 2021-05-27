@@ -14,6 +14,9 @@ import { PATH_AUTH } from '../../../routes/paths';
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMensaje from '../../../hooks/useMensaje';
+//
+import Settings from '../../settings';
+
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
@@ -104,8 +107,9 @@ export default function LoginForm() {
         </Stack>
 
         <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-          Login
+          Aceptar
         </LoadingButton>
+        <Settings />
       </Form>
     </FormikProvider>
   );

@@ -1,6 +1,9 @@
 // mock api
 // import './_apis_';
 
+// animate
+import 'animate.css';
+
 // i18n
 import './locales/i18n';
 
