@@ -103,6 +103,7 @@ export default function TablaReact({
   columns,
   data,
   lectura,
+  campoPrimario,
   cargando,
   isColumnas,
   modificarFila,
@@ -111,10 +112,11 @@ export default function TablaReact({
   setFilaSeleccionada,
   actualizar,
   insertar,
+  eliminar,
   combos,
-  insertadas,
-  modificadas,
-  eliminadas,
+  getInsertadas,
+  getModificadas,
+  getEliminadas,
   // setData,
   updateMyData,
   skipPageReset
@@ -177,9 +179,9 @@ export default function TablaReact({
       modificarFila,
       filterTypes,
       combos,
-      insertadas,
-      modificadas,
-      eliminadas,
+      getInsertadas,
+      getModificadas,
+      getEliminadas,
       initialState: { pageSize: filasPorPagina }
     },
     useGlobalFilter, // useGlobalFilter!
@@ -207,6 +209,7 @@ export default function TablaReact({
         setGlobalFilter={setGlobalFilter}
         actualizar={actualizar}
         insertar={insertar}
+        eliminar={eliminar}
         toggleAllRowsSelected={toggleAllRowsSelected}
         toggleRowSelected={toggleRowSelected}
         lectura={lectura}
@@ -265,7 +268,9 @@ export default function TablaReact({
                         onClick: () => {
                           toggleAllRowsSelected(false);
                           row.toggleRowSelected();
-                          setFilaSeleccionada(row.values);
+                          if (lectura) setFilaSeleccionada(row.values);
+                          else
+                            setFilaSeleccionada(data.find((fila) => fila[campoPrimario] === row.values[campoPrimario]));
                         }
                       })}
                     >
@@ -330,6 +335,7 @@ TablaReact.propTypes = {
   columns: PropTypes.array.isRequired,
   filasPorPagina: PropTypes.number,
   data: PropTypes.array.isRequired,
+  campoPrimario: PropTypes.string,
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   updateMyData: PropTypes.func.isRequired,
@@ -340,9 +346,10 @@ TablaReact.propTypes = {
   setFilaSeleccionada: PropTypes.func.isRequired,
   actualizar: PropTypes.func.isRequired,
   insertar: PropTypes.func.isRequired,
+  eliminar: PropTypes.func.isRequired,
   lectura: PropTypes.bool.isRequired,
   combos: PropTypes.array,
-  insertadas: PropTypes.array,
-  modificadas: PropTypes.array,
-  eliminadas: PropTypes.array
+  getInsertadas: PropTypes.func,
+  getModificadas: PropTypes.func,
+  getEliminadas: PropTypes.func
 };

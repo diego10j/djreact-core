@@ -5,6 +5,7 @@ import TablaReact from './TablaReact';
 import { CheckLectura, ComboLectura } from './FilaLectura';
 import axios from '../../../utils/axios';
 import { isDefined } from '../../../utils/utilitario';
+import useMensaje from '../../../hooks/useMensaje';
 
 const Tabla = forwardRef(
   (
@@ -16,7 +17,8 @@ const Tabla = forwardRef(
       tipoFormulario = false,
       campoOrden,
       opcionesColumnas,
-      filasPorPagina = 15
+      filasPorPagina = 15,
+      validarInsertar = false
     },
     ref
   ) => {
@@ -32,10 +34,11 @@ const Tabla = forwardRef(
       isFilaModificada,
       isFilaEliminada,
       isFilaInsertada,
+      getFila,
       isEmpty,
       getTotalFilas
     }));
-
+    const msg = useMensaje();
     const [skipPageReset, setSkipPageReset] = useState(false);
     const [isColumnas, setIsColumnas] = useState(false);
     const [cargando, setCargando] = useState(false);
@@ -43,8 +46,6 @@ const Tabla = forwardRef(
     const [columnasOcultas, setColumnasOcultas] = useState([]);
     const [data, setData] = useState([]);
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
-    const [modificadas, setModificadas] = useState([]);
-    const [insertadas, setInsertadas] = useState([]);
     const [eliminadas, setEliminadas] = useState([]);
     const [combos, setCombos] = useState([]);
 
@@ -66,8 +67,8 @@ const Tabla = forwardRef(
         console.log('---CARGA DATOS');
         setCargando(true);
         const { data } = await axios.post('/api/sistema/consultarTabla', {
-          nombreTabla,
-          campoPrimario,
+          nombreTabla: nombreTabla.toLowerCase(),
+          campoPrimario: campoPrimario.toLowerCase(),
           campoOrden: campoOrden || campoPrimario,
           condiciones: []
         });
@@ -119,6 +120,19 @@ const Tabla = forwardRef(
         ]);
       } catch (error) {
         console.error(error);
+      }
+    };
+
+    const getServicioIsEliminar = async () => {
+      try {
+        const { data } = await axios.post('api/sistema/isEliminar', {
+          nombreTabla: nombreTabla.toLowerCase(),
+          campoPrimario: campoPrimario.toLowerCase(),
+          valorCampoPrimario: getValorSeleccionado()
+        });
+        return !isDefined(data.datos);
+      } catch (error) {
+        return false;
       }
     };
 
@@ -229,9 +243,10 @@ const Tabla = forwardRef(
     const getColumnas = () => columns;
     const getDatos = () => data;
     const getFilaSeleccionada = () => filaSeleccionada;
-    const getInsertadas = () => insertadas;
+    const getFila = (valorPrimaria) => data.filter((fila) => fila[campoPrimario] === valorPrimaria);
+    const getInsertadas = () => data.filter((fila) => fila.insertada === true) || [];
     const getEliminadas = () => eliminadas;
-    const getModificadas = () => modificadas;
+    const getModificadas = () => data.filter((fila) => fila.modificada === true) || [];
     const getTotalFilas = () => data.length;
     const isEmpty = () => data.length === 0;
 
@@ -241,8 +256,8 @@ const Tabla = forwardRef(
      * @returns
      */
     const isFilaInsertada = (valorPrimario) => {
-      const fila = insertadas.find((col) => col[campoPrimario] === valorPrimario);
-      if (isDefined(fila)) {
+      const fila = data.find((col) => col[campoPrimario] === valorPrimario);
+      if (isDefined(fila) && fila?.insertada) {
         return true;
       }
       return false;
@@ -254,8 +269,8 @@ const Tabla = forwardRef(
      * @returns
      */
     const isFilaModificada = (valorPrimario) => {
-      const fila = modificadas.find((col) => col[campoPrimario] === valorPrimario);
-      if (isDefined(fila)) {
+      const fila = data.find((col) => col[campoPrimario] === valorPrimario);
+      if (isDefined(fila) && fila?.modificada) {
         return true;
       }
       return false;
@@ -278,9 +293,7 @@ const Tabla = forwardRef(
      * Actualiza la tabla a su estado original
      */
     const actualizar = async () => {
-      setModificadas([]);
       setEliminadas([]);
-      setInsertadas([]);
       await getServicioDatos();
     };
 
@@ -291,32 +304,25 @@ const Tabla = forwardRef(
      * @param {*} value
      */
     const modificarFila = ({ nombre, lectura }, value) => {
-      const valorSeleccionado = getValorSeleccionado();
       if (value === '') {
         value = null;
       }
       // Valida que la columna no sea solo lectura
       if (lectura === false) {
         // si no es fila insertada
-        if (!isFilaInsertada(valorSeleccionado)) {
-          // busca si ya se a modificado la fila
-          const fila = modificadas.find((col) => col.id === valorSeleccionado);
-          if (!isDefined(fila)) {
-            // Primera modificación
-            const colModificadas = {};
-            colModificadas[nombre] = value;
-            const newFilaM = {
-              id: valorSeleccionado,
-              colModificadas
-            };
-            setModificadas((elements) => [...elements, newFilaM]);
-          } else {
-            // Agrega modificaciones
-            const { colModificadas } = fila;
-            colModificadas[nombre] = value;
-            setModificadas((elements) => [...elements.filter((item) => item.id !== valorSeleccionado), fila]);
+        if (!isDefined(filaSeleccionada?.insertada)) {
+          filaSeleccionada.modificada = true;
+          let colModificadas = [];
+          if (isDefined(filaSeleccionada?.colModificadas)) {
+            colModificadas = filaSeleccionada.colModificadas;
           }
+          if (colModificadas.indexOf(nombre) === -1) {
+            colModificadas.push(nombre);
+          }
+          filaSeleccionada.colModificadas = colModificadas;
+          setData(data);
         }
+
         // Propagar si tiene evento
         // .....
       }
@@ -327,8 +333,8 @@ const Tabla = forwardRef(
      */
     const crearFila = () => {
       // PK temporal negativa
-      const tmpPK = 0 - (insertadas.length + 1);
-      const filaNueva = { id: tmpPK };
+      const tmpPK = 0 - (getInsertadas().length + 1);
+      const filaNueva = { id: tmpPK, insertada: true };
       columns.forEach((_columna) => {
         const { nombre, valordefecto } = _columna;
         filaNueva[nombre] = valordefecto;
@@ -345,8 +351,6 @@ const Tabla = forwardRef(
       // if (this.utilitario.isDefined(this.tabla.campoPadre)) {
       // filaNueva[this.tabla.campoPadre] = this.tabla.valorPadre;
       // }
-
-      setInsertadas((elements) => [filaNueva, ...elements]);
       setSkipPageReset(false);
       setData((elements) => [filaNueva, ...elements]);
       setFilaSeleccionada(filaNueva);
@@ -355,17 +359,38 @@ const Tabla = forwardRef(
     const insertar = () => {
       if (lectura === false) {
         if (isColumnas) {
-          //   if (this.validarInsertar && this.getInsertadas().length > 0 && this.getTotalFilas() > 0) {
-          //     this.utilitario.agregarMensajeAdvertencia('Ya existe un registro insertado',
-          //       'No se puede insertar');
-          //   }
-          //   else {
-          crearFila();
-          return true;
-          //   }
+          if (validarInsertar && getInsertadas().length > 0 && getTotalFilas() > 0) {
+            msg.mensajeError('No se puede insertar, ya existe un registro insertado');
+          } else {
+            crearFila();
+            return true;
+          }
         }
       }
       return false;
+    };
+
+    const eliminar = async () => {
+      if (lectura === false) {
+        if (isColumnas && isDefined(filaSeleccionada)) {
+          if (filaSeleccionada?.insertada) {
+            setData(data.filter((item) => item[campoPrimario] !== filaSeleccionada[campoPrimario]));
+          } else {
+            setCargando(true);
+            if (await getServicioIsEliminar()) {
+              // agrega a filas eliminadas
+              if (eliminadas.indexOf(filaSeleccionada[campoPrimario]) === -1) {
+                setEliminadas((elements) => [...elements, filaSeleccionada[campoPrimario]]);
+              }
+              setData(data.filter((item) => item[campoPrimario] !== filaSeleccionada[campoPrimario]));
+            } else {
+              msg.mensajeError('No se puede eliminar, el registro tiene relación con otras tablas del sistema');
+            }
+            setCargando(false);
+          }
+        }
+      }
+      return true;
     };
 
     // We need to keep the table from resetting the pageIndex when we
@@ -395,6 +420,7 @@ const Tabla = forwardRef(
         <TablaReact
           columns={columns}
           data={data}
+          campoPrimario={campoPrimario}
           updateMyData={updateMyData}
           skipPageReset={skipPageReset}
           cargando={cargando}
@@ -406,11 +432,12 @@ const Tabla = forwardRef(
           setFilaSeleccionada={setFilaSeleccionada}
           actualizar={actualizar}
           insertar={insertar}
+          eliminar={eliminar}
           lectura={lectura}
           combos={combos}
-          insertadas={insertadas}
-          modificadas={modificadas}
-          eliminadas={eliminadas}
+          getInsertadas={getInsertadas}
+          getModificadas={getModificadas}
+          getEliminadas={getEliminadas}
         />
       </>
     );
@@ -447,7 +474,8 @@ Tabla.propTypes = {
         condicion: PropTypes.string
       })
     })
-  )
+  ),
+  validarInsertar: PropTypes.bool
   // showToolbar: PropTypes.bool,
   // showPaginador: PropTypes.bool,
   // showBotonInsertar: PropTypes.bool,

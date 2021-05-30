@@ -20,6 +20,8 @@ export default function Simple() {
   const guardar = () => {
     console.log('guardar');
     console.log(tabTabla1.current.getModificadas());
+    console.log(tabTabla1.current.getInsertadas());
+    console.log(tabTabla1.current.getEliminadas());
   };
 
   return (

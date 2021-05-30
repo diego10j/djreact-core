@@ -22,6 +22,7 @@ export default function ToolbarTabla({
   lectura,
   actualizar,
   insertar,
+  eliminar,
   toggleAllRowsSelected,
   toggleRowSelected,
   page,
@@ -56,8 +57,12 @@ export default function ToolbarTabla({
   const handleModificar = () => {
     console.log('modificar');
   };
-  const handleEliminar = () => {
-    console.log('eliminar');
+  const handleEliminar = async () => {
+    if (!lectura) {
+      if (await eliminar()) {
+        toggleAllRowsSelected(false); // clear seleccionadas
+      }
+    }
   };
 
   const handleActualizar = () => {
@@ -166,6 +171,7 @@ ToolbarTabla.propTypes = {
   setGlobalFilter: PropTypes.func.isRequired,
   actualizar: PropTypes.func.isRequired,
   insertar: PropTypes.func.isRequired,
+  eliminar: PropTypes.func.isRequired,
   toggleAllRowsSelected: PropTypes.func.isRequired,
   toggleRowSelected: PropTypes.func.isRequired,
   lectura: PropTypes.bool.isRequired,
