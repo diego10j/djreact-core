@@ -8,7 +8,7 @@ import { MenuItem, Select, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
-import { toDate, isFechaValida, getFormatoFecha, toHoraDate, getFormatoHora } from '../../../utils/formatTime';
+import { toDate, isFechaValida, getFormatoFecha, toHora, getFormatoHora } from '../../../utils/formatTime';
 
 const StyledTextField = withStyles(() => ({
   root: {
@@ -405,10 +405,9 @@ Calendario.propTypes = {
 };
 
 const Hora = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
-  const [value, setValue] = useState(valor === null ? '' : toHoraDate(valor));
+  const [value, setValue] = useState(valor === null ? '' : toHora(valor));
 
   const onChange = (e) => {
-    console.log(e);
     if (isFechaValida(e)) {
       setValue(e);
     } else {

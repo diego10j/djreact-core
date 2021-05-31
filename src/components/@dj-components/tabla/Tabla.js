@@ -167,7 +167,7 @@ const Tabla = forwardRef(
               colActual.valordefecto = '';
             }
             colActual.componente = 'Combo';
-            colActual.anchocolumna = 20;
+            colActual.anchocolumna = 18;
             colActual.nombreTablaCombo = _columna.combo.nombreTabla;
             colActual.campoPrimarioCombo = _columna.combo.campoPrimario;
             colActual.campoNombreCombo = _columna.combo.campoNombre;
@@ -204,18 +204,22 @@ const Tabla = forwardRef(
 
           _columna.accessor = _columna.nombre;
           _columna.filter = 'fuzzyText';
-          if (!isDefined(_columna.width)) {
-            _columna.width = _columna.anchocolumna * 17;
-          }
           if (_columna.componente === 'Check') {
             // CheckBox de lectura
             _columna.Cell = CheckLectura;
+            _columna.anchocolumna = 5;
             if (_columna.valordefecto === '') {
               _columna.valordefecto = false;
             }
           } else if (_columna.componente === 'Combo') {
             // CheckBox de lectura
             _columna.Cell = ComboLectura;
+          } else if (_columna.componente === 'Calendario' || _columna.componente === 'Hora') {
+            // ancho de la columna
+            _columna.anchocolumna = 4;
+          }
+          if (!isDefined(_columna.width)) {
+            _columna.width = _columna.anchocolumna * 17;
           }
         });
       }
@@ -342,6 +346,7 @@ const Tabla = forwardRef(
           filaNueva[nombre] = tmpPK;
         }
       });
+      console.log(filaNueva);
       //  Asigna valor a las relaciones
       // for (const relacion of this.relaciones) {
       // relacion.setValorForanea(this.getValorSeleccionado());

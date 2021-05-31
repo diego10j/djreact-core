@@ -58,13 +58,16 @@ const StyledTableCellHeader = withStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderBottom: `solid 1px ${theme.palette.divider}`,
     height: 'auto',
-    padding: '3px 5px 3px 5px !important'
+    padding: '3px !important',
+    textAlign: 'center'
   }
 }))(TableCell);
 
-const StyledTableCellBody = withStyles(() => ({
+const StyledTableCellBody = withStyles((theme) => ({
   root: {
-    padding: '0px 5px 0px 5px !important'
+    padding: '0px 5px 0px 5px !important',
+    borderBottom: `solid 0.1px ${theme.palette.divider}`,
+    borderRight: `solid 0.1px ${theme.palette.divider}`
   }
 }))(TableCell);
 
@@ -77,6 +80,7 @@ const StyledTableRow = withStyles((theme) => ({
       backgroundColor: theme.palette.action.hover
     },
     '&:hover': {
+      borderRight: `solid 0.1px ${theme.palette.divider}`,
       backgroundColor: theme.palette.action.focus
     }
   }

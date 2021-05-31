@@ -38,7 +38,7 @@ export function toDate(fecha, formato = 'DD/MM/YYYY') {
  * Transforma una hora string hh:mm:ss a Date
  * @param hora  en string
  */
-export function toHoraDate(hora) {
+export function toHora(hora) {
   if (isDefined(hora)) {
     return moment(`2021-01-01 ${hora}`, 'YYYY-MM-DD HH:mm:ss').toDate();
   }
