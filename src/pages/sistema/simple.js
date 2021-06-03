@@ -73,7 +73,7 @@ export default function Simple() {
               nombreVisual: 'IP',
               filtro: true,
               lectura: true,
-              width: 10
+              width: 150
             },
             {
               nombre: 'fin_auac',

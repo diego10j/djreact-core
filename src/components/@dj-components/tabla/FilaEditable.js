@@ -24,7 +24,7 @@ const StyledTextField = withStyles(() => ({
       marggin: 0,
       fontSize: '0.875rem',
       fontWeight: '500',
-      padding: '0 5px 0 5px !important',
+      padding: '10px 5px 0 5px !important',
       '&:before': {
         border: 'none'
       }
@@ -52,6 +52,10 @@ const StyledSelect = withStyles(() => ({
     marggin: 0,
     '&:before': {
       border: 'none'
+    },
+    '&:hover': { outline: 'none', border: 'none' },
+    '& .MuiInputBase-input': {
+      padding: '0 0 4px 0 !important'
     }
   }
 }))(Select);
@@ -309,7 +313,7 @@ const Combo = ({ valor, column, modificarFila, updateMyData, index, combos }) =>
       </MenuItem>
       {combos
         .find((col) => col.columna === column.nombre)
-        .listaCombo.map((element, index) => (
+        ?.listaCombo.map((element, index) => (
           <MenuItem key={index} value={element.value}>
             {element.label}
           </MenuItem>
