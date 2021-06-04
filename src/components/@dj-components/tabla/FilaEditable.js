@@ -27,16 +27,16 @@ const StyledTextField = withStyles((theme) => ({
     },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: 'transparent',
-        borderRadius: 0
+        borderRadius: 0,
+        borderColor: 'transparent'
       },
       '&:hover fieldset': {
-        borderColor: `${theme.palette.divider}`
-      },
-      '&.Mui-focused fieldset': {
-        borderWidth: 1,
-        borderColor: `${theme.palette.primary.dark}`
+        borderColor: 'transparent'
       }
+      //  '&.Mui-focused fieldset': {
+      //    borderWidth: 1,
+      //    borderColor: `${theme.palette.primary.dark}`
+      //  }
     },
     '& .MuiOutlinedInput-input': {
       padding: 0,
@@ -50,21 +50,21 @@ const StyledSelect = withStyles(() => ({
     border: 'none',
     fontSize: '0.875rem',
     width: '100%',
-    height: '100%',
+    height: '1.60rem',
     backgroundColor: 'transparent',
     outline: 'none',
     padding: '0 5px 0 5px !important',
     marggin: 0,
-    '&:before': {
-      border: 'none'
+    borderRadius: 0,
+    '& .MuiSelect-outlined': {
+      padding: 0
     },
-    '&:hover': { outline: 'none', border: 'none' },
-    '& .MuiInputBase-input': {
-      padding: '0 0 4px 0 !important'
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'transparent'
+    },
+    '&:hover .MuiOutlinedInput-notchedOutline': {
+      borderColor: 'transparent'
     }
-    // '& .MuiInputBase-input': {
-    //  padding: '0 0 4px 0 !important'
-    // }
   }
 }))(Select);
 
@@ -279,7 +279,7 @@ const TextoNumero = ({ valor, column, modificarFila, foco, updateMyData, index }
       onBlur={onBlur}
       fullWidth
       size="small"
-      variant="standard"
+      variant="outlined"
       margin="none"
       autoFocus={foco}
       inputProps={{ style: { textAlign: `${column.alinear}` } }}
@@ -396,7 +396,7 @@ const Calendario = ({ valor, column, modificarFila, foco, updateMyData, index })
           {...params}
           fullWidth
           size="small"
-          variant="standard"
+          variant="outlined"
           margin="none"
           autoFocus={foco}
           helperText={null}
@@ -446,7 +446,7 @@ const Hora = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
           {...params}
           fullWidth
           size="small"
-          variant="standard"
+          variant="outlined"
           margin="none"
           autoFocus={foco}
           helperText={null}

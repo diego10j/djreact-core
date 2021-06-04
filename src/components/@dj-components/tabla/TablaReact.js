@@ -80,7 +80,7 @@ const StyledTableRow = withStyles((theme) => ({
       backgroundColor: theme.palette.action.hover
     },
     '&:hover': {
-      borderRight: `solid 0.1px ${theme.palette.divider}`,
+      // borderRight: `solid 0.1px ${theme.palette.divider}`,
       backgroundColor: theme.palette.action.focus
     }
   }
@@ -267,8 +267,8 @@ export default function TablaReact({
                       key={index}
                       {...row.getRowProps({
                         style: {
-                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.5) : '',
-                          borderBottom: `solid 0.1px ${theme.palette.divider}`
+                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.5) : ''
+                          // borderBottom: `solid 0.1px ${theme.palette.divider}`
                         },
                         onClick: () => {
                           toggleAllRowsSelected(false);
