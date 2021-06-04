@@ -29,7 +29,7 @@ const SkeletonTabla = ({ filasPorPagina }) => {
                 mt: 1
               }}
             >
-              <Skeleton variant="rect" width="100%" height={18.4} />
+              <Skeleton variant="rect" width="100%" height={19.4} />
             </Grid>
           ))}
         </Grid>

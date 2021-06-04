@@ -73,7 +73,7 @@ const StyledTableCellBody = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    height: 25,
+    height: 26,
     padding: '0px 10px 0px 10px',
     width: '-moz-fit-content',
     '&:nth-of-type(odd)': {

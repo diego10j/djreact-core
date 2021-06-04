@@ -10,10 +10,9 @@ import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
 import { toDate, isFechaValida, getFormatoFecha, toHora, getFormatoHora } from '../../../utils/formatTime';
 
-const StyledTextField = withStyles(() => ({
+const StyledTextField = withStyles((theme) => ({
   root: {
     border: 'none',
-    fontSize: '0.875rem',
     width: '100%',
     height: '100%',
     backgroundColor: 'transparent',
@@ -21,21 +20,27 @@ const StyledTextField = withStyles(() => ({
     padding: 0,
     marggin: 0,
     '& .MuiInputBase-root': {
-      marggin: 0,
       fontSize: '0.875rem',
-      fontWeight: '500',
-      padding: '10px 5px 0 5px !important',
-      '&:before': {
-        border: 'none'
+      height: '1.60rem',
+      padding: 0,
+      marggin: 0
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'transparent',
+        borderRadius: 0
+      },
+      '&:hover fieldset': {
+        borderColor: `${theme.palette.divider}`
+      },
+      '&.Mui-focused fieldset': {
+        borderWidth: 1,
+        borderColor: `${theme.palette.primary.dark}`
       }
     },
-    '& .MuiInputBase-input': {
-      padding: '0 0 4px 0 !important'
-    },
-    '& .MuiInputBase-root:hover': {
-      '&:before': {
-        border: 'none'
-      }
+    '& .MuiOutlinedInput-input': {
+      padding: 0,
+      paddingLeft: 5
     }
   }
 }))(TextField);
@@ -57,6 +62,9 @@ const StyledSelect = withStyles(() => ({
     '& .MuiInputBase-input': {
       padding: '0 0 4px 0 !important'
     }
+    // '& .MuiInputBase-input': {
+    //  padding: '0 0 4px 0 !important'
+    // }
   }
 }))(Select);
 
@@ -228,7 +236,7 @@ const Texto = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
       onBlur={onBlur}
       fullWidth
       size="small"
-      variant="standard"
+      variant="outlined"
       margin="none"
       autoFocus={foco}
       inputProps={{ style: { textAlign: `${column.alinear}` } }}
@@ -307,7 +315,7 @@ const Combo = ({ valor, column, modificarFila, updateMyData, index, combos }) =>
   };
 
   return (
-    <StyledSelect value={value} onChange={onChange} onBlur={onBlur} fullWidth variant="standard">
+    <StyledSelect value={value} onChange={onChange} onBlur={onBlur} fullWidth variant="outlined">
       <MenuItem value="">
         <em>&nbsp;</em>
       </MenuItem>

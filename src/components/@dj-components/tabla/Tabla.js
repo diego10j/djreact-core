@@ -216,7 +216,7 @@ const Tabla = forwardRef(
             _columna.Cell = ComboLectura;
           } else if (_columna.componente === 'Calendario' || _columna.componente === 'Hora') {
             // ancho de la columna
-            _columna.anchocolumna = 4;
+            _columna.anchocolumna = 5;
           }
           if (!isDefined(_columna.width)) {
             _columna.width = _columna.anchocolumna * 17;
