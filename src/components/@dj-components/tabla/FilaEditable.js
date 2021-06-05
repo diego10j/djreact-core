@@ -5,10 +5,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { MenuItem, Select, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
 import { toDate, isFechaValida, getFormatoFecha, toHora, getFormatoHora } from '../../../utils/formatTime';
+
+const StyledTableCellBody = styled('td')(({ theme }) => ({
+  padding: 0,
+  borderBottom: `solid 1px ${theme.palette.divider}`,
+  borderRight: `solid 1px ${theme.palette.divider}`
+}));
 
 const StyledTextField = withStyles((theme) => ({
   root: {
@@ -31,12 +37,12 @@ const StyledTextField = withStyles((theme) => ({
         borderColor: 'transparent'
       },
       '&:hover fieldset': {
-        borderColor: 'transparent'
+        borderColor: `${theme.palette.primary.dark}`
+      },
+      '&.Mui-focused fieldset': {
+        // WeborderWidth: 1,
+        borderColor: `${theme.palette.primary.main}`
       }
-      //  '&.Mui-focused fieldset': {
-      //    borderWidth: 1,
-      //    borderColor: `${theme.palette.primary.dark}`
-      //  }
     },
     '& .MuiOutlinedInput-input': {
       padding: 0,
@@ -45,7 +51,7 @@ const StyledTextField = withStyles((theme) => ({
   }
 }))(TextField);
 
-const StyledSelect = withStyles(() => ({
+const StyledSelect = withStyles((theme) => ({
   root: {
     border: 'none',
     fontSize: '0.875rem',
@@ -63,7 +69,7 @@ const StyledSelect = withStyles(() => ({
       borderColor: 'transparent'
     },
     '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'transparent'
+      borderColor: `${theme.palette.primary.dark}`
     }
   }
 }))(Select);
@@ -90,7 +96,7 @@ export default function FilaEditable({
   return (
     <>
       {cells.map((cell, i) => (
-        <td key={i}>
+        <StyledTableCellBody key={i}>
           <ComponenteEditable
             valor={values[cell.column.nombre]}
             column={columns.find((col) => col.nombre === cell.column.nombre)}
@@ -100,7 +106,7 @@ export default function FilaEditable({
             index={index}
             combos={combos}
           />
-        </td>
+        </StyledTableCellBody>
       ))}
     </>
   );

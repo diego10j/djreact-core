@@ -66,8 +66,8 @@ const StyledTableCellHeader = withStyles((theme) => ({
 const StyledTableCellBody = withStyles((theme) => ({
   root: {
     padding: '0px 5px 0px 5px !important',
-    borderBottom: `solid 0.1px ${theme.palette.divider}`,
-    borderRight: `solid 0.1px ${theme.palette.divider}`
+    borderBottom: `solid 1px ${theme.palette.divider}`,
+    borderRight: `solid 1px ${theme.palette.divider}`
   }
 }))(TableCell);
 
@@ -267,8 +267,8 @@ export default function TablaReact({
                       key={index}
                       {...row.getRowProps({
                         style: {
-                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.5) : ''
-                          // borderBottom: `solid 0.1px ${theme.palette.divider}`
+                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.5) : '',
+                          borderRight: `solid 1px ${theme.palette.divider}`
                         },
                         onClick: () => {
                           toggleAllRowsSelected(false);
@@ -317,6 +317,7 @@ export default function TablaReact({
       {data.length > filasPorPagina && (
         <TablePagination
           component="div"
+          labelRowsPerPage=""
           rowsPerPageOptions={[15, 30, 50, 100]}
           colSpan={3}
           count={data.length}
