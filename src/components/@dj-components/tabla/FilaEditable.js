@@ -36,9 +36,9 @@ const StyledTextField = withStyles((theme) => ({
         borderRadius: 0,
         borderColor: 'transparent'
       },
-      '&:hover fieldset': {
-        borderColor: `${theme.palette.primary.dark}`
-      },
+      // '&:hover fieldset': {
+      //    borderColor: `${theme.palette.primary.dark}`
+      //  },
       '&.Mui-focused fieldset': {
         // WeborderWidth: 1,
         borderColor: `${theme.palette.primary.main}`
@@ -51,7 +51,7 @@ const StyledTextField = withStyles((theme) => ({
   }
 }))(TextField);
 
-const StyledSelect = withStyles((theme) => ({
+const StyledSelect = withStyles(() => ({
   root: {
     border: 'none',
     fontSize: '0.875rem',
@@ -67,10 +67,10 @@ const StyledSelect = withStyles((theme) => ({
     },
     '& .MuiOutlinedInput-notchedOutline': {
       borderColor: 'transparent'
-    },
-    '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: `${theme.palette.primary.dark}`
     }
+    // '&:hover .MuiOutlinedInput-notchedOutline': {
+    //   borderColor: `${theme.palette.primary.dark}`
+    //  }
   }
 }))(Select);
 
@@ -114,7 +114,7 @@ export default function FilaEditable({
 
 FilaEditable.propTypes = {
   row: PropTypes.object.isRequired,
-  columnaSeleccionada: PropTypes.string.isRequired,
+  columnaSeleccionada: PropTypes.string,
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,
   columns: PropTypes.array,
@@ -246,6 +246,7 @@ const Texto = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
       margin="none"
       autoFocus={foco}
       inputProps={{ style: { textAlign: `${column.alinear}` } }}
+      disabled={column.lectura}
     />
   );
 };
@@ -289,6 +290,7 @@ const TextoNumero = ({ valor, column, modificarFila, foco, updateMyData, index }
       margin="none"
       autoFocus={foco}
       inputProps={{ style: { textAlign: `${column.alinear}` } }}
+      disabled={column.lectura}
     />
   );
 };
@@ -321,7 +323,14 @@ const Combo = ({ valor, column, modificarFila, updateMyData, index, combos }) =>
   };
 
   return (
-    <StyledSelect value={value} onChange={onChange} onBlur={onBlur} fullWidth variant="outlined">
+    <StyledSelect
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      fullWidth
+      variant="outlined"
+      disabled={column.lectura}
+    >
       <MenuItem value="">
         <em>&nbsp;</em>
       </MenuItem>
@@ -361,6 +370,7 @@ const Check = ({ valor, column, modificarFila, updateMyData, index }) => {
         checked={value}
         onChange={onChange}
         color="primary"
+        disabled={column.lectura}
         checkedIcon={<CheckBoxIcon fontSize="small" />}
       />
     </div>
@@ -396,6 +406,7 @@ const Calendario = ({ valor, column, modificarFila, foco, updateMyData, index })
       mask="__/__/____"
       value={value}
       onChange={onChange}
+      disabled={column.lectura}
       inputProps={{ style: { textAlign: `${column.alinear}` } }}
       renderInput={(params) => (
         <StyledTextField
@@ -446,6 +457,7 @@ const Hora = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
       ampmInClock
       value={value}
       onChange={onChange}
+      disabled={column.lectura}
       inputProps={{ style: { textAlign: `${column.alinear}` } }}
       renderInput={(params) => (
         <StyledTextField

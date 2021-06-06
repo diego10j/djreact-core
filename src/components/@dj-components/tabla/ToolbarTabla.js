@@ -111,7 +111,11 @@ export default function ToolbarTabla({
             </Tooltip>
           </Box>
           <Box sx={{ pt: 0, pb: 0 }}>
-            <FiltroGlobalTabla globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+            <FiltroGlobalTabla
+              globalFilter={globalFilter}
+              setGlobalFilter={setGlobalFilter}
+              setColumnaSeleccionada={setColumnaSeleccionada}
+            />
           </Box>
           <Box sx={{ pt: 0, pb: 0 }}>
             <Tooltip title="Opciones">

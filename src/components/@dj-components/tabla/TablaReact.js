@@ -20,7 +20,7 @@ import Scrollbar from '../../Scrollbar';
 import ToolbarTabla from './ToolbarTabla';
 import { DefaultColumnFilter } from './FiltrosTabla';
 import TablePaginationActions from './PaginationTabla';
-import SkeletonTabla from './SkeletonTabla';
+import SkeletonTabla, { SkeletonPaginador } from './SkeletonTabla';
 import FilaEditable from './FilaEditable';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +39,6 @@ const StyledDiv = styled('div')(({ theme }) => ({
   height: '100%',
   outline: 'none',
   lineHeight: '1.5714285714285714',
-  borderRadius: '8px',
   display: 'flex',
   position: 'relative',
   boxSizing: 'border-box',
@@ -55,11 +54,21 @@ const StyledTable = withStyles(() => ({
 
 const StyledTableCellHeader = withStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
     borderBottom: `solid 1px ${theme.palette.divider}`,
+    borderTop: `solid 1px ${theme.palette.divider}`,
     height: 'auto',
     padding: '3px !important',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: 600,
+    backgroundColor: theme.palette.background.paper,
+    '&:first-of-type': {
+      borderRadius: 0,
+      boxShadow: 'none'
+    },
+    '&:last-of-type': {
+      borderRadius: 0,
+      boxShadow: 'none'
+    }
   }
 }))(TableCell);
 
@@ -85,6 +94,27 @@ const StyledTableRow = withStyles((theme) => ({
     }
   }
 }))(TableRow);
+
+const StyledTablePagination = withStyles((theme) => ({
+  root: {
+    padding: 0,
+    margin: 0,
+    border: 'none',
+    overflow: 'hidden',
+    '& .MuiToolbar-root': {
+      minHeight: '2em',
+      height: '2em',
+      padding: 0
+    },
+    '& .MuiTablePagination-select': {
+      height: '1.2em'
+    },
+    '& .MuiTablePagination-displayedRows': {
+      color: `${theme.palette.text.disabled}`,
+      fontSize: '0.820rem'
+    }
+  }
+}))(TablePagination);
 
 // Filtro
 function fuzzyTextFilterFn(rows, id, filterValue) {
@@ -186,6 +216,7 @@ export default function TablaReact({
       getInsertadas,
       getModificadas,
       getEliminadas,
+      setColumnaSeleccionada,
       initialState: { pageSize: filasPorPagina }
     },
     useGlobalFilter, // useGlobalFilter!
@@ -221,6 +252,28 @@ export default function TablaReact({
         prepareRow={prepareRow}
         setColumnaSeleccionada={setColumnaSeleccionada}
       />
+      {data.length > filasPorPagina ? (
+        <StyledTablePagination
+          component="div"
+          labelRowsPerPage=""
+          rowsPerPageOptions={[15, 30, 50, 100]}
+          colSpan={3}
+          count={data.length}
+          rowsPerPage={pageSize}
+          page={pageIndex}
+          SelectProps={{
+            inputProps: { 'aria-label': 'rows per page' },
+            native: true
+          }}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          ActionsComponent={TablePaginationActions}
+          // labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count} filas`}
+          labelDisplayedRows={({ count }) => `Filas (${count})`}
+        />
+      ) : (
+        <SkeletonPaginador />
+      )}
       <Scrollbar>
         <TableContainer
           sx={{
@@ -309,30 +362,10 @@ export default function TablaReact({
             </StyledTable>
           )}
         </TableContainer>
-        <Backdrop className={classes.root} open={isColumnas && cargando}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
       </Scrollbar>
-
-      {data.length > filasPorPagina && (
-        <TablePagination
-          component="div"
-          labelRowsPerPage=""
-          rowsPerPageOptions={[15, 30, 50, 100]}
-          colSpan={3}
-          count={data.length}
-          rowsPerPage={pageSize}
-          page={pageIndex}
-          SelectProps={{
-            inputProps: { 'aria-label': 'rows per page' },
-            native: true
-          }}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          ActionsComponent={TablePaginationActions}
-          labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count} filas`}
-        />
-      )}
+      <Backdrop className={classes.root} open={isColumnas && cargando}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </StyledDiv>
   );
 }

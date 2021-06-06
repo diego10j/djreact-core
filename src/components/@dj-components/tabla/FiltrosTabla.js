@@ -11,25 +11,24 @@ const StyledTextField = withStyles((theme) => ({
     border: 'none',
     fontSize: '0.800rem',
     width: '98%',
-    backgroundColor: 'transparent',
     outline: 'none',
     padding: 0,
     marggin: 0,
     paddingBottom: 5,
     '& .MuiInputBase-root': {
-      height: '25px',
+      height: '2em',
       padding: 0,
       paddingLeft: 5,
-      fontSize: '0.800rem'
+      fontSize: '0.800rem',
+      borderRadius: 0
     },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: `${theme.palette.divider}`,
-        borderRadius: 0
-      },
-      '&:hover fieldset': {
         borderColor: `${theme.palette.divider}`
       },
+      // '&:hover fieldset': {
+      //    borderColor: `${theme.palette.primary.dark}`
+      //  },
       '&.Mui-focused fieldset': {
         borderColor: `${theme.palette.primary.lighter}`,
         boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.1rem`
@@ -39,7 +38,7 @@ const StyledTextField = withStyles((theme) => ({
 }))(TextField);
 
 // Define a default UI for filtering
-export function DefaultColumnFilter({ column }) {
+export function DefaultColumnFilter({ column, setColumnaSeleccionada }) {
   return (
     <StyledTextField
       variant="outlined"
@@ -47,6 +46,7 @@ export function DefaultColumnFilter({ column }) {
       size="small"
       value={column.filterValue || ''}
       onChange={(e) => {
+        setColumnaSeleccionada(undefined);
         column.setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
       InputProps={{
@@ -61,5 +61,6 @@ export function DefaultColumnFilter({ column }) {
 }
 
 DefaultColumnFilter.propTypes = {
-  column: PropTypes.object.isRequired
+  column: PropTypes.object.isRequired,
+  setColumnaSeleccionada: PropTypes.func.isRequired
 };

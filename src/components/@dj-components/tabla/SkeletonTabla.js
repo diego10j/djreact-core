@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Skeleton } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const SkeletonTabla = ({ filasPorPagina }) => {
@@ -57,5 +57,22 @@ function useWidth() {
       const matches = useMediaQuery(theme.breakpoints.up(key));
       return !output && matches ? key : output;
     }, null) || 'xs'
+  );
+}
+
+const StyledTablePagination = styled('div')(() => ({
+  width: '100%',
+  padding: 0,
+  margin: 0,
+  border: 'none',
+  minHeight: '2em',
+  height: '2em'
+}));
+
+export function SkeletonPaginador() {
+  return (
+    <StyledTablePagination>
+      <Skeleton variant="rect" width="22em" height={28} sx={{ mr: 1, float: 'right' }} />
+    </StyledTablePagination>
   );
 }
