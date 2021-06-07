@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 // components
-import { InputAdornment, MenuItem, Select, TextField } from '@material-ui/core';
+import { Checkbox, InputAdornment, ListItemText, MenuItem, Select, TextField } from '@material-ui/core';
 // icons
 import FilterAltOutlinedIcon from '@material-ui/icons/FilterAltOutlined';
 
@@ -59,69 +59,97 @@ const StyledSelect = withStyles((theme) => ({
   }
 }))(Select);
 
+const useStyles = makeStyles({
+  item: {
+    padding: 0,
+    margin: 0,
+    '& span, & svg': {
+      fontSize: '0.840rem'
+    }
+  }
+});
+
 // Define a default UI for filtering
 export function DefaultColumnFilter({ column, setColumnaSeleccionada, combos }) {
-  const onChange = (e) => {
-    setColumnaSeleccionada(undefined);
-    column.setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
-  };
-
   return (
     <>
-      {column.componente === 'Texto' && (
-        <StyledTextField
-          variant="outlined"
-          margin="none"
-          size="small"
-          value={column.filterValue || ''}
-          onChange={onChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <FilterAltOutlinedIcon fontSize="small" color="disabled" />
-              </InputAdornment>
-            )
-          }}
-        />
-      )}
-      {(column.componente === 'TextoNumero' || column.componente === 'TextoEntero') && (
-        <StyledTextField
-          type="number"
-          value={column.filterValue || ''}
-          onChange={onChange}
-          size="small"
-          variant="outlined"
-          margin="none"
-          sx={{ textAlign: `${column.alinear}` }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <FilterAltOutlinedIcon fontSize="small" color="disabled" />
-              </InputAdornment>
-            )
-          }}
-        />
+      {(column.componente === 'Texto' ||
+        column.componente === 'TextoNumero' ||
+        column.componente === 'TextoEntero') && (
+        <FiltroTexto column={column} setColumnaSeleccionada={setColumnaSeleccionada} />
       )}
 
       {column.componente === 'Combo' && (
-        <StyledSelect value={column.filterValue || ''} onChange={onChange} variant="outlined" fullWidth>
-          <MenuItem value="">
-            <em>&nbsp;</em>
-          </MenuItem>
-          {combos
-            .find((col) => col.columna === column.nombre)
-            ?.listaCombo.map((element, index) => (
-              <MenuItem key={index} value={element.value}>
-                {element.label}
-              </MenuItem>
-            ))}
-        </StyledSelect>
+        <FiltroCombo column={column} setColumnaSeleccionada={setColumnaSeleccionada} combos={combos} />
       )}
     </>
   );
 }
 
 DefaultColumnFilter.propTypes = {
+  column: PropTypes.object.isRequired,
+  setColumnaSeleccionada: PropTypes.func.isRequired,
+  combos: PropTypes.array
+};
+
+const FiltroTexto = ({ column, setColumnaSeleccionada }) => {
+  const onChange = (e) => {
+    setColumnaSeleccionada(undefined);
+    column.setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
+  };
+
+  return (
+    <StyledTextField
+      variant="outlined"
+      margin="none"
+      size="small"
+      value={column.filterValue || ''}
+      onChange={onChange}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <FilterAltOutlinedIcon fontSize="small" color="disabled" />
+          </InputAdornment>
+        )
+      }}
+    />
+  );
+};
+FiltroTexto.propTypes = {
+  column: PropTypes.object.isRequired,
+  setColumnaSeleccionada: PropTypes.func.isRequired
+};
+
+const FiltroCombo = ({ column, setColumnaSeleccionada, combos }) => {
+  const classes = useStyles();
+
+  const onChange = (e) => {
+    setColumnaSeleccionada(undefined);
+    column.setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
+  };
+
+  return (
+    <StyledSelect
+      value={column.filterValue || []}
+      onChange={onChange}
+      variant="outlined"
+      style={{ width: column.width }}
+      fullWidth
+      multiple
+      renderValue={(selected) => selected.map((element) => element.label).join(', ')}
+    >
+      {combos
+        .find((col) => col.columna === column.nombre)
+        ?.listaCombo.map((element, index) => (
+          <MenuItem key={index} value={element}>
+            <Checkbox checked={(column.filterValue || []).indexOf(element) > -1} />
+            <ListItemText className={classes.item} primary={element.label} />
+          </MenuItem>
+        ))}
+    </StyledSelect>
+  );
+};
+FiltroCombo.propTypes = {
   column: PropTypes.object.isRequired,
   setColumnaSeleccionada: PropTypes.func.isRequired,
   combos: PropTypes.array

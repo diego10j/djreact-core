@@ -7,6 +7,8 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { withStyles } from '@material-ui/core/styles';
 
+// Componentes que se dibujan en lugar de un campo de Texto
+
 const StyledCheckbox = withStyles(() => ({
   root: {
     backgroundColor: 'transparent',
@@ -52,7 +54,7 @@ export function ComboLectura({ value: initialValue, cell: column, combos }) {
       {listaCombo === null ? (
         <Skeleton animation="wave" />
       ) : (
-        listaCombo.find((element) => element.value === initialValue)?.label
+        initialValue !== '' && listaCombo.find((element) => element.value === initialValue)?.label
       )}
     </>
   );

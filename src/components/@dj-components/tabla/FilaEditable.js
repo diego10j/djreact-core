@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { MenuItem, Select, TextField } from '@material-ui/core';
+import { MenuItem, Select, Skeleton, TextField } from '@material-ui/core';
 import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
 import { toDate, isFechaValida, getFormatoFecha, toHora, getFormatoHora } from '../../../utils/formatTime';
+import { isDefined } from '../../../utils/utilitario';
 
 const StyledTableCellBody = styled('td')(({ theme }) => ({
   padding: 0,
@@ -229,8 +230,8 @@ const Texto = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     if (isModifico) {
-      updateMyData(index, column.nombre, value);
       modificarFila(column, value);
+      updateMyData(index, column.nombre, value);
       setIsModificado(false);
     }
   };
@@ -272,8 +273,8 @@ const TextoNumero = ({ valor, column, modificarFila, foco, updateMyData, index }
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     if (isModifico) {
-      updateMyData(index, column.nombre, value);
       modificarFila(column, value);
+      updateMyData(index, column.nombre, value);
       setIsModificado(false);
     }
   };
@@ -316,32 +317,35 @@ const Combo = ({ valor, column, modificarFila, updateMyData, index, combos }) =>
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     if (isModifico) {
-      updateMyData(index, column.nombre, value);
       modificarFila(column, value);
+      updateMyData(index, column.nombre, value);
       setIsModificado(false);
     }
   };
 
   return (
-    <StyledSelect
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      fullWidth
-      variant="outlined"
-      disabled={column.lectura}
-    >
-      <MenuItem value="">
-        <em>&nbsp;</em>
-      </MenuItem>
-      {combos
-        .find((col) => col.columna === column.nombre)
-        ?.listaCombo.map((element, index) => (
-          <MenuItem key={index} value={element.value}>
-            {element.label}
-          </MenuItem>
-        ))}
-    </StyledSelect>
+    <>
+      {!isDefined(combos.find((col) => col.columna === column.nombre)?.listaCombo) ? (
+        <Skeleton animation="wave" />
+      ) : (
+        <StyledSelect
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          fullWidth
+          variant="outlined"
+          disabled={column.lectura}
+        >
+          {combos
+            .find((col) => col.columna === column.nombre)
+            ?.listaCombo.map((element, index) => (
+              <MenuItem key={index} value={element.value}>
+                {element.label}
+              </MenuItem>
+            ))}
+        </StyledSelect>
+      )}
+    </>
   );
 };
 Combo.propTypes = {
@@ -359,8 +363,8 @@ const Check = ({ valor, column, modificarFila, updateMyData, index }) => {
 
   const onChange = (e) => {
     setValue(e.target.checked);
-    updateMyData(index, column.nombre, value);
     modificarFila(column, value);
+    updateMyData(index, column.nombre, value);
   };
 
   return (
@@ -395,8 +399,8 @@ const Calendario = ({ valor, column, modificarFila, foco, updateMyData, index })
       setValue('');
       e = null;
     }
-    updateMyData(index, column.nombre, getFormatoFecha(e));
     modificarFila(column, getFormatoFecha(e, 'YYYY-MM-DD'));
+    updateMyData(index, column.nombre, getFormatoFecha(e));
   };
 
   return (
@@ -443,8 +447,8 @@ const Hora = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
       setValue('');
       e = null;
     }
-    updateMyData(index, column.nombre, getFormatoHora(e));
     modificarFila(column, getFormatoHora(e));
+    updateMyData(index, column.nombre, getFormatoHora(e));
   };
 
   return (

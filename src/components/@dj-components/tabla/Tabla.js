@@ -115,7 +115,7 @@ const Tabla = forwardRef(
           ...elements,
           {
             columna: columna.campoPrimarioCombo.toLowerCase(),
-            listaCombo: data.datos
+            listaCombo: [{ value: '', label: '(Null)' }, ...data.datos]
           }
         ]);
       } catch (error) {
@@ -214,6 +214,7 @@ const Tabla = forwardRef(
           } else if (_columna.componente === 'Combo') {
             // CheckBox de lectura
             _columna.Cell = ComboLectura;
+            _columna.filter = multiSelectFilter;
           } else if (_columna.componente === 'Calendario' || _columna.componente === 'Hora') {
             // ancho de la columna
             _columna.anchocolumna = 5;
@@ -226,6 +227,14 @@ const Tabla = forwardRef(
       setColumns(cols);
       setIsColumnas(true);
     };
+
+    function multiSelectFilter(rows, id, filterValue) {
+      return filterValue.length === 0
+        ? rows
+        : rows.filter((row) =>
+            filterValue.map((element) => (element.value === '' ? null : element.value)).includes(row.original[id])
+          );
+    }
 
     /**
      * Retorna un objeto columna
@@ -406,6 +415,7 @@ const Tabla = forwardRef(
     // original data
     const updateMyData = (rowIndex, columnId, value) => {
       // We also turn on the flag to not reset the page
+      value = value === '' ? null : value;
       setSkipPageReset(true);
       setData((old) =>
         old.map((row, index) => {
