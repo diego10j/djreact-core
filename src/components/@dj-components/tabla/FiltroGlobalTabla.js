@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, alpha } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 // components
 import { InputAdornment, TextField } from '@material-ui/core';
 // icons
@@ -25,14 +25,14 @@ const StyledTextField = withStyles((theme) => ({
       '& fieldset': {
         borderColor: `${theme.palette.divider}`,
         borderRadius: 10
-      },
+      }
       //  '&:hover fieldset': {
       //    borderColor: `${theme.palette.primary.dark}`
       //  },
-      '&.Mui-focused fieldset': {
-        borderColor: `${theme.palette.primary.lighter}`,
-        boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.1rem`
-      }
+      // '&.Mui-focused fieldset': {
+      //   borderColor: `${theme.palette.primary.lighter}`,
+      //    boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.1rem`
+      //  }
     },
     '@media (max-width: 600px)': {
       visibility: 'hidden'
