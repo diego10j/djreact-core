@@ -2,13 +2,25 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, useTheme, experimentalStyled as styled, alpha } from '@material-ui/core/styles';
 // components
-import { Autocomplete, Box, ClickAwayListener, InputAdornment, InputBase, Popper, TextField } from '@material-ui/core';
+import {
+  Autocomplete,
+  Box,
+  ClickAwayListener,
+  InputAdornment,
+  InputBase,
+  Popper,
+  TextField,
+  Checkbox
+} from '@material-ui/core';
 import { autocompleteClasses } from '@material-ui/core/Autocomplete';
 // icons
 import FilterAltOutlinedIcon from '@material-ui/icons/FilterAltOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
 import ClearIcon from '@material-ui/icons/Clear';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
+import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
 
 const StyledTextField = withStyles((theme) => ({
   root: {
@@ -91,6 +103,15 @@ const StyledPopper = styled(Popper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128'
 }));
 
+const StyledCheckbox = withStyles(() => ({
+  root: {
+    backgroundColor: 'transparent',
+    outline: 'none',
+    paddingTop: 0,
+    margginTop: 0
+  }
+}))(Checkbox);
+
 // Define a default UI for filtering
 export function DefaultColumnFilter({ column, setColumnaSeleccionada, combos }) {
   return (
@@ -104,6 +125,8 @@ export function DefaultColumnFilter({ column, setColumnaSeleccionada, combos }) 
       {column.componente === 'Combo' && (
         <FiltroCombo column={column} setColumnaSeleccionada={setColumnaSeleccionada} combos={combos} />
       )}
+
+      {column.componente === 'Check' && <FiltroCheck column={column} setColumnaSeleccionada={setColumnaSeleccionada} />}
     </>
   );
 }
@@ -318,4 +341,53 @@ PopperComponent.propTypes = {
   anchorEl: PropTypes.any,
   disablePortal: PropTypes.bool,
   open: PropTypes.bool.isRequired
+};
+
+const FiltroCheck = ({ column, setColumnaSeleccionada }) => {
+  const [value, setValue] = useState('');
+  const theme = useTheme();
+
+  const onChange = (e) => {
+    setValue(`${e.target.checked}`);
+    column.filterValue = `${e.target.checked}`;
+    setColumnaSeleccionada(undefined);
+    column.setFilter(`${e.target.checked}`); // Set undefined to remove the filter entirely
+  };
+
+  const onClear = () => {
+    setValue('');
+    setColumnaSeleccionada(undefined);
+    column.setFilter(undefined);
+  };
+
+  return (
+    <div align="center">
+      {value !== '' ? (
+        <ClearIcon
+          onClick={onClear}
+          fontSize="small"
+          sx={{
+            backgroundColor: alpha(theme.palette.primary.lighter, 0.9),
+            borderRadius: 50,
+            cursor: 'pointer',
+            mt: 1
+          }}
+        />
+      ) : (
+        <FilterAltOutlinedIcon fontSize="small" color="disabled" sx={{ mt: 1 }} />
+      )}
+      <StyledCheckbox
+        indeterminate={value === ''}
+        icon={<CheckBoxOutlineBlankIcon />}
+        checked={value === 'true'}
+        onChange={onChange}
+        checkedIcon={<CheckBoxOutlinedIcon />}
+        indeterminateIcon={<IndeterminateCheckBoxOutlinedIcon />}
+      />
+    </div>
+  );
+};
+FiltroCheck.propTypes = {
+  column: PropTypes.object.isRequired,
+  setColumnaSeleccionada: PropTypes.func.isRequired
 };
