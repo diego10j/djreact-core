@@ -10,7 +10,8 @@ import {
   InputBase,
   Popper,
   TextField,
-  Checkbox
+  Checkbox,
+  Tooltip
 } from '@material-ui/core';
 import { autocompleteClasses } from '@material-ui/core/Autocomplete';
 // icons
@@ -117,6 +118,8 @@ export function DefaultColumnFilter({ column, setColumnaSeleccionada, combos }) 
   return (
     <>
       {(column.componente === 'Texto' ||
+        column.componente === 'Calendario' ||
+        column.componente === 'Hora' ||
         column.componente === 'TextoNumero' ||
         column.componente === 'TextoEntero') && (
         <FiltroTexto column={column} setColumnaSeleccionada={setColumnaSeleccionada} />
@@ -160,10 +163,13 @@ const FiltroTexto = ({ column, setColumnaSeleccionada }) => {
       InputProps={{
         startAdornment: column.filterValue ? (
           <InputAdornment position="start" onClick={onClear}>
-            <ClearIcon
-              fontSize="small"
-              sx={{ backgroundColor: alpha(theme.palette.primary.lighter, 0.9), borderRadius: 50, cursor: 'pointer' }}
-            />
+            <Tooltip title="Borrar Filtro">
+              <ClearIcon
+                sx={{ backgroundColor: alpha(theme.palette.primary.lighter, 0.9), borderRadius: 50, cursor: 'pointer' }}
+                color="action"
+                fontSize="small"
+              />
+            </Tooltip>
           </InputAdornment>
         ) : (
           <InputAdornment position="start">
@@ -240,15 +246,18 @@ const FiltroCombo = ({ column, setColumnaSeleccionada, combos }) => {
           startAdornment:
             value.length > 0 ? (
               <InputAdornment position="start">
-                <ClearIcon
-                  fontSize="small"
-                  onClick={onClear}
-                  sx={{
-                    backgroundColor: alpha(theme.palette.primary.lighter, 0.9),
-                    borderRadius: 50,
-                    cursor: 'pointer'
-                  }}
-                />
+                <Tooltip title="Borrar Filtro">
+                  <ClearIcon
+                    fontSize="small"
+                    onClick={onClear}
+                    sx={{
+                      backgroundColor: alpha(theme.palette.primary.lighter, 0.9),
+                      borderRadius: 50,
+                      cursor: 'pointer'
+                    }}
+                    color="action"
+                  />
+                </Tooltip>
               </InputAdornment>
             ) : (
               <InputAdornment position="start">
@@ -361,32 +370,31 @@ const FiltroCheck = ({ column, setColumnaSeleccionada }) => {
   };
 
   return (
-    <div align="center">
+    <Box sx={{ ml: '-20px' }}>
       {value !== '' ? (
-        <ClearIcon
-          onClick={onClear}
-          fontSize="small"
-          sx={{
-            backgroundColor: alpha(theme.palette.primary.lighter, 0.9),
-            borderRadius: 50,
-            cursor: 'pointer',
-            mt: 1
-          }}
-        />
+        <Tooltip title="Borrar Filtro">
+          <ClearIcon
+            onClick={onClear}
+            sx={{ backgroundColor: alpha(theme.palette.primary.lighter, 0.9), borderRadius: 50, cursor: 'pointer' }}
+            color="action"
+            fontSize="small"
+          />
+        </Tooltip>
       ) : (
-        <FilterAltOutlinedIcon fontSize="small" color="disabled" sx={{ mt: 1 }} />
+        <FilterAltOutlinedIcon fontSize="small" color="disabled" />
       )}
       <StyledCheckbox
         indeterminate={value === ''}
-        icon={<CheckBoxOutlineBlankIcon />}
+        icon={<CheckBoxOutlineBlankIcon color="action" />}
         checked={value === 'true'}
         onChange={onChange}
-        checkedIcon={<CheckBoxOutlinedIcon />}
-        indeterminateIcon={<IndeterminateCheckBoxOutlinedIcon />}
+        checkedIcon={<CheckBoxOutlinedIcon color="action" />}
+        indeterminateIcon={<IndeterminateCheckBoxOutlinedIcon color="action" />}
       />
-    </div>
+    </Box>
   );
 };
+
 FiltroCheck.propTypes = {
   column: PropTypes.object.isRequired,
   setColumnaSeleccionada: PropTypes.func.isRequired

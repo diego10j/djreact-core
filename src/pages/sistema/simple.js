@@ -17,11 +17,16 @@ import Tabla from '../../components/@dj-components/tabla/Tabla';
 export default function Simple() {
   const tabTabla1 = useRef();
 
-  const guardar = () => {
+  const guardar = async () => {
     console.log('guardar');
     console.log(tabTabla1.current.getModificadas());
     console.log(tabTabla1.current.getInsertadas());
     console.log(tabTabla1.current.getEliminadas());
+
+    if (await tabTabla1.current.isGuardar()) {
+      tabTabla1.current.guardar();
+      console.log(tabTabla1.current.getListaSQL());
+    }
   };
 
   return (
@@ -46,6 +51,7 @@ export default function Simple() {
           opcionesColumnas={[
             {
               nombre: 'ide_usua',
+              filtro: true,
               combo: {
                 nombreTabla: 'sis_usuario',
                 campoPrimario: 'ide_usua',
@@ -55,6 +61,7 @@ export default function Simple() {
             },
             {
               nombre: 'IDE_ACAU',
+              filtro: true,
               combo: {
                 nombreTabla: 'sis_accion_auditoria',
                 campoPrimario: 'IDE_ACAU',
@@ -73,7 +80,7 @@ export default function Simple() {
               nombreVisual: 'IP',
               filtro: true,
               lectura: true,
-              width: 150
+              width: 160
             },
             {
               nombre: 'fin_auac',

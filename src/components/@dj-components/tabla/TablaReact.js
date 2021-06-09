@@ -144,6 +144,7 @@ export default function TablaReact({
   filasPorPagina = 15,
   columnasOcultas,
   setFilaSeleccionada,
+  filaSeleccionada,
   actualizar,
   insertar,
   eliminar,
@@ -151,7 +152,7 @@ export default function TablaReact({
   getInsertadas,
   getModificadas,
   getEliminadas,
-  // setData,
+  setCargando,
   updateMyData,
   skipPageReset
 }) {
@@ -251,6 +252,8 @@ export default function TablaReact({
         page={page}
         prepareRow={prepareRow}
         setColumnaSeleccionada={setColumnaSeleccionada}
+        setCargando={setCargando}
+        filaSeleccionada={filaSeleccionada}
       />
       {data.length > filasPorPagina ? (
         <StyledTablePagination
@@ -306,7 +309,7 @@ export default function TablaReact({
                         ) : (
                           <span>{columna.nombrevisual}</span>
                         )}
-                        {true && <div key={i}>{columna.render('Filter')} </div>}
+                        {columna.filtro && <div key={i}>{columna.render('Filter')} </div>}
                       </StyledTableCellHeader>
                     ))}
                   </TableRow>
@@ -383,6 +386,7 @@ TablaReact.propTypes = {
   isColumnas: PropTypes.bool.isRequired,
   columnasOcultas: PropTypes.array.isRequired,
   setFilaSeleccionada: PropTypes.func.isRequired,
+  filaSeleccionada: PropTypes.object,
   actualizar: PropTypes.func.isRequired,
   insertar: PropTypes.func.isRequired,
   eliminar: PropTypes.func.isRequired,
@@ -390,5 +394,6 @@ TablaReact.propTypes = {
   combos: PropTypes.array,
   getInsertadas: PropTypes.func,
   getModificadas: PropTypes.func,
-  getEliminadas: PropTypes.func
+  getEliminadas: PropTypes.func,
+  setCargando: PropTypes.func
 };

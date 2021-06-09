@@ -1,6 +1,7 @@
 import { format, formatDistanceToNow } from 'date-fns';
 import moment from 'moment';
 import { isDefined } from './utilitario';
+import { formatosFecha } from '../config';
 import 'moment/locale/es';
 // ----------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ export function fToNow(date) {
  * @param fecha  en string
  * @param formato de la fecha
  */
-export function toDate(fecha, formato = 'DD/MM/YYYY') {
+export function toDate(fecha, formato = formatosFecha.FORMATO_FECHA_FRONT) {
   if (isDefined(fecha)) {
     return moment(fecha, formato).toDate();
   }
@@ -40,7 +41,7 @@ export function toDate(fecha, formato = 'DD/MM/YYYY') {
  */
 export function toHora(hora) {
   if (isDefined(hora)) {
-    return moment(`2021-01-01 ${hora}`, 'YYYY-MM-DD HH:mm:ss').toDate();
+    return moment(`01/01/2021 ${hora}`, formatosFecha.FORMATO_FECHA_HORA_FRONT).toDate();
   }
   return null;
 }
@@ -50,7 +51,7 @@ export function toHora(hora) {
  * @param fecha
  * @param formato
  */
-export function isFechaValida(fecha, formato = 'DD/MM/YYYY') {
+export function isFechaValida(fecha, formato = formatosFecha.FORMATO_FECHA_FRONT) {
   return moment(fecha, formato).isValid();
 }
 
@@ -58,7 +59,7 @@ export function isFechaValida(fecha, formato = 'DD/MM/YYYY') {
  * Retorna un string de la fecha en formato (DD/MM/YYYY por defecto)
  * @param fecha Date
  */
-export function getFormatoFecha(fecha, formato = 'DD/MM/YYYY') {
+export function getFormatoFecha(fecha, formato = formatosFecha.FORMATO_FECHA_FRONT) {
   if (isDefined(fecha) && isDate(fecha)) {
     return moment(fecha).format(formato.toUpperCase());
   }
@@ -66,10 +67,19 @@ export function getFormatoFecha(fecha, formato = 'DD/MM/YYYY') {
 }
 
 /**
+ * Retorna la fecha en formato soportado por la base de datos
+ * @param {Date} fecha
+ * @returns
+ */
+export function getFormatoFechaBDD(fecha) {
+  return getFormatoFecha(fecha, formatosFecha.FORMATO_FECHA_BD);
+}
+
+/**
  * Retorna un string de la hora en formato HH:mm:ss
  * @param fecha Date
  */
-export function getFormatoHora(hora, formato = 'HH:mm:ss') {
+export function getFormatoHora(hora, formato = formatosFecha.FORMATO_HORA) {
   if (isDefined(hora) && isDate(hora)) {
     return moment(hora).format(formato);
   }
