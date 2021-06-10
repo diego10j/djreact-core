@@ -52,6 +52,7 @@ export function toHora(hora) {
  * @param formato
  */
 export function isFechaValida(fecha, formato = formatosFecha.FORMATO_FECHA_FRONT) {
+  //  return isDefined(fecha) && fecha.length === formato.length.length && moment(fecha, formato).isValid();
   return moment(fecha, formato).isValid();
 }
 

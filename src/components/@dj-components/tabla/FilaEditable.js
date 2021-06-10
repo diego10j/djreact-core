@@ -8,7 +8,7 @@ import { MenuItem, Select, Skeleton, TextField } from '@material-ui/core';
 import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
-import { toDate, isFechaValida, getFormatoFecha, toHora, getFormatoHora } from '../../../utils/formatTime';
+import { toDate, isFechaValida, toHora, getFormatoHora } from '../../../utils/formatTime';
 import { isDefined } from '../../../utils/utilitario';
 
 const StyledTableCellBody = styled('td')(({ theme }) => ({
@@ -85,50 +85,67 @@ const StyledCheckbox = withStyles(() => ({
 }))(Checkbox);
 
 export default function FilaEditable({
-  row: { cells, values, index },
+  row: { cells, index },
+  filaSeleccionada,
   columns,
   columnaSeleccionada,
+  setValorFilaSeleccionada,
+  getValorFilaSeleccionada,
   modificarFila,
   updateMyData,
   combos
 }) {
-  // console.log(values);
-
   return (
     <>
-      {cells.map((cell, i) => (
-        <StyledTableCellBody key={i}>
-          <ComponenteEditable
-            valor={values[cell.column.nombre]}
-            column={columns.find((col) => col.nombre === cell.column.nombre)}
-            foco={columnaSeleccionada === cell.column.nombre}
-            modificarFila={modificarFila}
-            updateMyData={updateMyData}
-            index={index}
-            combos={combos}
-          />
-        </StyledTableCellBody>
-      ))}
+      {filaSeleccionada &&
+        cells.map((cell, i) => (
+          <StyledTableCellBody key={i}>
+            <ComponenteEditable
+              filaSeleccionada={filaSeleccionada}
+              setValorFilaSeleccionada={setValorFilaSeleccionada}
+              getValorFilaSeleccionada={getValorFilaSeleccionada}
+              column={columns.find((col) => col.nombre === cell.column.nombre)}
+              foco={columnaSeleccionada === cell.column.nombre}
+              modificarFila={modificarFila}
+              updateMyData={updateMyData}
+              index={index}
+              combos={combos}
+            />
+          </StyledTableCellBody>
+        ))}
     </>
   );
 }
 
 FilaEditable.propTypes = {
   row: PropTypes.object.isRequired,
+  filaSeleccionada: PropTypes.object,
   columnaSeleccionada: PropTypes.string,
   modificarFila: PropTypes.func,
+  setValorFilaSeleccionada: PropTypes.func,
+  getValorFilaSeleccionada: PropTypes.func,
   updateMyData: PropTypes.func,
   columns: PropTypes.array,
   combos: PropTypes.array
 };
 
 // Create an editable cell renderer
-function ComponenteEditable({ valor, column, modificarFila, foco, updateMyData, index, combos }) {
+function ComponenteEditable({
+  column,
+  modificarFila,
+  foco,
+  updateMyData,
+  index,
+  combos,
+  setValorFilaSeleccionada,
+  getValorFilaSeleccionada
+}) {
   return (
     <>
       {column.componente === 'Texto' && (
         <Texto
-          valor={valor}
+          setValorFilaSeleccionada={setValorFilaSeleccionada}
+          getValorFilaSeleccionada={getValorFilaSeleccionada}
           column={column}
           modificarFila={modificarFila}
           foco={foco}
@@ -139,7 +156,8 @@ function ComponenteEditable({ valor, column, modificarFila, foco, updateMyData, 
 
       {column.componente === 'TextoNumero' && (
         <TextoNumero
-          valor={valor}
+          setValorFilaSeleccionada={setValorFilaSeleccionada}
+          getValorFilaSeleccionada={getValorFilaSeleccionada}
           column={column}
           modificarFila={modificarFila}
           foco={foco}
@@ -150,7 +168,8 @@ function ComponenteEditable({ valor, column, modificarFila, foco, updateMyData, 
 
       {column.componente === 'TextoEntero' && (
         <TextoNumero
-          valor={valor}
+          setValorFilaSeleccionada={setValorFilaSeleccionada}
+          getValorFilaSeleccionada={getValorFilaSeleccionada}
           column={column}
           modificarFila={modificarFila}
           foco={foco}
@@ -161,7 +180,8 @@ function ComponenteEditable({ valor, column, modificarFila, foco, updateMyData, 
 
       {column.componente === 'Combo' && (
         <Combo
-          valor={valor}
+          setValorFilaSeleccionada={setValorFilaSeleccionada}
+          getValorFilaSeleccionada={getValorFilaSeleccionada}
           column={column}
           modificarFila={modificarFila}
           foco={foco}
@@ -173,7 +193,8 @@ function ComponenteEditable({ valor, column, modificarFila, foco, updateMyData, 
 
       {column.componente === 'Check' && (
         <Check
-          valor={valor}
+          setValorFilaSeleccionada={setValorFilaSeleccionada}
+          getValorFilaSeleccionada={getValorFilaSeleccionada}
           column={column}
           modificarFila={modificarFila}
           foco={foco}
@@ -184,7 +205,8 @@ function ComponenteEditable({ valor, column, modificarFila, foco, updateMyData, 
 
       {column.componente === 'Calendario' && (
         <Calendario
-          valor={valor}
+          setValorFilaSeleccionada={setValorFilaSeleccionada}
+          getValorFilaSeleccionada={getValorFilaSeleccionada}
           column={column}
           modificarFila={modificarFila}
           foco={foco}
@@ -195,7 +217,8 @@ function ComponenteEditable({ valor, column, modificarFila, foco, updateMyData, 
 
       {column.componente === 'Hora' && (
         <Hora
-          valor={valor}
+          setValorFilaSeleccionada={setValorFilaSeleccionada}
+          getValorFilaSeleccionada={getValorFilaSeleccionada}
           column={column}
           modificarFila={modificarFila}
           foco={foco}
@@ -208,37 +231,44 @@ function ComponenteEditable({ valor, column, modificarFila, foco, updateMyData, 
 }
 
 ComponenteEditable.propTypes = {
-  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
+  setValorFilaSeleccionada: PropTypes.func,
+  getValorFilaSeleccionada: PropTypes.func,
   updateMyData: PropTypes.func,
   foco: PropTypes.bool,
   index: PropTypes.number,
   combos: PropTypes.array
 };
 
-const Texto = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
-  // We need to keep and update the state of the cell normally
-  const [value, setValue] = useState(valor === null ? '' : valor);
+const Texto = ({
+  column,
+  modificarFila,
+  foco,
+  updateMyData,
+  index,
+  setValorFilaSeleccionada,
+  getValorFilaSeleccionada
+}) => {
   const [isModifico, setIsModificado] = useState(false);
 
   const onChange = (e) => {
-    setValue(e.target.value);
+    setValorFilaSeleccionada(column.nombre, e.target.value);
     setIsModificado(true);
   };
 
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     if (isModifico) {
-      modificarFila(column, value);
-      updateMyData(index, column.nombre, value);
+      modificarFila(column, index);
+      updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
       setIsModificado(false);
     }
   };
 
   return (
     <StyledTextField
-      value={value}
+      value={getValorFilaSeleccionada(column.nombre)}
       onChange={onChange}
       onBlur={onBlur}
       fullWidth
@@ -252,29 +282,37 @@ const Texto = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
   );
 };
 Texto.propTypes = {
-  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
+  setValorFilaSeleccionada: PropTypes.func,
+  getValorFilaSeleccionada: PropTypes.func,
   updateMyData: PropTypes.func,
   foco: PropTypes.bool,
   index: PropTypes.number
 };
 
-const TextoNumero = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
+const TextoNumero = ({
+  column,
+  modificarFila,
+  foco,
+  updateMyData,
+  index,
+  setValorFilaSeleccionada,
+  getValorFilaSeleccionada
+}) => {
   // We need to keep and update the state of the cell normally
-  const [value, setValue] = useState(valor === null ? '' : valor);
   const [isModifico, setIsModificado] = useState(false);
 
   const onChange = (e) => {
-    setValue(e.target.value);
+    setValorFilaSeleccionada(column.nombre, e.target.value);
     setIsModificado(true);
   };
 
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     if (isModifico) {
-      modificarFila(column, value);
-      updateMyData(index, column.nombre, value);
+      modificarFila(column, index);
+      updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
       setIsModificado(false);
     }
   };
@@ -282,7 +320,7 @@ const TextoNumero = ({ valor, column, modificarFila, foco, updateMyData, index }
   return (
     <StyledTextField
       type="number"
-      value={value}
+      value={getValorFilaSeleccionada(column.nombre)}
       onChange={onChange}
       onBlur={onBlur}
       fullWidth
@@ -297,7 +335,8 @@ const TextoNumero = ({ valor, column, modificarFila, foco, updateMyData, index }
 };
 
 TextoNumero.propTypes = {
-  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  setValorFilaSeleccionada: PropTypes.func,
+  getValorFilaSeleccionada: PropTypes.func,
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,
@@ -305,20 +344,32 @@ TextoNumero.propTypes = {
   index: PropTypes.number
 };
 
-const Combo = ({ valor, column, modificarFila, updateMyData, index, combos }) => {
+const Combo = ({
+  column,
+  modificarFila,
+  updateMyData,
+  index,
+  combos,
+  setValorFilaSeleccionada,
+  getValorFilaSeleccionada
+}) => {
   // We need to keep and update the state of the cell normally
-  const [value, setValue] = useState(valor === null ? '' : valor);
+  const [value, setValue] = useState(
+    getValorFilaSeleccionada(column.nombre) === null ? '' : getValorFilaSeleccionada(column.nombre)
+  );
   const [isModifico, setIsModificado] = useState(false);
+
   const onChange = (e) => {
     setValue(e.target.value);
+    setValorFilaSeleccionada(column.nombre, e.target.value);
     setIsModificado(true);
   };
 
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     if (isModifico) {
-      modificarFila(column, value);
-      updateMyData(index, column.nombre, value);
+      modificarFila(column, index);
+      updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
       setIsModificado(false);
     }
   };
@@ -349,7 +400,8 @@ const Combo = ({ valor, column, modificarFila, updateMyData, index, combos }) =>
   );
 };
 Combo.propTypes = {
-  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  setValorFilaSeleccionada: PropTypes.func,
+  getValorFilaSeleccionada: PropTypes.func,
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,
@@ -357,21 +409,18 @@ Combo.propTypes = {
   combos: PropTypes.array
 };
 
-const Check = ({ valor, column, modificarFila, updateMyData, index }) => {
-  // We need to keep and update the state of the cell normally
-  const [value, setValue] = useState(valor === null ? false : valor);
-
+const Check = ({ column, modificarFila, updateMyData, index, setValorFilaSeleccionada, getValorFilaSeleccionada }) => {
   const onChange = (e) => {
-    setValue(e.target.checked);
-    modificarFila(column, value);
-    updateMyData(index, column.nombre, value);
+    setValorFilaSeleccionada(column.nombre, e.target.checked);
+    modificarFila(column, index);
+    updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
   };
 
   return (
     <div align="center">
       <StyledCheckbox
         icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-        checked={value}
+        value={getValorFilaSeleccionada(column.nombre)}
         onChange={onChange}
         color="primary"
         disabled={column.lectura}
@@ -382,33 +431,59 @@ const Check = ({ valor, column, modificarFila, updateMyData, index }) => {
 };
 
 Check.propTypes = {
-  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  setValorFilaSeleccionada: PropTypes.func,
+  getValorFilaSeleccionada: PropTypes.func,
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,
   index: PropTypes.number
 };
 
-const Calendario = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
-  const [value, setValue] = useState(valor === null ? '' : toDate(valor));
+const Calendario = ({
+  column,
+  modificarFila,
+  foco,
+  updateMyData,
+  index,
+  setValorFilaSeleccionada,
+  getValorFilaSeleccionada
+}) => {
+  const [value, setValue] = useState(
+    getValorFilaSeleccionada(column.nombre) === null ? '' : toDate(getValorFilaSeleccionada(column.nombre))
+  );
+  const [isModifico, setIsModificado] = useState(false);
 
   const onChange = (e) => {
     if (isFechaValida(e)) {
       setValue(e);
-    } else {
-      setValue('');
-      e = null;
+      setValorFilaSeleccionada(column.nombre, e);
+      setIsModificado(true);
     }
-    modificarFila(column, getFormatoFecha(e, 'YYYY-MM-DD'));
-    updateMyData(index, column.nombre, getFormatoFecha(e));
+  };
+
+  const onChangeInput = (e) => {
+    setValue(e.target.value);
+    setValorFilaSeleccionada(column.nombre, e.target.value);
+    setIsModificado(true);
+  };
+
+  const onBlur = () => {
+    if (isModifico) {
+      if (!isFechaValida(getValorFilaSeleccionada(column.nombre))) {
+        setValorFilaSeleccionada(column.nombre, '');
+      }
+      modificarFila(column, index);
+      updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
+      setIsModificado(false);
+    }
   };
 
   return (
     <DatePicker
       views={['day']}
       inputFormat="dd/MM/yyyy"
-      mask="__/__/____"
       value={value}
+      mask="__/__/____"
       onChange={onChange}
       disabled={column.lectura}
       inputProps={{ style: { textAlign: `${column.alinear}` } }}
@@ -421,6 +496,10 @@ const Calendario = ({ valor, column, modificarFila, foco, updateMyData, index })
           margin="none"
           autoFocus={foco}
           helperText={null}
+          onBlur={onBlur}
+          value={value}
+          error={false}
+          onChange={onChangeInput}
         />
       )}
     />
@@ -428,7 +507,8 @@ const Calendario = ({ valor, column, modificarFila, foco, updateMyData, index })
 };
 
 Calendario.propTypes = {
-  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  setValorFilaSeleccionada: PropTypes.func,
+  getValorFilaSeleccionada: PropTypes.func,
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,
@@ -437,18 +517,43 @@ Calendario.propTypes = {
   combos: PropTypes.array
 };
 
-const Hora = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
-  const [value, setValue] = useState(valor === null ? '' : toHora(valor));
+const Hora = ({
+  column,
+  modificarFila,
+  foco,
+  updateMyData,
+  index,
+  setValorFilaSeleccionada,
+  getValorFilaSeleccionada
+}) => {
+  const [value, setValue] = useState(
+    getValorFilaSeleccionada(column.nombre) === null ? '' : toHora(getValorFilaSeleccionada(column.nombre))
+  );
+  const [isModifico, setIsModificado] = useState(false);
 
   const onChange = (e) => {
     if (isFechaValida(e)) {
       setValue(e);
-    } else {
-      setValue('');
-      e = null;
+      setValorFilaSeleccionada(column.nombre, e);
+      setIsModificado(true);
     }
-    modificarFila(column, getFormatoHora(e));
-    updateMyData(index, column.nombre, getFormatoHora(e));
+  };
+
+  const onChangeInput = (e) => {
+    setValue(e.target.value);
+    setValorFilaSeleccionada(column.nombre, e.target.value);
+    setIsModificado(true);
+  };
+
+  const onBlur = () => {
+    if (isModifico) {
+      if (!isFechaValida(getValorFilaSeleccionada(column.nombre))) {
+        setValorFilaSeleccionada(column.nombre, '');
+      }
+      modificarFila(column, index);
+      updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
+      setIsModificado(false);
+    }
   };
 
   return (
@@ -472,6 +577,10 @@ const Hora = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
           margin="none"
           autoFocus={foco}
           helperText={null}
+          onBlur={onBlur}
+          value={value}
+          error={false}
+          onChange={onChangeInput}
         />
       )}
     />
@@ -479,7 +588,8 @@ const Hora = ({ valor, column, modificarFila, foco, updateMyData, index }) => {
 };
 
 Hora.propTypes = {
-  valor: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  setValorFilaSeleccionada: PropTypes.func,
+  getValorFilaSeleccionada: PropTypes.func,
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,

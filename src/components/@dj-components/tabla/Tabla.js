@@ -47,7 +47,9 @@ const Tabla = forwardRef(
       getTotalFilas,
       isGuardar,
       guardar,
-      getListaSQL
+      getListaSQL,
+      setValorFilaSeleccionada,
+      getValorFilaSeleccionada
     }));
     const msg = useMensaje();
     const [skipPageReset, setSkipPageReset] = useState(false);
@@ -356,12 +358,8 @@ const Tabla = forwardRef(
      * Se ejecuta cuando algun dato de la tabla se modifica
      * @param {*} rowIndex
      * @param {*} columnId
-     * @param {*} value
      */
-    const modificarFila = ({ nombre, lectura }, value) => {
-      if (value === '') {
-        value = null;
-      }
+    const modificarFila = ({ nombre, lectura }, index) => {
       // Valida que la columna no sea solo lectura
       if (lectura === false) {
         // si no es fila insertada
@@ -375,12 +373,34 @@ const Tabla = forwardRef(
             colModificadas.push(nombre);
           }
           filaSeleccionada.colModificadas = colModificadas;
+          data[index] = filaSeleccionada;
+          setFilaSeleccionada(data[index]);
           setData(data);
         }
 
         // Propagar si tiene evento
         // .....
       }
+    };
+
+    /**
+     * Asigna un valor a una columna de la fila seleccionada
+     * @param {Nombre Columna} nombre
+     * @param {*} valor
+     */
+    const setValorFilaSeleccionada = (nombre, valor) => {
+      if (isDefined(filaSeleccionada)) {
+        filaSeleccionada[nombre] = valor;
+        const editFilaSeleccionada = { ...filaSeleccionada };
+        setFilaSeleccionada(editFilaSeleccionada);
+      }
+    };
+
+    const getValorFilaSeleccionada = (nombre) => {
+      if (isDefined(filaSeleccionada)) {
+        return isDefined(filaSeleccionada[nombre]) ? filaSeleccionada[nombre] : '';
+      }
+      return null;
     };
 
     /**
@@ -474,7 +494,7 @@ const Tabla = forwardRef(
           const colActual = colObligatorias[j];
           const valor = filaActual[colActual.nombre];
           if (isEmpty(valor)) {
-            msg.mensajeAdvertencia(`Los valores de la columna ${colActual.nombreVisual} son obligatorios`);
+            msg.mensajeAdvertencia(`Los valores de la columna ${colActual.nombrevisual} son obligatorios`);
             return false;
           }
         }
@@ -487,7 +507,7 @@ const Tabla = forwardRef(
               // Valida mediante el servicio web
               if (await getServicioIsUnico(colActual, valor)) {
                 msg.mensajeAdvertencia(
-                  `Restricción única, ya existe un registro con el valor ${valor} en la columna ${colActual.nombreVisual}`
+                  `Restricción única, ya existe un registro con el valor ${valor} en la columna ${colActual.nombrevisual}`
                 );
                 throw new Error('Restricción única.');
               }
@@ -515,7 +535,7 @@ const Tabla = forwardRef(
           if (colActual.requerida) {
             const valor = filaActual[colNombreActual];
             if (isDefined(valor) === false) {
-              msg.mensajeAdvertencia(`Los valores de la columna ${colActual.nombreVisual} son obligatorios`);
+              msg.mensajeAdvertencia(`Los valores de la columna ${colActual.nombrevisual} son obligatorios`);
               return false;
             }
           }
@@ -545,7 +565,7 @@ const Tabla = forwardRef(
     const isValorValido = (fila, columna) => {
       // Valida tipos de datos
       let valor = fila[columna.nombre];
-      // console.log(' -----  ' + columna.nombre + '   ' + valor);
+      // console.log(` -----  ${columna.nombre}  ${valor}`);
       if (valor === '') {
         valor = null;
       }
@@ -555,10 +575,10 @@ const Tabla = forwardRef(
             fila[columna.nombre] = getFormatoFecha(valor);
           }
           // valida que sea una fecha valida
-          valor = fila[columna.nombre];
+          // valor = fila[columna.nombre];
           // const d = new Date(valor);
           if (isFechaValida(valor) === false) {
-            msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombreVisual}`);
+            msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
         } else if (columna.componente === 'Hora') {
@@ -566,7 +586,7 @@ const Tabla = forwardRef(
           if (isDate(valor) === false) {
             const d = toHora(valor);
             if (isDate(d)) {
-              msg.mensajeAdvertencia(`Hora no válida ${valor} en la columna  ${columna.nombreVisual}`);
+              msg.mensajeAdvertencia(`Hora no válida ${valor} en la columna  ${columna.nombrevisual}`);
               return false;
             }
             fila[columna.nombre] = d;
@@ -583,7 +603,7 @@ const Tabla = forwardRef(
           valor = fila[columna.nombre];
           // const d = new Date(valor);
           if (isFechaValida(valor) === false) {
-            msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombreVisual}`);
+            msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
         }
@@ -739,6 +759,8 @@ const Tabla = forwardRef(
           modificarFila={modificarFila}
           setFilaSeleccionada={setFilaSeleccionada}
           filaSeleccionada={filaSeleccionada}
+          setValorFilaSeleccionada={setValorFilaSeleccionada}
+          getValorFilaSeleccionada={getValorFilaSeleccionada}
           actualizar={actualizar}
           insertar={insertar}
           eliminar={eliminar}
