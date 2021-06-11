@@ -8,7 +8,7 @@ import { MenuItem, Select, Skeleton, TextField } from '@material-ui/core';
 import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
-import { toDate, isFechaValida, toHora, getFormatoHora } from '../../../utils/formatTime';
+import { toDate, isFechaValida, isDate, toHora, getFormatoFecha, getFormatoHora } from '../../../utils/formatTime';
 import { isDefined } from '../../../utils/utilitario';
 
 const StyledTableCellBody = styled('td')(({ theme }) => ({
@@ -415,12 +415,11 @@ const Check = ({ column, modificarFila, updateMyData, index, setValorFilaSelecci
     modificarFila(column, index);
     updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
   };
-
   return (
     <div align="center">
       <StyledCheckbox
         icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-        value={getValorFilaSeleccionada(column.nombre)}
+        checked={getValorFilaSeleccionada(column.nombre) === true}
         onChange={onChange}
         color="primary"
         disabled={column.lectura}
@@ -453,11 +452,17 @@ const Calendario = ({
   );
   const [isModifico, setIsModificado] = useState(false);
 
+  /**
+   * Cuando selecciona la facha del Calendario
+   * @param {*} e
+   */
   const onChange = (e) => {
     if (isFechaValida(e)) {
       setValue(e);
       setValorFilaSeleccionada(column.nombre, e);
-      setIsModificado(true);
+      modificarFila(column, index);
+      updateMyData(index, column.nombre, getFormatoFecha(e));
+      setIsModificado(false);
     }
   };
 
@@ -469,11 +474,12 @@ const Calendario = ({
 
   const onBlur = () => {
     if (isModifico) {
-      if (!isFechaValida(getValorFilaSeleccionada(column.nombre))) {
-        setValorFilaSeleccionada(column.nombre, '');
-      }
       modificarFila(column, index);
-      updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
+      if (isDate(value)) {
+        updateMyData(index, column.nombre, getFormatoFecha(value));
+      } else {
+        updateMyData(index, column.nombre, value);
+      }
       setIsModificado(false);
     }
   };
@@ -531,11 +537,17 @@ const Hora = ({
   );
   const [isModifico, setIsModificado] = useState(false);
 
+  /**
+   * Cuando selecciona la hora
+   * @param {*} e
+   */
   const onChange = (e) => {
     if (isFechaValida(e)) {
       setValue(e);
       setValorFilaSeleccionada(column.nombre, e);
-      setIsModificado(true);
+      modificarFila(column, index);
+      updateMyData(index, column.nombre, getFormatoHora(e));
+      setIsModificado(false);
     }
   };
 
@@ -547,11 +559,12 @@ const Hora = ({
 
   const onBlur = () => {
     if (isModifico) {
-      if (!isFechaValida(getValorFilaSeleccionada(column.nombre))) {
-        setValorFilaSeleccionada(column.nombre, '');
-      }
       modificarFila(column, index);
-      updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
+      if (isDate(value)) {
+        updateMyData(index, column.nombre, getFormatoHora(value));
+      } else {
+        updateMyData(index, column.nombre, value);
+      }
       setIsModificado(false);
     }
   };

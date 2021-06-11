@@ -143,7 +143,6 @@ export default function TablaReact({
   modificarFila,
   filasPorPagina = 15,
   columnasOcultas,
-  setFilaSeleccionada,
   filaSeleccionada,
   setValorFilaSeleccionada,
   getValorFilaSeleccionada,
@@ -151,6 +150,7 @@ export default function TablaReact({
   insertar,
   eliminar,
   combos,
+  seleccionarFila,
   getInsertadas,
   getModificadas,
   getEliminadas,
@@ -331,8 +331,7 @@ export default function TablaReact({
                         onClick: () => {
                           toggleAllRowsSelected(false);
                           row.toggleRowSelected();
-                          if (lectura) setFilaSeleccionada(row.values);
-                          else setFilaSeleccionada(data[index]);
+                          seleccionarFila(row.values[campoPrimario]);
                         }
                       })}
                     >
@@ -382,6 +381,7 @@ TablaReact.propTypes = {
   filasPorPagina: PropTypes.number,
   data: PropTypes.array.isRequired,
   campoPrimario: PropTypes.string,
+  seleccionarFila: PropTypes.func.isRequired,
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   updateMyData: PropTypes.func.isRequired,
@@ -389,7 +389,6 @@ TablaReact.propTypes = {
   skipPageReset: PropTypes.bool.isRequired,
   isColumnas: PropTypes.bool.isRequired,
   columnasOcultas: PropTypes.array.isRequired,
-  setFilaSeleccionada: PropTypes.func.isRequired,
   setValorFilaSeleccionada: PropTypes.func.isRequired,
   getValorFilaSeleccionada: PropTypes.func.isRequired,
   filaSeleccionada: PropTypes.object,

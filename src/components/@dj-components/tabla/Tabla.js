@@ -8,9 +8,10 @@ import { isDefined, isEmpty } from '../../../utils/utilitario';
 import useMensaje from '../../../hooks/useMensaje';
 import {
   isDate,
-  isFechaValida,
   getFormatoFecha,
+  getFormatoFechaHora,
   toHora,
+  toDate,
   getFormatoHora,
   getFormatoFechaBDD
 } from '../../../utils/formatTime';
@@ -43,6 +44,7 @@ const Tabla = forwardRef(
       isFilaModificada,
       isFilaEliminada,
       isFilaInsertada,
+      seleccionarFila,
       getFila,
       getTotalFilas,
       isGuardar,
@@ -403,6 +405,15 @@ const Tabla = forwardRef(
       return null;
     };
 
+    const seleccionarFila = (valorPrimario) => {
+      const fila = data.find((col) => col[campoPrimario] === valorPrimario);
+      if (isDefined(fila)) {
+        setFilaSeleccionada(fila);
+      } else {
+        setFilaSeleccionada(undefined);
+      }
+    };
+
     /**
      * Crea una fila, con los columnas de la tabla
      */
@@ -572,37 +583,34 @@ const Tabla = forwardRef(
       if (isDefined(valor)) {
         if (columna.componente === 'Calendario') {
           if (typeof valor === 'object') {
-            fila[columna.nombre] = getFormatoFecha(valor);
+            valor = getFormatoFecha(valor);
           }
-          // valida que sea una fecha valida
-          // valor = fila[columna.nombre];
-          // const d = new Date(valor);
-          if (isFechaValida(valor) === false) {
+          // valida que sea una fecha correcta
+          const d = toDate(getFormatoFecha(valor));
+          if (!isDate(d)) {
             msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
+          // console.log(fila);
         } else if (columna.componente === 'Hora') {
-          // valida que sea una hora valida
-          if (isDate(valor) === false) {
-            const d = toHora(valor);
-            if (isDate(d)) {
-              msg.mensajeAdvertencia(`Hora no válida ${valor} en la columna  ${columna.nombrevisual}`);
-              return false;
-            }
-            fila[columna.nombre] = d;
+          if (typeof valor === 'object') {
+            valor = getFormatoHora(valor);
           }
-          valor = fila[columna.nombre];
-          const d = new Date(valor);
-          fila[columna.nombre] = getFormatoHora(d);
+          // valida que sea una hora correcta
+          const d = toHora(getFormatoHora(valor));
+          if (!isDate(d)) {
+            msg.mensajeAdvertencia(`Hora no válida ${valor} en la columna  ${columna.nombrevisual}`);
+            return false;
+          }
+          // console.log(fila);
         } else if (columna.componente === 'CalendarioHora') {
           if (typeof valor === 'object') {
             // fila[columna.nombre] = this.utilitario.getFormatoFechaHora(valor);
-            fila[columna.nombre] = getFormatoFecha(valor);
+            valor = getFormatoFechaHora(valor);
           }
-          // valida que sea una fecha valida
-          valor = fila[columna.nombre];
-          // const d = new Date(valor);
-          if (isFechaValida(valor) === false) {
+          // valida que sea una fecha correcta
+          const d = toDate(getFormatoFechaHora(valor));
+          if (!isDate(d)) {
             msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
@@ -712,7 +720,7 @@ const Tabla = forwardRef(
         objElimina.nombreTabla = nombreTabla.toLowerCase();
         const condicionElimina = {
           condicion: `${campoPrimario} = ?`,
-          valores: [filaActual[campoPrimario.toLowerCase()]]
+          valores: [filaActual]
         };
         objElimina.condiciones = [condicionElimina];
         setListaSQL((elements) => [objElimina, ...elements]);
@@ -757,7 +765,6 @@ const Tabla = forwardRef(
           columnasOcultas={columnasOcultas}
           filasPorPagina={filasPorPagina}
           modificarFila={modificarFila}
-          setFilaSeleccionada={setFilaSeleccionada}
           filaSeleccionada={filaSeleccionada}
           setValorFilaSeleccionada={setValorFilaSeleccionada}
           getValorFilaSeleccionada={getValorFilaSeleccionada}
@@ -769,6 +776,7 @@ const Tabla = forwardRef(
           getInsertadas={getInsertadas}
           getModificadas={getModificadas}
           getEliminadas={getEliminadas}
+          seleccionarFila={seleccionarFila}
           setCargando={setCargando}
         />
       </>

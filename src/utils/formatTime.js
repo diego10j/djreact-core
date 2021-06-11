@@ -61,10 +61,14 @@ export function isFechaValida(fecha, formato = formatosFecha.FORMATO_FECHA_FRONT
  * @param fecha Date
  */
 export function getFormatoFecha(fecha, formato = formatosFecha.FORMATO_FECHA_FRONT) {
-  if (isDefined(fecha) && isDate(fecha)) {
-    return moment(fecha).format(formato.toUpperCase());
+  if (isDefined(fecha)) {
+    if (isFechaValida(fecha, formato)) return moment(fecha).format(formato);
   }
   return null;
+}
+
+export function getFormatoFechaHora(fecha, formato = formatosFecha.FORMATO_FECHA_HORA_FRONT) {
+  return getFormatoFecha(fecha, formato);
 }
 
 /**
@@ -81,8 +85,8 @@ export function getFormatoFechaBDD(fecha) {
  * @param fecha Date
  */
 export function getFormatoHora(hora, formato = formatosFecha.FORMATO_HORA) {
-  if (isDefined(hora) && isDate(hora)) {
-    return moment(hora).format(formato);
+  if (isDefined(hora)) {
+    if (moment(hora, formato).isValid()) return moment(hora, formato).format(formato);
   }
   return null;
 }
@@ -93,5 +97,6 @@ export function getFormatoHora(hora, formato = formatosFecha.FORMATO_HORA) {
  * @returns
  */
 export function isDate(date) {
+  // console.log(Object.prototype.toString.call(date));
   return date && Object.prototype.toString.call(date) === '[object Date]';
 }

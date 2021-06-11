@@ -25,8 +25,7 @@ export function CheckLectura({ value: initialValue }) {
       disabled
       disableRipple
       name="check"
-      value={initialValue || false}
-      checked={initialValue || false}
+      checked={initialValue === true}
       color="primary"
       checkedIcon={<CheckBoxIcon fontSize="small" />}
     />
