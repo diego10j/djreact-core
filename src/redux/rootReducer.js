@@ -9,6 +9,8 @@ import userReducer from './slices/user';
 import productReducer from './slices/product';
 import calendarReducer from './slices/calendar';
 import kanbanReducer from './slices/kanban';
+// djnode
+import tablaReducer from './slices/tabla';
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +35,8 @@ const rootReducer = combineReducers({
   user: userReducer,
   calendar: calendarReducer,
   kanban: kanbanReducer,
-  product: persistReducer(productPersistConfig, productReducer)
+  product: persistReducer(productPersistConfig, productReducer),
+  tabla: tablaReducer
 });
 
 export { rootPersistConfig, rootReducer };

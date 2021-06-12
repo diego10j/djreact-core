@@ -23,7 +23,7 @@ const slice = createSlice({
     },
 
     // GET COLUMNS
-    getColumns(state, action) {
+    getColumnasSuccess(state, action) {
       state.isLoading = false;
       state.columns = action.payload;
     },
@@ -35,3 +35,22 @@ const slice = createSlice({
     }
   }
 });
+
+export default slice.reducer;
+
+export function getColumnas(nombreTabla, campoPrimario, ide_opci = 0, numero_tabl) {
+  return async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const { data } = await axios.post('/api/sistema/getColumnas', {
+        nombreTabla,
+        campoPrimario,
+        ide_opci,
+        numero_tabl
+      });
+      dispatch(slice.actions.getColumnasSuccess(data.datos));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}

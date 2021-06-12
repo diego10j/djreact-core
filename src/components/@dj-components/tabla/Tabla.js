@@ -398,6 +398,11 @@ const Tabla = forwardRef(
       }
     };
 
+    /**
+     * Retorna el valor de una columna de la fila seleccionada
+     * @param {String} nombre
+     * @returns
+     */
     const getValorFilaSeleccionada = (nombre) => {
       if (isDefined(filaSeleccionada)) {
         return isDefined(filaSeleccionada[nombre]) ? filaSeleccionada[nombre] : '';
@@ -405,6 +410,10 @@ const Tabla = forwardRef(
       return null;
     };
 
+    /**
+     * Selecciona la fila por valorPrimario
+     * @param {String} valorPrimario
+     */
     const seleccionarFila = (valorPrimario) => {
       const fila = data.find((col) => col[campoPrimario] === valorPrimario);
       if (isDefined(fila)) {
@@ -776,7 +785,7 @@ const Tabla = forwardRef(
           getInsertadas={getInsertadas}
           getModificadas={getModificadas}
           getEliminadas={getEliminadas}
-          seleccionarFila={seleccionarFila}
+          setFilaSeleccionada={setFilaSeleccionada}
           setCargando={setCargando}
         />
       </>
@@ -786,7 +795,6 @@ const Tabla = forwardRef(
 Tabla.propTypes = {
   numeroTabla: PropTypes.number.isRequired,
   nombreTabla: PropTypes.string.isRequired,
-  campoPrimario: PropTypes.string.isRequired,
   campoOrden: PropTypes.string,
   tipoFormulario: PropTypes.bool,
   calculaPrimaria: PropTypes.bool,
