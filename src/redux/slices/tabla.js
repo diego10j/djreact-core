@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from '../../utils/axios';
 
 const initialState = {
   isLoading: false,
@@ -38,7 +39,7 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export function getColumnas(nombreTabla, campoPrimario, ide_opci = 0, numero_tabl) {
+export function getColumnas(nombreTabla, campoPrimario, ide_opci = 0, numTabla) {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
@@ -46,7 +47,7 @@ export function getColumnas(nombreTabla, campoPrimario, ide_opci = 0, numero_tab
         nombreTabla,
         campoPrimario,
         ide_opci,
-        numero_tabl
+        numero_tabl: numTabla
       });
       dispatch(slice.actions.getColumnasSuccess(data.datos));
     } catch (error) {

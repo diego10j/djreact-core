@@ -15,7 +15,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
-import { withStyles, makeStyles, experimentalStyled as styled, useTheme, alpha } from '@material-ui/core/styles';
+import { withStyles, makeStyles, experimentalStyled as styled } from '@material-ui/core/styles';
 import Scrollbar from '../../Scrollbar';
 import ToolbarTabla from './ToolbarTabla';
 import { DefaultColumnFilter } from './FiltrosTabla';
@@ -136,6 +136,7 @@ const defaultColumn = {
 export default function TablaReact({
   columns,
   data,
+  campoPrimario,
   lectura,
   cargando,
   isColumnas,
@@ -149,7 +150,7 @@ export default function TablaReact({
   insertar,
   eliminar,
   combos,
-  setFilaSeleccionada,
+  seleccionarFila,
   getInsertadas,
   getModificadas,
   getEliminadas,
@@ -157,8 +158,6 @@ export default function TablaReact({
   updateMyData,
   skipPageReset
 }) {
-  const theme = useTheme();
-
   const [columnaSeleccionada, setColumnaSeleccionada] = useState();
 
   useEffect(() => {
@@ -201,11 +200,16 @@ export default function TablaReact({
     state: { pageIndex, pageSize, globalFilter }
   } = useTable(
     {
-      autoResetSelectedRows: false,
       columns,
       data,
       defaultColumn,
       autoResetPage: !skipPageReset,
+      autoResetExpanded: !skipPageReset,
+      autoResetGroupBy: !skipPageReset,
+      autoResetSelectedRows: !skipPageReset,
+      autoResetSortBy: !skipPageReset,
+      autoResetFilters: !skipPageReset,
+      autoResetRowState: !skipPageReset,
       // updateMyData isn't part of the API, but
       // anything we put into these options will
       // automatically be available on the instance.
@@ -323,16 +327,10 @@ export default function TablaReact({
                     <StyledTableRow
                       key={index}
                       {...row.getRowProps({
-                        style: {
-                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.5) : '',
-                          borderRight: `solid 1px ${theme.palette.divider}`
-                        },
                         onClick: () => {
                           toggleAllRowsSelected(false);
                           row.toggleRowSelected();
-                          // console.log(pageIndex * pageSize);
-                          const indexFila = pageIndex * pageSize + index;
-                          setFilaSeleccionada(data[indexFila]);
+                          seleccionarFila(row.values[campoPrimario]);
                         }
                       })}
                     >
@@ -381,7 +379,8 @@ TablaReact.propTypes = {
   columns: PropTypes.array.isRequired,
   filasPorPagina: PropTypes.number,
   data: PropTypes.array.isRequired,
-  setFilaSeleccionada: PropTypes.func.isRequired,
+  campoPrimario: PropTypes.string,
+  seleccionarFila: PropTypes.func.isRequired,
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   updateMyData: PropTypes.func.isRequired,

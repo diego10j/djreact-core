@@ -446,7 +446,7 @@ const Tabla = forwardRef(
       // if (this.utilitario.isDefined(this.tabla.campoPadre)) {
       // filaNueva[this.tabla.campoPadre] = this.tabla.valorPadre;
       // }
-      setSkipPageReset(false);
+      // setSkipPageReset(false);
       setData((elements) => [filaNueva, ...elements]);
       setFilaSeleccionada(filaNueva);
     };
@@ -595,8 +595,8 @@ const Tabla = forwardRef(
             valor = getFormatoFecha(valor);
           }
           // valida que sea una fecha correcta
-          const d = toDate(getFormatoFecha(valor));
-          if (!isDate(d)) {
+          const dt = toDate(getFormatoFecha(valor));
+          if (!isDate(dt)) {
             msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
@@ -606,8 +606,8 @@ const Tabla = forwardRef(
             valor = getFormatoHora(valor);
           }
           // valida que sea una hora correcta
-          const d = toHora(getFormatoHora(valor));
-          if (!isDate(d)) {
+          const dt = toHora(getFormatoHora(valor));
+          if (!isDate(dt)) {
             msg.mensajeAdvertencia(`Hora no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
@@ -618,8 +618,8 @@ const Tabla = forwardRef(
             valor = getFormatoFechaHora(valor);
           }
           // valida que sea una fecha correcta
-          const d = toDate(getFormatoFechaHora(valor));
-          if (!isDate(d)) {
+          const dt = toDate(getFormatoFechaHora(valor));
+          if (!isDate(dt)) {
             msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
@@ -758,6 +758,7 @@ const Tabla = forwardRef(
           return row;
         })
       );
+      // setSkipPageReset(false);
     };
 
     return (
@@ -785,7 +786,7 @@ const Tabla = forwardRef(
           getInsertadas={getInsertadas}
           getModificadas={getModificadas}
           getEliminadas={getEliminadas}
-          setFilaSeleccionada={setFilaSeleccionada}
+          seleccionarFila={seleccionarFila}
           setCargando={setCargando}
         />
       </>
@@ -795,6 +796,7 @@ const Tabla = forwardRef(
 Tabla.propTypes = {
   numeroTabla: PropTypes.number.isRequired,
   nombreTabla: PropTypes.string.isRequired,
+  campoPrimario: PropTypes.string,
   campoOrden: PropTypes.string,
   tipoFormulario: PropTypes.bool,
   calculaPrimaria: PropTypes.bool,

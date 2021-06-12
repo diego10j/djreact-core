@@ -5,7 +5,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { MenuItem, Select, Skeleton, TextField } from '@material-ui/core';
-import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
+import { withStyles, experimentalStyled as styled, alpha } from '@material-ui/core/styles';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
 import { toDate, isFechaValida, isDate, toHora, getFormatoFecha, getFormatoHora } from '../../../utils/formatTime';
@@ -14,7 +14,8 @@ import { isDefined } from '../../../utils/utilitario';
 const StyledTableCellBody = styled('td')(({ theme }) => ({
   padding: 0,
   borderBottom: `solid 1px ${theme.palette.divider}`,
-  borderRight: `solid 1px ${theme.palette.divider}`
+  borderRight: `solid 1px ${theme.palette.divider}`,
+  backgroundColor: alpha(theme.palette.primary.lighter, 0.5)
 }));
 
 const StyledTextField = withStyles((theme) => ({
