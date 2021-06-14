@@ -1,5 +1,7 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { getColumnasR } from '../../../redux/slices/tabla';
 // components
 import TablaReact from './TablaReact';
 import { CheckLectura, ComboLectura } from './FilaLectura';
@@ -24,7 +26,7 @@ const Tabla = forwardRef(
       campoPrimario,
       lectura = true,
       tipoFormulario = false,
-      campoOrden,
+      campoOrden = campoPrimario,
       opcionesColumnas,
       filasPorPagina = 15,
       validarInsertar = false,
@@ -49,10 +51,15 @@ const Tabla = forwardRef(
       getTotalFilas,
       isGuardar,
       guardar,
-      getListaSQL,
       setValorFilaSeleccionada,
-      getValorFilaSeleccionada
+      getValorFilaSeleccionada,
+      setCargando,
+      commit
     }));
+
+    // const dispatch = useDispatch();
+    // const { columnas } = useSelector((state) => state.tabla);
+
     const msg = useMensaje();
     const [skipPageReset, setSkipPageReset] = useState(false);
     const [isColumnas, setIsColumnas] = useState(false);
@@ -63,7 +70,6 @@ const Tabla = forwardRef(
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [eliminadas, setEliminadas] = useState([]);
     const [combos, setCombos] = useState([]);
-    const [listaSQL, setListaSQL] = useState([]);
 
     useEffect(() => {
       getServicioColumnas();
@@ -85,7 +91,7 @@ const Tabla = forwardRef(
         const { data } = await axios.post('/api/sistema/consultarTabla', {
           nombreTabla: nombreTabla.toLowerCase(),
           campoPrimario: campoPrimario.toLowerCase(),
-          campoOrden: campoOrden || campoPrimario,
+          campoOrden,
           condiciones: []
         });
         setCargando(false);
@@ -306,7 +312,6 @@ const Tabla = forwardRef(
     const getEliminadas = () => eliminadas;
     const getModificadas = () => data.filter((fila) => fila.modificada === true) || [];
     const getTotalFilas = () => data.length;
-    const getListaSQL = () => listaSQL;
 
     /**
      * Retorna si una fila es insertada
@@ -629,7 +634,7 @@ const Tabla = forwardRef(
     };
 
     const guardar = () => {
-      setListaSQL([]);
+      const listaSql = [];
       const colMayusculas = columns.filter((col) => col.mayusculas === true);
 
       for (let i = 0; i < getInsertadas().length; i += 1) {
@@ -680,9 +685,8 @@ const Tabla = forwardRef(
           }
         }
         objInsert.valores = valoresInsertados;
-        setListaSQL((elements) => [objInsert, ...elements]);
+        listaSql.push(objInsert);
       }
-
       for (let i = 0; i < getModificadas().length; i += 1) {
         const filaActual = getModificadas()[i];
         const objModifica = {};
@@ -719,7 +723,7 @@ const Tabla = forwardRef(
           valores: [filaActual[campoPrimario.toLowerCase()]]
         };
         objModifica.condiciones = [condicionModifica];
-        setListaSQL((elements) => [objModifica, ...elements]);
+        listaSql.push(objModifica);
       }
 
       for (let i = 0; i < getEliminadas().length; i += 1) {
@@ -732,9 +736,61 @@ const Tabla = forwardRef(
           valores: [filaActual]
         };
         objElimina.condiciones = [condicionElimina];
-        setListaSQL((elements) => [objElimina, ...elements]);
+        listaSql.push(objElimina);
       }
-      return listaSQL;
+      return listaSql;
+    };
+
+    /**
+     * Se ejcuta cuando si se ejecuta correctamente el servicio que guarda los cambios
+     */
+    const commit = () => {
+      let isCambios = false;
+      // Quita elemento filas insertadas, modificadas
+      // if (this.utilitario.isDefined(this.arbol)) {
+      // for (let filaActual of this.getEliminadas()) {
+      // let auxBoraa = this.arbol.seleccionado.children.find((fila) => fila.data === filaActual[this.campoPrimario]);
+      // if (auxBoraa) {
+      // const index = this.arbol.seleccionado.children.indexOf(auxBoraa);
+      // this.arbol.seleccionado.children.splice(index, 1);
+      // }
+      // }
+      // }
+
+      setEliminadas([]);
+      for (let i = 0; i < getInsertadas().length; i += 1) {
+        const filaActual = getInsertadas()[i];
+        // Si tiene arbol, agrega al nodo seleccionado
+        // if (this.utilitario.isDefined(this.arbol)) {
+        // let nuevoHijo = {
+        //  label: filaActual[this.arbol.campoNombre],
+        //  data: filaActual[this.arbol.campoPrimario],
+        //  padre: filaActual[this.arbol.campoPadre],
+        //   icon: 'pi pi-file'
+        //   };
+
+        //   if (this.utilitario.isDefined(this.arbol.seleccionado.children)) {
+        //     //ya tiene hijos solo agrega
+        //     this.arbol.seleccionado.children.push(nuevoHijo);
+        //   } else {
+        //     //agrega y cambia el iconos
+        //     this.arbol.seleccionado['children'] = [nuevoHijo];
+        //     this.arbol.seleccionado.expandedIcon = 'pi pi-folder';
+        //     this.arbol.seleccionado.collapsedIcon = 'pi pi-folder-open';
+        //    }
+        //   }
+        filaActual.insertada = false;
+        isCambios = true;
+      }
+      for (let i = 0; i < getModificadas().length; i += 1) {
+        const filaActual = getModificadas()[i];
+        filaActual.modificada = false;
+        filaActual.colModificadas = undefined;
+        isCambios = true;
+      }
+      if (isCambios) {
+        setData(data);
+      }
     };
 
     // We need to keep the table from resetting the pageIndex when we
@@ -766,7 +822,7 @@ const Tabla = forwardRef(
         <TablaReact
           columns={columns}
           data={data}
-          campoPrimario={campoPrimario}
+          campoOrden={campoOrden}
           updateMyData={updateMyData}
           skipPageReset={skipPageReset}
           cargando={cargando}
@@ -776,6 +832,7 @@ const Tabla = forwardRef(
           filasPorPagina={filasPorPagina}
           modificarFila={modificarFila}
           filaSeleccionada={filaSeleccionada}
+          setFilaSeleccionada={setFilaSeleccionada}
           setValorFilaSeleccionada={setValorFilaSeleccionada}
           getValorFilaSeleccionada={getValorFilaSeleccionada}
           actualizar={actualizar}
@@ -786,7 +843,6 @@ const Tabla = forwardRef(
           getInsertadas={getInsertadas}
           getModificadas={getModificadas}
           getEliminadas={getEliminadas}
-          seleccionarFila={seleccionarFila}
           setCargando={setCargando}
         />
       </>

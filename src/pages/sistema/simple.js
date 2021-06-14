@@ -11,21 +11,18 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Tabla from '../../components/@dj-components/tabla/Tabla';
+import usePantalla from '../../hooks/usePantalla';
 
 // ----------------------------------------------------------------------
 
 export default function Simple() {
+  const pantalla = usePantalla();
   const tabTabla1 = useRef();
 
   const guardar = async () => {
-    console.log('guardar');
-    console.log(tabTabla1.current.getModificadas());
-    console.log(tabTabla1.current.getInsertadas());
-    console.log(tabTabla1.current.getEliminadas());
-
+    pantalla.mensaje.mensajeError('xxxxxx');
     if (await tabTabla1.current.isGuardar()) {
-      tabTabla1.current.guardar();
-      console.log(tabTabla1.current.getListaSQL());
+      pantalla.guardar(tabTabla1);
     }
   };
 

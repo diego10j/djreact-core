@@ -136,7 +136,7 @@ const defaultColumn = {
 export default function TablaReact({
   columns,
   data,
-  campoPrimario,
+  campoOrden,
   lectura,
   cargando,
   isColumnas,
@@ -150,7 +150,7 @@ export default function TablaReact({
   insertar,
   eliminar,
   combos,
-  seleccionarFila,
+  setFilaSeleccionada,
   getInsertadas,
   getModificadas,
   getEliminadas,
@@ -223,7 +223,15 @@ export default function TablaReact({
       getModificadas,
       getEliminadas,
       setColumnaSeleccionada,
-      initialState: { pageSize: filasPorPagina }
+      initialState: {
+        pageSize: filasPorPagina,
+        sortBy: [
+          {
+            id: campoOrden,
+            desc: false
+          }
+        ]
+      }
     },
     useGlobalFilter, // useGlobalFilter!
     useFilters, // useFilters!
@@ -330,7 +338,7 @@ export default function TablaReact({
                         onClick: () => {
                           toggleAllRowsSelected(false);
                           row.toggleRowSelected();
-                          seleccionarFila(row.values[campoPrimario]);
+                          setFilaSeleccionada(data[row.index]);
                         }
                       })}
                     >
@@ -379,8 +387,8 @@ TablaReact.propTypes = {
   columns: PropTypes.array.isRequired,
   filasPorPagina: PropTypes.number,
   data: PropTypes.array.isRequired,
-  campoPrimario: PropTypes.string,
-  seleccionarFila: PropTypes.func.isRequired,
+  campoOrden: PropTypes.string,
+  setFilaSeleccionada: PropTypes.func.isRequired,
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   updateMyData: PropTypes.func.isRequired,

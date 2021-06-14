@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => {
 
   const createStyle = {
     color: `${theme.palette.text.primary} !important`,
-    backgroundColor: `${theme.palette.background.paper} !important`
+    zIndex: '3000'
+    // backgroundColor: `${theme.palette.background.paper} !important`
   };
 
   return {
@@ -31,16 +32,19 @@ const useStyles = makeStyles((theme) => {
       margin: theme.spacing(0.25, 0),
       boxShadow: theme.customShadows.z8,
       borderRadius: theme.shape.borderRadius,
-      color: theme.palette.grey[isLight ? 0 : 800],
-      backgroundColor: theme.palette.grey[isLight ? 900 : 0]
+      color: theme.palette.grey[isLight ? 0 : 800]
+      // backgroundColor: theme.palette.grey[isLight ? 900 : 0]
     },
     message: {
       padding: 0,
       fontWeight: theme.typography.fontWeightMedium
     },
     action: {
+      cursor: 'pointer',
       marginRight: -4,
       '& svg': {
+        color: '#DFE3E8',
+        cursor: 'pointer',
         width: 20,
         height: 20,
         opacity: 0.48,
@@ -73,8 +77,8 @@ function SnackbarIcon({ icon, color }) {
         borderRadius: 1.5,
         alignItems: 'center',
         justifyContent: 'center',
-        color: `${color}.main`,
-        bgcolor: (theme) => alpha(theme.palette[color].main, 0.16)
+        color: '#DFE3E8',
+        bgcolor: (theme) => alpha(theme.palette[color].main, 0.4)
       }}
     >
       <Icon icon={icon} width={24} height={24} />

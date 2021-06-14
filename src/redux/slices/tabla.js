@@ -5,11 +5,11 @@ const initialState = {
   isLoading: false,
   error: false,
   data: [],
-  columns: []
+  columnas: []
 };
 
 const slice = createSlice({
-  name: 'product',
+  name: 'tabla',
   initialState,
   reducers: {
     // START LOADING
@@ -26,7 +26,7 @@ const slice = createSlice({
     // GET COLUMNS
     getColumnasSuccess(state, action) {
       state.isLoading = false;
-      state.columns = action.payload;
+      state.columnas = action.payload;
     },
 
     // GET DATA
@@ -39,7 +39,7 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export function getColumnas(nombreTabla, campoPrimario, ide_opci = 0, numTabla) {
+export function getColumnasR(nombreTabla, campoPrimario, ide_opci = 0, numeroTabla) {
   return async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
@@ -47,7 +47,7 @@ export function getColumnas(nombreTabla, campoPrimario, ide_opci = 0, numTabla) 
         nombreTabla,
         campoPrimario,
         ide_opci,
-        numero_tabl: numTabla
+        numero_tabl: numeroTabla
       });
       dispatch(slice.actions.getColumnasSuccess(data.datos));
     } catch (error) {
