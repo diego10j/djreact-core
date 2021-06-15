@@ -62,7 +62,7 @@ export function isFechaValida(fecha, formato = formatosFecha.FORMATO_FECHA_FRONT
  */
 export function getFormatoFecha(fecha, formato = formatosFecha.FORMATO_FECHA_FRONT) {
   if (isDefined(fecha)) {
-    if (isFechaValida(fecha, formato)) return moment(fecha).format(formato);
+    if (isFechaValida(fecha, formato)) return moment(toDate(fecha)).format(formato);
   }
   return null;
 }
@@ -89,6 +89,10 @@ export function getFormatoHora(hora, formato = formatosFecha.FORMATO_HORA) {
     if (moment(hora, formato).isValid()) return moment(hora, formato).format(formato);
   }
   return null;
+}
+
+export function getFechaActual(formato = formatosFecha.FORMATO_FECHA_FRONT) {
+  return getFormatoFecha(new Date(), formato);
 }
 
 /**

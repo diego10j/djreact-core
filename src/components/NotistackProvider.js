@@ -1,23 +1,23 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
 import { SnackbarProvider } from 'notistack';
+import Grow from '@material-ui/core/Grow';
+
 import infoFill from '@iconify/icons-eva/info-fill';
 import alertCircleFill from '@iconify/icons-eva/alert-circle-fill';
 import alertTriangleFill from '@iconify/icons-eva/alert-triangle-fill';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
 // material
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { Icon } from '@iconify/react';
 import { Box } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
 const useStyles = makeStyles((theme) => {
-  const isLight = theme.palette.mode === 'light';
-
   const createStyle = {
-    color: `${theme.palette.text.primary} !important`,
-    zIndex: '3000'
-    // backgroundColor: `${theme.palette.background.paper} !important`
+    zIndex: '3000 !important',
+    marginTop: 10
   };
 
   return {
@@ -29,27 +29,11 @@ const useStyles = makeStyles((theme) => {
     contentRoot: {
       width: '100%',
       padding: theme.spacing(1.5),
-      margin: theme.spacing(0.25, 0),
-      boxShadow: theme.customShadows.z8,
-      borderRadius: theme.shape.borderRadius,
-      color: theme.palette.grey[isLight ? 0 : 800]
-      // backgroundColor: theme.palette.grey[isLight ? 900 : 0]
+      margin: theme.spacing(0.25, 0)
     },
     message: {
       padding: 0,
       fontWeight: theme.typography.fontWeightMedium
-    },
-    action: {
-      cursor: 'pointer',
-      marginRight: -4,
-      '& svg': {
-        color: '#DFE3E8',
-        cursor: 'pointer',
-        width: 20,
-        height: 20,
-        opacity: 0.48,
-        '&:hover': { opacity: 1 }
-      }
     },
     info: { ...createStyle },
     success: { ...createStyle },
@@ -58,14 +42,46 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-// ----------------------------------------------------------------------
+export default function NotistackProvider({ children }) {
+  const classes = useStyles();
+  return (
+    <SnackbarProvider
+      maxSnack={5}
+      preventDuplicate
+      autoHideDuration={3000}
+      classes={{
+        containerRoot: classes.containerRoot,
+        contentRoot: classes.contentRoot,
+        message: classes.message,
+        variantInfo: classes.info,
+        variantSuccess: classes.success,
+        variantWarning: classes.warning,
+        variantError: classes.error
+      }}
+      iconVariant={{
+        success: <SnackbarIcon icon={checkmarkCircle2Fill} />,
+        error: <SnackbarIcon icon={infoFill} />,
+        warning: <SnackbarIcon icon={alertTriangleFill} />,
+        info: <SnackbarIcon icon={alertCircleFill} />
+      }}
+      TransitionComponent={Grow}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'center'
+      }}
+    >
+      {children}
+    </SnackbarProvider>
+  );
+}
 
-SnackbarIcon.propTypes = {
-  icon: PropTypes.object,
-  color: PropTypes.string
+NotistackProvider.propTypes = {
+  children: PropTypes.node
 };
 
-function SnackbarIcon({ icon, color }) {
+// ----------------------------------------------------------------------
+
+function SnackbarIcon({ icon }) {
   return (
     <Box
       component="span"
@@ -76,51 +92,13 @@ function SnackbarIcon({ icon, color }) {
         display: 'flex',
         borderRadius: 1.5,
         alignItems: 'center',
-        justifyContent: 'center',
-        color: '#DFE3E8',
-        bgcolor: (theme) => alpha(theme.palette[color].main, 0.4)
+        justifyContent: 'center'
       }}
     >
       <Icon icon={icon} width={24} height={24} />
     </Box>
   );
 }
-
-NotistackProvider.propTypes = {
-  children: PropTypes.node
+SnackbarIcon.propTypes = {
+  icon: PropTypes.object
 };
-
-export default function NotistackProvider({ children }) {
-  const classes = useStyles();
-
-  return (
-    <SnackbarProvider
-      dense
-      maxSnack={5}
-      preventDuplicate
-      autoHideDuration={3000}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
-      }}
-      iconVariant={{
-        success: <SnackbarIcon icon={checkmarkCircle2Fill} color="success" />,
-        error: <SnackbarIcon icon={infoFill} color="error" />,
-        warning: <SnackbarIcon icon={alertTriangleFill} color="warning" />,
-        info: <SnackbarIcon icon={alertCircleFill} color="info" />
-      }}
-      classes={{
-        containerRoot: classes.containerRoot,
-        contentRoot: classes.contentRoot,
-        message: classes.message,
-        action: classes.action,
-        variantInfo: classes.info,
-        variantSuccess: classes.success,
-        variantWarning: classes.warning,
-        variantError: classes.error
-      }}
-    >
-      {children}
-    </SnackbarProvider>
-  );
-}

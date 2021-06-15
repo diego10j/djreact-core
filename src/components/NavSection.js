@@ -13,21 +13,21 @@ import { Box, List, ListItem, Collapse, ListItemText, ListItemIcon, ListSubheade
 const ListSubheaderStyle = styled((props) => <ListSubheader disableSticky disableGutters {...props} />)(
   ({ theme }) => ({
     ...theme.typography.overline,
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
-    paddingLeft: theme.spacing(5),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
     color: theme.palette.text.primary
   })
 );
 
 const ListItemStyle = styled((props) => <ListItem button disableGutters {...props} />)(({ theme }) => ({
   ...theme.typography.body2,
-  height: 48,
+  height: 35,
   position: 'relative',
   textTransform: 'capitalize',
-  paddingLeft: theme.spacing(5),
+  paddingLeft: theme.spacing(4),
   paddingRight: theme.spacing(2.5),
-  color: theme.palette.text.secondary,
+  color: alpha(theme.palette.text.primary, 0.7),
   '&:before': {
     top: 0,
     right: 0,

@@ -33,21 +33,9 @@ const sidebarConfig = [
         path: PATH_DASHBOARD.general.app,
         icon: ICONS.dashboard
       },
+      { title: 'calendar', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar },
       { title: 'e-commerce', path: PATH_DASHBOARD.general.ecommerce, icon: ICONS.ecommerce },
       { title: 'analytics', path: PATH_DASHBOARD.general.analytics, icon: ICONS.analytics }
-    ]
-  },
-
-  // SISTEMA
-  // ----------------------------------------------------------------------
-  {
-    subheader: 'sistema',
-    items: [
-      {
-        title: 'simple',
-        path: PATH_DASHBOARD.sistema.simple,
-        icon: ICONS.analytics
-      }
     ]
   },
 
@@ -108,10 +96,39 @@ const sidebarConfig = [
     items: [
       { title: 'mail', path: PATH_DASHBOARD.mail.root, icon: ICONS.mail },
       { title: 'chat', path: PATH_DASHBOARD.chat.root, icon: ICONS.chat },
-      { title: 'calendar', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar },
       { title: 'kanban', path: PATH_DASHBOARD.kanban, icon: ICONS.kanban }
     ]
   }
 ];
 
+const menuUsuario = JSON.parse(localStorage.getItem('menu')) || [];
+
+const getMenuOpciones = () => {
+  const hijos = [];
+  for (let i = 0; i < menuUsuario.length; i += 1) {
+    const opcionActual = menuUsuario[i];
+    const itemsOpcion = [];
+    if (opcionActual.items) {
+      for (let j = 0; j < opcionActual.items.length; j += 1) {
+        const itemActual = opcionActual.items[j];
+        itemsOpcion.push({
+          title: itemActual.label,
+          path: `/dashboard/${itemActual.paquete}/${itemActual.ruta}`
+        });
+      }
+    }
+    hijos.push({
+      title: opcionActual.label,
+      path: `/dashboard/${opcionActual.paquete}`,
+      icon: ICONS.cart,
+      children: itemsOpcion
+    });
+  }
+  sidebarConfig.push({
+    subheader: 'Menu de Opciones',
+    items: hijos
+  });
+};
+getMenuOpciones();
+console.log(sidebarConfig);
 export default sidebarConfig;

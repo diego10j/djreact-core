@@ -41,9 +41,17 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
   const renderContent = (
     <Scrollbar
-      sx={{ height: '100%', '& .simplebar-content': { height: '100%', display: 'flex', flexDirection: 'column' } }}
+      sx={{
+        height: '100%',
+        '& .simplebar-content': {
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundImage: 'url(//www.gstatic.com/mobilesdk/190424_mobilesdk/nav_nachos@2x.png)'
+        }
+      }}
     >
-      <Box sx={{ px: 2.5, py: 3 }}>
+      <Box sx={{ px: 2.5, py: 1 }}>
         <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
           <Logo />
         </Box>

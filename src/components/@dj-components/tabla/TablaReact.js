@@ -13,6 +13,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TablePagination from '@material-ui/core/TablePagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
+import Typography from '@material-ui/core/Typography';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 import { withStyles, makeStyles, experimentalStyled as styled } from '@material-ui/core/styles';
@@ -34,8 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // Estilos
-const StyledDiv = styled('div')(({ theme }) => ({
-  border: `solid 1px ${theme.palette.divider}`,
+const StyledDiv = styled('div')(() => ({
   height: '100%',
   outline: 'none',
   lineHeight: '1.5714285714285714',
@@ -52,15 +52,12 @@ const StyledTable = withStyles(() => ({
   }
 }))(Table);
 
-const StyledTableCellHeader = withStyles((theme) => ({
+const StyledTableCellHeader = withStyles(() => ({
   root: {
-    borderBottom: `solid 1px ${theme.palette.divider}`,
-    borderTop: `solid 1px ${theme.palette.divider}`,
     height: 'auto',
     padding: '3px !important',
     textAlign: 'center',
     fontWeight: 600,
-    backgroundColor: theme.palette.background.paper,
     '&:first-of-type': {
       borderRadius: 0,
       boxShadow: 'none'
@@ -75,8 +72,8 @@ const StyledTableCellHeader = withStyles((theme) => ({
 const StyledTableCellBody = withStyles((theme) => ({
   root: {
     padding: '0px 5px 0px 5px !important',
-    borderBottom: `solid 1px ${theme.palette.divider}`,
-    borderRight: `solid 1px ${theme.palette.divider}`
+    borderBottom: `solid 1px ${theme.palette.divider}`
+    // borderRight: `solid 1px ${theme.palette.divider}`
   }
 }))(TableCell);
 
@@ -85,8 +82,8 @@ const StyledTableRow = withStyles((theme) => ({
     height: 26,
     padding: '0px 10px 0px 10px',
     width: '-moz-fit-content',
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover
+    '&:nth-of-type(even)': {
+      backgroundColor: ` ${theme.palette.mode === 'light' ? '#fbfbfb' : '#252f3b'}`
     },
     '&:hover': {
       // borderRight: `solid 0.1px ${theme.palette.divider}`,
@@ -156,13 +153,21 @@ export default function TablaReact({
   getEliminadas,
   setCargando,
   updateMyData,
-  skipPageReset
+  skipPageReset,
+  indiceFila
 }) {
   const [columnaSeleccionada, setColumnaSeleccionada] = useState();
 
   useEffect(() => {
     setHiddenColumns(columnasOcultas);
   }, [columnasOcultas]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /**
+   * Selecciona y pinta la fila
+   */
+  useEffect(() => {
+    console.log(indiceFila);
+  }, [indiceFila]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Función filtrar
   const filterTypes = React.useMemo(
@@ -197,6 +202,7 @@ export default function TablaReact({
     toggleAllRowsSelected,
     toggleRowSelected,
     setPageSize,
+    setAllFilters,
     state: { pageIndex, pageSize, globalFilter }
   } = useTable(
     {
@@ -210,6 +216,7 @@ export default function TablaReact({
       autoResetSortBy: !skipPageReset,
       autoResetFilters: !skipPageReset,
       autoResetRowState: !skipPageReset,
+      autoResetGlobalFilter: !skipPageReset,
       // updateMyData isn't part of the API, but
       // anything we put into these options will
       // automatically be available on the instance.
@@ -267,6 +274,7 @@ export default function TablaReact({
         setColumnaSeleccionada={setColumnaSeleccionada}
         setCargando={setCargando}
         filaSeleccionada={filaSeleccionada}
+        setAllFilters={setAllFilters}
       />
       {data.length > filasPorPagina ? (
         <StyledTablePagination
@@ -317,10 +325,26 @@ export default function TablaReact({
                             active={columna.isSorted}
                             direction={columna.isSortedDesc ? 'desc' : 'asc'}
                           >
-                            {columna.nombrevisual}
+                            <span>
+                              {columna.nombrevisual}{' '}
+                              {columna.requerida && (
+                                <Typography color="error" component="span">
+                                  {' '}
+                                  *{' '}
+                                </Typography>
+                              )}
+                            </span>
                           </TableSortLabel>
                         ) : (
-                          <span>{columna.nombrevisual}</span>
+                          <span>
+                            {columna.nombrevisual}{' '}
+                            {columna.requerida && (
+                              <Typography color="error" component="span">
+                                {' '}
+                                *{' '}
+                              </Typography>
+                            )}
+                          </span>
                         )}
                         {columna.filtro && <div key={i}>{columna.render('Filter')} </div>}
                       </StyledTableCellHeader>
@@ -392,7 +416,7 @@ TablaReact.propTypes = {
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   updateMyData: PropTypes.func.isRequired,
-  // setData: PropTypes.func.isRequired,
+  indiceFila: PropTypes.number,
   skipPageReset: PropTypes.bool.isRequired,
   isColumnas: PropTypes.bool.isRequired,
   columnasOcultas: PropTypes.array.isRequired,

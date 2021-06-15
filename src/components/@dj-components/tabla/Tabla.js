@@ -54,12 +54,13 @@ const Tabla = forwardRef(
       setValorFilaSeleccionada,
       getValorFilaSeleccionada,
       setCargando,
+      isCargando,
       commit
     }));
 
     // const dispatch = useDispatch();
     // const { columnas } = useSelector((state) => state.tabla);
-
+    const [indiceFila, setIndiceFila] = useState(undefined);
     const msg = useMensaje();
     const [skipPageReset, setSkipPageReset] = useState(false);
     const [isColumnas, setIsColumnas] = useState(false);
@@ -312,6 +313,7 @@ const Tabla = forwardRef(
     const getEliminadas = () => eliminadas;
     const getModificadas = () => data.filter((fila) => fila.modificada === true) || [];
     const getTotalFilas = () => data.length;
+    const isCargando = () => cargando;
 
     /**
      * Retorna si una fila es insertada
@@ -451,8 +453,9 @@ const Tabla = forwardRef(
       // if (this.utilitario.isDefined(this.tabla.campoPadre)) {
       // filaNueva[this.tabla.campoPadre] = this.tabla.valorPadre;
       // }
-      // setSkipPageReset(false);
+      setSkipPageReset(false);
       setData((elements) => [filaNueva, ...elements]);
+      setSkipPageReset(true);
       setFilaSeleccionada(filaNueva);
     };
 
@@ -475,6 +478,7 @@ const Tabla = forwardRef(
         if (isColumnas && isDefined(filaSeleccionada)) {
           if (filaSeleccionada?.insertada) {
             setData(data.filter((item) => item[campoPrimario] !== filaSeleccionada[campoPrimario]));
+            setFilaSeleccionada(undefined);
           } else {
             setCargando(true);
             if (await getServicioIsEliminar()) {
@@ -580,7 +584,7 @@ const Tabla = forwardRef(
         // Asigna valores primario calculado
         if (calculaPrimaria) {
           filaActual[campoPrimario.toLowerCase()] = maximoTabla;
-          maximoTabla += maximoTabla;
+          maximoTabla += 1;
         }
       });
       // this.actualizarForaneaRelaciones(this.getValorSeleccionado());
@@ -713,7 +717,7 @@ const Tabla = forwardRef(
             if (getColumna(colM.toLowerCase()).componente === 'Calendario') {
               valoresModifica[colM] = getFormatoFechaBDD(valor);
             } else if (getColumna(colM.toLowerCase()).componente === 'Check') {
-              valoresModifica[colM] = valor === 'true';
+              valoresModifica[colM] = `${valor}` === 'true';
             }
           }
         }
@@ -844,6 +848,8 @@ const Tabla = forwardRef(
           getModificadas={getModificadas}
           getEliminadas={getEliminadas}
           setCargando={setCargando}
+          indiceFila={indiceFila}
+          setIndiceFila={setIndiceFila}
         />
       </>
     );

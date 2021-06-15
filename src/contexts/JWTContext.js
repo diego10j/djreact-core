@@ -130,7 +130,7 @@ function AuthProvider({ children }) {
       ip: '127.0.0.1',
       dispositivo: 'Web React'
     });
-    const { token, datos } = response.data;
+    const { token, datos, ...resp } = response.data;
     const user = {
       id: datos.ide_usua,
       displayName: datos.nombre,
@@ -147,7 +147,13 @@ function AuthProvider({ children }) {
       role: 'admin',
       isPublic: true
     };
-
+    localStorage.setItem('ultimaFecha', resp.ultimaFecha);
+    localStorage.setItem('ide_empr', resp.ide_empr);
+    localStorage.setItem('perm_util_perf', resp.perm_util_perf);
+    localStorage.setItem('menu', JSON.stringify(resp.menu));
+    localStorage.setItem('ide_usua', datos.ide_usua);
+    localStorage.setItem('avatar', datos.avatar);
+    localStorage.setItem('usuario', datos.identificacion);
     setSession(token);
     dispatch({
       type: 'LOGIN',
@@ -177,6 +183,14 @@ function AuthProvider({ children }) {
 
   const logout = async () => {
     setSession(null);
+    localStorage.removeItem('menu');
+    localStorage.removeItem('ide_usua');
+    localStorage.removeItem('ip');
+    localStorage.removeItem('ultimaFecha');
+    localStorage.removeItem('identificacion');
+    localStorage.removeItem('avatar');
+    localStorage.removeItem('ide_empr');
+    localStorage.removeItem('perm_util_perf');
     dispatch({ type: 'LOGOUT' });
   };
 

@@ -14,9 +14,6 @@ import { PATH_AUTH } from '../../../routes/paths';
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMensaje from '../../../hooks/useMensaje';
-//
-import Settings from '../../settings';
-
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
@@ -26,18 +23,25 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+    email: Yup.string().email('El correo electrónico no es válido').required('El correo electrónico es requerido'),
+    password: Yup.string().required('La contraseña es requerida')
   });
 
   const formik = useFormik({
     initialValues: {
-      email: '',
+      email: localStorage.getItem('email') || '',
       password: '',
       remember: true
     },
     validationSchema: LoginSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+      // Recuerda el correo
+      if (values.remember) {
+        localStorage.setItem('email', values.email);
+      } else {
+        localStorage.removeItem('email');
+      }
+
       try {
         await login(values.email, values.password);
         if (isMountedRef.current) {
@@ -69,7 +73,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="username"
             type="email"
-            label="Email address"
+            label="Correo electrónico"
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
@@ -79,7 +83,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
-            label="Password"
+            label="Contraseña"
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -109,7 +113,6 @@ export default function LoginForm() {
         <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
           Aceptar
         </LoadingButton>
-        <Settings />
       </Form>
     </FormikProvider>
   );

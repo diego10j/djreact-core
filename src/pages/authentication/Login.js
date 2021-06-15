@@ -75,7 +75,7 @@ export default function Login() {
             }}
           />
           <LoginIllustration
-            className="animate__animated animate__zoomInLeft"
+            className="animate__animated animated animate__slideInLeft"
             sx={{
               width: '30%',
               maxWidth: '30%',

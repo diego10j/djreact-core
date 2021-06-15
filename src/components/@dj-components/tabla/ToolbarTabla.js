@@ -26,11 +26,12 @@ export default function ToolbarTabla({
   eliminar,
   toggleAllRowsSelected,
   toggleRowSelected,
-  page,
   prepareRow,
+  page,
   setColumnaSeleccionada,
   filaSeleccionada,
-  setCargando
+  setCargando,
+  setAllFilters
 }) {
   const anchorRef = useRef(null);
 
@@ -45,6 +46,7 @@ export default function ToolbarTabla({
 
   const handleInsertar = async () => {
     if (!lectura) {
+      setAllFilters([]);
       const tmpPk = insertar();
       if (tmpPk) {
         setCargando(true);
@@ -71,6 +73,7 @@ export default function ToolbarTabla({
   };
 
   const handleActualizar = () => {
+    setAllFilters([]);
     actualizar();
     toggleAllRowsSelected(false); // clear seleccionadas
     setOpen(false);
@@ -186,6 +189,7 @@ export default function ToolbarTabla({
 ToolbarTabla.propTypes = {
   globalFilter: PropTypes.string,
   setGlobalFilter: PropTypes.func.isRequired,
+  setAllFilters: PropTypes.func.isRequired,
   actualizar: PropTypes.func.isRequired,
   insertar: PropTypes.func.isRequired,
   eliminar: PropTypes.func.isRequired,

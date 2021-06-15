@@ -36,7 +36,8 @@ const StyledTextField = withStyles((theme) => ({
       padding: 0,
       paddingLeft: 5,
       fontSize: '0.800rem',
-      borderRadius: 0
+      borderRadius: 0,
+      backgroundColor: theme.palette.background.paper
     },
     '& .MuiOutlinedInput-root': {
       marginBottom: 5,
@@ -63,7 +64,7 @@ const StyledAutocompletePopper = styled('div')(({ theme }) => ({
       padding: 8,
       borderBottom: `1px solid  ${theme.palette.mode === 'light' ? ' #eaecef' : '#30363d'}`,
       '&[aria-selected="true"]': {
-        backgroundColor: 'transparent'
+        backgroundColor: theme.palette.background.paper
       },
       '&[data-focus="true"], &[data-focus="true"][aria-selected="true"]': {
         backgroundColor: theme.palette.action.hover
@@ -104,9 +105,9 @@ const StyledPopper = styled(Popper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128'
 }));
 
-const StyledCheckbox = withStyles(() => ({
+const StyledCheckbox = withStyles(({ theme }) => ({
   root: {
-    backgroundColor: 'transparent',
+    backgroundColor: theme.palette.background.paper,
     outline: 'none',
     paddingTop: 0,
     margginTop: 0

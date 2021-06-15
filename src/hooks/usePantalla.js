@@ -25,8 +25,8 @@ export default function usePantalla() {
           tabla.setCargando(false);
         }
         mensaje.mensajeExito('Datos guardados exitosamente');
-      } catch (err) {
-        mensaje.mensajeError(err.error.mensaje);
+      } catch (error) {
+        mensaje.mensajeError(error.mensaje);
         for (let i = 0; i < tablas.length; i += 1) {
           const tabla = tablas[i].current;
           tabla.setCargando(false);
