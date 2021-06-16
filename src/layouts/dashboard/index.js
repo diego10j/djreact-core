@@ -5,7 +5,7 @@ import { experimentalStyled as styled } from '@material-ui/core/styles';
 //
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
-
+import Settings from '../../components/settings';
 // ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 60;
@@ -32,11 +32,12 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-
+  const [openOpciones, setOpenOpciones] = useState(false);
   return (
     <RootStyle>
-      <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
+      <DashboardNavbar onOpenSidebar={() => setOpen(true)} setOpenOpciones={setOpenOpciones} />
       <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      <Settings openOpciones={openOpciones} setOpenOpciones={setOpenOpciones} />
       <MainStyle>
         <Outlet />
       </MainStyle>

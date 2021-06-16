@@ -147,19 +147,18 @@ export default function Calendar() {
   };
 
   return (
-    <Page title="Calendar | Minimal-UI">
+    <Page title="Calendario">
       <Container maxWidth="xl">
         <HeaderBreadcrumbs
-          heading="Calendar"
+          heading="Calendario"
           links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Calendar' }]}
-          moreLink="https://fullcalendar.io/docs/react"
           action={
             <Button
               variant="contained"
               startIcon={<Icon icon={plusFill} width={20} height={20} />}
               onClick={handleAddEvent}
             >
-              New Event
+              Nuevo Evento
             </Button>
           }
         />

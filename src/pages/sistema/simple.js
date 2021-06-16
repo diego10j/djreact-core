@@ -21,6 +21,7 @@ import { getFechaActual } from '../../utils/formatTime';
 export default function Simple() {
   const pantalla = usePantalla();
   const tabTabla1 = useRef();
+  const tabTabla2 = useRef();
   const [isGuardar, setIsGuardar] = useState(false);
 
   const guardar = async () => {
@@ -98,6 +99,51 @@ export default function Simple() {
                 {
                   nombre: 'fin_auac',
                   valorDefecto: true
+                }
+              ]}
+            />
+          </TableContainer>
+        </Card>
+
+        <Card sx={{ mt: 5 }}>
+          <TableContainer sx={{ padding: 2 }}>
+            <Tabla
+              ref={tabTabla2}
+              filasPorPagina={20}
+              numeroTabla={2}
+              nombreTabla="sis_auditoria_acceso"
+              campoPrimario="ide_auac"
+              compoOrden="detalle_auac"
+              opcionesColumnas={[
+                {
+                  nombre: 'ide_usua',
+                  filtro: true,
+                  combo: {
+                    nombreTabla: 'sis_usuario',
+                    campoPrimario: 'ide_usua',
+                    campoNombre: 'nom_usua',
+                    condicion: 'activo_usua = true'
+                  }
+                },
+                {
+                  nombre: 'IDE_ACAU',
+                  filtro: true,
+                  combo: {
+                    nombreTabla: 'sis_accion_auditoria',
+                    campoPrimario: 'IDE_ACAU',
+                    campoNombre: 'nom_ACAU'
+                  }
+                },
+                {
+                  nombre: 'detalle_auac',
+                  nombreVisual: 'DETALLE',
+                  ordenable: false,
+                  filtro: true
+                },
+                {
+                  nombre: 'ip_auac',
+                  nombreVisual: 'IP',
+                  width: 160
                 }
               ]}
             />

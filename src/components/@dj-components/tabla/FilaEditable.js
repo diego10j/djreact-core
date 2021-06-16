@@ -14,7 +14,7 @@ import { isDefined } from '../../../utils/utilitario';
 const StyledTableCellBody = styled('td')(({ theme }) => ({
   padding: 0,
   borderBottom: `solid 1px ${theme.palette.divider}`,
-  borderRight: `solid 1px ${theme.palette.divider}`,
+  // borderRight: `solid 1px ${theme.palette.divider}`,
   backgroundColor: alpha(theme.palette.primary.lighter, 0.5)
 }));
 

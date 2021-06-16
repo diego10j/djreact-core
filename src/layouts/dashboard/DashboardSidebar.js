@@ -1,5 +1,5 @@
+import React, { useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
@@ -9,7 +9,7 @@ import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 //
-import sidebarConfig from './SidebarConfig';
+import getMenuOpciones from './SidebarConfig';
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +32,8 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
 
+  const menuOpciones = useMemo(() => getMenuOpciones(), []);
+
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
@@ -47,7 +49,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          backgroundImage: 'url(//www.gstatic.com/mobilesdk/190424_mobilesdk/nav_nachos@2x.png)'
+          backgroundImage: 'url(/static/djreact/fondo_sidebar.png)'
         }
       }}
     >
@@ -56,7 +58,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           <Logo />
         </Box>
       </Box>
-      <NavSection navConfig={sidebarConfig} />
+      <NavSection navConfig={menuOpciones} />
     </Scrollbar>
   );
 

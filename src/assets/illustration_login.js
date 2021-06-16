@@ -9,14 +9,7 @@ export default function LoginIllustration({ ...other }) {
   const PRIMARY_MAIN = theme.palette.primary.main;
   return (
     <Box {...other}>
-      <svg
-        id="f9eb83fe-2109-496c-8de2-d29751931755"
-        data-name="Layer 1"
-        xmlns="http://www.w3.org/2000/svg"
-        width="100%"
-        height="100%"
-        viewBox="0 0 1166.17 805.09"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1166.17 805.09">
         <defs>
           <linearGradient
             id="b7f84a8b-804f-4004-8d61-2f9b427d4893"

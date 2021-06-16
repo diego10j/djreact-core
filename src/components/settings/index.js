@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import closeFill from '@iconify/icons-eva/close-fill';
-import options2Fill from '@iconify/icons-eva/options-2-fill';
 // material
-import { Box, Backdrop, Paper, Tooltip, Divider, Typography, Stack } from '@material-ui/core';
+import { Box, Backdrop, Paper, Divider, Typography, Stack } from '@material-ui/core';
 //
 import Scrollbar from '../Scrollbar';
 import { MIconButton } from '../@material-extend';
@@ -16,27 +15,14 @@ import SettingFullscreen from './SettingFullscreen';
 
 const DRAWER_WIDTH = 260;
 
-export default function Settings() {
-  const [open, setOpen] = useState(false);
-
-  const handleToggle = () => {
-    setOpen((prev) => !prev);
-  };
-
+export default function Settings({ openOpciones, setOpenOpciones }) {
   const handleClose = () => {
-    setOpen(false);
+    setOpenOpciones(false);
   };
 
   return (
     <>
-      <Tooltip title="Settings">
-        <MIconButton color={open ? 'primary' : 'default'} onClick={handleToggle}>
-          <Icon icon={options2Fill} width={20} height={20} />
-        </MIconButton>
-      </Tooltip>
-
-      <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open} onClick={handleClose} />
-
+      <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={openOpciones} onClick={handleClose} />
       <Box
         sx={{
           top: 12,
@@ -44,7 +30,7 @@ export default function Settings() {
           right: 0,
           position: 'fixed',
           zIndex: (theme) => theme.zIndex.drawer + 2,
-          ...(open && { right: 12 })
+          ...(openOpciones && { right: 12 })
         }}
       >
         <Paper
@@ -54,11 +40,11 @@ export default function Settings() {
             overflow: 'hidden',
             boxShadow: (theme) => theme.customShadows.z24,
             transition: (theme) => theme.transitions.create('width'),
-            ...(open && { width: DRAWER_WIDTH })
+            ...(openOpciones && { width: DRAWER_WIDTH })
           }}
         >
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
-            <Typography variant="subtitle1">Settings</Typography>
+            <Typography variant="subtitle1">Ajustes</Typography>
             <MIconButton onClick={handleClose}>
               <Icon icon={closeFill} width={20} height={20} />
             </MIconButton>
@@ -68,12 +54,12 @@ export default function Settings() {
           <Scrollbar sx={{ height: 1 }}>
             <Stack spacing={4} sx={{ pt: 3, px: 3, pb: 15 }}>
               <Stack spacing={1.5}>
-                <Typography variant="subtitle2">Mode</Typography>
+                <Typography variant="subtitle2">Modo</Typography>
                 <SettingMode />
               </Stack>
 
               <Stack spacing={1.5}>
-                <Typography variant="subtitle2">Direction</Typography>
+                <Typography variant="subtitle2">DIrección</Typography>
                 <SettingDirection />
               </Stack>
 
@@ -90,3 +76,8 @@ export default function Settings() {
     </>
   );
 }
+
+Settings.propTypes = {
+  openOpciones: PropTypes.bool,
+  setOpenOpciones: PropTypes.func
+};

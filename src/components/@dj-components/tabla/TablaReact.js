@@ -16,7 +16,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Typography from '@material-ui/core/Typography';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
-import { withStyles, makeStyles, experimentalStyled as styled } from '@material-ui/core/styles';
+import { withStyles, makeStyles, experimentalStyled as styled, alpha, useTheme } from '@material-ui/core/styles';
 import Scrollbar from '../../Scrollbar';
 import ToolbarTabla from './ToolbarTabla';
 import { DefaultColumnFilter } from './FiltrosTabla';
@@ -98,6 +98,7 @@ const StyledTablePagination = withStyles((theme) => ({
     margin: 0,
     border: 'none',
     overflow: 'hidden',
+    paddingBottom: 5,
     '& .MuiToolbar-root': {
       minHeight: '2em',
       height: '2em',
@@ -154,20 +155,18 @@ export default function TablaReact({
   setCargando,
   updateMyData,
   skipPageReset,
-  indiceFila
+  showToolbar,
+  showPaginador,
+  showBotonInsertar,
+  showBotonEliminar,
+  showBotonModificar,
+  showBuscar
 }) {
   const [columnaSeleccionada, setColumnaSeleccionada] = useState();
 
   useEffect(() => {
     setHiddenColumns(columnasOcultas);
   }, [columnasOcultas]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  /**
-   * Selecciona y pinta la fila
-   */
-  useEffect(() => {
-    console.log(indiceFila);
-  }, [indiceFila]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Función filtrar
   const filterTypes = React.useMemo(
@@ -187,7 +186,7 @@ export default function TablaReact({
     }),
     []
   );
-
+  const theme = useTheme();
   const classes = useStyles();
 
   const {
@@ -260,44 +259,53 @@ export default function TablaReact({
   // Render the UI for your table isColumnas && cargando
   return (
     <StyledDiv>
-      <ToolbarTabla
-        globalFilter={globalFilter}
-        setGlobalFilter={setGlobalFilter}
-        actualizar={actualizar}
-        insertar={insertar}
-        eliminar={eliminar}
-        toggleAllRowsSelected={toggleAllRowsSelected}
-        toggleRowSelected={toggleRowSelected}
-        lectura={lectura}
-        page={page}
-        prepareRow={prepareRow}
-        setColumnaSeleccionada={setColumnaSeleccionada}
-        setCargando={setCargando}
-        filaSeleccionada={filaSeleccionada}
-        setAllFilters={setAllFilters}
-      />
-      {data.length > filasPorPagina ? (
-        <StyledTablePagination
-          component="div"
-          labelRowsPerPage=""
-          rowsPerPageOptions={[15, 30, 50, 100]}
-          colSpan={3}
-          count={data.length}
-          rowsPerPage={pageSize}
-          page={pageIndex}
-          SelectProps={{
-            inputProps: { 'aria-label': 'rows per page' },
-            native: true
-          }}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          ActionsComponent={TablePaginationActions}
-          // labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count} filas`}
-          labelDisplayedRows={({ count }) => `Filas (${count})`}
+      {showToolbar === true && (
+        <ToolbarTabla
+          globalFilter={globalFilter}
+          setGlobalFilter={setGlobalFilter}
+          actualizar={actualizar}
+          insertar={insertar}
+          eliminar={eliminar}
+          toggleAllRowsSelected={toggleAllRowsSelected}
+          toggleRowSelected={toggleRowSelected}
+          lectura={lectura}
+          page={page}
+          prepareRow={prepareRow}
+          setColumnaSeleccionada={setColumnaSeleccionada}
+          setCargando={setCargando}
+          filaSeleccionada={filaSeleccionada}
+          setAllFilters={setAllFilters}
+          showBotonInsertar={showBotonInsertar}
+          showBotonEliminar={showBotonEliminar}
+          showBotonModificar={showBotonModificar}
+          showBuscar={showBuscar}
         />
-      ) : (
-        <SkeletonPaginador />
       )}
+
+      {showPaginador === true &&
+        (data.length > filasPorPagina ? (
+          <StyledTablePagination
+            component="div"
+            labelRowsPerPage=""
+            rowsPerPageOptions={[15, 30, 50, 100]}
+            colSpan={3}
+            count={data.length}
+            rowsPerPage={pageSize}
+            page={pageIndex}
+            SelectProps={{
+              inputProps: { 'aria-label': 'rows per page' },
+              native: true
+            }}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            ActionsComponent={TablePaginationActions}
+            // labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count} filas`}
+            labelDisplayedRows={({ count }) => `Filas (${count})`}
+          />
+        ) : (
+          !isColumnas && <SkeletonPaginador />
+        ))}
+
       <Scrollbar>
         <TableContainer
           sx={{
@@ -359,6 +367,9 @@ export default function TablaReact({
                     <StyledTableRow
                       key={index}
                       {...row.getRowProps({
+                        style: {
+                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.5) : ''
+                        },
                         onClick: () => {
                           toggleAllRowsSelected(false);
                           row.toggleRowSelected();
@@ -366,7 +377,7 @@ export default function TablaReact({
                         }
                       })}
                     >
-                      {!row.isSelected ? (
+                      {!row.isSelected || lectura === true ? (
                         row.cells.map((cell, index) => (
                           <StyledTableCellBody
                             onClick={() => setColumnaSeleccionada(cell.column.nombre)}
@@ -416,7 +427,6 @@ TablaReact.propTypes = {
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   updateMyData: PropTypes.func.isRequired,
-  indiceFila: PropTypes.number,
   skipPageReset: PropTypes.bool.isRequired,
   isColumnas: PropTypes.bool.isRequired,
   columnasOcultas: PropTypes.array.isRequired,
@@ -431,5 +441,11 @@ TablaReact.propTypes = {
   getInsertadas: PropTypes.func,
   getModificadas: PropTypes.func,
   getEliminadas: PropTypes.func,
-  setCargando: PropTypes.func
+  setCargando: PropTypes.func,
+  showToolbar: PropTypes.bool,
+  showPaginador: PropTypes.bool,
+  showBotonInsertar: PropTypes.bool,
+  showBotonEliminar: PropTypes.bool,
+  showBotonModificar: PropTypes.bool,
+  showBuscar: PropTypes.bool
 };

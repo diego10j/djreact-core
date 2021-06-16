@@ -91,8 +91,24 @@ export function getFormatoHora(hora, formato = formatosFecha.FORMATO_HORA) {
   return null;
 }
 
+/**
+ * Retorna la fecha actual, formato por defecto DD/MM/YYYY
+ * @param {String} formato
+ * @returns
+ */
 export function getFechaActual(formato = formatosFecha.FORMATO_FECHA_FRONT) {
   return getFormatoFecha(new Date(), formato);
+}
+
+/**
+ * Retorna una fecha en el formato enviado
+ * @param {*} fecha
+ * @param {*} format
+ * @param {*} formatoFecha
+ * @returns
+ */
+export function getFormatoMoment(fecha, format, formatoFecha = 'YYYY-MM-DD h:mm:ss') {
+  return moment(fecha, formatoFecha).format(format);
 }
 
 /**

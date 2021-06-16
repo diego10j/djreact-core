@@ -4,8 +4,6 @@ import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
 import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@material-ui/core';
-// components
-import Settings from '../../components/settings';
 //
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
@@ -37,10 +35,11 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 DashboardNavbar.propTypes = {
-  onOpenSidebar: PropTypes.func
+  onOpenSidebar: PropTypes.func,
+  setOpenOpciones: PropTypes.func
 };
 
-export default function DashboardNavbar({ onOpenSidebar }) {
+export default function DashboardNavbar({ onOpenSidebar, setOpenOpciones }) {
   return (
     <RootStyle>
       <ToolbarStyle>
@@ -49,9 +48,8 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         </IconButton>
         <Box sx={{ flexGrow: 1 }} />
         <Stack direction="row" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <Settings />
           <NotificationsPopover />
-          <AccountPopover />
+          <AccountPopover setOpenOpciones={setOpenOpciones} />
         </Stack>
       </ToolbarStyle>
     </RootStyle>

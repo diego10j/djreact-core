@@ -36,7 +36,7 @@ export default function SettingFullscreen() {
         })
       }}
     >
-      {fullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
+      {fullscreen ? 'Pantalla Normal' : 'Pantalla Completa'}
     </Button>
   );
 }

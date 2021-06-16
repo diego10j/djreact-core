@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack';
 import { useRef, useState } from 'react';
-import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
+import options2Fill from '@iconify/icons-eva/options-2-fill';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { alpha } from '@material-ui/core/styles';
@@ -17,22 +18,16 @@ import useIsMountedRef from '../../hooks/useIsMountedRef';
 import { MIconButton } from '../../components/@material-extend';
 import MyAvatar from '../../components/MyAvatar';
 import MenuPopover from '../../components/MenuPopover';
-
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
-    icon: homeFill,
-    linkTo: '/'
-  },
-  {
-    label: 'Profile',
+    label: 'Perfil',
     icon: personFill,
     linkTo: PATH_DASHBOARD.user.profile
   },
   {
-    label: 'Settings',
+    label: 'Configuraciones',
     icon: settings2Fill,
     linkTo: PATH_DASHBOARD.user.account
   }
@@ -40,7 +35,7 @@ const MENU_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+export default function AccountPopover({ setOpenOpciones }) {
   const anchorRef = useRef(null);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -53,6 +48,11 @@ export default function AccountPopover() {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpciones = () => {
+    setOpen(false);
+    setOpenOpciones(true);
   };
 
   const handleLogout = async () => {
@@ -127,12 +127,29 @@ export default function AccountPopover() {
           </MenuItem>
         ))}
 
+        <MenuItem onClick={handleOpciones} sx={{ typography: 'body2', py: 1, px: 2.5 }}>
+          <Box
+            component={Icon}
+            icon={options2Fill}
+            sx={{
+              mr: 2,
+              width: 24,
+              height: 24
+            }}
+          />
+          Ajustes
+        </MenuItem>
+
         <Box sx={{ p: 2, pt: 1.5 }}>
           <Button fullWidth color="inherit" variant="outlined" onClick={handleLogout}>
-            Logout
+            Salir
           </Button>
         </Box>
       </MenuPopover>
     </>
   );
 }
+
+AccountPopover.propTypes = {
+  setOpenOpciones: PropTypes.func
+};

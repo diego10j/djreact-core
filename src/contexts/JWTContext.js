@@ -187,7 +187,7 @@ function AuthProvider({ children }) {
     localStorage.removeItem('ide_usua');
     localStorage.removeItem('ip');
     localStorage.removeItem('ultimaFecha');
-    localStorage.removeItem('identificacion');
+    localStorage.removeItem('usuario');
     localStorage.removeItem('avatar');
     localStorage.removeItem('ide_empr');
     localStorage.removeItem('perm_util_perf');

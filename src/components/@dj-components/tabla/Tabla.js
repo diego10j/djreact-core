@@ -7,7 +7,9 @@ import TablaReact from './TablaReact';
 import { CheckLectura, ComboLectura } from './FilaLectura';
 import axios from '../../../utils/axios';
 import { isDefined, isEmpty } from '../../../utils/utilitario';
+// hooks
 import useMensaje from '../../../hooks/useMensaje';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import {
   isDate,
   getFormatoFecha,
@@ -30,7 +32,13 @@ const Tabla = forwardRef(
       opcionesColumnas,
       filasPorPagina = 15,
       validarInsertar = false,
-      calculaPrimaria = true
+      calculaPrimaria = true,
+      showToolbar = true,
+      showPaginador = true,
+      showBotonInsertar = false,
+      showBotonEliminar = false,
+      showBotonModificar = false,
+      showBuscar = true
     },
     ref
   ) => {
@@ -58,9 +66,19 @@ const Tabla = forwardRef(
       commit
     }));
 
+    // Aplica valores por defecto en caso de ser la tabla de lectura
+    if (lectura === true) {
+      showBotonInsertar = false;
+      showBotonEliminar = false;
+      showBotonModificar = false;
+    } else {
+      showBotonInsertar = true;
+      showBotonEliminar = true;
+    }
+
     // const dispatch = useDispatch();
     // const { columnas } = useSelector((state) => state.tabla);
-    const [indiceFila, setIndiceFila] = useState(undefined);
+    const isMountedRef = useIsMountedRef();
     const msg = useMensaje();
     const [skipPageReset, setSkipPageReset] = useState(false);
     const [isColumnas, setIsColumnas] = useState(false);
@@ -81,7 +99,9 @@ const Tabla = forwardRef(
       if (!tipoFormulario) {
         // Oculta columnas para la TablaReact
         const colOcultas = columns.filter((_col) => _col.visible === false).map((_element) => _element.nombre);
-        setColumnasOcultas(colOcultas);
+        if (isMountedRef.current) {
+          setColumnasOcultas(colOcultas);
+        }
       }
     }, [columns]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -95,11 +115,16 @@ const Tabla = forwardRef(
           campoOrden,
           condiciones: []
         });
-        setCargando(false);
-        setData([]);
-        setData(data.datos);
+        if (isMountedRef.current) {
+          setCargando(false);
+          setData([]);
+          setData(data.datos);
+        }
       } catch (error) {
-        setCargando(false);
+        if (isMountedRef.current) {
+          setCargando(false);
+        }
+
         console.error(error);
       }
     };
@@ -134,13 +159,15 @@ const Tabla = forwardRef(
           campoNombre: columna.campoNombreCombo.toLowerCase(),
           condicion: columna.condicionCombo
         });
-        setCombos((elements) => [
-          ...elements,
-          {
-            columna: columna.campoPrimarioCombo.toLowerCase(),
-            listaCombo: [{ value: '', label: '(Null)' }, ...data.datos]
-          }
-        ]);
+        if (isMountedRef.current) {
+          setCombos((elements) => [
+            ...elements,
+            {
+              columna: columna.campoPrimarioCombo.toLowerCase(),
+              listaCombo: [{ value: '', label: '(Null)' }, ...data.datos]
+            }
+          ]);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -276,8 +303,10 @@ const Tabla = forwardRef(
           }
         });
       }
-      setColumns(cols);
-      setIsColumnas(true);
+      if (isMountedRef.current) {
+        setColumns(cols);
+        setIsColumnas(true);
+      }
     };
 
     function multiSelectFilter(rows, id, filterValue) {
@@ -848,8 +877,12 @@ const Tabla = forwardRef(
           getModificadas={getModificadas}
           getEliminadas={getEliminadas}
           setCargando={setCargando}
-          indiceFila={indiceFila}
-          setIndiceFila={setIndiceFila}
+          showToolbar={showToolbar}
+          showPaginador={showPaginador}
+          showBotonInsertar={showBotonInsertar}
+          showBotonEliminar={showBotonEliminar}
+          showBotonModificar={showBotonModificar}
+          showBuscar={showBuscar}
         />
       </>
     );
@@ -888,13 +921,13 @@ Tabla.propTypes = {
       })
     })
   ),
-  validarInsertar: PropTypes.bool
-  // showToolbar: PropTypes.bool,
-  // showPaginador: PropTypes.bool,
-  // showBotonInsertar: PropTypes.bool,
-  // showBotonEliminar: PropTypes.bool,
-  // showBotonModificar: PropTypes.bool,
-  // showBuscar: PropTypes.bool
+  validarInsertar: PropTypes.bool,
+  showToolbar: PropTypes.bool,
+  showPaginador: PropTypes.bool,
+  showBotonInsertar: PropTypes.bool,
+  showBotonEliminar: PropTypes.bool,
+  showBotonModificar: PropTypes.bool,
+  showBuscar: PropTypes.bool
 };
 
 export default Tabla;

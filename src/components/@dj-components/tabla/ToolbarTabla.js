@@ -31,7 +31,11 @@ export default function ToolbarTabla({
   setColumnaSeleccionada,
   filaSeleccionada,
   setCargando,
-  setAllFilters
+  setAllFilters,
+  showBotonInsertar,
+  showBotonEliminar,
+  showBotonModificar,
+  showBuscar
 }) {
   const anchorRef = useRef(null);
 
@@ -102,37 +106,43 @@ export default function ToolbarTabla({
           }}
         >
           <Box width="75%" flexGrow={1} sx={{ pt: 0, pb: 0 }}>
-            <MIconButton aria-label="insertar" title="Insertar" color="success" onClick={handleInsertar}>
-              <AddIcon fontSize="inherit" />
-            </MIconButton>
-
-            <MIconButton
-              aria-label="modificar"
-              title="Modificar"
-              color="info"
-              onClick={handleModificar}
-              disabled={isDefined(filaSeleccionada) === false}
-            >
-              <CreateIcon fontSize="inherit" />
-            </MIconButton>
-
-            <MIconButton
-              aria-label="eliminar"
-              title="Eliminar"
-              color="error"
-              onClick={handleEliminar}
-              disabled={isDefined(filaSeleccionada) === false}
-            >
-              <DeleteIcon fontSize="inherit" />
-            </MIconButton>
+            {showBotonInsertar === true && (
+              <MIconButton aria-label="insertar" title="Insertar" color="success" onClick={handleInsertar}>
+                <AddIcon fontSize="inherit" />
+              </MIconButton>
+            )}
+            {showBotonModificar === true && (
+              <MIconButton
+                aria-label="modificar"
+                title="Modificar"
+                color="info"
+                onClick={handleModificar}
+                disabled={isDefined(filaSeleccionada) === false}
+              >
+                <CreateIcon fontSize="inherit" />
+              </MIconButton>
+            )}
+            {showBotonEliminar === true && (
+              <MIconButton
+                aria-label="eliminar"
+                title="Eliminar"
+                color="error"
+                onClick={handleEliminar}
+                disabled={isDefined(filaSeleccionada) === false}
+              >
+                <DeleteIcon fontSize="inherit" />
+              </MIconButton>
+            )}
           </Box>
-          <Box sx={{ pt: 0, pb: 0 }}>
-            <FiltroGlobalTabla
-              globalFilter={globalFilter}
-              setGlobalFilter={setGlobalFilter}
-              setColumnaSeleccionada={setColumnaSeleccionada}
-            />
-          </Box>
+          {showBuscar === true && (
+            <Box sx={{ pt: 0, pb: 0 }}>
+              <FiltroGlobalTabla
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                setColumnaSeleccionada={setColumnaSeleccionada}
+              />
+            </Box>
+          )}
           <Box sx={{ pt: 0, pb: 0 }}>
             <Tooltip title="Opciones">
               <MIconButton aria-label="opciones" onClick={handleOpciones} ref={anchorRef}>
@@ -200,5 +210,9 @@ ToolbarTabla.propTypes = {
   prepareRow: PropTypes.func.isRequired,
   setColumnaSeleccionada: PropTypes.func.isRequired,
   filaSeleccionada: PropTypes.object,
-  setCargando: PropTypes.func.isRequired
+  setCargando: PropTypes.func.isRequired,
+  showBotonInsertar: PropTypes.bool,
+  showBotonEliminar: PropTypes.bool,
+  showBotonModificar: PropTypes.bool,
+  showBuscar: PropTypes.bool
 };
