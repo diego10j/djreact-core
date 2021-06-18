@@ -1,9 +1,12 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import PropTypes from 'prop-types';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { getColumnasR } from '../../../redux/slices/tabla';
+import { experimentalStyled as styled } from '@material-ui/core/styles';
 // components
 import TablaReact from './TablaReact';
+import ToolbarTabla from './ToolbarTabla';
+import TablaFormulario from './TablaFormulario';
 import { CheckLectura, ComboLectura } from './FilaLectura';
 import axios from '../../../utils/axios';
 import { isDefined, isEmpty } from '../../../utils/utilitario';
@@ -19,6 +22,17 @@ import {
   getFormatoHora,
   getFormatoFechaBDD
 } from '../../../utils/formatTime';
+
+// Estilos
+const StyledDiv = styled('div')(() => ({
+  height: '100%',
+  outline: 'none',
+  lineHeight: '1.5714285714285714',
+  display: 'flex',
+  position: 'relative',
+  boxSizing: 'border-box',
+  flexDirection: 'column'
+}));
 
 const Tabla = forwardRef(
   (
@@ -38,7 +52,8 @@ const Tabla = forwardRef(
       showBotonInsertar = false,
       showBotonEliminar = false,
       showBotonModificar = false,
-      showBuscar = true
+      showBuscar = true,
+      showRowIndex = false
     },
     ref
   ) => {
@@ -55,6 +70,9 @@ const Tabla = forwardRef(
       isFilaEliminada,
       isFilaInsertada,
       seleccionarFila,
+      seleccionarFilaPorIndice,
+      seleccionarFilaPorValorPrimario,
+      getIndiceTabla,
       getFila,
       getTotalFilas,
       isGuardar,
@@ -65,6 +83,9 @@ const Tabla = forwardRef(
       isCargando,
       commit
     }));
+
+    const tablaReact = useRef();
+    const tablaFormulario = useRef();
 
     // Aplica valores por defecto en caso de ser la tabla de lectura
     if (lectura === true) {
@@ -89,6 +110,10 @@ const Tabla = forwardRef(
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [eliminadas, setEliminadas] = useState([]);
     const [combos, setCombos] = useState([]);
+    const [columnaSeleccionada, setColumnaSeleccionada] = useState();
+    const [indiceTabla, setIndiceTabla] = useState();
+    const [vistaFormularo, setVistaFormulario] = useState(tipoFormulario);
+    const [paginaActual, setPaginaActual] = useState(0);
 
     useEffect(() => {
       getServicioColumnas();
@@ -96,12 +121,10 @@ const Tabla = forwardRef(
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-      if (!tipoFormulario) {
+      if (!vistaFormularo) {
         // Oculta columnas para la TablaReact
         const colOcultas = columns.filter((_col) => _col.visible === false).map((_element) => _element.nombre);
-        if (isMountedRef.current) {
-          setColumnasOcultas(colOcultas);
-        }
+        setColumnasOcultas(colOcultas);
       }
     }, [columns]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -119,6 +142,10 @@ const Tabla = forwardRef(
           setCargando(false);
           setData([]);
           setData(data.datos);
+          if (!isDefined(indiceTabla)) {
+            setIndiceTabla(0);
+            setFilaSeleccionada(data.datos[0]);
+          }
         }
       } catch (error) {
         if (isMountedRef.current) {
@@ -342,6 +369,7 @@ const Tabla = forwardRef(
     const getEliminadas = () => eliminadas;
     const getModificadas = () => data.filter((fila) => fila.modificada === true) || [];
     const getTotalFilas = () => data.length;
+    const getIndiceTabla = () => indiceTabla;
     const isCargando = () => cargando;
 
     /**
@@ -450,12 +478,31 @@ const Tabla = forwardRef(
      * Selecciona la fila por valorPrimario
      * @param {String} valorPrimario
      */
-    const seleccionarFila = (valorPrimario) => {
+    const seleccionarFilaPorValorPrimario = (valorPrimario) => {
       const fila = data.find((col) => col[campoPrimario] === valorPrimario);
+      seleccionarFila(fila);
+    };
+
+    /**
+     * Selecciona la fila por indice
+     * @param {String} valorPrimario
+     */
+    const seleccionarFilaPorIndice = (index) => {
+      const fila = data[index];
+      seleccionarFila(fila);
+    };
+
+    /**
+     * Selecciona una fila, recibe el objeto fila
+     * @param {Fila} fila
+     */
+    const seleccionarFila = (fila) => {
       if (isDefined(fila)) {
         setFilaSeleccionada(fila);
+        setIndiceTabla(data.indexOf(fila));
       } else {
         setFilaSeleccionada(undefined);
+        setIndiceTabla(undefined);
       }
     };
 
@@ -465,7 +512,7 @@ const Tabla = forwardRef(
     const crearFila = () => {
       // PK temporal negativa
       const tmpPK = 0 - (getInsertadas().length + 1);
-      const filaNueva = { id: tmpPK, insertada: true };
+      const filaNueva = { insertada: true };
       columns.forEach((_columna) => {
         const { nombre, valordefecto } = _columna;
         filaNueva[nombre] = valordefecto;
@@ -482,10 +529,14 @@ const Tabla = forwardRef(
       // if (this.utilitario.isDefined(this.tabla.campoPadre)) {
       // filaNueva[this.tabla.campoPadre] = this.tabla.valorPadre;
       // }
-      setSkipPageReset(false);
-      setData((elements) => [filaNueva, ...elements]);
-      setSkipPageReset(true);
+      // setSkipPageReset(false);
+      const newData = [filaNueva, ...data];
+      setData(newData);
       setFilaSeleccionada(filaNueva);
+      // setIndiceTabla(0);
+      // setSkipPageReset(true);
+      // setFilaSeleccionada(filaNueva);
+      // setIndiceTabla(0);
     };
 
     const insertar = () => {
@@ -850,41 +901,121 @@ const Tabla = forwardRef(
       // setSkipPageReset(false);
     };
 
+    const handleInsertar = () => {
+      if (!vistaFormularo) {
+        tablaReact.current.insertarTablaReact();
+      }
+    };
+
+    const handleActualizar = () => {
+      if (!vistaFormularo) {
+        tablaReact.current.actualizarTablaReact();
+      }
+    };
+
+    const handleEliminar = () => {
+      if (!vistaFormularo) {
+        tablaReact.current.eliminarTablaReact();
+      }
+    };
+
+    const handleCambiarVista = () => {
+      if (vistaFormularo) {
+        // calcula la página actual
+        const pagina = parseInt(indiceTabla / filasPorPagina, 10);
+        setPaginaActual(pagina);
+      }
+      setVistaFormulario(!vistaFormularo);
+    };
+
     return (
-      <>
-        <TablaReact
-          columns={columns}
-          data={data}
-          campoOrden={campoOrden}
-          updateMyData={updateMyData}
-          skipPageReset={skipPageReset}
-          cargando={cargando}
-          isColumnas={isColumnas}
-          setData={setData}
-          columnasOcultas={columnasOcultas}
-          filasPorPagina={filasPorPagina}
-          modificarFila={modificarFila}
-          filaSeleccionada={filaSeleccionada}
-          setFilaSeleccionada={setFilaSeleccionada}
-          setValorFilaSeleccionada={setValorFilaSeleccionada}
-          getValorFilaSeleccionada={getValorFilaSeleccionada}
-          actualizar={actualizar}
-          insertar={insertar}
-          eliminar={eliminar}
-          lectura={lectura}
-          combos={combos}
-          getInsertadas={getInsertadas}
-          getModificadas={getModificadas}
-          getEliminadas={getEliminadas}
-          setCargando={setCargando}
-          showToolbar={showToolbar}
-          showPaginador={showPaginador}
-          showBotonInsertar={showBotonInsertar}
-          showBotonEliminar={showBotonEliminar}
-          showBotonModificar={showBotonModificar}
-          showBuscar={showBuscar}
-        />
-      </>
+      <StyledDiv>
+        {showToolbar === true && (
+          <ToolbarTabla
+            actualizar={handleActualizar}
+            insertar={handleInsertar}
+            eliminar={handleEliminar}
+            cambiarVista={handleCambiarVista}
+            filaSeleccionada={filaSeleccionada}
+            showBotonInsertar={showBotonInsertar}
+            showBotonEliminar={showBotonEliminar}
+            showBotonModificar={showBotonModificar}
+            vistaFormularo={vistaFormularo}
+          />
+        )}
+        {!vistaFormularo ? (
+          <TablaReact
+            ref={tablaReact}
+            columns={columns}
+            data={data}
+            campoOrden={campoOrden}
+            updateMyData={updateMyData}
+            skipPageReset={skipPageReset}
+            cargando={cargando}
+            isColumnas={isColumnas}
+            setData={setData}
+            columnasOcultas={columnasOcultas}
+            filasPorPagina={filasPorPagina}
+            modificarFila={modificarFila}
+            filaSeleccionada={filaSeleccionada}
+            setFilaSeleccionada={setFilaSeleccionada}
+            setValorFilaSeleccionada={setValorFilaSeleccionada}
+            getValorFilaSeleccionada={getValorFilaSeleccionada}
+            insertar={insertar}
+            actualizar={actualizar}
+            eliminar={eliminar}
+            lectura={lectura}
+            combos={combos}
+            getInsertadas={getInsertadas}
+            getModificadas={getModificadas}
+            getEliminadas={getEliminadas}
+            setCargando={setCargando}
+            showPaginador={showPaginador}
+            showBuscar={showBuscar}
+            showRowIndex={showRowIndex}
+            setColumnaSeleccionada={setColumnaSeleccionada}
+            columnaSeleccionada={columnaSeleccionada}
+            setIndiceTabla={setIndiceTabla}
+            indiceTabla={indiceTabla}
+            setPaginaActual={setPaginaActual}
+            paginaActual={paginaActual}
+          />
+        ) : (
+          <TablaFormulario
+            ref={tablaFormulario}
+            columns={columns}
+            data={data}
+            campoOrden={campoOrden}
+            updateMyData={updateMyData}
+            cargando={cargando}
+            isColumnas={isColumnas}
+            setData={setData}
+            columnasOcultas={columnasOcultas}
+            filasPorPagina={filasPorPagina}
+            modificarFila={modificarFila}
+            filaSeleccionada={filaSeleccionada}
+            setFilaSeleccionada={setFilaSeleccionada}
+            setValorFilaSeleccionada={setValorFilaSeleccionada}
+            getValorFilaSeleccionada={getValorFilaSeleccionada}
+            insertar={insertar}
+            actualizar={actualizar}
+            eliminar={eliminar}
+            lectura={lectura}
+            combos={combos}
+            getInsertadas={getInsertadas}
+            getModificadas={getModificadas}
+            getEliminadas={getEliminadas}
+            setCargando={setCargando}
+            showToolbar={showToolbar}
+            showPaginador={showPaginador}
+            showBuscar={showBuscar}
+            setColumnaSeleccionada={setColumnaSeleccionada}
+            columnaSeleccionada={columnaSeleccionada}
+            seleccionarFilaPorIndice={seleccionarFilaPorIndice}
+            indiceTabla={indiceTabla}
+          />
+        )}
+      </StyledDiv>
     );
   }
 );
@@ -927,7 +1058,8 @@ Tabla.propTypes = {
   showBotonInsertar: PropTypes.bool,
   showBotonEliminar: PropTypes.bool,
   showBotonModificar: PropTypes.bool,
-  showBuscar: PropTypes.bool
+  showBuscar: PropTypes.bool,
+  showRowIndex: PropTypes.bool
 };
 
 export default Tabla;

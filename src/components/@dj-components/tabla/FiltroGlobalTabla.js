@@ -19,7 +19,8 @@ const StyledTextField = withStyles((theme) => ({
       height: '2em',
       padding: 0,
       paddingLeft: 5,
-      fontSize: '0.875rem'
+      fontSize: '0.875rem',
+      backgroundColor: ` ${theme.palette.mode === 'light' ? '#fbfbfb' : '#252f3b'}`
     },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
@@ -49,29 +50,31 @@ const FiltroGlobalTabla = ({ globalFilter, setGlobalFilter, setColumnaSelecciona
   };
 
   return (
-    <StyledTextField
-      placeholder="Buscar..."
-      variant="outlined"
-      size="small"
-      margin="none"
-      value={globalFilter || ''}
-      onChange={(e) => {
-        setColumnaSeleccionada(undefined);
-        setGlobalFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
-      }}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon fontSize="small" color="disabled" />
-          </InputAdornment>
-        ),
-        endAdornment: globalFilter && (
-          <InputAdornment position="start" onClick={handleClear}>
-            <CloseIcon fontSize="small" sx={{ cursor: 'pointer' }} />
-          </InputAdornment>
-        )
-      }}
-    />
+    <div>
+      <StyledTextField
+        placeholder="Buscar..."
+        variant="outlined"
+        size="small"
+        margin="none"
+        value={globalFilter || ''}
+        onChange={(e) => {
+          setColumnaSeleccionada(undefined);
+          setGlobalFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
+        }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon fontSize="small" color="disabled" />
+            </InputAdornment>
+          ),
+          endAdornment: globalFilter && (
+            <InputAdornment position="start" onClick={handleClear}>
+              <CloseIcon fontSize="small" sx={{ cursor: 'pointer' }} />
+            </InputAdornment>
+          )
+        }}
+      />
+    </div>
   );
 };
 

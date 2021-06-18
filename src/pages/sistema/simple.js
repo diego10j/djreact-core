@@ -57,6 +57,7 @@ export default function Simple() {
               lectura={false}
               nombreTabla="sis_auditoria_acceso"
               campoPrimario="ide_auac"
+              showRowIndex
               opcionesColumnas={[
                 {
                   nombre: 'ide_usua',

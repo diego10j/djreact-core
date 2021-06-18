@@ -7,6 +7,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import brushOutline from '@iconify/icons-eva/brush-outline';
 import refreshOutline from '@iconify/icons-eva/refresh-outline';
+import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
+import TableRowsOutlinedIcon from '@material-ui/icons/TableRowsOutlined';
 
 // components
 import { Box, MenuItem, Tooltip, Divider } from '@material-ui/core';
@@ -14,28 +16,18 @@ import { Icon } from '@iconify/react';
 import { MIconButton } from '../../@material-extend';
 import MenuPopover from '../../MenuPopover';
 import SvgIconStyle from '../../SvgIconStyle';
-import FiltroGlobalTabla from './FiltroGlobalTabla';
 import { isDefined } from '../../../utils/utilitario';
 
 export default function ToolbarTabla({
-  globalFilter,
-  setGlobalFilter,
-  lectura,
   actualizar,
   insertar,
   eliminar,
-  toggleAllRowsSelected,
-  toggleRowSelected,
-  prepareRow,
-  page,
-  setColumnaSeleccionada,
+  cambiarVista,
   filaSeleccionada,
-  setCargando,
-  setAllFilters,
   showBotonInsertar,
   showBotonEliminar,
   showBotonModificar,
-  showBuscar
+  vistaFormularo
 }) {
   const anchorRef = useRef(null);
 
@@ -48,39 +40,18 @@ export default function ToolbarTabla({
     setOpen(true);
   };
 
-  const handleInsertar = async () => {
-    if (!lectura) {
-      setAllFilters([]);
-      const tmpPk = insertar();
-      if (tmpPk) {
-        setCargando(true);
-        const row = page[0]; // selecciona fila insertada
-        await prepareRow(row);
-        // selecciona columna 1 para que ponga el autofocus si es Texto
-        setColumnaSeleccionada(row.cells[0].column.nombre);
-        toggleAllRowsSelected(false); // clear seleccionadas
-        toggleRowSelected('0');
-        setCargando(false);
-      }
-    }
-  };
-
   const handleModificar = () => {
     console.log('modificar');
   };
-  const handleEliminar = async () => {
-    if (!lectura) {
-      if (await eliminar()) {
-        toggleAllRowsSelected(false); // clear seleccionadas
-      }
-    }
-  };
 
   const handleActualizar = () => {
-    setAllFilters([]);
     actualizar();
-    toggleAllRowsSelected(false); // clear seleccionadas
     setOpen(false);
+  };
+
+  const handleCambiarVista = () => {
+    setOpen(false);
+    cambiarVista();
   };
 
   const handleExportarExcel = () => {
@@ -107,7 +78,7 @@ export default function ToolbarTabla({
         >
           <Box width="75%" flexGrow={1} sx={{ pt: 0, pb: 0 }}>
             {showBotonInsertar === true && (
-              <MIconButton aria-label="insertar" title="Insertar" color="success" onClick={handleInsertar}>
+              <MIconButton aria-label="insertar" title="Insertar" color="success" onClick={insertar}>
                 <AddIcon fontSize="inherit" />
               </MIconButton>
             )}
@@ -127,22 +98,14 @@ export default function ToolbarTabla({
                 aria-label="eliminar"
                 title="Eliminar"
                 color="error"
-                onClick={handleEliminar}
+                onClick={eliminar}
                 disabled={isDefined(filaSeleccionada) === false}
               >
                 <DeleteIcon fontSize="inherit" />
               </MIconButton>
             )}
           </Box>
-          {showBuscar === true && (
-            <Box sx={{ pt: 0, pb: 0 }}>
-              <FiltroGlobalTabla
-                globalFilter={globalFilter}
-                setGlobalFilter={setGlobalFilter}
-                setColumnaSeleccionada={setColumnaSeleccionada}
-              />
-            </Box>
-          )}
+
           <Box sx={{ pt: 0, pb: 0 }}>
             <Tooltip title="Opciones">
               <MIconButton aria-label="opciones" onClick={handleOpciones} ref={anchorRef}>
@@ -165,6 +128,35 @@ export default function ToolbarTabla({
           />
           Actualizar
         </MenuItem>
+
+        <MenuItem sx={{ typography: 'body2', py: 1, px: 2.5 }} onClick={handleCambiarVista}>
+          {vistaFormularo ? (
+            <>
+              <TableRowsOutlinedIcon
+                fontSize="inherit"
+                sx={{
+                  mr: 2,
+                  width: 24,
+                  height: 24
+                }}
+              />
+              Vista Tabla
+            </>
+          ) : (
+            <>
+              <ListAltOutlinedIcon
+                fontSize="inherit"
+                sx={{
+                  mr: 2,
+                  width: 24,
+                  height: 24
+                }}
+              />
+              Vista Formulario
+            </>
+          )}
+        </MenuItem>
+
         <MenuItem sx={{ typography: 'body2', py: 1, px: 2.5 }} onClick={handleExportarExcel}>
           <Box
             component={SvgIconStyle}
@@ -197,22 +189,13 @@ export default function ToolbarTabla({
 }
 
 ToolbarTabla.propTypes = {
-  globalFilter: PropTypes.string,
-  setGlobalFilter: PropTypes.func.isRequired,
-  setAllFilters: PropTypes.func.isRequired,
-  actualizar: PropTypes.func.isRequired,
-  insertar: PropTypes.func.isRequired,
-  eliminar: PropTypes.func.isRequired,
-  toggleAllRowsSelected: PropTypes.func.isRequired,
-  toggleRowSelected: PropTypes.func.isRequired,
-  lectura: PropTypes.bool.isRequired,
-  page: PropTypes.array,
-  prepareRow: PropTypes.func.isRequired,
-  setColumnaSeleccionada: PropTypes.func.isRequired,
+  actualizar: PropTypes.func,
+  insertar: PropTypes.func,
+  eliminar: PropTypes.func,
+  cambiarVista: PropTypes.func,
   filaSeleccionada: PropTypes.object,
-  setCargando: PropTypes.func.isRequired,
   showBotonInsertar: PropTypes.bool,
   showBotonEliminar: PropTypes.bool,
   showBotonModificar: PropTypes.bool,
-  showBuscar: PropTypes.bool
+  vistaFormularo: PropTypes.bool
 };

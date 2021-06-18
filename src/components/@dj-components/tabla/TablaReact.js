@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 // react-table
 import { useGlobalFilter, usePagination, useSortBy, useFilters, useRowSelect, useTable } from 'react-table';
@@ -14,15 +14,20 @@ import TablePagination from '@material-ui/core/TablePagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 import { withStyles, makeStyles, experimentalStyled as styled, alpha, useTheme } from '@material-ui/core/styles';
 import Scrollbar from '../../Scrollbar';
-import ToolbarTabla from './ToolbarTabla';
 import { DefaultColumnFilter } from './FiltrosTabla';
 import TablePaginationActions from './PaginationTabla';
+import { isDefined } from '../../../utils/utilitario';
 import SkeletonTabla, { SkeletonPaginador } from './SkeletonTabla';
 import FilaEditable from './FilaEditable';
+import FiltroGlobalTabla from './FiltroGlobalTabla';
+import { MHidden } from '../../@material-extend';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,6 +82,17 @@ const StyledTableCellBody = withStyles((theme) => ({
   }
 }))(TableCell);
 
+const StyledTableCellBodyIndex = withStyles((theme) => ({
+  root: {
+    textAlign: 'left',
+    fontSize: '0.780rem',
+    padding: '0px 5px 0px 3px !important',
+    backgroundColor: ` ${theme.palette.mode === 'light' ? '#f4f6f8' : '#333d48'}`,
+    color: ` ${theme.palette.mode === 'light' ? '#637381' : '#919dab'}`,
+    borderBottom: `solid 1px ${theme.palette.divider} !important`
+  }
+}))(TableCell);
+
 const StyledTableRow = withStyles((theme) => ({
   root: {
     height: 26,
@@ -98,7 +114,6 @@ const StyledTablePagination = withStyles((theme) => ({
     margin: 0,
     border: 'none',
     overflow: 'hidden',
-    paddingBottom: 5,
     '& .MuiToolbar-root': {
       minHeight: '2em',
       height: '2em',
@@ -131,208 +146,291 @@ const defaultColumn = {
   maxWidth: 400
 };
 
-export default function TablaReact({
-  columns,
-  data,
-  campoOrden,
-  lectura,
-  cargando,
-  isColumnas,
-  modificarFila,
-  filasPorPagina = 15,
-  columnasOcultas,
-  filaSeleccionada,
-  setValorFilaSeleccionada,
-  getValorFilaSeleccionada,
-  actualizar,
-  insertar,
-  eliminar,
-  combos,
-  setFilaSeleccionada,
-  getInsertadas,
-  getModificadas,
-  getEliminadas,
-  setCargando,
-  updateMyData,
-  skipPageReset,
-  showToolbar,
-  showPaginador,
-  showBotonInsertar,
-  showBotonEliminar,
-  showBotonModificar,
-  showBuscar
-}) {
-  const [columnaSeleccionada, setColumnaSeleccionada] = useState();
-
-  useEffect(() => {
-    setHiddenColumns(columnasOcultas);
-  }, [columnasOcultas]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Función filtrar
-  const filterTypes = React.useMemo(
-    () => ({
-      // Add a new fuzzyTextFilterFn filter type.
-      fuzzyText: fuzzyTextFilterFn,
-      // Or, override the default text filter to use
-      // "startWith"
-      text: (rows, id, filterValue) => {
-        rows.filter((row) => {
-          const rowValue = row.values[id];
-          return rowValue !== undefined
-            ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
-            : true;
-        });
-      }
-    }),
-    []
-  );
-  const theme = useTheme();
-  const classes = useStyles();
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    setGlobalFilter,
-    setHiddenColumns,
-    page,
-    gotoPage,
-    toggleAllRowsSelected,
-    toggleRowSelected,
-    setPageSize,
-    setAllFilters,
-    state: { pageIndex, pageSize, globalFilter }
-  } = useTable(
+const TablaReact = forwardRef(
+  (
     {
       columns,
       data,
-      defaultColumn,
-      autoResetPage: !skipPageReset,
-      autoResetExpanded: !skipPageReset,
-      autoResetGroupBy: !skipPageReset,
-      autoResetSelectedRows: !skipPageReset,
-      autoResetSortBy: !skipPageReset,
-      autoResetFilters: !skipPageReset,
-      autoResetRowState: !skipPageReset,
-      autoResetGlobalFilter: !skipPageReset,
-      // updateMyData isn't part of the API, but
-      // anything we put into these options will
-      // automatically be available on the instance.
-      // That way we can call this function from our
-      // cell renderer!
-      updateMyData,
+      campoOrden,
+      lectura,
+      cargando,
+      isColumnas,
       modificarFila,
-      filterTypes,
+      filasPorPagina = 15,
+      columnasOcultas,
+      filaSeleccionada,
+      setValorFilaSeleccionada,
+      getValorFilaSeleccionada,
+      insertar,
+      actualizar,
+      eliminar,
       combos,
+      setFilaSeleccionada,
       getInsertadas,
       getModificadas,
       getEliminadas,
+      setCargando,
+      updateMyData,
+      skipPageReset,
+      showPaginador,
+      showBuscar,
+      showRowIndex,
       setColumnaSeleccionada,
-      initialState: {
-        pageSize: filasPorPagina,
-        sortBy: [
-          {
-            id: campoOrden,
-            desc: false
-          }
-        ]
-      }
+      columnaSeleccionada,
+      setIndiceTabla,
+      indiceTabla,
+      setPaginaActual,
+      paginaActual
     },
-    useGlobalFilter, // useGlobalFilter!
-    useFilters, // useFilters!
-    useSortBy,
-    usePagination,
-    useRowSelect
-  );
+    ref
+  ) => {
+    useImperativeHandle(ref, () => ({
+      insertarTablaReact,
+      eliminarTablaReact,
+      actualizarTablaReact,
+      seleccionarFilaTablaReact
+    }));
 
-  const handleChangePage = (event, newPage) => {
-    gotoPage(newPage);
-  };
+    const theme = useTheme();
+    const classes = useStyles();
+    // Ancho del body cuando todabia esta cargando la data
+    const minHeightBody = filasPorPagina * 30;
 
-  const handleChangeRowsPerPage = (event) => {
-    setPageSize(Number(event.target.value));
-  };
-  // Ancho del body cuando todabia esta cargando la data
-  const minHeightBody = filasPorPagina * 30;
+    useEffect(() => {
+      if (isDefined(indiceTabla)) seleccionarFilaTablaReact();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Render the UI for your table isColumnas && cargando
-  return (
-    <StyledDiv>
-      {showToolbar === true && (
-        <ToolbarTabla
-          globalFilter={globalFilter}
-          setGlobalFilter={setGlobalFilter}
-          actualizar={actualizar}
-          insertar={insertar}
-          eliminar={eliminar}
-          toggleAllRowsSelected={toggleAllRowsSelected}
-          toggleRowSelected={toggleRowSelected}
-          lectura={lectura}
-          page={page}
-          prepareRow={prepareRow}
-          setColumnaSeleccionada={setColumnaSeleccionada}
-          setCargando={setCargando}
-          filaSeleccionada={filaSeleccionada}
-          setAllFilters={setAllFilters}
-          showBotonInsertar={showBotonInsertar}
-          showBotonEliminar={showBotonEliminar}
-          showBotonModificar={showBotonModificar}
-          showBuscar={showBuscar}
-        />
-      )}
+    useEffect(() => {
+      setHiddenColumns(columnasOcultas);
+    }, [columnasOcultas]); // eslint-disable-line react-hooks/exhaustive-deps
 
-      {showPaginador === true &&
-        (data.length > filasPorPagina ? (
-          <StyledTablePagination
-            component="div"
-            labelRowsPerPage=""
-            rowsPerPageOptions={[15, 30, 50, 100]}
-            colSpan={3}
-            count={data.length}
-            rowsPerPage={pageSize}
-            page={pageIndex}
-            SelectProps={{
-              inputProps: { 'aria-label': 'rows per page' },
-              native: true
+    // Función filtrar
+    const filterTypes = React.useMemo(
+      () => ({
+        // Add a new fuzzyTextFilterFn filter type.
+        fuzzyText: fuzzyTextFilterFn,
+        // Or, override the default text filter to use
+        // "startWith"
+        text: (rows, id, filterValue) => {
+          rows.filter((row) => {
+            const rowValue = row.values[id];
+            return rowValue !== undefined
+              ? String(rowValue).toLowerCase().startsWith(String(filterValue).toLowerCase())
+              : true;
+          });
+        }
+      }),
+      []
+    );
+
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      prepareRow,
+      setGlobalFilter,
+      setHiddenColumns,
+      page,
+      gotoPage,
+      toggleAllRowsSelected,
+      toggleRowSelected,
+      setPageSize,
+      setAllFilters,
+      state: { pageIndex, pageSize, globalFilter }
+    } = useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+        autoResetPage: !skipPageReset,
+        autoResetExpanded: !skipPageReset,
+        autoResetGroupBy: !skipPageReset,
+        autoResetSelectedRows: !skipPageReset,
+        autoResetSortBy: !skipPageReset,
+        autoResetFilters: !skipPageReset,
+        autoResetRowState: !skipPageReset,
+        autoResetGlobalFilter: !skipPageReset,
+        // updateMyData isn't part of the API, but
+        // anything we put into these options will
+        // automatically be available on the instance.
+        // That way we can call this function from our
+        // cell renderer!
+        updateMyData,
+        modificarFila,
+        filterTypes,
+        combos,
+        getInsertadas,
+        getModificadas,
+        getEliminadas,
+        setColumnaSeleccionada,
+        initialState: {
+          pageSize: filasPorPagina,
+          pageIndex: paginaActual,
+          sortBy: [
+            {
+              id: campoOrden,
+              desc: false
+            }
+          ]
+        }
+      },
+      useGlobalFilter, // useGlobalFilter!
+      useFilters, // useFilters!
+      useSortBy,
+      usePagination,
+      useRowSelect
+    );
+
+    const handleChangePage = (event, newPage) => {
+      gotoPage(newPage);
+      setPaginaActual(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+      setPageSize(Number(event.target.value));
+    };
+
+    const insertarTablaReact = () => {
+      if (!lectura) {
+        // setAllFilters([]);
+        gotoPage(0);
+        setAllFilters([]);
+        const tmpPk = insertar();
+        // const pagina = parseInt(data.length / filasPorPagina, 10);
+        // gotoPage(pagina);
+        if (tmpPk) {
+          seleccionarFilaTablaReact();
+          // setCargando(true);
+          // gotoPage(0);
+          // const row = page[0]; // selecciona fila insertada
+          // selecciona columna 1 para que ponga el autofocus si es Texto
+          // setColumnaSeleccionada(row.cells[0].column.nombre);
+          // await prepareRow(row);
+          // toggleAllRowsSelected(false); // clear seleccionadas
+          // toggleRowSelected('0');
+          // setCargando(false);
+        }
+      }
+    };
+
+    const eliminarTablaReact = async () => {
+      if (!lectura) {
+        if (await eliminar()) {
+          toggleAllRowsSelected(false); // clear seleccionadas
+        }
+      }
+    };
+
+    const actualizarTablaReact = () => {
+      setAllFilters([]);
+      actualizar();
+      toggleAllRowsSelected(false); // clear seleccionadas
+    };
+
+    /**
+     * Selecciona la fila del indice actual de la tabla
+     */
+    const seleccionarFilaTablaReact = async () => {
+      if (indiceTabla >= 0) {
+        const pagina = parseInt(indiceTabla / filasPorPagina, 10);
+        if (pageIndex !== pagina) {
+          gotoPage(pagina);
+        }
+        const auxIndice = indiceTabla - pagina * filasPorPagina;
+        toggleAllRowsSelected(false);
+        const row = page[auxIndice];
+        await prepareRow(row);
+        setCargando(true);
+        // selecciona columna 1 para que ponga el autofocus
+        setColumnaSeleccionada(row.cells[0].column.nombre);
+        setCargando(false);
+        toggleRowSelected(`${indiceTabla}`);
+      }
+    };
+
+    // Render the UI for your table isColumnas && cargando
+    return (
+      <StyledDiv>
+        <Grid container sx={{ mb: 1 }}>
+          <MHidden width="smDown">
+            <Grid item xs={6}>
+              {showBuscar === true && (
+                <Box sx={{ pt: 0, pb: 0 }}>
+                  <FiltroGlobalTabla
+                    globalFilter={globalFilter}
+                    setGlobalFilter={setGlobalFilter}
+                    setColumnaSeleccionada={setColumnaSeleccionada}
+                  />
+                </Box>
+              )}
+            </Grid>
+          </MHidden>
+          <Grid item xs>
+            {showPaginador === true &&
+              (data.length > filasPorPagina ? (
+                <StyledTablePagination
+                  component="div"
+                  labelRowsPerPage=""
+                  rowsPerPageOptions={[15, 30, 50, 100]}
+                  colSpan={3}
+                  count={data.length}
+                  rowsPerPage={pageSize}
+                  page={pageIndex}
+                  SelectProps={{
+                    inputProps: { 'aria-label': 'rows per page' },
+                    native: true
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  ActionsComponent={TablePaginationActions}
+                  // labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count} filas`}
+                  labelDisplayedRows={({ count }) => `Filas (${count})`}
+                />
+              ) : (
+                !isColumnas && <SkeletonPaginador />
+              ))}
+          </Grid>
+        </Grid>
+
+        <Scrollbar>
+          <TableContainer
+            sx={{
+              minHeight: `${minHeightBody}px  !important`
             }}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            ActionsComponent={TablePaginationActions}
-            // labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count} filas`}
-            labelDisplayedRows={({ count }) => `Filas (${count})`}
-          />
-        ) : (
-          !isColumnas && <SkeletonPaginador />
-        ))}
-
-      <Scrollbar>
-        <TableContainer
-          sx={{
-            minHeight: `${minHeightBody}px  !important`
-          }}
-        >
-          {!isColumnas ? (
-            <SkeletonTabla filasPorPagina={filasPorPagina} />
-          ) : (
-            <StyledTable {...getTableProps()} size="small">
-              <TableHead>
-                {headerGroups.map((headerGroup, index) => (
-                  <TableRow key={index} {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((columna, i) => (
-                      <StyledTableCellHeader
-                        key={i}
-                        component="th"
-                        padding="none"
-                        style={{ minWidth: columna.width }}
-                        {...columna.getHeaderProps()}
-                      >
-                        {columna.ordenable ? (
-                          <TableSortLabel
-                            {...columna.getSortByToggleProps()}
-                            active={columna.isSorted}
-                            direction={columna.isSortedDesc ? 'desc' : 'asc'}
-                          >
+          >
+            {!isColumnas ? (
+              <SkeletonTabla filasPorPagina={filasPorPagina} />
+            ) : (
+              <StyledTable {...getTableProps()} size="small">
+                <TableHead>
+                  {headerGroups.map((headerGroup, index) => (
+                    <TableRow key={index} {...headerGroup.getHeaderGroupProps()}>
+                      {showRowIndex && <StyledTableCellHeader component="th" padding="none" style={{ minWidth: 3 }} />}
+                      {headerGroup.headers.map((columna, i) => (
+                        <StyledTableCellHeader
+                          key={i}
+                          component="th"
+                          padding="none"
+                          style={{ minWidth: columna.width }}
+                          {...columna.getHeaderProps()}
+                        >
+                          {columna.ordenable ? (
+                            <TableSortLabel
+                              {...columna.getSortByToggleProps()}
+                              active={columna.isSorted}
+                              direction={columna.isSortedDesc ? 'desc' : 'asc'}
+                            >
+                              <span>
+                                {columna.nombrevisual}{' '}
+                                {columna.requerida && (
+                                  <Typography color="error" component="span">
+                                    {' '}
+                                    *{' '}
+                                  </Typography>
+                                )}
+                              </span>
+                            </TableSortLabel>
+                          ) : (
                             <span>
                               {columna.nombrevisual}{' '}
                               {columna.requerida && (
@@ -342,81 +440,80 @@ export default function TablaReact({
                                 </Typography>
                               )}
                             </span>
-                          </TableSortLabel>
-                        ) : (
-                          <span>
-                            {columna.nombrevisual}{' '}
-                            {columna.requerida && (
-                              <Typography color="error" component="span">
-                                {' '}
-                                *{' '}
-                              </Typography>
-                            )}
-                          </span>
+                          )}
+                          {columna.filtro && <div key={i}>{columna.render('Filter')} </div>}
+                        </StyledTableCellHeader>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableHead>
+                <TableBody {...getTableBodyProps()}>
+                  {page.map((row, index) => {
+                    prepareRow(row);
+                    return (
+                      <StyledTableRow
+                        key={index}
+                        {...row.getRowProps({
+                          style: {
+                            backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.5) : ''
+                          },
+                          onClick: () => {
+                            toggleAllRowsSelected(false);
+                            row.toggleRowSelected();
+                            setIndiceTabla(row.index);
+                            setFilaSeleccionada(data[row.index]);
+                          }
+                        })}
+                      >
+                        {showRowIndex && (
+                          <StyledTableCellBodyIndex size="small" padding="none">
+                            {row.id}
+                          </StyledTableCellBodyIndex>
                         )}
-                        {columna.filtro && <div key={i}>{columna.render('Filter')} </div>}
-                      </StyledTableCellHeader>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHead>
-              <TableBody {...getTableBodyProps()}>
-                {page.map((row, index) => {
-                  prepareRow(row);
-                  return (
-                    <StyledTableRow
-                      key={index}
-                      {...row.getRowProps({
-                        style: {
-                          backgroundColor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.5) : ''
-                        },
-                        onClick: () => {
-                          toggleAllRowsSelected(false);
-                          row.toggleRowSelected();
-                          setFilaSeleccionada(data[row.index]);
-                        }
-                      })}
-                    >
-                      {!row.isSelected || lectura === true ? (
-                        row.cells.map((cell, index) => (
-                          <StyledTableCellBody
-                            onClick={() => setColumnaSeleccionada(cell.column.nombre)}
-                            size="small"
-                            padding="none"
-                            align={cell.column.alinear}
-                            key={index}
-                            {...cell.getCellProps()}
-                          >
-                            {cell.render('Cell')}
-                          </StyledTableCellBody>
-                        ))
-                      ) : (
-                        <FilaEditable
-                          row={row}
-                          columnaSeleccionada={columnaSeleccionada}
-                          filaSeleccionada={filaSeleccionada}
-                          modificarFila={modificarFila}
-                          setValorFilaSeleccionada={setValorFilaSeleccionada}
-                          getValorFilaSeleccionada={getValorFilaSeleccionada}
-                          updateMyData={updateMyData}
-                          columns={columns}
-                          combos={combos}
-                        />
-                      )}
-                    </StyledTableRow>
-                  );
-                })}
-              </TableBody>
-            </StyledTable>
-          )}
-        </TableContainer>
-      </Scrollbar>
-      <Backdrop className={classes.root} open={isColumnas && cargando}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    </StyledDiv>
-  );
-}
+
+                        {!row.isSelected || lectura === true ? (
+                          row.cells.map((cell, index) => (
+                            <StyledTableCellBody
+                              onClick={() => setColumnaSeleccionada(cell.column.nombre)}
+                              size="small"
+                              padding="none"
+                              align={cell.column.alinear}
+                              key={index}
+                              {...cell.getCellProps()}
+                            >
+                              {cell.render('Cell')}
+                            </StyledTableCellBody>
+                          ))
+                        ) : (
+                          <FilaEditable
+                            row={row}
+                            columnaSeleccionada={columnaSeleccionada}
+                            filaSeleccionada={filaSeleccionada}
+                            modificarFila={modificarFila}
+                            setValorFilaSeleccionada={setValorFilaSeleccionada}
+                            getValorFilaSeleccionada={getValorFilaSeleccionada}
+                            updateMyData={updateMyData}
+                            columns={columns}
+                            combos={combos}
+                          />
+                        )}
+                      </StyledTableRow>
+                    );
+                  })}
+                </TableBody>
+              </StyledTable>
+            )}
+          </TableContainer>
+        </Scrollbar>
+        <Backdrop className={classes.root} open={isColumnas && cargando}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </StyledDiv>
+    );
+  }
+);
+
+export default TablaReact;
 
 TablaReact.propTypes = {
   columns: PropTypes.array.isRequired,
@@ -433,6 +530,9 @@ TablaReact.propTypes = {
   setValorFilaSeleccionada: PropTypes.func.isRequired,
   getValorFilaSeleccionada: PropTypes.func.isRequired,
   filaSeleccionada: PropTypes.object,
+  columnaSeleccionada: PropTypes.string,
+  setColumnaSeleccionada: PropTypes.func,
+  setIndiceTabla: PropTypes.func,
   actualizar: PropTypes.func.isRequired,
   insertar: PropTypes.func.isRequired,
   eliminar: PropTypes.func.isRequired,
@@ -442,10 +542,7 @@ TablaReact.propTypes = {
   getModificadas: PropTypes.func,
   getEliminadas: PropTypes.func,
   setCargando: PropTypes.func,
-  showToolbar: PropTypes.bool,
   showPaginador: PropTypes.bool,
-  showBotonInsertar: PropTypes.bool,
-  showBotonEliminar: PropTypes.bool,
-  showBotonModificar: PropTypes.bool,
-  showBuscar: PropTypes.bool
+  showBuscar: PropTypes.bool,
+  showRowIndex: PropTypes.bool
 };
