@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles, experimentalStyled as styled, alpha } from '@material-ui/core/styles';
 import { Grid, Stack, TextField, TablePagination } from '@material-ui/core';
 import { isDefined } from '../../../utils/utilitario';
-import { SkeletonPaginador } from './SkeletonTabla';
+import { SkeletonPaginador, useWidth } from './SkeletonTabla';
 import TablePaginationActions from './PaginationTabla';
 
 const StyledTextField = withStyles(() => ({
@@ -88,6 +88,10 @@ const TablaFormulario = forwardRef(
       actualizarTablaFormulario
     }));
 
+    const width = useWidth();
+    const numColumnas = (width === 'xl' && 4) || (width === 'lg' && 4) || (width === 'md' && 6) || 12;
+    // console.log(numColumnas);
+
     // Configuraciones iniciales
     if (!isDefined(filaSeleccionada)) {
       if (data.length > 0) {
@@ -143,14 +147,15 @@ const TablaFormulario = forwardRef(
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={8}>
-          <Stack spacing={3}>
+
+        <Grid container spacing={1}>
+          <Grid container item xs={12} spacing={3}>
             {filaSeleccionada &&
               columns.map(
                 (columna, index) =>
                   columna.visible && (
-                    <Stack key={index} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }}>
-                      <StyledTextField
+                    <Grid key={index} item xs={numColumnas}>
+                      <TextField
                         value={filaSeleccionada[columna.nombre] || ''}
                         margin="none"
                         fullWidth
@@ -162,10 +167,10 @@ const TablaFormulario = forwardRef(
                           shrink: true
                         }}
                       />
-                    </Stack>
+                    </Grid>
                   )
               )}
-          </Stack>
+          </Grid>
         </Grid>
       </StyledDiv>
     );

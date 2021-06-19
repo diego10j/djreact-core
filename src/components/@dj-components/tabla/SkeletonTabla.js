@@ -48,7 +48,7 @@ export default SkeletonTabla;
  * breakpoints in theme is static. It will break once you change the number of
  * breakpoints. See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
  */
-function useWidth() {
+export function useWidth() {
   const theme = useTheme();
   const keys = [...theme.breakpoints.keys].reverse();
   return (
