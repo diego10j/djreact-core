@@ -495,6 +495,7 @@ const TablaReact = forwardRef(
                             updateMyData={updateMyData}
                             columns={columns}
                             combos={combos}
+                            vistaFormularo={false}
                           />
                         )}
                       </StyledTableRow>

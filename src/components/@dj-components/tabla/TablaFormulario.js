@@ -6,6 +6,7 @@ import { Grid, Stack, TextField, TablePagination } from '@material-ui/core';
 import { isDefined } from '../../../utils/utilitario';
 import { SkeletonPaginador, useWidth } from './SkeletonTabla';
 import TablePaginationActions from './PaginationTabla';
+import { ComponenteEditable } from './FilaEditable';
 
 const StyledTextField = withStyles(() => ({
   root: {
@@ -152,20 +153,20 @@ const TablaFormulario = forwardRef(
           <Grid container item xs={12} spacing={3}>
             {filaSeleccionada &&
               columns.map(
-                (columna, index) =>
-                  columna.visible && (
+                (column, index) =>
+                  column.visible && (
                     <Grid key={index} item xs={numColumnas}>
-                      <TextField
-                        value={filaSeleccionada[columna.nombre] || ''}
-                        margin="none"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        label={columna.nombrevisual}
-                        disabled={columna.lectura}
-                        InputLabelProps={{
-                          shrink: true
-                        }}
+                      <ComponenteEditable
+                        filaSeleccionada={filaSeleccionada}
+                        setValorFilaSeleccionada={setValorFilaSeleccionada}
+                        getValorFilaSeleccionada={getValorFilaSeleccionada}
+                        column={column}
+                        foco={columnaSeleccionada === column.nombre}
+                        modificarFila={modificarFila}
+                        updateMyData={updateMyData}
+                        index={indiceTabla}
+                        combos={combos}
+                        vistaFormularo
                       />
                     </Grid>
                   )

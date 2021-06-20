@@ -4,7 +4,16 @@ import PropTypes from 'prop-types';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { MenuItem, Select, Skeleton, TextField } from '@material-ui/core';
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  Skeleton,
+  TextField
+} from '@material-ui/core';
 import { withStyles, experimentalStyled as styled, alpha } from '@material-ui/core/styles';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
@@ -94,7 +103,8 @@ export default function FilaEditable({
   getValorFilaSeleccionada,
   modificarFila,
   updateMyData,
-  combos
+  combos,
+  vistaFormularo
 }) {
   return (
     <>
@@ -111,6 +121,7 @@ export default function FilaEditable({
               updateMyData={updateMyData}
               index={index}
               combos={combos}
+              vistaFormularo={vistaFormularo}
             />
           </StyledTableCellBody>
         ))}
@@ -127,11 +138,12 @@ FilaEditable.propTypes = {
   getValorFilaSeleccionada: PropTypes.func,
   updateMyData: PropTypes.func,
   columns: PropTypes.array,
-  combos: PropTypes.array
+  combos: PropTypes.array,
+  vistaFormularo: PropTypes.bool
 };
 
-// Create an editable cell renderer
-function ComponenteEditable({
+// ----------------------------------------------------------------------
+export function ComponenteEditable({
   column,
   modificarFila,
   foco,
@@ -139,7 +151,8 @@ function ComponenteEditable({
   index,
   combos,
   setValorFilaSeleccionada,
-  getValorFilaSeleccionada
+  getValorFilaSeleccionada,
+  vistaFormularo
 }) {
   return (
     <>
@@ -152,6 +165,7 @@ function ComponenteEditable({
           foco={foco}
           updateMyData={updateMyData}
           index={index}
+          vistaFormularo={vistaFormularo}
         />
       )}
 
@@ -164,6 +178,7 @@ function ComponenteEditable({
           foco={foco}
           updateMyData={updateMyData}
           index={index}
+          vistaFormularo={vistaFormularo}
         />
       )}
 
@@ -176,6 +191,7 @@ function ComponenteEditable({
           foco={foco}
           updateMyData={updateMyData}
           index={index}
+          vistaFormularo={vistaFormularo}
         />
       )}
 
@@ -189,6 +205,7 @@ function ComponenteEditable({
           updateMyData={updateMyData}
           index={index}
           combos={combos}
+          vistaFormularo={vistaFormularo}
         />
       )}
 
@@ -201,6 +218,7 @@ function ComponenteEditable({
           foco={foco}
           updateMyData={updateMyData}
           index={index}
+          vistaFormularo={vistaFormularo}
         />
       )}
 
@@ -213,6 +231,7 @@ function ComponenteEditable({
           foco={foco}
           updateMyData={updateMyData}
           index={index}
+          vistaFormularo={vistaFormularo}
         />
       )}
 
@@ -225,6 +244,7 @@ function ComponenteEditable({
           foco={foco}
           updateMyData={updateMyData}
           index={index}
+          vistaFormularo={vistaFormularo}
         />
       )}
     </>
@@ -239,8 +259,11 @@ ComponenteEditable.propTypes = {
   updateMyData: PropTypes.func,
   foco: PropTypes.bool,
   index: PropTypes.number,
-  combos: PropTypes.array
+  combos: PropTypes.array,
+  vistaFormularo: PropTypes.bool
 };
+
+// ----------------------------------------------------------------------
 
 const Texto = ({
   column,
@@ -249,7 +272,8 @@ const Texto = ({
   updateMyData,
   index,
   setValorFilaSeleccionada,
-  getValorFilaSeleccionada
+  getValorFilaSeleccionada,
+  vistaFormularo
 }) => {
   const [isModifico, setIsModificado] = useState(false);
 
@@ -268,20 +292,42 @@ const Texto = ({
   };
 
   return (
-    <StyledTextField
-      value={getValorFilaSeleccionada(column.nombre)}
-      onChange={onChange}
-      onBlur={onBlur}
-      fullWidth
-      size="small"
-      variant="outlined"
-      margin="none"
-      autoFocus={foco}
-      inputProps={{ style: { textAlign: `${column.alinear}` } }}
-      disabled={column.lectura}
-    />
+    <>
+      {!vistaFormularo ? (
+        <StyledTextField
+          value={getValorFilaSeleccionada(column.nombre)}
+          onChange={onChange}
+          onBlur={onBlur}
+          fullWidth
+          size="small"
+          variant="outlined"
+          margin="none"
+          autoFocus={foco}
+          inputProps={{ style: { textAlign: `${column.alinear}` } }}
+          disabled={column.lectura}
+        />
+      ) : (
+        <TextField
+          value={getValorFilaSeleccionada(column.nombre)}
+          onChange={onChange}
+          onBlur={onBlur}
+          autoFocus={foco}
+          margin="none"
+          fullWidth
+          variant="outlined"
+          size="small"
+          label={column.nombrevisual}
+          disabled={column.lectura}
+          InputLabelProps={{
+            shrink: true,
+            style: { textAlign: `${column.alinear}` }
+          }}
+        />
+      )}
+    </>
   );
 };
+
 Texto.propTypes = {
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
@@ -289,8 +335,11 @@ Texto.propTypes = {
   getValorFilaSeleccionada: PropTypes.func,
   updateMyData: PropTypes.func,
   foco: PropTypes.bool,
-  index: PropTypes.number
+  index: PropTypes.number,
+  vistaFormularo: PropTypes.bool
 };
+
+// ----------------------------------------------------------------------
 
 const TextoNumero = ({
   column,
@@ -299,7 +348,8 @@ const TextoNumero = ({
   updateMyData,
   index,
   setValorFilaSeleccionada,
-  getValorFilaSeleccionada
+  getValorFilaSeleccionada,
+  vistaFormularo
 }) => {
   // We need to keep and update the state of the cell normally
   const [isModifico, setIsModificado] = useState(false);
@@ -319,19 +369,41 @@ const TextoNumero = ({
   };
 
   return (
-    <StyledTextField
-      type="number"
-      value={getValorFilaSeleccionada(column.nombre)}
-      onChange={onChange}
-      onBlur={onBlur}
-      fullWidth
-      size="small"
-      variant="outlined"
-      margin="none"
-      autoFocus={foco}
-      inputProps={{ style: { textAlign: `${column.alinear}` } }}
-      disabled={column.lectura}
-    />
+    <>
+      {!vistaFormularo ? (
+        <StyledTextField
+          type="number"
+          value={getValorFilaSeleccionada(column.nombre)}
+          onChange={onChange}
+          onBlur={onBlur}
+          fullWidth
+          size="small"
+          variant="outlined"
+          margin="none"
+          autoFocus={foco}
+          inputProps={{ style: { textAlign: `${column.alinear}` } }}
+          disabled={column.lectura}
+        />
+      ) : (
+        <TextField
+          type="number"
+          value={getValorFilaSeleccionada(column.nombre)}
+          onChange={onChange}
+          onBlur={onBlur}
+          autoFocus={foco}
+          margin="none"
+          fullWidth
+          variant="outlined"
+          size="small"
+          label={column.nombrevisual}
+          disabled={column.lectura}
+          InputLabelProps={{
+            shrink: true,
+            style: { textAlign: `${column.alinear}` }
+          }}
+        />
+      )}
+    </>
   );
 };
 
@@ -342,8 +414,11 @@ TextoNumero.propTypes = {
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,
   foco: PropTypes.bool,
-  index: PropTypes.number
+  index: PropTypes.number,
+  vistaFormularo: PropTypes.bool
 };
+
+// ----------------------------------------------------------------------
 
 const Combo = ({
   column,
@@ -352,7 +427,8 @@ const Combo = ({
   index,
   combos,
   setValorFilaSeleccionada,
-  getValorFilaSeleccionada
+  getValorFilaSeleccionada,
+  vistaFormularo
 }) => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = useState(
@@ -380,26 +456,54 @@ const Combo = ({
       {!isDefined(combos.find((col) => col.columna === column.nombre)?.listaCombo) ? (
         <Skeleton animation="wave" />
       ) : (
-        <StyledSelect
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          fullWidth
-          variant="outlined"
-          disabled={column.lectura}
-        >
-          {combos
-            .find((col) => col.columna === column.nombre)
-            ?.listaCombo.map((element, index) => (
-              <MenuItem key={index} value={element.value}>
-                {element.label}
-              </MenuItem>
-            ))}
-        </StyledSelect>
+        <>
+          {!vistaFormularo ? (
+            <StyledSelect
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+              fullWidth
+              variant="outlined"
+              disabled={column.lectura}
+            >
+              {combos
+                .find((col) => col.columna === column.nombre)
+                ?.listaCombo.map((element, index) => (
+                  <MenuItem key={index} value={element.value}>
+                    {element.label}
+                  </MenuItem>
+                ))}
+            </StyledSelect>
+          ) : (
+            <FormControl variant="outlined" margin="none" fullWidth size="small">
+              <InputLabel shrink id={`${column.nombre}`}>
+                {column.nombrevisual}
+              </InputLabel>
+              <Select
+                labelId={`${column.nombre}`}
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                size="small"
+                label={column.nombrevisual}
+                disabled={column.lectura}
+              >
+                {combos
+                  .find((col) => col.columna === column.nombre)
+                  ?.listaCombo.map((element, index) => (
+                    <MenuItem key={index} value={element.value}>
+                      {element.label}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          )}
+        </>
       )}
     </>
   );
 };
+
 Combo.propTypes = {
   setValorFilaSeleccionada: PropTypes.func,
   getValorFilaSeleccionada: PropTypes.func,
@@ -407,26 +511,63 @@ Combo.propTypes = {
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,
   index: PropTypes.number,
-  combos: PropTypes.array
+  combos: PropTypes.array,
+  vistaFormularo: PropTypes.bool
 };
 
-const Check = ({ column, modificarFila, updateMyData, index, setValorFilaSeleccionada, getValorFilaSeleccionada }) => {
+// ----------------------------------------------------------------------
+
+const Check = ({
+  column,
+  modificarFila,
+  updateMyData,
+  index,
+  setValorFilaSeleccionada,
+  getValorFilaSeleccionada,
+  vistaFormularo
+}) => {
   const onChange = (e) => {
     setValorFilaSeleccionada(column.nombre, e.target.checked);
     modificarFila(column, index);
     updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
   };
   return (
-    <div align="center">
-      <StyledCheckbox
-        icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-        checked={getValorFilaSeleccionada(column.nombre) === true}
-        onChange={onChange}
-        color="primary"
-        disabled={column.lectura}
-        checkedIcon={<CheckBoxIcon fontSize="small" />}
-      />
-    </div>
+    <>
+      {!vistaFormularo ? (
+        <div align="center">
+          <StyledCheckbox
+            icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+            checked={getValorFilaSeleccionada(column.nombre) === true}
+            onChange={onChange}
+            color="primary"
+            disabled={column.lectura}
+            checkedIcon={<CheckBoxIcon fontSize="small" />}
+          />
+        </div>
+      ) : (
+        <>
+          <FormControl variant="outlined" margin="none" size="small" fullWidth>
+            <InputLabel shrink>{column.nombrevisual}</InputLabel>
+            <FormControlLabel
+              value="end"
+              control={
+                <Checkbox
+                  sx={{ ml: 2 }}
+                  icon={<CheckBoxOutlineBlankIcon />}
+                  checked={getValorFilaSeleccionada(column.nombre) === true}
+                  onChange={onChange}
+                  color="primary"
+                  disabled={column.lectura}
+                  checkedIcon={<CheckBoxIcon />}
+                />
+              }
+              label=""
+              labelPlacement="end"
+            />
+          </FormControl>
+        </>
+      )}
+    </>
   );
 };
 
@@ -436,8 +577,11 @@ Check.propTypes = {
   column: PropTypes.object.isRequired,
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,
-  index: PropTypes.number
+  index: PropTypes.number,
+  vistaFormularo: PropTypes.bool
 };
+
+// ----------------------------------------------------------------------
 
 const Calendario = ({
   column,
@@ -446,7 +590,8 @@ const Calendario = ({
   updateMyData,
   index,
   setValorFilaSeleccionada,
-  getValorFilaSeleccionada
+  getValorFilaSeleccionada,
+  vistaFormularo
 }) => {
   const [value, setValue] = useState(
     getValorFilaSeleccionada(column.nombre) === null ? '' : toDate(getValorFilaSeleccionada(column.nombre))
@@ -486,30 +631,60 @@ const Calendario = ({
   };
 
   return (
-    <DatePicker
-      views={['day']}
-      inputFormat="dd/MM/yyyy"
-      value={value}
-      mask="__/__/____"
-      onChange={onChange}
-      disabled={column.lectura}
-      inputProps={{ style: { textAlign: `${column.alinear}` } }}
-      renderInput={(params) => (
-        <StyledTextField
-          {...params}
-          fullWidth
-          size="small"
-          variant="outlined"
-          margin="none"
-          autoFocus={foco}
-          helperText={null}
-          onBlur={onBlur}
+    <>
+      {!vistaFormularo ? (
+        <DatePicker
+          views={['day']}
+          inputFormat="dd/MM/yyyy"
           value={value}
-          error={false}
-          onChange={onChangeInput}
+          mask="__/__/____"
+          onChange={onChange}
+          disabled={column.lectura}
+          inputProps={{ style: { textAlign: `${column.alinear}` } }}
+          renderInput={(params) => (
+            <StyledTextField
+              {...params}
+              fullWidth
+              size="small"
+              variant="outlined"
+              margin="none"
+              autoFocus={foco}
+              helperText={null}
+              onBlur={onBlur}
+              value={value}
+              error={false}
+              onChange={onChangeInput}
+            />
+          )}
+        />
+      ) : (
+        <DatePicker
+          views={['day']}
+          inputFormat="dd/MM/yyyy"
+          value={value}
+          mask="__/__/____"
+          onChange={onChange}
+          disabled={column.lectura}
+          inputProps={{ style: { textAlign: `${column.alinear}` } }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              size="small"
+              variant="outlined"
+              margin="none"
+              autoFocus={foco}
+              helperText={null}
+              onBlur={onBlur}
+              value={value}
+              error={false}
+              label={column.nombrevisual}
+              onChange={onChangeInput}
+            />
+          )}
         />
       )}
-    />
+    </>
   );
 };
 
@@ -521,8 +696,11 @@ Calendario.propTypes = {
   updateMyData: PropTypes.func,
   foco: PropTypes.bool,
   index: PropTypes.number,
-  combos: PropTypes.array
+  combos: PropTypes.array,
+  vistaFormularo: PropTypes.bool
 };
+
+// ----------------------------------------------------------------------
 
 const Hora = ({
   column,
@@ -531,7 +709,8 @@ const Hora = ({
   updateMyData,
   index,
   setValorFilaSeleccionada,
-  getValorFilaSeleccionada
+  getValorFilaSeleccionada,
+  vistaFormularo
 }) => {
   const [value, setValue] = useState(
     getValorFilaSeleccionada(column.nombre) === null ? '' : toHora(getValorFilaSeleccionada(column.nombre))
@@ -571,33 +750,66 @@ const Hora = ({
   };
 
   return (
-    <TimePicker
-      inputFormat="HH:mm:ss"
-      mask="__:__:__"
-      openTo="hours"
-      ampm={false}
-      views={['hours', 'minutes', 'seconds']}
-      ampmInClock
-      value={value}
-      onChange={onChange}
-      disabled={column.lectura}
-      inputProps={{ style: { textAlign: `${column.alinear}` } }}
-      renderInput={(params) => (
-        <StyledTextField
-          {...params}
-          fullWidth
-          size="small"
-          variant="outlined"
-          margin="none"
-          autoFocus={foco}
-          helperText={null}
-          onBlur={onBlur}
+    <>
+      {!vistaFormularo ? (
+        <TimePicker
+          inputFormat="HH:mm:ss"
+          mask="__:__:__"
+          openTo="hours"
+          ampm={false}
+          views={['hours', 'minutes', 'seconds']}
+          ampmInClock
           value={value}
-          error={false}
-          onChange={onChangeInput}
+          onChange={onChange}
+          disabled={column.lectura}
+          inputProps={{ style: { textAlign: `${column.alinear}` } }}
+          renderInput={(params) => (
+            <StyledTextField
+              {...params}
+              fullWidth
+              size="small"
+              variant="outlined"
+              margin="none"
+              autoFocus={foco}
+              helperText={null}
+              onBlur={onBlur}
+              value={value}
+              error={false}
+              onChange={onChangeInput}
+            />
+          )}
+        />
+      ) : (
+        <TimePicker
+          inputFormat="HH:mm:ss"
+          mask="__:__:__"
+          openTo="hours"
+          ampm={false}
+          views={['hours', 'minutes', 'seconds']}
+          ampmInClock
+          value={value}
+          onChange={onChange}
+          disabled={column.lectura}
+          inputProps={{ style: { textAlign: `${column.alinear}` } }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              size="small"
+              variant="outlined"
+              margin="none"
+              label={column.nombrevisual}
+              autoFocus={foco}
+              helperText={null}
+              onBlur={onBlur}
+              value={value}
+              error={false}
+              onChange={onChangeInput}
+            />
+          )}
         />
       )}
-    />
+    </>
   );
 };
 
@@ -608,5 +820,8 @@ Hora.propTypes = {
   modificarFila: PropTypes.func,
   updateMyData: PropTypes.func,
   foco: PropTypes.bool,
-  index: PropTypes.number
+  index: PropTypes.number,
+  vistaFormularo: PropTypes.bool
 };
+
+// ----------------------------------------------------------------------
