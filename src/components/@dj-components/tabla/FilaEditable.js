@@ -4,16 +4,7 @@ import PropTypes from 'prop-types';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Select,
-  Skeleton,
-  TextField
-} from '@material-ui/core';
+import { FormControl, FormControlLabel, InputLabel, MenuItem, Select, Skeleton, TextField } from '@material-ui/core';
 import { withStyles, experimentalStyled as styled, alpha } from '@material-ui/core/styles';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';

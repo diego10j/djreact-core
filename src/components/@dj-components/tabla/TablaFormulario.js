@@ -1,20 +1,12 @@
 /* eslint-disable prefer-destructuring */
 import React, { forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, experimentalStyled as styled, alpha } from '@material-ui/core/styles';
-import { Grid, Stack, TextField, TablePagination } from '@material-ui/core';
+import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
+import { Grid, TablePagination } from '@material-ui/core';
 import { isDefined } from '../../../utils/utilitario';
 import { SkeletonPaginador, useWidth } from './SkeletonTabla';
 import TablePaginationActions from './PaginationTabla';
 import { ComponenteEditable } from './FilaEditable';
-
-const StyledTextField = withStyles(() => ({
-  root: {
-    '& .MuiInputBase-root': {
-      fontSize: '0.875rem'
-    }
-  }
-}))(TextField);
 
 // Estilos
 const StyledDiv = styled('div')(() => ({
@@ -53,13 +45,10 @@ const TablaFormulario = forwardRef(
     {
       columns,
       data,
-      campoOrden,
       lectura,
       cargando,
       isColumnas,
       modificarFila,
-      filasPorPagina = 15,
-      columnasOcultas,
       filaSeleccionada,
       setValorFilaSeleccionada,
       getValorFilaSeleccionada,
@@ -73,7 +62,6 @@ const TablaFormulario = forwardRef(
       getEliminadas,
       setCargando,
       updateMyData,
-      skipPageReset,
       showPaginador,
       showBuscar,
       setColumnaSeleccionada,
@@ -188,7 +176,6 @@ TablaFormulario.propTypes = {
   modificarFila: PropTypes.func.isRequired,
   updateMyData: PropTypes.func.isRequired,
   isColumnas: PropTypes.bool.isRequired,
-  columnasOcultas: PropTypes.array.isRequired,
   setValorFilaSeleccionada: PropTypes.func.isRequired,
   getValorFilaSeleccionada: PropTypes.func.isRequired,
   filaSeleccionada: PropTypes.object,

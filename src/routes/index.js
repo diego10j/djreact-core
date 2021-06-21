@@ -100,7 +100,10 @@ export default function Router() {
 
         {
           path: 'sistema',
-          children: [{ path: 'simple', element: <Simple /> }]
+          children: [
+            { path: 'simple', element: <Simple /> },
+            { path: 'empresa', element: <Empresa /> }
+          ]
         },
 
         {
@@ -269,6 +272,7 @@ const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
 const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
 // Sistema
 const Simple = Loadable(lazy(() => import('../pages/sistema/simple')));
+const Empresa = Loadable(lazy(() => import('../pages/sistema/empresa')));
 
 // Docs
 const Docs = Loadable(lazy(() => import('../pages/Docs')));

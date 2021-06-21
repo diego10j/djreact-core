@@ -519,6 +519,7 @@ export default TablaReact;
 TablaReact.propTypes = {
   columns: PropTypes.array.isRequired,
   filasPorPagina: PropTypes.number,
+  indiceTabla: PropTypes.number,
   data: PropTypes.array.isRequired,
   campoOrden: PropTypes.string,
   setFilaSeleccionada: PropTypes.func.isRequired,
@@ -545,5 +546,7 @@ TablaReact.propTypes = {
   setCargando: PropTypes.func,
   showPaginador: PropTypes.bool,
   showBuscar: PropTypes.bool,
-  showRowIndex: PropTypes.bool
+  showRowIndex: PropTypes.bool,
+  setPaginaActual: PropTypes.func.isRequired,
+  paginaActual: PropTypes.number
 };
