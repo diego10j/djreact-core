@@ -42,6 +42,7 @@ const Tabla = forwardRef(
       campoPrimario,
       lectura = true,
       tipoFormulario = false,
+      numeroColFormulario,
       campoOrden = campoPrimario,
       opcionesColumnas,
       filasPorPagina = 15,
@@ -62,6 +63,7 @@ const Tabla = forwardRef(
       getDatos,
       getColumna,
       getFilaSeleccionada,
+      filaSeleccionada,
       getValorSeleccionado,
       getInsertadas,
       getEliminadas,
@@ -1010,6 +1012,7 @@ const Tabla = forwardRef(
             columnaSeleccionada={columnaSeleccionada}
             seleccionarFilaPorIndice={seleccionarFilaPorIndice}
             indiceTabla={indiceTabla}
+            numeroColFormulario={numeroColFormulario}
           />
         )}
       </StyledDiv>
@@ -1022,6 +1025,7 @@ Tabla.propTypes = {
   campoPrimario: PropTypes.string,
   campoOrden: PropTypes.string,
   tipoFormulario: PropTypes.bool,
+  numeroColFormulario: PropTypes.number,
   calculaPrimaria: PropTypes.bool,
   filasPorPagina: PropTypes.number,
   lectura: PropTypes.bool,

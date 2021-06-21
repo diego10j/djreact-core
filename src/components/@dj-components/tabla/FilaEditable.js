@@ -244,6 +244,7 @@ export function ComponenteEditable({
 
 ComponenteEditable.propTypes = {
   column: PropTypes.object.isRequired,
+  filaSeleccionada: PropTypes.object,
   modificarFila: PropTypes.func,
   setValorFilaSeleccionada: PropTypes.func,
   getValorFilaSeleccionada: PropTypes.func,
@@ -267,7 +268,6 @@ const Texto = ({
   vistaFormularo
 }) => {
   const [isModifico, setIsModificado] = useState(false);
-
   const onChange = (e) => {
     setValorFilaSeleccionada(column.nombre, e.target.value);
     setIsModificado(true);

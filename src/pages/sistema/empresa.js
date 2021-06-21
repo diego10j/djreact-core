@@ -1,4 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+// formulario
+import * as Yup from 'yup';
 // material
 import { Container, Card, TableContainer, Grid, Box, Typography } from '@material-ui/core';
 import { Icon } from '@iconify/react';
@@ -22,7 +24,23 @@ export default function Empresa() {
   const tabTabla1 = useRef();
   const [isGuardar, setIsGuardar] = useState(false);
 
+  // validaciones
+  const validationSchema = Yup.object().shape({
+    nom_empr: Yup.string().required('El nombre de la empresa es requerido'),
+    mail_empr: Yup.string().required('El correo electrónico es requerido').email('El correo electrónico no es válido'),
+    identificacion_empr: Yup.string().required('La identificación de la empresa es requerida')
+  });
+
   const guardar = async () => {
+    validationSchema.isValid(tabTabla1.current.filaSeleccionada).then((valid) => {
+      console.log(valid);
+    });
+
+    validationSchema.validate(tabTabla1.current.filaSeleccionada).catch((err) => {
+      console.log(err);
+      console.log(err.errors);
+    });
+
     setIsGuardar(true);
     if (await tabTabla1.current.isGuardar()) {
       pantalla.guardar(tabTabla1);
@@ -32,7 +50,7 @@ export default function Empresa() {
 
   return (
     <Page title="Empresa">
-      <Container>
+      <Container maxWidth="xl">
         <HeaderBreadcrumbs
           heading="Datos de la Empresa"
           links={[{ name: 'Sistema', href: PATH_DASHBOARD.root }, { name: 'Empresa' }]}
@@ -88,6 +106,7 @@ export default function Empresa() {
                   showPaginador={false}
                   showBuscar={false}
                   tipoFormulario
+                  numeroColFormulario={2}
                 />
               </TableContainer>
             </Card>

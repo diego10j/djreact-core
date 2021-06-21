@@ -67,7 +67,9 @@ const TablaFormulario = forwardRef(
       setColumnaSeleccionada,
       columnaSeleccionada,
       seleccionarFilaPorIndice,
-      indiceTabla
+      indiceTabla,
+      numeroColFormulario,
+      formik
     },
     ref
   ) => {
@@ -78,8 +80,14 @@ const TablaFormulario = forwardRef(
     }));
 
     const width = useWidth();
-    const numColumnas = (width === 'xl' && 4) || (width === 'lg' && 4) || (width === 'md' && 6) || 12;
-    // console.log(numColumnas);
+    let calculaNumColumnas = (width === 'xl' && 4) || (width === 'lg' && 4) || (width === 'md' && 6) || 12;
+
+    if (numeroColFormulario) {
+      const aux = 12 / numeroColFormulario;
+      if (calculaNumColumnas < 12) {
+        calculaNumColumnas = aux;
+      }
+    }
 
     // Configuraciones iniciales
     if (!isDefined(filaSeleccionada)) {
@@ -143,9 +151,8 @@ const TablaFormulario = forwardRef(
               columns.map(
                 (column, index) =>
                   column.visible && (
-                    <Grid key={index} item xs={numColumnas}>
+                    <Grid key={index} item xs={calculaNumColumnas}>
                       <ComponenteEditable
-                        filaSeleccionada={filaSeleccionada}
                         setValorFilaSeleccionada={setValorFilaSeleccionada}
                         getValorFilaSeleccionada={getValorFilaSeleccionada}
                         column={column}
@@ -172,6 +179,7 @@ TablaFormulario.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
   setFilaSeleccionada: PropTypes.func.isRequired,
+  numeroColFormulario: PropTypes.number,
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   updateMyData: PropTypes.func.isRequired,
