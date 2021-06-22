@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import * as Yup from 'yup';
 // componentes
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -130,7 +131,8 @@ FilaEditable.propTypes = {
   updateMyData: PropTypes.func,
   columns: PropTypes.array,
   combos: PropTypes.array,
-  vistaFormularo: PropTypes.bool
+  vistaFormularo: PropTypes.bool,
+  validationSchema: PropTypes.object
 };
 
 // ----------------------------------------------------------------------
@@ -143,7 +145,8 @@ export function ComponenteEditable({
   combos,
   setValorFilaSeleccionada,
   getValorFilaSeleccionada,
-  vistaFormularo
+  vistaFormularo,
+  validationSchema
 }) {
   return (
     <>
@@ -157,6 +160,7 @@ export function ComponenteEditable({
           updateMyData={updateMyData}
           index={index}
           vistaFormularo={vistaFormularo}
+          validationSchema={validationSchema}
         />
       )}
 
@@ -265,20 +269,43 @@ const Texto = ({
   index,
   setValorFilaSeleccionada,
   getValorFilaSeleccionada,
-  vistaFormularo
+  vistaFormularo,
+  validationSchema
 }) => {
   const [isModifico, setIsModificado] = useState(false);
+  const [erorr, setError] = useState(false);
+  const [mensajeError, setMensajeError] = useState(null);
   const onChange = (e) => {
     setValorFilaSeleccionada(column.nombre, e.target.value);
     setIsModificado(true);
+    validaciones();
   };
 
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
+    validaciones();
     if (isModifico) {
       modificarFila(column, index);
       updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
       setIsModificado(false);
+    }
+  };
+
+  const validaciones = () => {
+    if (validationSchema) {
+      const fields = validationSchema._nodes;
+      if (fields.indexOf(column.nombre) >= 0) {
+        Yup.reach(validationSchema, column.nombre)
+          .validate(getValorFilaSeleccionada(column.nombre))
+          .then(() => {
+            setMensajeError(null);
+            setError(false);
+          })
+          .catch((err) => {
+            setMensajeError(err.message);
+            setError(true);
+          });
+      }
     }
   };
 
@@ -299,7 +326,8 @@ const Texto = ({
         />
       ) : (
         <TextField
-          value={getValorFilaSeleccionada(column.nombre)}
+          id={column.nombre}
+          value={getValorFilaSeleccionada(column.nombre) || ''}
           onChange={onChange}
           onBlur={onBlur}
           autoFocus={foco}
@@ -309,6 +337,9 @@ const Texto = ({
           size="small"
           label={column.nombrevisual}
           disabled={column.lectura}
+          error={erorr}
+          helperText={mensajeError}
+          required={column.requerida}
           InputLabelProps={{
             shrink: true,
             style: { textAlign: `${column.alinear}` }

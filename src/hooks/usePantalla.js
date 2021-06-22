@@ -1,3 +1,8 @@
+/**
+ * Hook para las páginas que contienen componentes de tipo Tabla
+ * Fecha Creación: 22-06-2021
+ * Author: DFJG
+ */
 import useMensaje from './useMensaje';
 import axios from '../utils/axios';
 

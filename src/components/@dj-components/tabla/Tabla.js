@@ -1,5 +1,6 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import PropTypes from 'prop-types';
+import * as Yup from 'yup';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { getColumnasR } from '../../../redux/slices/tabla';
 import { experimentalStyled as styled } from '@material-ui/core/styles';
@@ -54,7 +55,8 @@ const Tabla = forwardRef(
       showBotonEliminar = false,
       showBotonModificar = false,
       showBuscar = true,
-      showRowIndex = false
+      showRowIndex = false,
+      validationSchema
     },
     ref
   ) => {
@@ -332,6 +334,15 @@ const Tabla = forwardRef(
           }
         });
       }
+      // Campos requeridos si tiene validationSchema
+      if (validationSchema) {
+        cols.forEach((_columna) => {
+          // console.log(validationSchema.fields.mail_empr.exclusiveTests.required);
+          const req = validationSchema.fields[_columna.nombre]?.exclusiveTests.required || false;
+          _columna.requerida = req;
+        });
+      }
+
       if (isMountedRef.current) {
         setColumns(cols);
         setIsColumnas(true);
@@ -595,7 +606,8 @@ const Tabla = forwardRef(
         // Validacion de valores que sean válidos
         for (let j = 0; j < columns.length; j += 1) {
           const colActual = columns[j];
-          if (isValorValido(filaActual, colActual) === false) {
+          // Validaciones
+          if (isValidaciones(filaActual, colActual) === false) {
             return false;
           }
         }
@@ -638,8 +650,8 @@ const Tabla = forwardRef(
           const colNombreActual = colModificadas[j];
           // solo nombres de columnas modificadas
           const colActual = getColumna(colNombreActual);
-          // Validacion de valores que sean válidos
-          if (isValorValido(filaActual, colActual) === false) {
+          // Validaciones
+          if (isValidaciones(filaActual, colActual) === false) {
             return false;
           }
 
@@ -673,13 +685,28 @@ const Tabla = forwardRef(
       return true;
     };
 
-    const isValorValido = (fila, columna) => {
-      // Valida tipos de datos
+    // Verifica si el valor de la columna es válido
+    const isValidaciones = (fila, columna) => {
       let valor = fila[columna.nombre];
       // console.log(` -----  ${columna.nombre}  ${valor}`);
       if (valor === '') {
         valor = null;
       }
+
+      // si tiene validationSchema
+      if (validationSchema) {
+        const fields = validationSchema._nodes;
+        if (fields.indexOf(columna.nombre) >= 0) {
+          Yup.reach(validationSchema, columna.nombre)
+            .validate(valor)
+            .catch((err) => {
+              msg.mensajeAdvertencia(`${err.message}`);
+              return false;
+            });
+        }
+      }
+
+      // Valida tipos de datos
       if (isDefined(valor)) {
         if (columna.componente === 'Calendario') {
           if (typeof valor === 'object') {
@@ -1013,6 +1040,7 @@ const Tabla = forwardRef(
             seleccionarFilaPorIndice={seleccionarFilaPorIndice}
             indiceTabla={indiceTabla}
             numeroColFormulario={numeroColFormulario}
+            validationSchema={validationSchema}
           />
         )}
       </StyledDiv>
@@ -1060,7 +1088,8 @@ Tabla.propTypes = {
   showBotonEliminar: PropTypes.bool,
   showBotonModificar: PropTypes.bool,
   showBuscar: PropTypes.bool,
-  showRowIndex: PropTypes.bool
+  showRowIndex: PropTypes.bool,
+  validationSchema: PropTypes.object
 };
 
 export default Tabla;

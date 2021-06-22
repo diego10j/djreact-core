@@ -8,6 +8,7 @@ import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
 import { Box, Typography, Paper } from '@material-ui/core';
 // utils
 import { fData } from '../../utils/formatNumber';
+import { backendUrl } from '../../config';
 
 // ----------------------------------------------------------------------
 
@@ -70,6 +71,8 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }) {
     ...other
   });
 
+  const imagenUrl = `${backendUrl}/api/uploads/getImagen/}`;
+
   const ShowRejectionItems = () => (
     <Paper
       variant="outlined"
@@ -119,11 +122,10 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }) {
             <Box
               component="img"
               alt="avatar"
-              src={isString(file) ? file : file.preview}
+              src={isString(file) ? `${imagenUrl}${file}` : file.preview}
               sx={{ zIndex: 8, objectFit: 'cover' }}
             />
           )}
-
           <PlaceholderStyle
             className="placeholder"
             sx={{
@@ -136,7 +138,7 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }) {
             }}
           >
             <Box component={Icon} icon={roundAddAPhoto} sx={{ width: 24, height: 24, mb: 1 }} />
-            <Typography variant="caption">{file ? 'Update photo' : 'Upload photo'}</Typography>
+            <Typography variant="caption">{file ? 'Actualizar Imágen' : 'Subir Imágen'}</Typography>
           </PlaceholderStyle>
         </DropZoneStyle>
       </RootStyle>

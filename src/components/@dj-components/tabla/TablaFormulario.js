@@ -69,7 +69,7 @@ const TablaFormulario = forwardRef(
       seleccionarFilaPorIndice,
       indiceTabla,
       numeroColFormulario,
-      formik
+      validationSchema
     },
     ref
   ) => {
@@ -162,6 +162,7 @@ const TablaFormulario = forwardRef(
                         index={indiceTabla}
                         combos={combos}
                         vistaFormularo
+                        validationSchema={validationSchema}
                       />
                     </Grid>
                   )
@@ -197,5 +198,6 @@ TablaFormulario.propTypes = {
   getEliminadas: PropTypes.func,
   setCargando: PropTypes.func,
   showPaginador: PropTypes.bool,
-  showBuscar: PropTypes.bool
+  showBuscar: PropTypes.bool,
+  validationSchema: PropTypes.object
 };

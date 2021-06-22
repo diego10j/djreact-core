@@ -1,3 +1,8 @@
+/**
+ * Hook para desplegar mensajes en la Pantalla
+ * Fecha Creación: 22-06-2021
+ * Author: DFJG
+ */
 import { useSnackbar } from 'notistack';
 
 export default function useMensaje() {
