@@ -56,7 +56,7 @@ const Tabla = forwardRef(
       showBotonModificar = false,
       showBuscar = true,
       showRowIndex = false,
-      validationSchema
+      hookFormulario
     },
     ref
   ) => {
@@ -131,6 +131,12 @@ const Tabla = forwardRef(
         setColumnasOcultas(colOcultas);
       }
     }, [columns]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+      if (isDefined(hookFormulario)) {
+        hookFormulario.setValues(filaSeleccionada);
+      }
+    }, [filaSeleccionada]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const getServicioDatos = async () => {
       try {
@@ -335,10 +341,10 @@ const Tabla = forwardRef(
         });
       }
       // Campos requeridos si tiene validationSchema
-      if (validationSchema) {
+      if (hookFormulario.validationSchema) {
         cols.forEach((_columna) => {
           // console.log(validationSchema.fields.mail_empr.exclusiveTests.required);
-          const req = validationSchema.fields[_columna.nombre]?.exclusiveTests.required || false;
+          const req = hookFormulario.validationSchema.fields[_columna.nombre]?.exclusiveTests.required || false;
           _columna.requerida = req;
         });
       }
@@ -694,10 +700,10 @@ const Tabla = forwardRef(
       }
 
       // si tiene validationSchema
-      if (validationSchema) {
-        const fields = validationSchema._nodes;
+      if (hookFormulario.validationSchema) {
+        const fields = hookFormulario.validationSchema._nodes;
         if (fields.indexOf(columna.nombre) >= 0) {
-          Yup.reach(validationSchema, columna.nombre)
+          Yup.reach(hookFormulario.validationSchema, columna.nombre)
             .validate(valor)
             .catch((err) => {
               msg.mensajeAdvertencia(`${err.message}`);
@@ -1040,7 +1046,7 @@ const Tabla = forwardRef(
             seleccionarFilaPorIndice={seleccionarFilaPorIndice}
             indiceTabla={indiceTabla}
             numeroColFormulario={numeroColFormulario}
-            validationSchema={validationSchema}
+            hookFormulario={hookFormulario}
           />
         )}
       </StyledDiv>
@@ -1089,7 +1095,7 @@ Tabla.propTypes = {
   showBotonModificar: PropTypes.bool,
   showBuscar: PropTypes.bool,
   showRowIndex: PropTypes.bool,
-  validationSchema: PropTypes.object
+  hookFormulario: PropTypes.object
 };
 
 export default Tabla;

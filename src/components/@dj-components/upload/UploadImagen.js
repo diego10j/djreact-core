@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
@@ -7,8 +8,8 @@ import roundAddAPhoto from '@iconify/icons-ic/round-add-a-photo';
 import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
 import { Box, Typography, Paper } from '@material-ui/core';
 // utils
-import { fData } from '../../utils/formatNumber';
-import { backendUrl } from '../../config';
+import { fData } from '../../../utils/formatNumber';
+import { backendUrl } from '../../../config';
 
 // ----------------------------------------------------------------------
 
@@ -58,18 +59,40 @@ const PlaceholderStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-UploadAvatar.propTypes = {
+UploadImagen.propTypes = {
+  onUpload: PropTypes.func.isRequired,
   error: PropTypes.bool,
+  pesoMaximo: PropTypes.number,
   file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  caption: PropTypes.node,
   sx: PropTypes.object
 };
 
-export default function UploadAvatar({ error, file, caption, sx, ...other }) {
+export default function UploadImagen({ error, file, onUpload, pesoMaximo, sx, ...other }) {
+  const maxSize = pesoMaximo || 3145728; // por defecto maximo peso del archivo 3.1MB
+
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple: false,
+    accept: 'image/*',
+    onDrop: (acceptedFiles) => {
+      handleDrop(acceptedFiles);
+    },
+    maxSize,
     ...other
   });
+
+  const handleDrop = (acceptedFiles) => {
+    const tmpImage = acceptedFiles[0];
+    if (tmpImage) {
+      onUpload({
+        ...tmpImage,
+        preview: URL.createObjectURL(tmpImage)
+      });
+    }
+    onUpload(undefined);
+  };
+
+  const imagenUrl = `${backendUrl}/api/uploads/getImagen/}`;
+
   const ShowRejectionItems = () => (
     <Paper
       variant="outlined"
@@ -118,8 +141,8 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }) {
           {file && (
             <Box
               component="img"
-              alt="avatar"
-              src={isString(file) ? file : file.preview}
+              alt="Imagen"
+              src={isString(file) ? `${imagenUrl}${file}` : file.preview}
               sx={{ zIndex: 8, objectFit: 'cover' }}
             />
           )}
@@ -140,7 +163,19 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }) {
         </DropZoneStyle>
       </RootStyle>
 
-      {caption}
+      <Typography
+        variant="caption"
+        sx={{
+          mt: 2,
+          mx: 'auto',
+          display: 'block',
+          textAlign: 'center',
+          color: 'text.secondary'
+        }}
+      >
+        Permitidos *.jpeg, *.jpg, *.png, *.gif
+        <br /> Tamaño máximo de {fData(maxSize)}
+      </Typography>
 
       {fileRejections.length > 0 && <ShowRejectionItems />}
     </>

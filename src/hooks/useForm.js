@@ -3,34 +3,45 @@
  * Fecha Creación: 22-06-2021
  * Author: DFJG
  */
-const useForm = () => {
+import { useState } from 'react';
+import { isDefined } from '../utils/utilitario';
+
+const useForm = (_validationSchema) => {
+  const validationSchema = _validationSchema;
+  const [values, setValues] = useState({});
+
   /**
    * Recupera los errores del formulario y pinta los campos de texto con el error
    * @param {*} validationSchema
-   * @param {*} filaSeleccionada
+   * @param {*} values
    */
-  const erroresValidacion = (validationSchema, filaSeleccionada) => {
-    validationSchema.validate(filaSeleccionada, { abortEarly: false }).catch((err) => {
-      err.inner.forEach((e) => {
-        // console.log(`${e.path} ${e.message}`);
-        if (e.path) {
-          document.getElementById(e.path).focus();
-          document.getElementById(e.path).blur();
-        }
+  const erroresValidacion = () => {
+    if (isDefined(validationSchema && isDefined(values))) {
+      validationSchema.validate(values, { abortEarly: false }).catch((err) => {
+        err.inner.forEach((e) => {
+          // console.log(`${e.path} ${e.message}`);
+          if (e.path) {
+            document.getElementById(e.path).focus();
+            document.getElementById(e.path).blur();
+          }
+        });
       });
-    });
+    }
   };
   /**
    * Verifica que el esquema sea válido
    * @param {*} validationSchema
-   * @param {*} filaSeleccionada
+   * @param {*} values
    * @returns
    */
-  const isValid = async (validationSchema, filaSeleccionada) => {
-    await validationSchema.isValid(filaSeleccionada);
+  const isValid = async () => {
+    if (isDefined(validationSchema && isDefined(values))) {
+      await validationSchema.isValid(values);
+    }
+    return true;
   };
 
-  return { isValid, erroresValidacion };
+  return { validationSchema, isValid, erroresValidacion, setValues, values };
 };
 
 export default useForm;

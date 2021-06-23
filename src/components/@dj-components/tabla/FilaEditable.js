@@ -146,7 +146,7 @@ export function ComponenteEditable({
   setValorFilaSeleccionada,
   getValorFilaSeleccionada,
   vistaFormularo,
-  validationSchema
+  hookFormulario
 }) {
   return (
     <>
@@ -160,7 +160,7 @@ export function ComponenteEditable({
           updateMyData={updateMyData}
           index={index}
           vistaFormularo={vistaFormularo}
-          validationSchema={validationSchema}
+          hookFormulario={hookFormulario}
         />
       )}
 
@@ -270,7 +270,7 @@ const Texto = ({
   setValorFilaSeleccionada,
   getValorFilaSeleccionada,
   vistaFormularo,
-  validationSchema
+  hookFormulario
 }) => {
   const [isModifico, setIsModificado] = useState(false);
   const [erorr, setError] = useState(false);
@@ -292,10 +292,10 @@ const Texto = ({
   };
 
   const validaciones = () => {
-    if (validationSchema) {
-      const fields = validationSchema._nodes;
+    if (hookFormulario.validationSchema) {
+      const fields = hookFormulario.validationSchema._nodes;
       if (fields.indexOf(column.nombre) >= 0) {
-        Yup.reach(validationSchema, column.nombre)
+        Yup.reach(hookFormulario.validationSchema, column.nombre)
           .validate(getValorFilaSeleccionada(column.nombre))
           .then(() => {
             setMensajeError(null);
