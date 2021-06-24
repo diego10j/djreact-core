@@ -51,7 +51,10 @@ export default function Empresa() {
   };
 
   const onUpload = (file) => {
-    console.log(file);
+    if (file) {
+      tabTabla1.current.setValorFilaSeleccionada('logo_empr', file.nombreImagen);
+      tabTabla1.current.modificar('logo_empr');
+    }
   };
 
   return (
@@ -86,6 +89,7 @@ export default function Empresa() {
                   showBuscar={false}
                   tipoFormulario
                   numeroColFormulario={2}
+                  totalColumnasSkeleton={9}
                   hookFormulario={hookFormulario}
                   opcionesColumnas={[
                     {

@@ -76,3 +76,32 @@ export function SkeletonPaginador() {
     </StyledTablePagination>
   );
 }
+
+SkeletonFormulario.propTypes = {
+  columns: PropTypes.array,
+  calculaNumColumnas: PropTypes.number,
+  totalColumnasSkeleton: PropTypes.number
+};
+
+export function SkeletonFormulario({ columns, calculaNumColumnas, totalColumnasSkeleton = 12 }) {
+  return (
+    <Grid container spacing={1}>
+      <Grid container item xs={12} spacing={3}>
+        {columns
+          ? columns.map(
+              (column, index) =>
+                column.visible && (
+                  <Grid key={index} item xs={calculaNumColumnas}>
+                    <Skeleton variant="rect" width="90%" height={40} sx={{ mb: 0.3 }} />
+                  </Grid>
+                )
+            )
+          : [...Array(totalColumnasSkeleton).keys()].map((value) => (
+              <Grid key={value} item xs={calculaNumColumnas}>
+                <Skeleton variant="rect" width="90%" height={40} sx={{ mb: 0.3 }} />
+              </Grid>
+            ))}
+      </Grid>
+    </Grid>
+  );
+}

@@ -1,19 +1,26 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import PropTypes from 'prop-types';
-import * as Yup from 'yup';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { getColumnasR } from '../../../redux/slices/tabla';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
 // components
+import { experimentalStyled as styled } from '@material-ui/core/styles';
 import TablaReact from './TablaReact';
 import ToolbarTabla from './ToolbarTabla';
 import TablaFormulario from './TablaFormulario';
 import { CheckLectura, ComboLectura } from './FilaLectura';
-import axios from '../../../utils/axios';
-import { isDefined, isEmpty } from '../../../utils/utilitario';
 // hooks
 import useMensaje from '../../../hooks/useMensaje';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
+// servicios
+import {
+  consultarTabla,
+  getColumnasTabla,
+  getComboTabla,
+  isEliminar,
+  getMaximo
+} from '../../../services/sistema/servicioSistema';
+// utilitarios
+import { isDefined, isEmpty, getIdeOpci } from '../../../utils/utilitario';
 import {
   isDate,
   getFormatoFecha,
@@ -23,6 +30,8 @@ import {
   getFormatoHora,
   getFormatoFechaBDD
 } from '../../../utils/formatTime';
+
+// ----------------------------------------------------------------------
 
 // Estilos
 const StyledDiv = styled('div')(() => ({
@@ -56,7 +65,8 @@ const Tabla = forwardRef(
       showBotonModificar = false,
       showBuscar = true,
       showRowIndex = false,
-      hookFormulario
+      hookFormulario,
+      totalColumnasSkeleton
     },
     ref
   ) => {
@@ -85,7 +95,8 @@ const Tabla = forwardRef(
       getValorFilaSeleccionada,
       setCargando,
       isCargando,
-      commit
+      commit,
+      modificar
     }));
 
     const tablaReact = useRef();
@@ -104,7 +115,7 @@ const Tabla = forwardRef(
     // const dispatch = useDispatch();
     // const { columnas } = useSelector((state) => state.tabla);
     const isMountedRef = useIsMountedRef();
-    const msg = useMensaje();
+    const { showMensajeError, showMensajeAdvertencia } = useMensaje();
     const [skipPageReset, setSkipPageReset] = useState(false);
     const [isColumnas, setIsColumnas] = useState(false);
     const [cargando, setCargando] = useState(false);
@@ -142,12 +153,7 @@ const Tabla = forwardRef(
       try {
         console.log('---CARGA DATOS');
         setCargando(true);
-        const { data } = await axios.post('/api/sistema/consultarTabla', {
-          nombreTabla: nombreTabla.toLowerCase(),
-          campoPrimario: campoPrimario.toLowerCase(),
-          campoOrden,
-          condiciones: []
-        });
+        const { data } = await consultarTabla(nombreTabla, campoPrimario, campoOrden, []);
         if (isMountedRef.current) {
           setCargando(false);
           setData([]);
@@ -172,12 +178,7 @@ const Tabla = forwardRef(
     const getServicioColumnas = async () => {
       console.log('---CARGA COLUMNAS');
       try {
-        const { data } = await axios.post('/api/sistema/getColumnas', {
-          nombreTabla,
-          campoPrimario,
-          ide_opci: 0,
-          numero_tabl: numeroTabla
-        });
+        const { data } = await getColumnasTabla(nombreTabla, campoPrimario, getIdeOpci(), numeroTabla);
         formarColumnas(data.datos);
       } catch (error) {
         console.error(error);
@@ -190,12 +191,12 @@ const Tabla = forwardRef(
     const getServicioCombo = async (columna) => {
       console.log('---CARGA COMBO');
       try {
-        const { data } = await axios.post('api/sistema/getCombo', {
-          nombreTabla: columna.nombreTablaCombo.toLowerCase(),
-          campoPrimario: columna.campoPrimarioCombo.toLowerCase(),
-          campoNombre: columna.campoNombreCombo.toLowerCase(),
-          condicion: columna.condicionCombo
-        });
+        const { data } = await getComboTabla(
+          columna.nombreTablaCombo,
+          columna.campoPrimarioCombo,
+          columna.campoNombreCombo,
+          columna.condicionCombo
+        );
         if (isMountedRef.current) {
           setCombos((elements) => [
             ...elements,
@@ -212,11 +213,7 @@ const Tabla = forwardRef(
 
     const getServicioIsEliminar = async () => {
       try {
-        const { data } = await axios.post('api/sistema/isEliminar', {
-          nombreTabla: nombreTabla.toLowerCase(),
-          campoPrimario: campoPrimario.toLowerCase(),
-          valorCampoPrimario: getValorSeleccionado()
-        });
+        const { data } = await isEliminar(nombreTabla, campoPrimario, getValorSeleccionado());
         return !isDefined(data.datos);
       } catch (error) {
         console.error(error);
@@ -226,11 +223,7 @@ const Tabla = forwardRef(
 
     const getServicioIsUnico = async (campo, valorCampo) => {
       try {
-        const { data } = await axios.post('api/sistema/isUnico', {
-          nombreTabla: nombreTabla.toLowerCase(),
-          campo: campo.toLowerCase(),
-          valorCampo
-        });
+        const { data } = await isEliminar(nombreTabla, campo, valorCampo);
         return data.datos;
       } catch (error) {
         console.error(error);
@@ -240,11 +233,7 @@ const Tabla = forwardRef(
 
     const getServicioSecuencial = async (numeroFilas) => {
       try {
-        const { data } = await axios.post('api/sistema/getMaximo', {
-          nombreTabla: nombreTabla.toLowerCase(),
-          campoPrimario: campoPrimario.toLowerCase(),
-          numeroFilas
-        });
+        const { data } = await getMaximo(nombreTabla, campoPrimario, numeroFilas);
         return data.datos;
       } catch (error) {
         console.error(error);
@@ -341,7 +330,7 @@ const Tabla = forwardRef(
         });
       }
       // Campos requeridos si tiene validationSchema
-      if (hookFormulario.validationSchema) {
+      if (isDefined(hookFormulario) && isDefined(hookFormulario.validationSchema)) {
         cols.forEach((_columna) => {
           // console.log(validationSchema.fields.mail_empr.exclusiveTests.required);
           const req = hookFormulario.validationSchema.fields[_columna.nombre]?.exclusiveTests.required || false;
@@ -468,9 +457,13 @@ const Tabla = forwardRef(
       }
     };
 
+    const modificar = (nombre) => {
+      modificarFila(getColumna(nombre), indiceTabla);
+    };
+
     /**
      * Asigna un valor a una columna de la fila seleccionada
-     * @param {Nombre Columna} nombre
+     * @param {string} nombre Nombre Columna
      * @param {*} valor
      */
     const setValorFilaSeleccionada = (nombre, valor) => {
@@ -562,7 +555,7 @@ const Tabla = forwardRef(
       if (lectura === false) {
         if (isColumnas) {
           if (validarInsertar && getInsertadas().length > 0 && getTotalFilas() > 0) {
-            msg.mensajeError('No se puede insertar, ya existe un registro insertado');
+            showMensajeError('No se puede insertar, ya existe un registro insertado');
           } else {
             crearFila();
             return true;
@@ -588,7 +581,7 @@ const Tabla = forwardRef(
               setData(data.filter((item) => item[campoPrimario] !== filaSeleccionada[campoPrimario]));
               setFilaSeleccionada(undefined);
             } else {
-              msg.mensajeError('No se puede eliminar, el registro tiene relación con otras tablas del sistema');
+              showMensajeError('No se puede eliminar, el registro tiene relación con otras tablas del sistema');
             }
             setCargando(false);
           }
@@ -623,7 +616,7 @@ const Tabla = forwardRef(
           const colActual = colObligatorias[j];
           const valor = filaActual[colActual.nombre];
           if (isEmpty(valor)) {
-            msg.mensajeAdvertencia(`Los valores de la columna ${colActual.nombrevisual} son obligatorios`);
+            showMensajeAdvertencia(`Los valores de la columna ${colActual.nombrevisual} son obligatorios`);
             return false;
           }
         }
@@ -635,7 +628,7 @@ const Tabla = forwardRef(
             if (isDefined(valor)) {
               // Valida mediante el servicio web
               if (await getServicioIsUnico(colActual, valor)) {
-                msg.mensajeAdvertencia(
+                showMensajeAdvertencia(
                   `Restricción única, ya existe un registro con el valor ${valor} en la columna ${colActual.nombrevisual}`
                 );
                 throw new Error('Restricción única.');
@@ -664,7 +657,7 @@ const Tabla = forwardRef(
           if (colActual.requerida) {
             const valor = filaActual[colNombreActual];
             if (isDefined(valor) === false) {
-              msg.mensajeAdvertencia(`Los valores de la columna ${colActual.nombrevisual} son obligatorios`);
+              showMensajeAdvertencia(`Los valores de la columna ${colActual.nombrevisual} son obligatorios`);
               return false;
             }
           }
@@ -700,17 +693,20 @@ const Tabla = forwardRef(
       }
 
       // si tiene validationSchema
-      if (hookFormulario.validationSchema) {
-        const fields = hookFormulario.validationSchema._nodes;
-        if (fields.indexOf(columna.nombre) >= 0) {
-          Yup.reach(hookFormulario.validationSchema, columna.nombre)
-            .validate(valor)
-            .catch((err) => {
-              msg.mensajeAdvertencia(`${err.message}`);
-              return false;
-            });
-        }
-      }
+      // if (isDefined(hookFormulario) && isDefined(hookFormulario.validationSchema)) {
+      // const fields = hookFormulario.validationSchema._nodes;
+      // if (fields.indexOf(columna.nombre) >= 0) {
+      // const resp = Yup.reach(hookFormulario.validationSchema, columna.nombre)
+      // .validate(valor)
+      // .catch((err) => {
+      // showMensajeAdvertencia(`${err.message}`);
+      // return false;
+      //  });
+      // if (resp === false) {
+      // return false;
+      //  }
+      //  }
+      //  }
 
       // Valida tipos de datos
       if (isDefined(valor)) {
@@ -721,7 +717,7 @@ const Tabla = forwardRef(
           // valida que sea una fecha correcta
           const dt = toDate(getFormatoFecha(valor));
           if (!isDate(dt)) {
-            msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
+            showMensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
           // console.log(fila);
@@ -732,7 +728,7 @@ const Tabla = forwardRef(
           // valida que sea una hora correcta
           const dt = toHora(getFormatoHora(valor));
           if (!isDate(dt)) {
-            msg.mensajeAdvertencia(`Hora no válida ${valor} en la columna  ${columna.nombrevisual}`);
+            showMensajeAdvertencia(`Hora no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
           // console.log(fila);
@@ -744,7 +740,7 @@ const Tabla = forwardRef(
           // valida que sea una fecha correcta
           const dt = toDate(getFormatoFechaHora(valor));
           if (!isDate(dt)) {
-            msg.mensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
+            showMensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
             return false;
           }
         }
@@ -1047,6 +1043,7 @@ const Tabla = forwardRef(
             indiceTabla={indiceTabla}
             numeroColFormulario={numeroColFormulario}
             hookFormulario={hookFormulario}
+            totalColumnasSkeleton={totalColumnasSkeleton}
           />
         )}
       </StyledDiv>
@@ -1095,7 +1092,8 @@ Tabla.propTypes = {
   showBotonModificar: PropTypes.bool,
   showBuscar: PropTypes.bool,
   showRowIndex: PropTypes.bool,
-  hookFormulario: PropTypes.object
+  hookFormulario: PropTypes.object,
+  totalColumnasSkeleton: PropTypes.number
 };
 
 export default Tabla;

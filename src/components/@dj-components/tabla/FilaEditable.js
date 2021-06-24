@@ -131,8 +131,7 @@ FilaEditable.propTypes = {
   updateMyData: PropTypes.func,
   columns: PropTypes.array,
   combos: PropTypes.array,
-  vistaFormularo: PropTypes.bool,
-  validationSchema: PropTypes.object
+  vistaFormularo: PropTypes.bool
 };
 
 // ----------------------------------------------------------------------
@@ -248,7 +247,6 @@ export function ComponenteEditable({
 
 ComponenteEditable.propTypes = {
   column: PropTypes.object.isRequired,
-  filaSeleccionada: PropTypes.object,
   modificarFila: PropTypes.func,
   setValorFilaSeleccionada: PropTypes.func,
   getValorFilaSeleccionada: PropTypes.func,
@@ -256,7 +254,8 @@ ComponenteEditable.propTypes = {
   foco: PropTypes.bool,
   index: PropTypes.number,
   combos: PropTypes.array,
-  vistaFormularo: PropTypes.bool
+  vistaFormularo: PropTypes.bool,
+  hookFormulario: PropTypes.object
 };
 
 // ----------------------------------------------------------------------
@@ -275,6 +274,7 @@ const Texto = ({
   const [isModifico, setIsModificado] = useState(false);
   const [erorr, setError] = useState(false);
   const [mensajeError, setMensajeError] = useState(null);
+
   const onChange = (e) => {
     setValorFilaSeleccionada(column.nombre, e.target.value);
     setIsModificado(true);
@@ -358,7 +358,8 @@ Texto.propTypes = {
   updateMyData: PropTypes.func,
   foco: PropTypes.bool,
   index: PropTypes.number,
-  vistaFormularo: PropTypes.bool
+  vistaFormularo: PropTypes.bool,
+  hookFormulario: PropTypes.object
 };
 
 // ----------------------------------------------------------------------

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
 import { Grid, TablePagination } from '@material-ui/core';
 import { isDefined } from '../../../utils/utilitario';
-import { SkeletonPaginador, useWidth } from './SkeletonTabla';
+import { SkeletonFormulario, SkeletonPaginador, useWidth } from './SkeletonTabla';
 import TablePaginationActions from './PaginationTabla';
 import { ComponenteEditable } from './FilaEditable';
 
@@ -56,20 +56,14 @@ const TablaFormulario = forwardRef(
       actualizar,
       eliminar,
       combos,
-      setFilaSeleccionada,
-      getInsertadas,
-      getModificadas,
-      getEliminadas,
-      setCargando,
       updateMyData,
       showPaginador,
-      showBuscar,
-      setColumnaSeleccionada,
       columnaSeleccionada,
       seleccionarFilaPorIndice,
       indiceTabla,
       numeroColFormulario,
-      hookFormulario
+      hookFormulario,
+      totalColumnasSkeleton
     },
     ref
   ) => {
@@ -145,30 +139,42 @@ const TablaFormulario = forwardRef(
           </Grid>
         </Grid>
 
-        <Grid container spacing={1}>
-          <Grid container item xs={12} spacing={3}>
-            {filaSeleccionada &&
-              columns.map(
-                (column, index) =>
-                  column.visible && (
-                    <Grid key={index} item xs={calculaNumColumnas}>
-                      <ComponenteEditable
-                        setValorFilaSeleccionada={setValorFilaSeleccionada}
-                        getValorFilaSeleccionada={getValorFilaSeleccionada}
-                        column={column}
-                        foco={columnaSeleccionada === column.nombre}
-                        modificarFila={modificarFila}
-                        updateMyData={updateMyData}
-                        index={indiceTabla}
-                        combos={combos}
-                        vistaFormularo
-                        hookFormulario={hookFormulario}
-                      />
-                    </Grid>
-                  )
-              )}
+        {!isColumnas && (
+          <Grid container spacing={1}>
+            <SkeletonFormulario calculaNumColumnas={calculaNumColumnas} totalColumnasSkeleton={totalColumnasSkeleton} />
           </Grid>
-        </Grid>
+        )}
+
+        {isColumnas && data.length > 0 ? (
+          <Grid container spacing={1}>
+            <Grid container item xs={12} spacing={3}>
+              {filaSeleccionada &&
+                columns.map(
+                  (column, index) =>
+                    column.visible && (
+                      <Grid key={index} item xs={calculaNumColumnas}>
+                        <ComponenteEditable
+                          setValorFilaSeleccionada={setValorFilaSeleccionada}
+                          getValorFilaSeleccionada={getValorFilaSeleccionada}
+                          column={column}
+                          foco={columnaSeleccionada === column.nombre}
+                          modificarFila={modificarFila}
+                          updateMyData={updateMyData}
+                          index={indiceTabla}
+                          combos={combos}
+                          vistaFormularo
+                          hookFormulario={hookFormulario}
+                        />
+                      </Grid>
+                    )
+                )}
+            </Grid>
+          </Grid>
+        ) : (
+          <Grid container spacing={1}>
+            <SkeletonFormulario calculaNumColumnas={calculaNumColumnas} columns={columns} />
+          </Grid>
+        )}
       </StyledDiv>
     );
   }
@@ -179,25 +185,23 @@ export default TablaFormulario;
 TablaFormulario.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
-  setFilaSeleccionada: PropTypes.func.isRequired,
-  numeroColFormulario: PropTypes.number,
+  lectura: PropTypes.bool.isRequired,
   cargando: PropTypes.bool.isRequired,
-  modificarFila: PropTypes.func.isRequired,
-  updateMyData: PropTypes.func.isRequired,
   isColumnas: PropTypes.bool.isRequired,
+  modificarFila: PropTypes.func.isRequired,
+  filaSeleccionada: PropTypes.object,
   setValorFilaSeleccionada: PropTypes.func.isRequired,
   getValorFilaSeleccionada: PropTypes.func.isRequired,
-  filaSeleccionada: PropTypes.object,
-  actualizar: PropTypes.func.isRequired,
   insertar: PropTypes.func.isRequired,
+  actualizar: PropTypes.func.isRequired,
   eliminar: PropTypes.func.isRequired,
-  lectura: PropTypes.bool.isRequired,
   combos: PropTypes.array,
-  getInsertadas: PropTypes.func,
-  getModificadas: PropTypes.func,
-  getEliminadas: PropTypes.func,
-  setCargando: PropTypes.func,
+  updateMyData: PropTypes.func.isRequired,
   showPaginador: PropTypes.bool,
-  showBuscar: PropTypes.bool,
-  hookFormulario: PropTypes.object
+  columnaSeleccionada: PropTypes.object,
+  seleccionarFilaPorIndice: PropTypes.func.isRequired,
+  indiceTabla: PropTypes.number,
+  numeroColFormulario: PropTypes.number,
+  hookFormulario: PropTypes.object,
+  totalColumnasSkeleton: PropTypes.number
 };

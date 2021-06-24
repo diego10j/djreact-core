@@ -8,23 +8,23 @@ import { useSnackbar } from 'notistack';
 export default function useMensaje() {
   const { enqueueSnackbar } = useSnackbar();
 
-  const mensaje = (mensaje) => {
+  const showMensaje = (mensaje) => {
     configurarMensaje(mensaje);
   };
 
-  const mensajeExito = (mensaje) => {
+  const showMensajeExito = (mensaje) => {
     configurarMensaje(mensaje, 'success');
   };
 
-  const mensajeError = (mensaje) => {
+  const showMensajeError = (mensaje) => {
     configurarMensaje(mensaje, 'error');
   };
 
-  const mensajeInfo = (mensaje) => {
+  const showMensajeInfo = (mensaje) => {
     configurarMensaje(mensaje, 'info');
   };
 
-  const mensajeAdvertencia = (mensaje) => {
+  const showMensajeAdvertencia = (mensaje) => {
     configurarMensaje(mensaje, 'warning');
   };
 
@@ -36,10 +36,10 @@ export default function useMensaje() {
   };
 
   return {
-    mensaje,
-    mensajeExito,
-    mensajeError,
-    mensajeInfo,
-    mensajeAdvertencia
+    showMensaje,
+    showMensajeExito,
+    showMensajeError,
+    showMensajeInfo,
+    showMensajeAdvertencia
   };
 }

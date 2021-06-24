@@ -19,7 +19,7 @@ import useMensaje from '../../../hooks/useMensaje';
 export default function LoginForm() {
   const { login } = useAuth();
   const isMountedRef = useIsMountedRef();
-  const msg = useMensaje();
+  const { showMensajeError } = useMensaje();
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
@@ -51,7 +51,7 @@ export default function LoginForm() {
         console.error(error);
         resetForm();
         if (isMountedRef.current) {
-          msg.mensajeError(error.mensaje);
+          showMensajeError(error.mensaje);
           setSubmitting(false);
           setErrors({ afterSubmit: error.code || error.mensaje });
         }
