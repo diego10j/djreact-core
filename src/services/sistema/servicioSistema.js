@@ -32,6 +32,8 @@ export const consultarTabla = async (
   return axios.post('/api/sistema/consultarTabla', body);
 };
 
+export const consultarServicio = async (servicio, body = {}) => axios.post(servicio, body);
+
 /**
  * Llama al servicio getColumnasTabla
  * @param {string} nombreTabla

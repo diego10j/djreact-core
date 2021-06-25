@@ -40,6 +40,9 @@ export const PATH_DASHBOARD = {
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
     analytics: path(ROOTS_DASHBOARD, '/analytics')
   },
+  auditoria: {
+    simple: path(ROOTS_DASHBOARD, '/auditoria/consulta-auditoria')
+  },
   sistema: {
     simple: path(ROOTS_DASHBOARD, '/sistema/simple'),
     empresa: path(ROOTS_DASHBOARD, '/sistema/empresa')

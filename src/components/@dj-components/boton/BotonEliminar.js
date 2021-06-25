@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { LoadingButton } from '@material-ui/lab';
 // iconos
-import saveOutline from '@iconify/icons-eva/save-outline';
+import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 
-export default function BotonGuardar({ color = 'primary', label = 'Guardar', onClick, loading, ...other }) {
+export default function BotonEliminar({ color = 'error', label = 'Eliminar', onClick, loading, ...other }) {
   return (
     <LoadingButton
-      color={color}
       variant="contained"
-      startIcon={<Icon icon={saveOutline} width={20} height={20} />}
+      color={color}
+      startIcon={<Icon icon={trash2Outline} width={20} height={20} />}
       onClick={onClick}
       loading={loading}
       {...other}
@@ -21,7 +21,7 @@ export default function BotonGuardar({ color = 'primary', label = 'Guardar', onC
   );
 }
 
-BotonGuardar.propTypes = {
+BotonEliminar.propTypes = {
   color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
   label: PropTypes.string,
   loading: PropTypes.bool.isRequired,

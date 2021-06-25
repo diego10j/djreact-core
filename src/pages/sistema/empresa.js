@@ -20,6 +20,8 @@ export default function Empresa() {
   const tabTabla1 = useRef();
   const [isGuardar, setIsGuardar] = useState(false); // state boton Loading
 
+  const condiciones = { condicion: 'ide_empr = ?', valores: [localStorage.getItem('ide_empr')] }; // de la tabla
+
   // Esquema de validaciones para el formulario
   const validationSchema = Yup.object().shape({
     nom_empr: Yup.string().required('El nombre de la empresa es requerido').nullable(),
@@ -79,6 +81,7 @@ export default function Empresa() {
                   numeroTabla={2}
                   nombreTabla="sis_empresa"
                   campoPrimario="ide_empr"
+                  condiciones={condiciones}
                   showToolbar={false}
                   showPaginador={false}
                   showBuscar={false}

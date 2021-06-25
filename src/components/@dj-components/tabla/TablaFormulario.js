@@ -196,7 +196,7 @@ TablaFormulario.propTypes = {
   combos: PropTypes.array,
   updateMyData: PropTypes.func.isRequired,
   showPaginador: PropTypes.bool,
-  columnaSeleccionada: PropTypes.object,
+  columnaSeleccionada: PropTypes.string,
   seleccionarFilaPorIndice: PropTypes.func.isRequired,
   indiceTabla: PropTypes.number,
   numeroColFormulario: PropTypes.number,

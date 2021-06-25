@@ -14,6 +14,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // servicios
 import {
   consultarTabla,
+  consultarServicio,
   getColumnasTabla,
   getComboTabla,
   isEliminar,
@@ -50,6 +51,8 @@ const Tabla = forwardRef(
       numeroTabla,
       nombreTabla,
       campoPrimario,
+      condiciones,
+      servicio,
       lectura = true,
       tipoFormulario = false,
       numeroColFormulario,
@@ -150,24 +153,45 @@ const Tabla = forwardRef(
     }, [filaSeleccionada]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const getServicioDatos = async () => {
+      console.log('---CARGA DATOS');
       try {
-        console.log('---CARGA DATOS');
         setCargando(true);
-        const { data } = await consultarTabla(nombreTabla, campoPrimario, campoOrden, []);
-        if (isMountedRef.current) {
-          setCargando(false);
-          setData([]);
-          setData(data.datos);
-          if (!isDefined(indiceTabla)) {
-            setIndiceTabla(0);
-            setFilaSeleccionada(data.datos[0]);
+        if (!isDefined(servicio)) {
+          const condicionesTabla = [];
+          // Condicion de la tabla
+          if (isDefined(condiciones)) {
+            condicionesTabla.push(condiciones);
+          }
+          const { data } = await consultarTabla(nombreTabla, campoPrimario, campoOrden, condicionesTabla);
+          if (isMountedRef.current) {
+            setData([]);
+            setData(data.datos);
+            if (!isDefined(indiceTabla)) {
+              setIndiceTabla(0);
+              setFilaSeleccionada(data.datos[0]);
+            }
+            setCargando(false);
+          }
+        } else {
+          const param = {
+            ...servicio.parametros,
+            soloColumnas: false
+          };
+          const { data } = await consultarServicio(servicio.nombre, param);
+          if (isMountedRef.current) {
+            setData([]);
+            setData(data.datos);
+            if (!isDefined(indiceTabla)) {
+              setIndiceTabla(0);
+              setFilaSeleccionada(data.datos[0]);
+            }
+            setCargando(false);
           }
         }
       } catch (error) {
         if (isMountedRef.current) {
           setCargando(false);
         }
-
         console.error(error);
       }
     };
@@ -178,8 +202,19 @@ const Tabla = forwardRef(
     const getServicioColumnas = async () => {
       console.log('---CARGA COLUMNAS');
       try {
-        const { data } = await getColumnasTabla(nombreTabla, campoPrimario, getIdeOpci(), numeroTabla);
-        formarColumnas(data.datos);
+        if (!isDefined(servicio)) {
+          const { data } = await getColumnasTabla(nombreTabla, campoPrimario, getIdeOpci(), numeroTabla);
+          formarColumnas(data.datos);
+        } else {
+          const param = {
+            ...servicio.parametros,
+            ide_opci: getIdeOpci(),
+            numero_tabl: numeroTabla,
+            soloColumnas: true
+          };
+          const { data } = await consultarServicio(servicio.nombre, param);
+          formarColumnas(data.datos);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -1052,9 +1087,14 @@ const Tabla = forwardRef(
 );
 Tabla.propTypes = {
   numeroTabla: PropTypes.number.isRequired,
-  nombreTabla: PropTypes.string.isRequired,
+  nombreTabla: PropTypes.string,
   campoPrimario: PropTypes.string,
   campoOrden: PropTypes.string,
+  condiciones: PropTypes.object,
+  servicio: PropTypes.shape({
+    nombre: PropTypes.string.isRequired,
+    parametros: PropTypes.object.isRequired
+  }),
   tipoFormulario: PropTypes.bool,
   numeroColFormulario: PropTypes.number,
   calculaPrimaria: PropTypes.bool,

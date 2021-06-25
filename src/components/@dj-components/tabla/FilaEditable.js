@@ -19,7 +19,7 @@ const StyledTableCellBody = styled('td')(({ theme }) => ({
   backgroundColor: alpha(theme.palette.primary.lighter, 0.5)
 }));
 
-const StyledTextField = withStyles((theme) => ({
+const StyledTextField = withStyles(() => ({
   root: {
     border: 'none',
     width: '100%',
@@ -38,14 +38,14 @@ const StyledTextField = withStyles((theme) => ({
       '& fieldset': {
         borderRadius: 0,
         borderColor: 'transparent'
-      },
+      }
       // '&:hover fieldset': {
       //    borderColor: `${theme.palette.primary.dark}`
       //  },
-      '&.Mui-focused fieldset': {
-        // WeborderWidth: 1,
-        borderColor: `${theme.palette.primary.main}`
-      }
+      // '&.Mui-focused fieldset': {
+      // WeborderWidth: 1,
+      // borderColor: `${theme.palette.primary.main}`
+      //  }
     },
     '& .MuiOutlinedInput-input': {
       padding: 0,
@@ -313,16 +313,18 @@ const Texto = ({
     <>
       {!vistaFormularo ? (
         <StyledTextField
+          id={column.nombre}
           value={getValorFilaSeleccionada(column.nombre)}
           onChange={onChange}
           onBlur={onBlur}
-          fullWidth
-          size="small"
-          variant="outlined"
-          margin="none"
           autoFocus={foco}
-          inputProps={{ style: { textAlign: `${column.alinear}` } }}
+          margin="none"
+          fullWidth
+          variant="outlined"
+          size="small"
           disabled={column.lectura}
+          error={erorr}
+          InputLabelProps={{ style: { textAlign: `${column.alinear}` } }}
         />
       ) : (
         <TextField
@@ -335,9 +337,9 @@ const Texto = ({
           fullWidth
           variant="outlined"
           size="small"
-          label={column.nombrevisual}
           disabled={column.lectura}
           error={erorr}
+          label={column.nombrevisual}
           helperText={mensajeError}
           required={column.requerida}
           InputLabelProps={{
