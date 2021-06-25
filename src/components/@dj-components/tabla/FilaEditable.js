@@ -292,7 +292,7 @@ const Texto = ({
   };
 
   const validaciones = () => {
-    if (hookFormulario.validationSchema) {
+    if (isDefined(hookFormulario) && isDefined(hookFormulario.validationSchema)) {
       const fields = hookFormulario.validationSchema._nodes;
       if (fields.indexOf(column.nombre) >= 0) {
         Yup.reach(hookFormulario.validationSchema, column.nombre)

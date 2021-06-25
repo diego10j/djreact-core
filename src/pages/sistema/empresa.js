@@ -1,18 +1,14 @@
 import React, { useRef, useState } from 'react';
-// formulario
 import * as Yup from 'yup';
 // material
 import { Container, Card, Grid, Box } from '@material-ui/core';
-import { Icon } from '@iconify/react';
-import { LoadingButton } from '@material-ui/lab';
-// iconos
-import saveFill from '@iconify/icons-eva/save-fill';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Tabla from '../../components/@dj-components/tabla/Tabla';
+import BotonGuardar from '../../components/@dj-components/boton/BotonGuardar';
 import UploadImagen from '../../components/@dj-components/upload/UploadImagen';
 // hooks
 import useForm from '../../hooks/useForm';
@@ -31,7 +27,15 @@ export default function Empresa() {
       .required('El correo electrónico es requerido')
       .email('El correo electrónico no es válido')
       .nullable(),
-    identificacion_empr: Yup.string().required('La identificación de la empresa es requerida').nullable()
+    identificacion_empr: Yup.string().required('La identificación de la empresa es requerida').nullable(),
+    pagina_empr: Yup.string().matches(
+      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+      'La página web no es válida'
+    ),
+    telefono_empr: Yup.string().matches(
+      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+      'El teléfono no es válido'
+    )
   });
 
   const hookFormulario = useForm(validationSchema); // hook Formulario
@@ -63,16 +67,7 @@ export default function Empresa() {
         <HeaderBreadcrumbs
           heading="Datos de la Empresa"
           links={[{ name: 'Sistema', href: PATH_DASHBOARD.root }, { name: 'Empresa' }]}
-          action={
-            <LoadingButton
-              variant="contained"
-              startIcon={<Icon icon={saveFill} width={20} height={20} />}
-              onClick={guardar}
-              loading={isGuardar}
-            >
-              Guardar
-            </LoadingButton>
-          }
+          action={<BotonGuardar onClick={guardar} loading={isGuardar} />}
         />
         <Card sx={{ px: 3 }}>
           <Grid container spacing={3}>

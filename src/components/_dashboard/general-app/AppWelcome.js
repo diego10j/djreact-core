@@ -4,6 +4,7 @@ import { experimentalStyled as styled } from '@material-ui/core/styles';
 import { Typography, Card, CardContent } from '@material-ui/core';
 import { SeoIllustration } from '../../../assets';
 import { getFormatoMoment } from '../../../utils/formatTime';
+import { toCapitalize } from '../../../utils/utilitario';
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +45,7 @@ export default function AppWelcome({ displayName }) {
       >
         <Typography gutterBottom variant="h4">
           Bienvenid@,
-          <br /> {!displayName ? '...' : displayName}!
+          <br /> {!displayName ? '...' : toCapitalize(displayName)}!
         </Typography>
 
         <Typography variant="body2" sx={{ pb: { xs: 3, xl: 5 }, maxWidth: 480, mx: 'auto' }}>

@@ -1,19 +1,16 @@
 import React, { useRef, useState } from 'react';
-
 // material
 import { Container, Card, TableContainer } from '@material-ui/core';
-import { Icon } from '@iconify/react';
-import { LoadingButton } from '@material-ui/lab';
-// iconos
-import saveFill from '@iconify/icons-eva/save-fill';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components
 import Page from '../../components/Page';
-
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Tabla from '../../components/@dj-components/tabla/Tabla';
+import BotonGuardar from '../../components/@dj-components/boton/BotonGuardar';
+// hooks
 import usePantalla from '../../hooks/usePantalla';
+// util
 import { getFechaActual } from '../../utils/formatTime';
 
 // ----------------------------------------------------------------------
@@ -38,16 +35,7 @@ export default function Simple() {
         <HeaderBreadcrumbs
           heading="Simple"
           links={[{ name: 'Sistema', href: PATH_DASHBOARD.root }, { name: 'Simple' }]}
-          action={
-            <LoadingButton
-              variant="contained"
-              startIcon={<Icon icon={saveFill} width={20} height={20} />}
-              onClick={guardar}
-              loading={isGuardar}
-            >
-              Guardar
-            </LoadingButton>
-          }
+          action={<BotonGuardar onClick={guardar} loading={isGuardar} />}
         />
         <Card>
           <TableContainer sx={{ padding: 2 }}>

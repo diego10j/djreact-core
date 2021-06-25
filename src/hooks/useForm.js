@@ -36,7 +36,8 @@ const useForm = (_validationSchema) => {
    */
   const isValid = async () => {
     if (isDefined(validationSchema && isDefined(values))) {
-      await validationSchema.isValid(values);
+      const resp = await validationSchema.isValid(values);
+      return resp;
     }
     return true;
   };

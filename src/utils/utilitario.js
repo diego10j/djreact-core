@@ -11,6 +11,12 @@ export function isNumber(valor) {
   return rxLive.test(valor);
 }
 
+export function toCapitalize(str) {
+  str = str.toLowerCase();
+  console.log(str.charAt(0).toUpperCase() + str.slice(1));
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 /**
  *  Optine las coordenadas geográficas
  * @returns
