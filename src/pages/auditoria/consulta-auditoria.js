@@ -31,6 +31,12 @@ export default function ConsultaAuditoria() {
     setLoading(false);
   };
 
+  const onBuscar = async () => {
+    setLoading(true);
+
+    setLoading(false);
+  };
+
   return (
     <Page title="Simple">
       <Container maxWidth="xl">
@@ -40,7 +46,7 @@ export default function ConsultaAuditoria() {
           action={<BotonEliminar label="Eliminar Auditoria" onClick={eliminarAuditoria} loading={loading} />}
         />
 
-        <ToolbarPantalla componentes={<CalendarioRango />} />
+        <ToolbarPantalla componentes={<CalendarioRango onBuscar={onBuscar} />} />
 
         <Card sx={{ mt: 5 }}>
           <TableContainer sx={{ padding: 2 }}>
