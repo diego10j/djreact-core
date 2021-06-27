@@ -11,7 +11,7 @@ ToolbarPantalla.propTypes = {
 
 export default function ToolbarPantalla({ componentes, justifyContent = 'flex-start' }) {
   return (
-    <Stack mb={5} direction="row" justifyContent={justifyContent} spacing={1.5}>
+    <Stack mb={2} direction="row" alignItems="center" justifyContent={justifyContent} spacing={2}>
       {componentes}
     </Stack>
   );
