@@ -36,6 +36,14 @@ export function toDate(fecha, formato = formatosFecha.FORMATO_FECHA_FRONT) {
 }
 
 /**
+ * Transforma a Date una fecha string en formato BDD
+ * @param fecha  en string
+ */
+export function toDateBDD(fecha) {
+  return toDate(fecha, formatosFecha.FORMATO_FECHA_BD);
+}
+
+/**
  * Transforma una hora string hh:mm:ss a Date
  * @param hora  en string
  */
@@ -119,4 +127,17 @@ export function getFormatoMoment(fecha, format, formatoFecha = 'YYYY-MM-DD h:mm:
 export function isDate(date) {
   // console.log(Object.prototype.toString.call(date));
   return date && Object.prototype.toString.call(date) === '[object Date]';
+}
+
+/**
+ * Agrega días a una fecha
+ * @param {Date} fecha
+ * @param {Number} numDias
+ * @returns Date
+ */
+export function agregarDiasFecha(fecha, numDias) {
+  if (isDefined(fecha)) {
+    return moment(fecha).add(numDias, 'days').toDate();
+  }
+  return null;
 }

@@ -12,35 +12,35 @@ import BotonEliminar from '../../components/@dj-components/boton/BotonEliminar';
 import CalendarioRango from '../../components/@dj-components/calendario/CalendarioRango';
 import Combo from '../../components/@dj-components/combo/Combo';
 // hooks
-
+// util
+import { agregarDiasFecha, toDateBDD, getFormatoFechaBDD } from '../../utils/formatTime';
 // ----------------------------------------------------------------------
 
 export default function ConsultaAuditoria() {
   const tabTabla1 = useRef();
+  const carFechas = useRef();
+  const comUsuario = useRef();
 
   const [loading, setLoading] = useState(false);
-  const [usuario, setUsuario] = useState();
-  const [rangoFechas, setRangoFechas] = useState([null, null]);
 
-  const [paramServicio, setParamServicio] = useState({
-    fecha_inicio: '2020-01-01',
-    fecha_fin: '2022-01-01',
+  // Parametros iniciales del servicio
+  const paramServicio = {
+    fecha_inicio: getFormatoFechaBDD(agregarDiasFecha(new Date(), -3)),
+    fecha_fin: getFormatoFechaBDD(new Date()),
     ide_usua: null
-  });
+  };
 
   const eliminarAuditoria = async () => {
     setLoading(true);
-
     setLoading(false);
+    buscar();
   };
 
-  const buscar = async () => {
-    setLoading(true);
-    setLoading(false);
-  };
-
-  const seleccionarUsuario = (event) => {
-    setUsuario(event.target.value);
+  const buscar = () => {
+    paramServicio.fecha_inicio = getFormatoFechaBDD(carFechas.current.getDateFechaInicio());
+    paramServicio.fecha_fin = getFormatoFechaBDD(carFechas.current.getDateFechaFin());
+    paramServicio.ide_usua = comUsuario.current.value === '' ? null : comUsuario.current.value;
+    tabTabla1.current.ejecutarServicio(paramServicio);
   };
 
   return (
@@ -59,8 +59,7 @@ export default function ConsultaAuditoria() {
                 <Stack spacing={3}>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }} alignItems="center">
                     <Combo
-                      value={usuario}
-                      onChange={seleccionarUsuario}
+                      ref={comUsuario}
                       label="Usuario"
                       labelNull="(Todos)"
                       nombreTabla="sis_usuario"
@@ -68,7 +67,12 @@ export default function ConsultaAuditoria() {
                       campoNombre="nom_usua"
                       width="100%"
                     />
-                    <CalendarioRango onBuscar={buscar} />
+                    <CalendarioRango
+                      ref={carFechas}
+                      fechaInicio={toDateBDD(paramServicio.fecha_inicio)}
+                      fechaFinal={toDateBDD(paramServicio.fecha_fin)}
+                      onClick={buscar}
+                    />
                   </Stack>
                 </Stack>
               </Grid>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 // material
@@ -7,6 +7,8 @@ import { MenuItem, TextField } from '@material-ui/core';
 import { getComboTabla } from '../../../services/sistema/servicioSistema';
 // hooks
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
+// utils
+import { isDefined } from '../../../utils/utilitario';
 // ----------------------------------------------------------------------
 
 const StyledTextField = withStyles(() => ({
@@ -27,6 +29,85 @@ const StyledTextField = withStyles(() => ({
   }
 }))(TextField);
 
+const Combo = forwardRef(
+  (
+    {
+      onChange,
+      label = '',
+      nombreTabla,
+      campoPrimario,
+      campoNombre,
+      condicion,
+      width = '17rem',
+      labelNull = 'Null',
+      ...other
+    },
+    ref
+  ) => {
+    useImperativeHandle(ref, () => ({
+      value,
+      setValue,
+      actualizar
+    }));
+
+    const isMountedRef = useIsMountedRef();
+    const [listaCombo, setListaCombo] = useState([]);
+    const [value, setValue] = useState();
+
+    useEffect(() => {
+      getServicioCombo();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    /**
+     * Obtiene las columnas del servicio web
+     */
+    const getServicioCombo = async () => {
+      try {
+        const { data } = await getComboTabla(nombreTabla, campoPrimario, campoNombre, condicion);
+        if (isMountedRef.current) {
+          setListaCombo([{ value: '', label: labelNull }, ...data.datos]);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const actualizar = () => {
+      getServicioCombo();
+    };
+
+    return (
+      <StyledTextField
+        select
+        label={label.toUpperCase()}
+        value={value || ''}
+        margin="none"
+        variant="outlined"
+        size="small"
+        style={{ width, minWidth: width }}
+        InputLabelProps={{
+          shrink: true
+        }}
+        onChange={async (event) => {
+          if (!isDefined(onChange)) {
+            setValue(event.target.value);
+          } else {
+            await setValue(event.target.value);
+            onChange();
+          }
+        }}
+        {...other}
+      >
+        {listaCombo.map((element, index) => (
+          <MenuItem key={index} value={element.value}>
+            {element.label}
+          </MenuItem>
+        ))}
+      </StyledTextField>
+    );
+  }
+);
+
 Combo.propTypes = {
   value: PropTypes.string,
   labelNull: PropTypes.string,
@@ -38,57 +119,4 @@ Combo.propTypes = {
   condicion: PropTypes.string
 };
 
-export default function Combo({
-  value,
-  label = '',
-  nombreTabla,
-  campoPrimario,
-  campoNombre,
-  condicion,
-  width = '17rem',
-  labelNull = 'Null',
-  ...other
-}) {
-  const isMountedRef = useIsMountedRef();
-  const [listaCombo, setListaCombo] = useState([]);
-
-  useEffect(() => {
-    getServicioCombo();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  /**
-   * Obtiene las columnas del servicio web
-   */
-  const getServicioCombo = async () => {
-    try {
-      const { data } = await getComboTabla(nombreTabla, campoPrimario, campoNombre, condicion);
-      if (isMountedRef.current) {
-        setListaCombo([{ value: '', label: labelNull }, ...data.datos]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return (
-    <StyledTextField
-      select
-      label={label.toUpperCase()}
-      value={value || ''}
-      margin="none"
-      variant="outlined"
-      size="small"
-      style={{ width, minWidth: width }}
-      InputLabelProps={{
-        shrink: true
-      }}
-      {...other}
-    >
-      {listaCombo.map((element, index) => (
-        <MenuItem key={index} value={element.value}>
-          {element.label}
-        </MenuItem>
-      ))}
-    </StyledTextField>
-  );
-}
+export default Combo;

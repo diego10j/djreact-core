@@ -99,7 +99,8 @@ const Tabla = forwardRef(
       setCargando,
       isCargando,
       commit,
-      modificar
+      modificar,
+      ejecutarServicio
     }));
 
     const tablaReact = useRef();
@@ -189,10 +190,8 @@ const Tabla = forwardRef(
           }
         }
       } catch (error) {
-        if (isMountedRef.current) {
-          setCargando(false);
-        }
-        console.error(error);
+        setCargando(false);
+        showMensajeError(error.mensaje);
       }
     };
 
@@ -457,10 +456,18 @@ const Tabla = forwardRef(
     /**
      * Actualiza la tabla a su estado original
      */
-    const actualizar = async () => {
+    const actualizar = () => {
       setEliminadas([]);
       setFilaSeleccionada(undefined);
-      await getServicioDatos();
+      getServicioDatos();
+    };
+
+    /**
+     * Actualiza la tabla a su estado original
+     */
+    const ejecutarServicio = (parametros) => {
+      servicio.parametros = parametros;
+      getServicioDatos();
     };
 
     /**

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 // material
 import { DateRangePicker } from '@material-ui/lab';
@@ -6,7 +6,8 @@ import { Box, Stack, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 // componentes
 import BotonBuscar from '../boton/BotonBuscar';
-
+// util
+import { getFormatoFecha } from '../../../utils/formatTime';
 // ----------------------------------------------------------------------
 
 const StyledTextField = withStyles(() => ({
@@ -26,12 +27,23 @@ const StyledTextField = withStyles(() => ({
   }
 }))(TextField);
 
-CalendarioRango.propTypes = {
-  onBuscar: PropTypes.func.isRequired
-};
+const CalendarioRango = forwardRef(({ fechaInicio = new Date(), FechaFin = new Date(), onClick, ...other }, ref) => {
+  useImperativeHandle(ref, () => ({
+    value,
+    setValue,
+    getFechaInicio,
+    getFechaFin,
+    getDateFechaInicio,
+    getDateFechaFin
+  }));
 
-export default function CalendarioRango(onBuscar, ...other) {
-  const [value, setValue] = useState([null, null]);
+  const getFechaInicio = () => getFormatoFecha(value[0]);
+  const getFechaFin = () => getFormatoFecha(value[1]);
+
+  const getDateFechaInicio = () => value[0];
+  const getDateFechaFin = () => value[1];
+
+  const [value, setValue] = useState([fechaInicio, FechaFin]);
   return (
     <DateRangePicker
       inputFormat="dd/MM/yyyy"
@@ -42,7 +54,6 @@ export default function CalendarioRango(onBuscar, ...other) {
       value={value}
       onChange={(newValue) => {
         setValue(newValue);
-        console.log(newValue);
       }}
       renderInput={(startProps, endProps) => (
         <>
@@ -69,10 +80,16 @@ export default function CalendarioRango(onBuscar, ...other) {
             helperText={null}
           />
           <Box sx={{ mx: 0.5 }} />
-          <BotonBuscar />
+          <BotonBuscar onClick={onClick} />
         </>
       )}
       {...other}
     />
   );
-}
+});
+CalendarioRango.propTypes = {
+  onBuscar: PropTypes.func,
+  fechaInicio: PropTypes.instanceOf(Date),
+  fechaFin: PropTypes.instanceOf(Date)
+};
+export default CalendarioRango;
