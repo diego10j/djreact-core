@@ -116,7 +116,8 @@ Combo.propTypes = {
   nombreTabla: PropTypes.string.isRequired,
   campoPrimario: PropTypes.string.isRequired,
   campoNombre: PropTypes.string.isRequired,
-  condicion: PropTypes.string
+  condicion: PropTypes.string,
+  onChange: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
 };
 
 export default Combo;

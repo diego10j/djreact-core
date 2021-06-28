@@ -100,7 +100,8 @@ const Tabla = forwardRef(
       isCargando,
       commit,
       modificar,
-      ejecutarServicio
+      ejecutarServicio,
+      actualizar
     }));
 
     const tablaReact = useRef();
@@ -1014,6 +1015,7 @@ const Tabla = forwardRef(
             showBotonEliminar={showBotonEliminar}
             showBotonModificar={showBotonModificar}
             vistaFormularo={vistaFormularo}
+            lectura={lectura}
           />
         )}
         {!vistaFormularo ? (

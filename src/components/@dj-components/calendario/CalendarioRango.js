@@ -2,7 +2,7 @@ import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 // material
 import { DateRangePicker } from '@material-ui/lab';
-import { Box, Stack, TextField } from '@material-ui/core';
+import { Box, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 // componentes
 import BotonBuscar from '../boton/BotonBuscar';
@@ -27,7 +27,7 @@ const StyledTextField = withStyles(() => ({
   }
 }))(TextField);
 
-const CalendarioRango = forwardRef(({ fechaInicio = new Date(), FechaFin = new Date(), onClick, ...other }, ref) => {
+const CalendarioRango = forwardRef(({ fechaInicio = new Date(), fechaFin = new Date(), onClick, ...other }, ref) => {
   useImperativeHandle(ref, () => ({
     value,
     setValue,
@@ -43,7 +43,7 @@ const CalendarioRango = forwardRef(({ fechaInicio = new Date(), FechaFin = new D
   const getDateFechaInicio = () => value[0];
   const getDateFechaFin = () => value[1];
 
-  const [value, setValue] = useState([fechaInicio, FechaFin]);
+  const [value, setValue] = useState([fechaInicio, fechaFin]);
   return (
     <DateRangePicker
       inputFormat="dd/MM/yyyy"
@@ -90,6 +90,7 @@ const CalendarioRango = forwardRef(({ fechaInicio = new Date(), FechaFin = new D
 CalendarioRango.propTypes = {
   onBuscar: PropTypes.func,
   fechaInicio: PropTypes.instanceOf(Date),
-  fechaFin: PropTypes.instanceOf(Date)
+  fechaFin: PropTypes.instanceOf(Date),
+  onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
 };
 export default CalendarioRango;

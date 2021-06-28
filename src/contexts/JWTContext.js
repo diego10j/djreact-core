@@ -1,8 +1,9 @@
 import { createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 // utils
-import axios from '../utils/axios';
+
 import { isValidToken, setSession } from '../utils/jwt';
+import { llamarServicioGet, llamarServicioPost } from '../services/servicioBase';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +73,7 @@ function AuthProvider({ children }) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/seguridad/renew');
+          const response = await llamarServicioGet('/api/seguridad/renew');
           const { datos } = response.data;
           const user = {
             id: datos.ide_usua,
@@ -123,7 +124,7 @@ function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const response = await axios.post('/api/seguridad/login', {
+    const response = await llamarServicioPost('/api/seguridad/login', {
       email,
       clave: password,
       identificacion: 'react',
@@ -164,7 +165,7 @@ function AuthProvider({ children }) {
   };
 
   const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post('/api/account/register', {
+    const response = await llamarServicioPost('/api/account/register', {
       email,
       password,
       firstName,

@@ -1,4 +1,4 @@
-import axios from '../../utils/axios';
+import { llamarServicioPost } from '../servicioBase';
 
 /**
  * Llama al servicio consultarTabla
@@ -29,10 +29,10 @@ export const consultarTabla = async (
     filas,
     pagina
   };
-  return axios.post('/api/sistema/consultarTabla', body);
+  return llamarServicioPost('/api/sistema/consultarTabla', body);
 };
 
-export const consultarServicio = async (servicio, body = {}) => axios.post(servicio, body);
+export const consultarServicio = async (servicio, body = {}) => llamarServicioPost(servicio, body);
 
 /**
  * Llama al servicio getColumnasTabla
@@ -50,7 +50,7 @@ export const getColumnasTabla = async (nombreTabla, campoPrimario, ideOpci, nume
     ide_opci: ideOpci,
     numero_tabl: numeTabla
   };
-  return axios.post('api/sistema/getColumnas', body);
+  return llamarServicioPost('api/sistema/getColumnas', body);
 };
 
 /**
@@ -71,7 +71,7 @@ export const getComboTabla = async (nombreTabla, campoPrimario, campoNombre, con
     campoNombre,
     condicion
   };
-  return axios.post('api/sistema/getCombo', body);
+  return llamarServicioPost('api/sistema/getCombo', body);
 };
 
 /**
@@ -89,7 +89,7 @@ export const isEliminar = async (nombreTabla, campoPrimario, valorCampoPrimario)
     campoPrimario,
     valorCampoPrimario
   };
-  return axios.post('api/sistema/isEliminar', body);
+  return llamarServicioPost('api/sistema/isEliminar', body);
 };
 
 /**
@@ -101,7 +101,7 @@ export const ejecutarListaSQL = async (listaSQL) => {
   const body = {
     listaSQL
   };
-  return axios.post('api/sistema/ejecutarLista', body);
+  return llamarServicioPost('api/sistema/ejecutarLista', body);
 };
 
 /**
@@ -119,7 +119,7 @@ export const isUnico = async (nombreTabla, campo, valorCampo) => {
     campo,
     valorCampo
   };
-  return axios.post('api/sistema/isUnico', body);
+  return llamarServicioPost('api/sistema/isUnico', body);
 };
 
 /**
@@ -137,7 +137,7 @@ export const getMaximo = async (nombreTabla, campoPrimario, numeroFilas) => {
     campoPrimario,
     numeroFilas
   };
-  return axios.post('api/sistema/getMaximo', body);
+  return llamarServicioPost('api/sistema/getMaximo', body);
 };
 
 /**
@@ -163,7 +163,7 @@ export const consultarArbol = async (nombreTabla, campoPrimario, campoNombre, ca
     campoNombre,
     campoPadre
   };
-  return axios.post('api/sistema/consultarArbol', body);
+  return llamarServicioPost('api/sistema/consultarArbol', body);
 };
 
 /**
@@ -190,7 +190,7 @@ export const configurarTabla = async (ideOpci, tabla, columnas) => {
     tabla,
     columnas
   };
-  return axios.post('api/sistema/configurar', body);
+  return llamarServicioPost('api/sistema/configurar', body);
 };
 
 /**
@@ -202,7 +202,7 @@ export const eliminarConfiguracionTabla = async (ideTabl) => {
   const body = {
     ide_tabl: ideTabl
   };
-  return axios.post('api/sistema/eliminarConfiguracion', body);
+  return llamarServicioPost('api/sistema/eliminarConfiguracion', body);
 };
 
 /**
@@ -216,7 +216,7 @@ export const getConfiguracion = async (ideOpci, numeroTabla) => {
     ide_opci: ideOpci,
     numero_tabl: numeroTabla
   };
-  return axios.post('api/sistema/getConfiguracion', body);
+  return llamarServicioPost('api/sistema/getConfiguracion', body);
 };
 
 /**
@@ -230,11 +230,11 @@ export const getDatosClima = async (longitud, latitud) => {
     longitud,
     latitud
   };
-  return axios.post('api/sistema/getDatosClima', body);
+  return llamarServicioPost('api/sistema/getDatosClima', body);
 };
 
 /**
  *
  * @returns
  */
-export const importarParametros = async () => axios.post('api/sistema/importarParametros');
+export const importarParametros = async () => llamarServicioPost('api/sistema/importarParametros');

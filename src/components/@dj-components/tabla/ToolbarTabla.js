@@ -27,7 +27,8 @@ export default function ToolbarTabla({
   showBotonInsertar,
   showBotonEliminar,
   showBotonModificar,
-  vistaFormularo
+  vistaFormularo,
+  lectura
 }) {
   const anchorRef = useRef(null);
 
@@ -129,33 +130,35 @@ export default function ToolbarTabla({
           Actualizar
         </MenuItem>
 
-        <MenuItem sx={{ typography: 'body2', py: 1, px: 2.5 }} onClick={handleCambiarVista}>
-          {vistaFormularo ? (
-            <>
-              <TableRowsOutlinedIcon
-                fontSize="inherit"
-                sx={{
-                  mr: 2,
-                  width: 24,
-                  height: 24
-                }}
-              />
-              Vista Tabla
-            </>
-          ) : (
-            <>
-              <ListAltOutlinedIcon
-                fontSize="inherit"
-                sx={{
-                  mr: 2,
-                  width: 24,
-                  height: 24
-                }}
-              />
-              Vista Formulario
-            </>
-          )}
-        </MenuItem>
+        {!lectura && (
+          <MenuItem sx={{ typography: 'body2', py: 1, px: 2.5 }} onClick={handleCambiarVista}>
+            {vistaFormularo ? (
+              <>
+                <TableRowsOutlinedIcon
+                  fontSize="inherit"
+                  sx={{
+                    mr: 2,
+                    width: 24,
+                    height: 24
+                  }}
+                />
+                Vista Tabla
+              </>
+            ) : (
+              <>
+                <ListAltOutlinedIcon
+                  fontSize="inherit"
+                  sx={{
+                    mr: 2,
+                    width: 24,
+                    height: 24
+                  }}
+                />
+                Vista Formulario
+              </>
+            )}
+          </MenuItem>
+        )}
 
         <MenuItem sx={{ typography: 'body2', py: 1, px: 2.5 }} onClick={handleExportarExcel}>
           <Box
@@ -197,5 +200,6 @@ ToolbarTabla.propTypes = {
   showBotonInsertar: PropTypes.bool,
   showBotonEliminar: PropTypes.bool,
   showBotonModificar: PropTypes.bool,
-  vistaFormularo: PropTypes.bool
+  vistaFormularo: PropTypes.bool,
+  lectura: PropTypes.bool
 };

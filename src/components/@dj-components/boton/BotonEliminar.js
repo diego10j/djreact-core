@@ -6,7 +6,7 @@ import { LoadingButton } from '@material-ui/lab';
 // iconos
 import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 
-export default function BotonEliminar({ color = 'error', label = 'Eliminar', onClick, loading, ...other }) {
+export default function BotonEliminar({ color = 'error', label = 'Eliminar', onClick, loading = false, ...other }) {
   return (
     <LoadingButton
       variant="contained"
@@ -24,6 +24,6 @@ export default function BotonEliminar({ color = 'error', label = 'Eliminar', onC
 BotonEliminar.propTypes = {
   color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
   label: PropTypes.string,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
   onClick: PropTypes.func.isRequired
 };

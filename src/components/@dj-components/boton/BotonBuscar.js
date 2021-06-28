@@ -23,5 +23,6 @@ export default function BotonBuscar({ color = 'primary', onClick }) {
 }
 
 BotonBuscar.propTypes = {
-  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
+  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
+  onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
 };

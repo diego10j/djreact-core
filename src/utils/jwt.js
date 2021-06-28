@@ -30,6 +30,9 @@ const isValidToken = (accessToken) => {
 // };
 
 const setSession = (accessToken) => {
+  // axios.defaults.params = {};
+  // axios.defaults.params['api-key'] = 'xxxxxx';
+
   if (accessToken) {
     localStorage.setItem('accessToken', accessToken);
     axios.defaults.headers.common['x-token'] = accessToken;

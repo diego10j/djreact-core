@@ -11,15 +11,20 @@ import Tabla from '../../components/@dj-components/tabla/Tabla';
 import BotonEliminar from '../../components/@dj-components/boton/BotonEliminar';
 import CalendarioRango from '../../components/@dj-components/calendario/CalendarioRango';
 import Combo from '../../components/@dj-components/combo/Combo';
+import DialogoConfirmar from '../../components/@dj-components/dialogo/DialogoConfirmar';
 // hooks
 // util
 import { agregarDiasFecha, toDateBDD, getFormatoFechaBDD } from '../../utils/formatTime';
+// servicios
+import { borrarAuditoria } from '../../services/sistema/servicioAuditroia';
+
 // ----------------------------------------------------------------------
 
 export default function ConsultaAuditoria() {
   const tabTabla1 = useRef();
   const carFechas = useRef();
   const comUsuario = useRef();
+  const diaConfirmar = useRef();
 
   const [loading, setLoading] = useState(false);
 
@@ -30,10 +35,16 @@ export default function ConsultaAuditoria() {
     ide_usua: null
   };
 
+  const abrirConfirmarEliminar = async () => {
+    diaConfirmar.current.abrir();
+  };
+
   const eliminarAuditoria = async () => {
     setLoading(true);
+    await borrarAuditoria();
     setLoading(false);
-    buscar();
+    diaConfirmar.current.cerrar();
+    tabTabla1.current.actualizar();
   };
 
   const buscar = () => {
@@ -49,7 +60,14 @@ export default function ConsultaAuditoria() {
         <HeaderBreadcrumbs
           heading="Consulta Auditoria Usuarios"
           links={[{ name: 'Auditoria', href: PATH_DASHBOARD.root }, { name: 'Consulta Auditoria Usuarios' }]}
-          action={<BotonEliminar label="Eliminar Auditoria" onClick={eliminarAuditoria} loading={loading} />}
+          action={<BotonEliminar label="Eliminar Auditoria" onClick={abrirConfirmarEliminar} />}
+        />
+
+        <DialogoConfirmar
+          ref={diaConfirmar}
+          mensaje="Está seguro de que desea eliminar toda la Auditoria del sistema ?"
+          onAceptar={eliminarAuditoria}
+          loading={loading}
         />
 
         <ToolbarPantalla

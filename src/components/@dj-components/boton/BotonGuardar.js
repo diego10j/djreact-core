@@ -6,7 +6,7 @@ import { LoadingButton } from '@material-ui/lab';
 // iconos
 import saveOutline from '@iconify/icons-eva/save-outline';
 
-export default function BotonGuardar({ color = 'primary', label = 'Guardar', onClick, loading, ...other }) {
+export default function BotonGuardar({ color = 'primary', label = 'Guardar', onClick, loading = false, ...other }) {
   return (
     <LoadingButton
       color={color}
@@ -24,6 +24,6 @@ export default function BotonGuardar({ color = 'primary', label = 'Guardar', onC
 BotonGuardar.propTypes = {
   color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
   label: PropTypes.string,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
   onClick: PropTypes.func.isRequired
 };
