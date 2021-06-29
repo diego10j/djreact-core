@@ -60,6 +60,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 
+// Error
+import { ModalErrorProvider } from './contexts/ErrorContext';
+
 // ----------------------------------------------------------------------
 
 ReactDOM.render(
@@ -71,7 +74,9 @@ ReactDOM.render(
             <SettingsProvider>
               <BrowserRouter>
                 <AuthProvider>
-                  <App />
+                  <ModalErrorProvider>
+                    <App />
+                  </ModalErrorProvider>
                 </AuthProvider>
               </BrowserRouter>
             </SettingsProvider>

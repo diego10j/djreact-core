@@ -13,6 +13,7 @@ import CalendarioRango from '../../components/@dj-components/calendario/Calendar
 import Combo from '../../components/@dj-components/combo/Combo';
 import DialogoConfirmar from '../../components/@dj-components/dialogo/DialogoConfirmar';
 // hooks
+import useMensaje from '../../hooks/useMensaje';
 // util
 import { agregarDiasFecha, toDateBDD, getFormatoFechaBDD } from '../../utils/formatTime';
 // servicios
@@ -21,11 +22,13 @@ import { borrarAuditoria } from '../../services/sistema/servicioAuditroia';
 // ----------------------------------------------------------------------
 
 export default function ConsultaAuditoria() {
+  // refererencias hacia componentes
   const tabTabla1 = useRef();
   const carFechas = useRef();
   const comUsuario = useRef();
   const diaConfirmar = useRef();
 
+  const { showError } = useMensaje();
   const [loading, setLoading] = useState(false);
 
   // Parametros iniciales del servicio
@@ -41,10 +44,15 @@ export default function ConsultaAuditoria() {
 
   const eliminarAuditoria = async () => {
     setLoading(true);
-    await borrarAuditoria();
-    setLoading(false);
-    diaConfirmar.current.cerrar();
-    tabTabla1.current.actualizar();
+    try {
+      await borrarAuditoria();
+      tabTabla1.current.actualizar();
+    } catch (error) {
+      showError(error.mensaje, 'Error al borrar Auditoria');
+    } finally {
+      setLoading(false);
+      diaConfirmar.current.cerrar();
+    }
   };
 
   const buscar = () => {
@@ -55,60 +63,62 @@ export default function ConsultaAuditoria() {
   };
 
   return (
-    <Page title="Simple">
-      <Container maxWidth="xl">
-        <HeaderBreadcrumbs
-          heading="Consulta Auditoria Usuarios"
-          links={[{ name: 'Auditoria', href: PATH_DASHBOARD.root }, { name: 'Consulta Auditoria Usuarios' }]}
-          action={<BotonEliminar label="Eliminar Auditoria" onClick={abrirConfirmarEliminar} />}
-        />
+    <>
+      <DialogoConfirmar
+        ref={diaConfirmar}
+        mensaje="Está seguro de que desea eliminar toda la Auditoria del sistema ?"
+        onAceptar={eliminarAuditoria}
+        loading={loading}
+      />
 
-        <DialogoConfirmar
-          ref={diaConfirmar}
-          mensaje="Está seguro de que desea eliminar toda la Auditoria del sistema ?"
-          onAceptar={eliminarAuditoria}
-          loading={loading}
-        />
+      <Page title="Simple">
+        <Container maxWidth="xl">
+          <HeaderBreadcrumbs
+            heading="Consulta Auditoria Usuarios"
+            links={[{ name: 'Auditoria', href: PATH_DASHBOARD.root }, { name: 'Consulta Auditoria Usuarios' }]}
+            action={<BotonEliminar label="Eliminar Auditoria" onClick={abrirConfirmarEliminar} />}
+          />
 
-        <ToolbarPantalla
-          componentes={
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={5} md={5} lg={4}>
-                <Stack spacing={3}>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }} alignItems="center">
-                    <Combo
-                      ref={comUsuario}
-                      label="Usuario"
-                      labelNull="(Todos)"
-                      nombreTabla="sis_usuario"
-                      campoPrimario="ide_usua"
-                      campoNombre="nom_usua"
-                      width="100%"
-                    />
-                    <CalendarioRango
-                      ref={carFechas}
-                      fechaInicio={toDateBDD(paramServicio.fecha_inicio)}
-                      fechaFinal={toDateBDD(paramServicio.fecha_fin)}
-                      onClick={buscar}
-                    />
+          <ToolbarPantalla
+            componentes={
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={5} md={5} lg={4}>
+                  <Stack spacing={3}>
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }} alignItems="center">
+                      <Combo
+                        ref={comUsuario}
+                        label="Usuario"
+                        labelNull="(Todos)"
+                        nombreTabla="sis_usuario"
+                        campoPrimario="ide_usua"
+                        campoNombre="nom_usua"
+                        width="100%"
+                      />
+                      <CalendarioRango
+                        ref={carFechas}
+                        fechaInicio={toDateBDD(paramServicio.fecha_inicio)}
+                        fechaFinal={toDateBDD(paramServicio.fecha_fin)}
+                        onClick={buscar}
+                      />
+                    </Stack>
                   </Stack>
-                </Stack>
+                </Grid>
               </Grid>
-            </Grid>
-          }
-        />
+            }
+          />
 
-        <Card sx={{ mt: 2 }}>
-          <TableContainer sx={{ padding: 2 }}>
-            <Tabla
-              ref={tabTabla1}
-              filasPorPagina={20}
-              numeroTabla={1}
-              servicio={{ nombre: 'api/seguridad/getConsultaAuditoria', parametros: paramServicio }}
-            />
-          </TableContainer>
-        </Card>
-      </Container>
-    </Page>
+          <Card sx={{ mt: 2 }}>
+            <TableContainer sx={{ padding: 2 }}>
+              <Tabla
+                ref={tabTabla1}
+                filasPorPagina={20}
+                numeroTabla={1}
+                servicio={{ nombre: 'api/seguridad/getConsultaAuditoria', parametros: paramServicio }}
+              />
+            </TableContainer>
+          </Card>
+        </Container>
+      </Page>
+    </>
   );
 }

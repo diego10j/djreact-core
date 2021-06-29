@@ -4,9 +4,11 @@
  * Author: DFJG
  */
 import { useSnackbar } from 'notistack';
+import { useModalError } from '../contexts/ErrorContext';
 
 export default function useMensaje() {
   const { enqueueSnackbar } = useSnackbar();
+  const { setModal } = useModalError();
 
   const showMensaje = (mensaje) => {
     configurarMensaje(mensaje);
@@ -18,6 +20,15 @@ export default function useMensaje() {
 
   const showMensajeError = (mensaje) => {
     configurarMensaje(mensaje, 'error');
+  };
+
+  /**
+   * Despliega el Dialogo Modal con el mensaje de error
+   * @param {string} mensaje
+   * @param {string} titulo
+   */
+  const showError = (mensaje, titulo = 'Error') => {
+    setModal({ mensaje, titulo });
   };
 
   const showMensajeInfo = (mensaje) => {
@@ -40,6 +51,7 @@ export default function useMensaje() {
     showMensajeExito,
     showMensajeError,
     showMensajeInfo,
-    showMensajeAdvertencia
+    showMensajeAdvertencia,
+    showError
   };
 }

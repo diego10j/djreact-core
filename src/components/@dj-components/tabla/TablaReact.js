@@ -371,7 +371,7 @@ const TablaReact = forwardRef(
                 <StyledTablePagination
                   component="div"
                   labelRowsPerPage=""
-                  rowsPerPageOptions={[15, 30, 50, 100]}
+                  rowsPerPageOptions={[filasPorPagina, 30, 50, 100]}
                   colSpan={3}
                   count={data.length}
                   rowsPerPage={pageSize}

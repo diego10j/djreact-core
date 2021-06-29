@@ -7,6 +7,7 @@ import { experimentalStyled as styled } from '@material-ui/core/styles';
 import TablaReact from './TablaReact';
 import ToolbarTabla from './ToolbarTabla';
 import TablaFormulario from './TablaFormulario';
+import ConfigurarTabla from './ConfigurarTabla';
 import { CheckLectura, ComboLectura } from './FilaLectura';
 // hooks
 import useMensaje from '../../../hooks/useMensaje';
@@ -120,7 +121,7 @@ const Tabla = forwardRef(
     // const dispatch = useDispatch();
     // const { columnas } = useSelector((state) => state.tabla);
     const isMountedRef = useIsMountedRef();
-    const { showMensajeError, showMensajeAdvertencia } = useMensaje();
+    const { showError, showMensajeError, showMensajeAdvertencia } = useMensaje();
     const [skipPageReset, setSkipPageReset] = useState(false);
     const [isColumnas, setIsColumnas] = useState(false);
     const [cargando, setCargando] = useState(false);
@@ -134,6 +135,7 @@ const Tabla = forwardRef(
     const [indiceTabla, setIndiceTabla] = useState();
     const [vistaFormularo, setVistaFormulario] = useState(tipoFormulario);
     const [paginaActual, setPaginaActual] = useState(0);
+    const [abrirConfigurar, setAbrirConfigurar] = useState(false);
 
     useEffect(() => {
       getServicioColumnas();
@@ -192,7 +194,7 @@ const Tabla = forwardRef(
         }
       } catch (error) {
         setCargando(false);
-        showMensajeError(error.mensaje);
+        showError(error.mensaje);
       }
     };
 
@@ -216,7 +218,7 @@ const Tabla = forwardRef(
           formarColumnas(data.datos);
         }
       } catch (error) {
-        console.error(error);
+        showError(error.mensaje);
       }
     };
 
@@ -242,7 +244,7 @@ const Tabla = forwardRef(
           ]);
         }
       } catch (error) {
-        console.error(error);
+        showError(error.mensaje);
       }
     };
 
@@ -251,7 +253,7 @@ const Tabla = forwardRef(
         const { data } = await isEliminar(nombreTabla, campoPrimario, getValorSeleccionado());
         return !isDefined(data.datos);
       } catch (error) {
-        console.error(error);
+        showError(error.mensaje);
         return false;
       }
     };
@@ -261,7 +263,7 @@ const Tabla = forwardRef(
         const { data } = await isEliminar(nombreTabla, campo, valorCampo);
         return data.datos;
       } catch (error) {
-        console.error(error);
+        showError(error.mensaje);
         return false;
       }
     };
@@ -271,7 +273,7 @@ const Tabla = forwardRef(
         const { data } = await getMaximo(nombreTabla, campoPrimario, numeroFilas);
         return data.datos;
       } catch (error) {
-        console.error(error);
+        showError(error.mensaje);
         return undefined;
       }
     };
@@ -624,7 +626,7 @@ const Tabla = forwardRef(
               setData(data.filter((item) => item[campoPrimario] !== filaSeleccionada[campoPrimario]));
               setFilaSeleccionada(undefined);
             } else {
-              showMensajeError('No se puede eliminar, el registro tiene relación con otras tablas del sistema');
+              showError('El registro tiene relación con otras tablas del sistema', 'No se puede Eliminar');
             }
             setCargando(false);
           }
@@ -1016,6 +1018,7 @@ const Tabla = forwardRef(
             showBotonModificar={showBotonModificar}
             vistaFormularo={vistaFormularo}
             lectura={lectura}
+            setAbrirConfigurar={setAbrirConfigurar}
           />
         )}
         {!vistaFormularo ? (
@@ -1090,6 +1093,7 @@ const Tabla = forwardRef(
             totalColumnasSkeleton={totalColumnasSkeleton}
           />
         )}
+        <ConfigurarTabla columns={columns} open={abrirConfigurar} setOpen={setAbrirConfigurar} />
       </StyledDiv>
     );
   }

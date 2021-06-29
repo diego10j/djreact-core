@@ -13,7 +13,7 @@ import { isDefined } from '../../../utils/utilitario';
 
 const StyledTextField = withStyles(() => ({
   root: {
-    width: '8rem',
+    // width: '8rem',
     '& .MuiInputBase-root': {
       height: '1.99rem'
     },
@@ -117,7 +117,7 @@ Combo.propTypes = {
   campoPrimario: PropTypes.string.isRequired,
   campoNombre: PropTypes.string.isRequired,
   condicion: PropTypes.string,
-  onChange: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
+  onChange: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
 };
 
 export default Combo;

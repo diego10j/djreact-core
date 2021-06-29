@@ -28,7 +28,8 @@ export default function ToolbarTabla({
   showBotonEliminar,
   showBotonModificar,
   vistaFormularo,
-  lectura
+  lectura,
+  setAbrirConfigurar
 }) {
   const anchorRef = useRef(null);
 
@@ -61,7 +62,7 @@ export default function ToolbarTabla({
   };
 
   const handlePersonalizar = () => {
-    console.log('personalizar');
+    setAbrirConfigurar(true);
     setOpen(false);
   };
 
@@ -201,5 +202,6 @@ ToolbarTabla.propTypes = {
   showBotonEliminar: PropTypes.bool,
   showBotonModificar: PropTypes.bool,
   vistaFormularo: PropTypes.bool,
-  lectura: PropTypes.bool
+  lectura: PropTypes.bool,
+  setAbrirConfigurar: PropTypes.func
 };
