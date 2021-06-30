@@ -14,10 +14,10 @@ const StyledTextField = withStyles(() => ({
   root: {
     width: '8rem',
     '& .MuiInputBase-root': {
-      height: '1.99rem'
+      // height: '1.99rem'
     },
     '& .MuiOutlinedInput-input': {
-      paddingBottom: 0
+      // paddingBottom: 0
     },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
@@ -49,8 +49,8 @@ const CalendarioRango = forwardRef(({ fechaInicio = new Date(), fechaFin = new D
       inputFormat="dd/MM/yyyy"
       mask="__/__/____"
       allowSameDateSelection
-      startText="FECHA INICIO"
-      endText="FECHA FIN"
+      startText="Fecha Inicio"
+      endText="Fecha Fin"
       value={value}
       onChange={(newValue) => {
         setValue(newValue);
@@ -58,7 +58,7 @@ const CalendarioRango = forwardRef(({ fechaInicio = new Date(), fechaFin = new D
       renderInput={(startProps, endProps) => (
         <>
           <StyledTextField
-            margin="none"
+            margin="dense"
             variant="outlined"
             size="small"
             error
@@ -70,7 +70,7 @@ const CalendarioRango = forwardRef(({ fechaInicio = new Date(), fechaFin = new D
           />
           <Box sx={{ mx: 0.5 }} />
           <StyledTextField
-            margin="none"
+            margin="dense"
             variant="outlined"
             size="small"
             InputLabelProps={{

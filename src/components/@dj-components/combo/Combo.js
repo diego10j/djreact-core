@@ -8,17 +8,17 @@ import { getComboTabla } from '../../../services/sistema/servicioSistema';
 // hooks
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // utils
-import { isDefined } from '../../../utils/utilitario';
+import { isDefined, toCapitalize } from '../../../utils/utilitario';
 // ----------------------------------------------------------------------
 
 const StyledTextField = withStyles(() => ({
   root: {
     // width: '8rem',
     '& .MuiInputBase-root': {
-      height: '1.99rem'
+      // height: '1.99rem'
     },
     '& .MuiOutlinedInput-input': {
-      paddingBottom: 0
+      // paddingBottom: 0
     },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
@@ -79,9 +79,9 @@ const Combo = forwardRef(
     return (
       <StyledTextField
         select
-        label={label.toUpperCase()}
+        label={toCapitalize(label)}
         value={value || ''}
-        margin="none"
+        margin="dense"
         variant="outlined"
         size="small"
         style={{ width, minWidth: width }}

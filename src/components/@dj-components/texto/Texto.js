@@ -1,10 +1,10 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 // material
 import { TextField } from '@material-ui/core';
 // utils
-import { isDefined } from '../../../utils/utilitario';
+import { isDefined, toCapitalize } from '../../../utils/utilitario';
 // ----------------------------------------------------------------------
 
 const StyledTextField = withStyles(() => ({
@@ -23,19 +23,19 @@ const StyledTextField = withStyles(() => ({
   }
 }))(TextField);
 
-const Texto = forwardRef(({ onChange, label = '', ...other }, ref) => {
+const Texto = forwardRef(({ valorInicial, onChange, label = '', ...other }, ref) => {
   useImperativeHandle(ref, () => ({
     value,
     setValue
   }));
 
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(valorInicial || '');
 
   return (
     <StyledTextField
-      label={label.toUpperCase()}
-      value={value || ''}
-      margin="none"
+      label={toCapitalize(label)}
+      value={value}
+      margin="dense"
       variant="outlined"
       size="small"
       InputLabelProps={{
@@ -46,7 +46,7 @@ const Texto = forwardRef(({ onChange, label = '', ...other }, ref) => {
           setValue(event.target.value);
         } else {
           await setValue(event.target.value);
-          onChange();
+          onChange(event.target.value);
         }
       }}
       {...other}
@@ -55,7 +55,7 @@ const Texto = forwardRef(({ onChange, label = '', ...other }, ref) => {
 });
 
 Texto.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+  valorInicial: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
   label: PropTypes.string,
   onChange: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
 };

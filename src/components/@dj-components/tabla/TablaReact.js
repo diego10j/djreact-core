@@ -421,7 +421,7 @@ const TablaReact = forwardRef(
                               direction={columna.isSortedDesc ? 'desc' : 'asc'}
                             >
                               <span>
-                                {columna.nombrevisual}{' '}
+                                {columna.nombrevisual}
                                 {columna.requerida && (
                                   <Typography color="error" component="span">
                                     {' '}
@@ -432,7 +432,7 @@ const TablaReact = forwardRef(
                             </TableSortLabel>
                           ) : (
                             <span>
-                              {columna.nombrevisual}{' '}
+                              {columna.nombrevisual}
                               {columna.requerida && (
                                 <Typography color="error" component="span">
                                   {' '}
@@ -441,7 +441,7 @@ const TablaReact = forwardRef(
                               )}
                             </span>
                           )}
-                          {columna.filtro && <div key={i}>{columna.render('Filter')} </div>}
+                          {columna.filtro && <div>{columna.render('Filter')} </div>}
                         </StyledTableCellHeader>
                       ))}
                     </TableRow>

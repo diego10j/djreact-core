@@ -119,6 +119,7 @@ export function DefaultColumnFilter({ column, setColumnaSeleccionada, combos }) 
   return (
     <>
       {(column.componente === 'Texto' ||
+        column.componente === 'Etiqueta' ||
         column.componente === 'Calendario' ||
         column.componente === 'Hora' ||
         column.componente === 'TextoNumero' ||

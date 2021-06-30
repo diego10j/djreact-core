@@ -328,6 +328,12 @@ const Tabla = forwardRef(
           if (lectura) {
             _columna.lectura = true;
           }
+          if (!isDefined(_columna.ordenable)) {
+            _columna.ordenable = true;
+          }
+          if (!isDefined(_columna.requerida)) {
+            _columna.requerida = false;
+          }
           // valores por defecto
           if (!isDefined(_columna.valordefecto)) {
             _columna.valordefecto = '';
@@ -345,7 +351,9 @@ const Tabla = forwardRef(
           }
 
           _columna.accessor = _columna.nombre;
-          _columna.filter = 'fuzzyText';
+          if (_columna.filtro) {
+            _columna.filter = 'fuzzyText';
+          }
           if (_columna.componente === 'Check') {
             // CheckBox de lectura
             _columna.Cell = CheckLectura;
@@ -374,7 +382,6 @@ const Tabla = forwardRef(
           _columna.requerida = req;
         });
       }
-
       if (isMountedRef.current) {
         setColumns(cols);
         setIsColumnas(true);

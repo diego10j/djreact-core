@@ -13,7 +13,6 @@ export function isNumber(valor) {
 
 export function toCapitalize(str) {
   str = str.toLowerCase();
-  console.log(str.charAt(0).toUpperCase() + str.slice(1));
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
