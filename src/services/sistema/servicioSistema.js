@@ -174,17 +174,6 @@ export const consultarArbol = async (nombreTabla, campoPrimario, campoNombre, ca
  * @returns
  */
 export const configurarTabla = async (ideOpci, tabla, columnas) => {
-  // const tabConf = new Tabla();
-  // tabConf.numeroTabla = tabla.numeroTabla;
-  // tabConf.nombreTabla = tabla.nombreTabla;
-  // tabConf.campoPrimario = tabla.campoPrimario;
-  // tabConf.campoNombre = tabla.campoNombre;
-  // tabConf.campoForanea = tabla.campoForanea;
-  // tabConf.campoPadre = tabla.campoPadre;
-  // tabConf.campoOrden = tabla.campoOrden;
-  // tabConf.numeroFilas = tabla.numeroFilas;
-  // tabConf.tipoFormulario = tabla.tipoFormulario;
-  // tabConf.calculaPrimaria = tabla.calculaPrimaria;
   const body = {
     ide_opci: ideOpci,
     tabla,
