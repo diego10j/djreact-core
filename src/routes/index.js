@@ -107,7 +107,8 @@ export default function Router() {
           path: 'sistema',
           children: [
             { path: 'simple', element: <Simple /> },
-            { path: 'empresa', element: <Empresa /> }
+            { path: 'empresa', element: <Empresa /> },
+            { path: 'usuarios', element: <Usuarios /> }
           ]
         },
 
@@ -281,6 +282,7 @@ const ConsultaAuditoria = Loadable(lazy(() => import('../pages/auditoria/consult
 // Sistema
 const Simple = Loadable(lazy(() => import('../pages/sistema/simple')));
 const Empresa = Loadable(lazy(() => import('../pages/sistema/empresa')));
+const Usuarios = Loadable(lazy(() => import('../pages/sistema/usuarios')));
 
 // Docs
 const Docs = Loadable(lazy(() => import('../pages/Docs')));

@@ -45,7 +45,8 @@ export const PATH_DASHBOARD = {
   },
   sistema: {
     simple: path(ROOTS_DASHBOARD, '/sistema/simple'),
-    empresa: path(ROOTS_DASHBOARD, '/sistema/empresa')
+    empresa: path(ROOTS_DASHBOARD, '/sistema/empresa'),
+    usuarios: path(ROOTS_DASHBOARD, '/sistema/usuarios')
   },
   mail: {
     root: path(ROOTS_DASHBOARD, '/mail'),

@@ -421,7 +421,7 @@ const TablaReact = forwardRef(
                               direction={columna.isSortedDesc ? 'desc' : 'asc'}
                             >
                               <span>
-                                {columna.nombrevisual}
+                                {columna.nombreVisual}
                                 {columna.requerida && (
                                   <Typography color="error" component="span">
                                     {' '}
@@ -432,7 +432,7 @@ const TablaReact = forwardRef(
                             </TableSortLabel>
                           ) : (
                             <span>
-                              {columna.nombrevisual}
+                              {columna.nombreVisual}
                               {columna.requerida && (
                                 <Typography color="error" component="span">
                                   {' '}

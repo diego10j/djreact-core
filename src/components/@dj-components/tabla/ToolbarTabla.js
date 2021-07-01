@@ -32,7 +32,6 @@ export default function ToolbarTabla({
   setAbrirConfigurar
 }) {
   const anchorRef = useRef(null);
-
   const [open, setOpen] = useState(false);
   const handleCerrar = () => {
     setOpen(false);

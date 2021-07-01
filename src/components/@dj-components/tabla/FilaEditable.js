@@ -5,12 +5,21 @@ import * as Yup from 'yup';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { FormControl, FormControlLabel, InputLabel, MenuItem, Select, Skeleton, TextField } from '@material-ui/core';
+import {
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  Skeleton,
+  TextField,
+  Avatar
+} from '@material-ui/core';
 import { withStyles, experimentalStyled as styled, alpha } from '@material-ui/core/styles';
 import DatePicker from '@material-ui/lab/DatePicker';
 import TimePicker from '@material-ui/lab/TimePicker';
 import { toDate, isFechaValida, isDate, toHora, getFormatoFecha, getFormatoHora } from '../../../utils/formatTime';
-import { isDefined } from '../../../utils/utilitario';
+import { isDefined, toCapitalize } from '../../../utils/utilitario';
 
 const StyledTableCellBody = styled('td')(({ theme }) => ({
   padding: 0,
@@ -163,21 +172,9 @@ export function ComponenteEditable({
         />
       )}
 
-      {column.componente === 'TextoNumero' && (
-        <TextoNumero
-          setValorFilaSeleccionada={setValorFilaSeleccionada}
-          getValorFilaSeleccionada={getValorFilaSeleccionada}
-          column={column}
-          modificarFila={modificarFila}
-          foco={foco}
-          updateMyData={updateMyData}
-          index={index}
-          vistaFormularo={vistaFormularo}
-        />
-      )}
-
-      {column.componente === 'TextoEntero' && (
-        <TextoNumero
+      {(column.componente === 'TextoNumero' || column.componente === 'TextoEntero') && (
+        <Texto
+          type="number"
           setValorFilaSeleccionada={setValorFilaSeleccionada}
           getValorFilaSeleccionada={getValorFilaSeleccionada}
           column={column}
@@ -241,6 +238,8 @@ export function ComponenteEditable({
           vistaFormularo={vistaFormularo}
         />
       )}
+
+      {column.componente === 'Avatar' && <Avatar alt={column.nombre} />}
     </>
   );
 }
@@ -269,7 +268,8 @@ const Texto = ({
   setValorFilaSeleccionada,
   getValorFilaSeleccionada,
   vistaFormularo,
-  hookFormulario
+  hookFormulario,
+  ...other
 }) => {
   const [isModifico, setIsModificado] = useState(false);
   const [erorr, setError] = useState(false);
@@ -325,6 +325,7 @@ const Texto = ({
           disabled={column.lectura}
           error={erorr}
           InputLabelProps={{ style: { textAlign: `${column.alinear}` } }}
+          {...other}
         />
       ) : (
         <TextField
@@ -339,13 +340,14 @@ const Texto = ({
           size="small"
           disabled={column.lectura}
           error={erorr}
-          label={column.nombrevisual}
+          label={toCapitalize(column.nombreVisual)}
           helperText={mensajeError}
           required={column.requerida}
           InputLabelProps={{
             shrink: true,
             style: { textAlign: `${column.alinear}` }
           }}
+          {...other}
         />
       )}
     </>
@@ -362,85 +364,6 @@ Texto.propTypes = {
   index: PropTypes.number,
   vistaFormularo: PropTypes.bool,
   hookFormulario: PropTypes.object
-};
-
-// ----------------------------------------------------------------------
-
-const TextoNumero = ({
-  column,
-  modificarFila,
-  foco,
-  updateMyData,
-  index,
-  setValorFilaSeleccionada,
-  getValorFilaSeleccionada,
-  vistaFormularo
-}) => {
-  // We need to keep and update the state of the cell normally
-  const [isModifico, setIsModificado] = useState(false);
-
-  const onChange = (e) => {
-    setValorFilaSeleccionada(column.nombre, e.target.value);
-    setIsModificado(true);
-  };
-
-  // We'll only update the external data when the input is blurred
-  const onBlur = () => {
-    if (isModifico) {
-      modificarFila(column, index);
-      updateMyData(index, column.nombre, getValorFilaSeleccionada(column.nombre));
-      setIsModificado(false);
-    }
-  };
-
-  return (
-    <>
-      {!vistaFormularo ? (
-        <StyledTextField
-          type="number"
-          value={getValorFilaSeleccionada(column.nombre)}
-          onChange={onChange}
-          onBlur={onBlur}
-          fullWidth
-          size="small"
-          variant="outlined"
-          margin="none"
-          autoFocus={foco}
-          inputProps={{ style: { textAlign: `${column.alinear}` } }}
-          disabled={column.lectura}
-        />
-      ) : (
-        <TextField
-          type="number"
-          value={getValorFilaSeleccionada(column.nombre)}
-          onChange={onChange}
-          onBlur={onBlur}
-          autoFocus={foco}
-          margin="none"
-          fullWidth
-          variant="outlined"
-          size="small"
-          label={column.nombrevisual}
-          disabled={column.lectura}
-          InputLabelProps={{
-            shrink: true,
-            style: { textAlign: `${column.alinear}` }
-          }}
-        />
-      )}
-    </>
-  );
-};
-
-TextoNumero.propTypes = {
-  setValorFilaSeleccionada: PropTypes.func,
-  getValorFilaSeleccionada: PropTypes.func,
-  column: PropTypes.object.isRequired,
-  modificarFila: PropTypes.func,
-  updateMyData: PropTypes.func,
-  foco: PropTypes.bool,
-  index: PropTypes.number,
-  vistaFormularo: PropTypes.bool
 };
 
 // ----------------------------------------------------------------------
@@ -502,7 +425,7 @@ const Combo = ({
           ) : (
             <FormControl variant="outlined" margin="none" fullWidth size="small">
               <InputLabel shrink id={`${column.nombre}`}>
-                {column.nombrevisual}
+                {column.nombreVisual}
               </InputLabel>
               <Select
                 labelId={`${column.nombre}`}
@@ -510,7 +433,7 @@ const Combo = ({
                 onChange={onChange}
                 onBlur={onBlur}
                 size="small"
-                label={column.nombrevisual}
+                label={toCapitalize(column.nombreVisual)}
                 disabled={column.lectura}
               >
                 {combos
@@ -572,7 +495,7 @@ const Check = ({
       ) : (
         <>
           <FormControl variant="outlined" margin="none" size="small" fullWidth>
-            <InputLabel shrink>{column.nombrevisual}</InputLabel>
+            <InputLabel shrink>{toCapitalize(column.nombreVisual)}</InputLabel>
             <FormControlLabel
               value="end"
               control={
@@ -703,7 +626,7 @@ const Calendario = ({
               onBlur={onBlur}
               value={value}
               error={false}
-              label={column.nombrevisual}
+              label={toCapitalize(column.nombreVisual)}
               onChange={onChangeInput}
             />
           )}
@@ -823,7 +746,7 @@ const Hora = ({
               size="small"
               variant="outlined"
               margin="none"
-              label={column.nombrevisual}
+              label={toCapitalize(column.nombreVisual)}
               autoFocus={foco}
               helperText={null}
               onBlur={onBlur}

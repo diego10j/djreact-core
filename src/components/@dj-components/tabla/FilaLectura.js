@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // Componente Check de Lectura
-import Checkbox from '@material-ui/core/Checkbox';
-import Skeleton from '@material-ui/core/Skeleton';
+
+import { Stack, Checkbox, Skeleton, Avatar } from '@material-ui/core';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { withStyles } from '@material-ui/core/styles';
+import { inicialesAvatar, isDefined, stringToColorAvatar } from '../../../utils/utilitario';
+import { backendUrl } from '../../../config';
 
 // Componentes que se dibujan en lugar de un campo de Texto
 
@@ -34,6 +36,34 @@ export function CheckLectura({ value: initialValue }) {
 
 CheckLectura.propTypes = {
   value: PropTypes.bool
+};
+
+export function AvatarLectura({ value: initialValue, column: { campoNombreAvatar }, row: { values } }) {
+  const imagen = isDefined(initialValue) ? `${backendUrl}/api/uploads/getImagen/${initialValue}` : null;
+  return (
+    <Stack alignItems="center" justifyContent="center">
+      {isDefined(initialValue) || !isDefined(campoNombreAvatar) ? (
+        <Avatar src={imagen} sx={{ width: 32, height: 32, my: 0.5 }} />
+      ) : (
+        <Avatar
+          sx={{
+            width: 32,
+            height: 32,
+            my: 0.5,
+            bgcolor: stringToColorAvatar(values[campoNombreAvatar])
+          }}
+        >
+          {inicialesAvatar(values[campoNombreAvatar])}
+        </Avatar>
+      )}
+    </Stack>
+  );
+}
+
+AvatarLectura.propTypes = {
+  value: PropTypes.string,
+  column: PropTypes.object,
+  row: PropTypes.object
 };
 
 export function ComboLectura({ value: initialValue, cell: column, combos }) {

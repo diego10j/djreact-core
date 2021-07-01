@@ -12,8 +12,52 @@ export function isNumber(valor) {
 }
 
 export function toCapitalize(str) {
-  str = str.toLowerCase();
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  // str = str.toLowerCase();
+  // return str.charAt(0).toUpperCase() + str.slice(1);
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+    .join(' ');
+}
+
+/**
+ * Retorna las iniciales de un nombre
+ * @param {string} nombre
+ * @returns
+ */
+export function inicialesAvatar(nombre) {
+  let letras = '';
+  if (isDefined(nombre)) {
+    letras = nombre.charAt(0);
+    if (nombre.indexOf(' ') !== -1) {
+      nombre = nombre.substring(nombre.indexOf(' ') + 1, nombre.length);
+      letras += nombre.charAt(0);
+    }
+  }
+  return letras;
+}
+
+/**
+ * Calucla un color de acuerdo al string
+ * @param {*} string
+ * @returns
+ */
+export function stringToColorAvatar(string) {
+  let color = '#fefefe';
+  if (isDefined(string)) {
+    let hash = 0;
+    let i;
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.substr(-2);
+    }
+  }
+  return color;
 }
 
 /**

@@ -80,8 +80,8 @@ export default function ConfigurarTabla({ open, setOpen, columns, getServicioCon
   const seleccionarColumna = (columna, i) => {
     setSeleccionada(columna);
     setIndex(i);
-    txtNombreVisual.current.setValue(columna.nombrevisual);
-    txtAnchoColumna.current.setValue(columna.anchocolumna);
+    txtNombreVisual.current.setValue(columna.nombreVisual);
+    txtAnchoColumna.current.setValue(columna.anchoColumna);
     chsMayusculas.current.setValue(columna.mayuscula || false);
     chsFiltro.current.setValue(columna.filtro || false);
   };
@@ -204,7 +204,7 @@ export default function ConfigurarTabla({ open, setOpen, columns, getServicioCon
                           disableGutters
                           dense
                         >
-                          <ListItemText sx={{ px: 2 }} primary={column.nombrevisual} />
+                          <ListItemText sx={{ px: 2 }} primary={column.nombreVisual} />
                         </ListItem>
                       )
                   )}
@@ -214,7 +214,7 @@ export default function ConfigurarTabla({ open, setOpen, columns, getServicioCon
 
             <Stack direction="column" justifyContent={{ xs: 'center', sm: 'flex-start' }} spacing={2}>
               <Texto
-                name="nombrevisual"
+                name="nombreVisual"
                 ref={txtNombreVisual}
                 disabled={!isDefined(seleccionada)}
                 onChange={cambiarTexto}
@@ -224,7 +224,7 @@ export default function ConfigurarTabla({ open, setOpen, columns, getServicioCon
                 fullWidth
               />
               <Texto
-                name="anchocolumna"
+                name="anchoColumna"
                 ref={txtAnchoColumna}
                 disabled={!isDefined(seleccionada)}
                 onChange={cambiarTexto}

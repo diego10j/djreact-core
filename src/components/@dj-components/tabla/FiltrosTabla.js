@@ -105,9 +105,8 @@ const StyledPopper = styled(Popper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128'
 }));
 
-const StyledCheckbox = withStyles(({ theme }) => ({
+const StyledCheckbox = withStyles(() => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
     outline: 'none',
     paddingTop: 0,
     margginTop: 0

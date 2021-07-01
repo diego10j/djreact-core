@@ -84,7 +84,12 @@ export default function ConsultaAuditoria() {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={5} md={5} lg={4}>
                   <Stack spacing={3}>
-                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 3, sm: 2 }} alignItems="center">
+                    <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={{ xs: 3, sm: 2 }}
+                      alignItems="center"
+                      justifyContent={{ xs: 'center', sm: 'flex-start' }}
+                    >
                       <Combo
                         ref={comUsuario}
                         label="Usuario"
@@ -106,12 +111,12 @@ export default function ConsultaAuditoria() {
               </Grid>
             }
           />
-
           <Card sx={{ mt: 2 }}>
             <TableContainer sx={{ padding: 2 }}>
               <Tabla
                 ref={tabTabla1}
                 filasPorPagina={20}
+                campoPrimario="ide_auac"
                 numeroTabla={1}
                 servicio={{ nombre: 'api/seguridad/getConsultaAuditoria', parametros: paramServicio }}
               />

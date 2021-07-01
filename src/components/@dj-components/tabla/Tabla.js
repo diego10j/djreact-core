@@ -8,7 +8,7 @@ import TablaReact from './TablaReact';
 import ToolbarTabla from './ToolbarTabla';
 import TablaFormulario from './TablaFormulario';
 import ConfigurarTabla from './ConfigurarTabla';
-import { CheckLectura, ComboLectura } from './FilaLectura';
+import { AvatarLectura, CheckLectura, ComboLectura } from './FilaLectura';
 // hooks
 import useMensaje from '../../../hooks/useMensaje';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -113,14 +113,14 @@ const Tabla = forwardRef(
     const tablaFormulario = useRef();
 
     // Aplica valores por defecto en caso de ser la tabla de lectura
-    if (lectura === true) {
-      showBotonInsertar = false;
-      showBotonEliminar = false;
-      showBotonModificar = false;
-    } else {
-      showBotonInsertar = true;
-      showBotonEliminar = true;
-    }
+    // if (lectura === true) {
+    //   showBotonInsertar = false;
+    //   showBotonEliminar = false;
+    //   showBotonModificar = false;
+    // } else {
+    //   showBotonInsertar = true;
+    //   showBotonEliminar = true;
+    // }
 
     // const dispatch = useDispatch();
     // const { columnas } = useSelector((state) => state.tabla);
@@ -311,9 +311,9 @@ const Tabla = forwardRef(
           if (colActual) {
             colActual.visible = 'visible' in _columna ? _columna.visible : colActual.visible;
             colActual.filtro = 'filtro' in _columna ? _columna.filtro : colActual.filtro;
-            colActual.nombrevisual =
-              'nombreVisual' in _columna ? _columna.nombreVisual.toUpperCase() : colActual.nombrevisual;
-            colActual.valordefecto = 'valorDefecto' in _columna ? _columna.valorDefecto : colActual.valordefecto;
+            colActual.nombreVisual =
+              'nombreVisual' in _columna ? _columna.nombreVisual.toUpperCase() : colActual.nombreVisual;
+            colActual.valorDefecto = 'valorDefecto' in _columna ? _columna.valorDefecto : colActual.valorDefecto;
             colActual.requerida = 'requerida' in _columna ? _columna.requerida : colActual.requerida;
             colActual.lectura = 'lectura' in _columna ? _columna.lectura : colActual.lectura;
             colActual.orden = 'orden' in _columna ? _columna.orden : colActual.orden;
@@ -326,19 +326,25 @@ const Tabla = forwardRef(
           } else {
             throw new Error(`Error la columna ${_columna.nombre} no existe`);
           }
+          // Configuración Combo
           if (isDefined(_columna.combo)) {
-            // Configuracion combo
             // Valor por defecto ''
-            if (!isDefined(colActual.valordefecto)) {
-              colActual.valordefecto = '';
+            if (!isDefined(colActual.valorDefecto)) {
+              colActual.valorDefecto = '';
             }
             colActual.componente = 'Combo';
-            colActual.anchocolumna = 18;
+            colActual.anchoColumna = 18;
             colActual.nombreTablaCombo = _columna.combo.nombreTabla;
             colActual.campoPrimarioCombo = _columna.combo.campoPrimario;
             colActual.campoNombreCombo = _columna.combo.campoNombre;
             colActual.condicionCombo = _columna.combo.condicion;
             await getServicioCombo(colActual);
+          }
+          // Configuración Avatar
+          if (isDefined(_columna.avatar)) {
+            colActual.componente = 'Avatar';
+            colActual.campoNombreAvatar = _columna.avatar.campoNombre === '' ? null : _columna.avatar.campoNombre;
+            colActual.ordenable = false;
           }
         });
       }
@@ -359,8 +365,8 @@ const Tabla = forwardRef(
             _columna.requerida = false;
           }
           // valores por defecto
-          if (!isDefined(_columna.valordefecto)) {
-            _columna.valordefecto = '';
+          if (!isDefined(_columna.valorDefecto)) {
+            _columna.valorDefecto = '';
           }
           // alinear
           if (isDefined(_columna.alinear)) {
@@ -381,9 +387,9 @@ const Tabla = forwardRef(
           if (_columna.componente === 'Check') {
             // CheckBox de lectura
             _columna.Cell = CheckLectura;
-            _columna.anchocolumna = 7;
-            if (_columna.valordefecto === '') {
-              _columna.valordefecto = false;
+            _columna.anchoColumna = 7;
+            if (_columna.valorDefecto === '') {
+              _columna.valorDefecto = false;
             }
           } else if (_columna.componente === 'Combo') {
             // CheckBox de lectura
@@ -391,10 +397,14 @@ const Tabla = forwardRef(
             _columna.filter = multiSelectFilter;
           } else if (_columna.componente === 'Calendario' || _columna.componente === 'Hora') {
             // ancho de la columna
-            _columna.anchocolumna = 5;
+            _columna.anchoColumna = 5;
+          } else if (_columna.componente === 'Avatar') {
+            _columna.Cell = AvatarLectura;
+            _columna.anchoColumna = 4;
           }
+
           if (!isDefined(_columna.width)) {
-            _columna.width = _columna.anchocolumna * 17;
+            _columna.width = _columna.anchoColumna * 17;
           }
         });
       }
@@ -602,8 +612,8 @@ const Tabla = forwardRef(
       const tmpPK = 0 - (getInsertadas().length + 1);
       const filaNueva = { insertada: true };
       columns.forEach((_columna) => {
-        const { nombre, valordefecto } = _columna;
-        filaNueva[nombre] = valordefecto;
+        const { nombre, valorDefecto } = _columna;
+        filaNueva[nombre] = valorDefecto;
         if (nombre === campoPrimario) {
           filaNueva[nombre] = tmpPK;
         }
@@ -692,7 +702,7 @@ const Tabla = forwardRef(
           const colActual = colObligatorias[j];
           const valor = filaActual[colActual.nombre];
           if (isEmpty(valor)) {
-            showMensajeAdvertencia(`Los valores de la columna ${colActual.nombrevisual} son obligatorios`);
+            showMensajeAdvertencia(`Los valores de la columna ${colActual.nombreVisual} son obligatorios`);
             return false;
           }
         }
@@ -705,7 +715,7 @@ const Tabla = forwardRef(
               // Valida mediante el servicio web
               if (await getServicioIsUnico(colActual, valor)) {
                 showMensajeAdvertencia(
-                  `Restricción única, ya existe un registro con el valor ${valor} en la columna ${colActual.nombrevisual}`
+                  `Restricción única, ya existe un registro con el valor ${valor} en la columna ${colActual.nombreVisual}`
                 );
                 throw new Error('Restricción única.');
               }
@@ -733,7 +743,7 @@ const Tabla = forwardRef(
           if (colActual.requerida) {
             const valor = filaActual[colNombreActual];
             if (isDefined(valor) === false) {
-              showMensajeAdvertencia(`Los valores de la columna ${colActual.nombrevisual} son obligatorios`);
+              showMensajeAdvertencia(`Los valores de la columna ${colActual.nombreVisual} son obligatorios`);
               return false;
             }
           }
@@ -793,7 +803,7 @@ const Tabla = forwardRef(
           // valida que sea una fecha correcta
           const dt = toDate(getFormatoFecha(valor));
           if (!isDate(dt)) {
-            showMensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
+            showMensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombreVisual}`);
             return false;
           }
           // console.log(fila);
@@ -804,7 +814,7 @@ const Tabla = forwardRef(
           // valida que sea una hora correcta
           const dt = toHora(getFormatoHora(valor));
           if (!isDate(dt)) {
-            showMensajeAdvertencia(`Hora no válida ${valor} en la columna  ${columna.nombrevisual}`);
+            showMensajeAdvertencia(`Hora no válida ${valor} en la columna  ${columna.nombreVisual}`);
             return false;
           }
           // console.log(fila);
@@ -816,7 +826,7 @@ const Tabla = forwardRef(
           // valida que sea una fecha correcta
           const dt = toDate(getFormatoFechaHora(valor));
           if (!isDate(dt)) {
-            showMensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombrevisual}`);
+            showMensajeAdvertencia(`Fecha no válida ${valor} en la columna  ${columna.nombreVisual}`);
             return false;
           }
         }
@@ -1137,8 +1147,8 @@ const Tabla = forwardRef(
 );
 Tabla.propTypes = {
   numeroTabla: PropTypes.number.isRequired,
+  campoPrimario: PropTypes.string.isRequired,
   nombreTabla: PropTypes.string,
-  campoPrimario: PropTypes.string,
   campoOrden: PropTypes.string,
   campoNombre: PropTypes.string,
   campoForanea: PropTypes.string,
@@ -1174,6 +1184,9 @@ Tabla.propTypes = {
         campoPrimario: PropTypes.string.isRequired,
         campoNombre: PropTypes.string.isRequired,
         condicion: PropTypes.string
+      }),
+      avatar: PropTypes.shape({
+        campoNombre: PropTypes.string.isRequired
       })
     })
   ),

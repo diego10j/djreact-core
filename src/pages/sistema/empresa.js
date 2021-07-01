@@ -77,8 +77,8 @@ export default function Empresa() {
               <Box sx={{ mb: 5, mt: 5 }}>
                 <Tabla
                   ref={tabTabla1}
+                  numeroTabla={1}
                   filasPorPagina={20}
-                  numeroTabla={2}
                   nombreTabla="sis_empresa"
                   campoPrimario="ide_empr"
                   condiciones={condiciones}

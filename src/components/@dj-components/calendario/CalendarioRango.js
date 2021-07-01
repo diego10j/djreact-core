@@ -2,7 +2,7 @@ import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 // material
 import { DateRangePicker } from '@material-ui/lab';
-import { Box, TextField } from '@material-ui/core';
+import { Box, Stack, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 // componentes
 import BotonBuscar from '../boton/BotonBuscar';
@@ -56,7 +56,7 @@ const CalendarioRango = forwardRef(({ fechaInicio = new Date(), fechaFin = new D
         setValue(newValue);
       }}
       renderInput={(startProps, endProps) => (
-        <>
+        <Stack alignItems="center" direction="rows">
           <StyledTextField
             margin="dense"
             variant="outlined"
@@ -81,7 +81,7 @@ const CalendarioRango = forwardRef(({ fechaInicio = new Date(), fechaFin = new D
           />
           <Box sx={{ mx: 0.5 }} />
           <BotonBuscar onClick={onClick} />
-        </>
+        </Stack>
       )}
       {...other}
     />
