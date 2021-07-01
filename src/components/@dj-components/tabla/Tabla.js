@@ -19,7 +19,8 @@ import {
   getColumnasTabla,
   getComboTabla,
   isEliminar,
-  getMaximo
+  getMaximo,
+  configurarTabla
 } from '../../../services/sistema/servicioSistema';
 // utilitarios
 import { isDefined, isEmpty, getIdeOpci } from '../../../utils/utilitario';
@@ -52,6 +53,9 @@ const Tabla = forwardRef(
       numeroTabla,
       nombreTabla,
       campoPrimario,
+      campoNombre,
+      campoForanea,
+      campoPadre,
       condiciones,
       servicio,
       lectura = true,
@@ -275,6 +279,26 @@ const Tabla = forwardRef(
       } catch (error) {
         showError(error.mensaje);
         return undefined;
+      }
+    };
+
+    const getServicioConfigurarTabla = async () => {
+      try {
+        const tabConf = {
+          numeroTabla,
+          nombreTabla,
+          campoPrimario,
+          campoNombre,
+          campoForanea,
+          campoPadre,
+          campoOrden,
+          numeroFilas: filasPorPagina,
+          tipoFormulario,
+          calculaPrimaria
+        };
+        await configurarTabla(getIdeOpci(), tabConf, columns);
+      } catch (error) {
+        showError(error.mensaje);
       }
     };
 
@@ -1100,7 +1124,13 @@ const Tabla = forwardRef(
             totalColumnasSkeleton={totalColumnasSkeleton}
           />
         )}
-        <ConfigurarTabla columns={columns} open={abrirConfigurar} setOpen={setAbrirConfigurar} />
+        <ConfigurarTabla
+          columns={columns}
+          open={abrirConfigurar}
+          setOpen={setAbrirConfigurar}
+          setColumns={setColumns}
+          getServicioConfigurarTabla={getServicioConfigurarTabla}
+        />
       </StyledDiv>
     );
   }
@@ -1110,6 +1140,9 @@ Tabla.propTypes = {
   nombreTabla: PropTypes.string,
   campoPrimario: PropTypes.string,
   campoOrden: PropTypes.string,
+  campoNombre: PropTypes.string,
+  campoForanea: PropTypes.string,
+  campoPadre: PropTypes.string,
   condiciones: PropTypes.object,
   servicio: PropTypes.shape({
     nombre: PropTypes.string.isRequired,

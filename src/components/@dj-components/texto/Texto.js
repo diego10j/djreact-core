@@ -46,7 +46,7 @@ const Texto = forwardRef(({ valorInicial, onChange, label = '', ...other }, ref)
           setValue(event.target.value);
         } else {
           await setValue(event.target.value);
-          onChange(event.target.value);
+          onChange(event);
         }
       }}
       {...other}

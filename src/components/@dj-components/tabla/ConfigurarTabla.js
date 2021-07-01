@@ -47,7 +47,7 @@ function ordenar(columns) {
   return columns.sort((a, b) => (a.orden < b.orden ? -1 : 1));
 }
 
-export default function ConfigurarTabla({ open, setOpen, columns }) {
+export default function ConfigurarTabla({ open, setOpen, columns, getServicioConfigurarTabla, setColumns }) {
   const txtNombreVisual = useRef();
   const txtAnchoColumna = useRef();
   const chsFiltro = useRef();
@@ -62,13 +62,13 @@ export default function ConfigurarTabla({ open, setOpen, columns }) {
 
   useEffect(() => {
     if (isDefined(columns) && columns.length > 0) {
-      const col = columns.filter((col) => col.visible === true);
+      // const col = columns.filter((col) => col.visible === true);
       let i = 0;
-      col.forEach((colActual) => {
+      columns.forEach((colActual) => {
         colActual.orden = i;
         i += 1;
       });
-      setColumnsConfigura(col);
+      setColumnsConfigura(columns);
     }
   }, [columns]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -89,14 +89,14 @@ export default function ConfigurarTabla({ open, setOpen, columns }) {
   const subir = () => {
     columnsConfigura[index - 1].orden = index;
     seleccionada.orden = index - 1;
-    actualizar();
+    actualizarOrden();
     setIndex(index - 1);
   };
 
   const bajar = () => {
     columnsConfigura[index + 1].orden = index;
     seleccionada.orden = index + 1;
-    actualizar();
+    actualizarOrden();
     setIndex(index + 1);
   };
 
@@ -105,7 +105,7 @@ export default function ConfigurarTabla({ open, setOpen, columns }) {
     for (let i = 0; i < columnsConfigura.length; i += 1) {
       if (i !== index) columnsConfigura[i].orden = i;
     }
-    actualizar();
+    actualizarOrden();
     setIndex(0);
   };
 
@@ -114,8 +114,22 @@ export default function ConfigurarTabla({ open, setOpen, columns }) {
     for (let i = 0; i < columnsConfigura.length; i += 1) {
       if (i !== index) columnsConfigura[i].orden = i;
     }
-    actualizar();
+    actualizarOrden();
     setIndex(columnsConfigura.length - 1);
+  };
+
+  const actualizarOrden = () => {
+    const newColumns = [...columnsConfigura];
+    setColumnsConfigura(ordenar(newColumns));
+  };
+
+  const cambiarTexto = (event) => {
+    seleccionada[event.target.name] = event.target.value;
+  };
+
+  const cambiarCheck = (event) => {
+    seleccionada[event.target.name] = event.target.checked;
+    actualizar();
   };
 
   const actualizar = () => {
@@ -123,10 +137,12 @@ export default function ConfigurarTabla({ open, setOpen, columns }) {
     setColumnsConfigura(ordenar(newColumns));
   };
 
-  const cambiarNombreVisual = (value) => {
-    seleccionada.nombrevisual = value;
-    const newColumns = [...columnsConfigura];
-    setColumnsConfigura(newColumns);
+  const aceptar = async () => {
+    setLoading(true);
+    setColumns(columnsConfigura);
+    await getServicioConfigurarTabla();
+    setLoading(false);
+    cerrar();
   };
 
   return (
@@ -198,23 +214,40 @@ export default function ConfigurarTabla({ open, setOpen, columns }) {
 
             <Stack direction="column" justifyContent={{ xs: 'center', sm: 'flex-start' }} spacing={2}>
               <Texto
+                name="nombrevisual"
                 ref={txtNombreVisual}
                 disabled={!isDefined(seleccionada)}
-                onChange={cambiarNombreVisual}
+                onChange={cambiarTexto}
+                onBlur={actualizar}
                 label="NOMBRE VISUAL"
                 sx={{ minWidth: 300 }}
                 fullWidth
               />
               <Texto
+                name="anchocolumna"
                 ref={txtAnchoColumna}
                 disabled={!isDefined(seleccionada)}
+                onChange={cambiarTexto}
+                onBlur={actualizar}
                 label="ANCHO COLUMNA"
                 sx={{ minWidth: 300 }}
                 fullWidth
                 type="number"
               />
-              <CheckSeleccion ref={chsFiltro} disabled={!isDefined(seleccionada)} label="FILTRO" />
-              <CheckSeleccion ref={chsMayusculas} disabled={!isDefined(seleccionada)} label="MAYUSCULAS" />
+              <CheckSeleccion
+                name="filtro"
+                ref={chsFiltro}
+                disabled={!isDefined(seleccionada)}
+                label="FILTRO"
+                onChange={cambiarCheck}
+              />
+              <CheckSeleccion
+                name="mayuscula"
+                ref={chsMayusculas}
+                disabled={!isDefined(seleccionada)}
+                onChange={cambiarCheck}
+                label="MAYUSCULAS"
+              />
             </Stack>
           </Stack>
         </DialogContent>
@@ -222,7 +255,7 @@ export default function ConfigurarTabla({ open, setOpen, columns }) {
           <Button variant="outlined" onClick={cerrar}>
             Cancelar
           </Button>
-          <LoadingButton variant="contained" autoFocus sx={{ minWidth: 100 }} loading={loading}>
+          <LoadingButton variant="contained" autoFocus sx={{ minWidth: 100 }} onClick={aceptar} loading={loading}>
             Aplicar
           </LoadingButton>
         </DialogActions>
@@ -232,5 +265,9 @@ export default function ConfigurarTabla({ open, setOpen, columns }) {
 }
 
 ConfigurarTabla.propTypes = {
-  columns: PropTypes.array
+  open: PropTypes.bool,
+  setOpen: PropTypes.func,
+  columns: PropTypes.array,
+  setColumns: PropTypes.func,
+  getServicioConfigurarTabla: PropTypes.func
 };

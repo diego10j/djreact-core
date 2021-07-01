@@ -23,10 +23,10 @@ const CheckSeleccion = forwardRef(({ valorInicial = false, disabled = false, onC
             checked={value === true}
             onChange={async (event) => {
               if (!isDefined(onChange)) {
-                setValue(event.target.value);
+                setValue(event.target.checked);
               } else {
-                await setValue(event.target.value);
-                onChange(event.target.value);
+                await setValue(event.target.checked);
+                onChange(event);
               }
             }}
             {...other}
