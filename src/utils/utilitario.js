@@ -107,7 +107,7 @@ export const getIdeOpci = (ruta = null) => {
   // Busqueda recursiva
   for (let i = 0; i < menu.length; i += 1) {
     const opciActual = menu[i];
-    const encontro = busquedaRecursivaIdeOpci(opciActual, ruta);
+    const encontro = busquedaRecursivaMenu(opciActual, ruta);
     if (encontro !== null) {
       return encontro;
     }
@@ -121,19 +121,36 @@ export const getIdeOpci = (ruta = null) => {
  * @param {*} ruta
  * @returns
  */
-function busquedaRecursivaIdeOpci(opcion, ruta) {
+function busquedaRecursivaMenu(opcion, ruta, element = 'data') {
   if (opcion.ruta === ruta) {
-    return opcion.data;
+    return opcion[element];
   }
   if (opcion.items) {
     for (let i = 0; i < opcion.items.length; i += 1) {
       const opciActual = opcion.items[i];
-      const encontro = busquedaRecursivaIdeOpci(opciActual, ruta);
+      const encontro = busquedaRecursivaMenu(opciActual, ruta, element);
       if (encontro !== null) {
         return encontro;
       }
     }
   }
-
   return null;
 }
+
+export const getTituloPantalla = (ruta = null) => {
+  if (!isDefined(ruta)) {
+    ruta = window.location.href;
+    ruta = ruta.substring(ruta.lastIndexOf('dashboard') + 10, ruta.length);
+    ruta = ruta.substring(ruta.indexOf('/') + 1, ruta.length);
+  }
+  const menu = JSON.parse(localStorage.getItem('menu')) || [];
+  // Busqueda recursiva
+  for (let i = 0; i < menu.length; i += 1) {
+    const opciActual = menu[i];
+    const encontro = busquedaRecursivaMenu(opciActual, ruta, 'label');
+    if (encontro !== null) {
+      return encontro;
+    }
+  }
+  return 'Título de la Pantalla';
+};

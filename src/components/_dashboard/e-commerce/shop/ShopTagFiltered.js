@@ -29,7 +29,7 @@ const WrapperStyle = styled('div')(({ theme }) => ({
   border: `solid 1px ${theme.palette.divider}`
 }));
 
-const LabelStyle = styled(Typography)(({ theme }) => ({
+const LabelStyle = styled((props) => <Typography component="span" variant="subtitle2" {...props} />)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
@@ -57,7 +57,7 @@ ShopTagFiltered.propTypes = {
   onResetFilter: PropTypes.func
 };
 
-export default function ShopTagFiltered({ formik, filters, isShowReset, onResetFilter, ...other }) {
+export default function ShopTagFiltered({ formik, filters, isShowReset, onResetFilter }) {
   const theme = useTheme();
   const { values, handleSubmit, setFieldValue, initialValues } = formik;
   const { gender, category, colors, priceRange, rating } = filters;
@@ -91,12 +91,10 @@ export default function ShopTagFiltered({ formik, filters, isShowReset, onResetF
   };
 
   return (
-    <RootStyle {...other}>
+    <RootStyle>
       {gender.length > 0 && (
         <WrapperStyle>
-          <LabelStyle component="span" variant="subtitle2">
-            Gender:
-          </LabelStyle>
+          <LabelStyle>Gender:</LabelStyle>
           <Stack direction="row" flexWrap="wrap" sx={{ p: 0.75 }}>
             {gender.map((_gender) => (
               <Chip
@@ -113,9 +111,7 @@ export default function ShopTagFiltered({ formik, filters, isShowReset, onResetF
 
       {category !== 'All' && (
         <WrapperStyle>
-          <LabelStyle component="span" variant="subtitle2">
-            Category:
-          </LabelStyle>
+          <LabelStyle>Category:</LabelStyle>
           <Stack direction="row" flexWrap="wrap" sx={{ p: 0.75 }}>
             <Chip size="small" label={category} onDelete={handleRemoveCategory} sx={{ m: 0.5 }} />
           </Stack>
@@ -124,9 +120,7 @@ export default function ShopTagFiltered({ formik, filters, isShowReset, onResetF
 
       {colors.length > 0 && (
         <WrapperStyle>
-          <LabelStyle component="span" variant="subtitle2">
-            Colors:
-          </LabelStyle>
+          <LabelStyle>Colors:</LabelStyle>
           <Stack direction="row" flexWrap="wrap" sx={{ p: 0.75 }}>
             {colors.map((color) => (
               <Chip
@@ -153,9 +147,7 @@ export default function ShopTagFiltered({ formik, filters, isShowReset, onResetF
 
       {priceRange && (
         <WrapperStyle>
-          <LabelStyle component="span" variant="subtitle2">
-            Price:
-          </LabelStyle>
+          <LabelStyle>Price:</LabelStyle>
           <Stack direction="row" flexWrap="wrap" sx={{ p: 0.75 }}>
             <Chip size="small" label={labelPriceRange(priceRange)} onDelete={handleRemovePrice} sx={{ m: 0.5 }} />
           </Stack>
@@ -164,9 +156,7 @@ export default function ShopTagFiltered({ formik, filters, isShowReset, onResetF
 
       {rating && (
         <WrapperStyle>
-          <LabelStyle component="span" variant="subtitle2">
-            Rating:
-          </LabelStyle>
+          <LabelStyle>Rating:</LabelStyle>
           <Stack direction="row" flexWrap="wrap" sx={{ p: 0.75 }}>
             <Chip size="small" label={sentenceCase(rating)} onDelete={handleRemoveRating} sx={{ m: 0.5 }} />
           </Stack>

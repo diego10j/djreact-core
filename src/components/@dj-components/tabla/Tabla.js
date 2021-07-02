@@ -20,6 +20,7 @@ import {
   getComboTabla,
   isEliminar,
   getMaximo,
+  getConfiguracion,
   configurarTabla
 } from '../../../services/sistema/servicioSistema';
 // utilitarios
@@ -58,6 +59,7 @@ const Tabla = forwardRef(
       campoPadre,
       condiciones,
       servicio,
+      tablaConfiguracion = false,
       lectura = true,
       tipoFormulario = false,
       numeroColFormulario,
@@ -142,8 +144,15 @@ const Tabla = forwardRef(
     const [abrirConfigurar, setAbrirConfigurar] = useState(false);
 
     useEffect(() => {
-      getServicioColumnas();
-      getServicioDatos();
+      // Create an scoped async function in the hook
+      async function configuracionTabla() {
+        if (tablaConfiguracion === true) {
+          await getServicioConfiguracion();
+        }
+        getServicioColumnas();
+        getServicioDatos();
+      } // Execute the created function directly
+      configuracionTabla();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -246,6 +255,31 @@ const Tabla = forwardRef(
               listaCombo: [{ value: '', label: '(Null)' }, ...data.datos]
             }
           ]);
+        }
+      } catch (error) {
+        showError(error.mensaje);
+      }
+    };
+
+    /**
+     * Obtiene las columnas del servicio web
+     */
+    const getServicioConfiguracion = async () => {
+      console.log('---CARGA CONFIGURACIÓN');
+      try {
+        const { data } = await getConfiguracion(getIdeOpci(), numeroTabla);
+        if (isDefined(data.datos)) {
+          nombreTabla = data.datos.tabla_tabl;
+          campoPrimario = data.datos.primaria_tabl;
+          campoOrden = data.datos.primaria_tabl; // por defecto
+          tipoFormulario = data.datos.formulario_tabl === true;
+          campoNombre = isDefined(data.datos.nombre_tabl) ? data.datos.nombre_tabl : null;
+          campoForanea = isDefined(data.datos.foranea_tabl) ? data.datos.foranea_tabl : null;
+          campoPadre = isDefined(data.datos.padre_tabl) ? data.datos.padre_tabl : null;
+          campoOrden = isDefined(data.datos.orden_tabl) ? data.datos.orden_tabl : campoOrden;
+          filasPorPagina = isDefined(data.datos.filas_tabl) ? data.datos.filas_tabl : filasPorPagina;
+        } else {
+          showError('No existe configuración de la tabla');
         }
       } catch (error) {
         showError(error.mensaje);
@@ -397,7 +431,7 @@ const Tabla = forwardRef(
             _columna.filter = multiSelectFilter;
           } else if (_columna.componente === 'Calendario' || _columna.componente === 'Hora') {
             // ancho de la columna
-            _columna.anchoColumna = 5;
+            _columna.anchoColumna = 7;
           } else if (_columna.componente === 'Avatar') {
             _columna.Cell = AvatarLectura;
             _columna.anchoColumna = 4;
@@ -1147,7 +1181,7 @@ const Tabla = forwardRef(
 );
 Tabla.propTypes = {
   numeroTabla: PropTypes.number.isRequired,
-  campoPrimario: PropTypes.string.isRequired,
+  campoPrimario: PropTypes.string,
   nombreTabla: PropTypes.string,
   campoOrden: PropTypes.string,
   campoNombre: PropTypes.string,
@@ -1158,6 +1192,7 @@ Tabla.propTypes = {
     nombre: PropTypes.string.isRequired,
     parametros: PropTypes.object.isRequired
   }),
+  tablaConfiguracion: PropTypes.bool,
   tipoFormulario: PropTypes.bool,
   numeroColFormulario: PropTypes.number,
   calculaPrimaria: PropTypes.bool,

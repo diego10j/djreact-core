@@ -5,7 +5,7 @@ import editFill from '@iconify/icons-eva/edit-fill';
 import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import moreHorizontalFill from '@iconify/icons-eva/more-horizontal-fill';
 // material
-import { Stack, OutlinedInput, MenuItem, Box, Typography, ClickAwayListener } from '@material-ui/core';
+import { Stack, OutlinedInput, MenuItem, Box, Typography } from '@material-ui/core';
 //
 import MenuPopover from '../../MenuPopover';
 import { MIconButton } from '../../@material-extend';
@@ -15,14 +15,14 @@ import { MIconButton } from '../../@material-extend';
 KanbanColumnToolBar.propTypes = {
   columnName: PropTypes.string,
   onDelete: PropTypes.func,
-  onChangeName: PropTypes.func,
   onUpdate: PropTypes.func
 };
 
-export default function KanbanColumnToolBar({ columnName, onDelete, onChangeName, onUpdate }) {
+export default function KanbanColumnToolBar({ columnName, onDelete, onUpdate }) {
   const anchorRef = useRef(null);
   const renameRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(columnName);
 
   useEffect(() => {
     if (open) {
@@ -44,25 +44,35 @@ export default function KanbanColumnToolBar({ columnName, onDelete, onChangeName
     handleClose();
   };
 
+  const handleChangeColumnName = (event) => {
+    setValue(event.target.value);
+  };
+
+  const handleUpdateColumn = (event) => {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      renameRef.current.blur();
+      onUpdate(event.target.value);
+    }
+  };
+
   return (
     <>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-        <ClickAwayListener onClickAway={onUpdate}>
-          <OutlinedInput
-            size="small"
-            placeholder="Section name"
-            value={columnName}
-            onChange={onChangeName}
-            inputRef={renameRef}
-            sx={{
-              typography: 'h6',
-              fontWeight: 'fontWeightBold',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'transparent'
-              }
-            }}
-          />
-        </ClickAwayListener>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1} sx={{ pt: 3 }}>
+        <OutlinedInput
+          inputRef={renameRef}
+          size="small"
+          placeholder="Section name"
+          value={value}
+          onChange={handleChangeColumnName}
+          onKeyUp={handleUpdateColumn}
+          sx={{
+            typography: 'h6',
+            fontWeight: 'fontWeightBold',
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'transparent'
+            }
+          }}
+        />
 
         <MIconButton ref={anchorRef} size="small" onClick={handleOpen} color={open ? 'inherit' : 'default'}>
           <Icon icon={moreHorizontalFill} width={20} height={20} />

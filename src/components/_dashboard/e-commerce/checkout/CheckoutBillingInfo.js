@@ -3,20 +3,22 @@ import { Icon } from '@iconify/react';
 import editFill from '@iconify/icons-eva/edit-fill';
 // material
 import { Card, Button, Typography, CardHeader, CardContent } from '@material-ui/core';
+// redux
+import { useSelector } from '../../../../redux/store';
 
 // ----------------------------------------------------------------------
 
 CheckoutBillingInfo.propTypes = {
-  billing: PropTypes.object,
-  onBackStep: PropTypes.func,
-  sx: PropTypes.object
+  onBackStep: PropTypes.func
 };
 
-export default function CheckoutBillingInfo({ billing, onBackStep, sx }) {
-  const { receiver, phone, addressType, fullAddress } = billing;
+export default function CheckoutBillingInfo({ onBackStep }) {
+  // const { receiver, phone, addressType, fullAddress } = billing;
+  const { checkout } = useSelector((state) => state.product);
+  const { billing } = checkout;
 
   return (
-    <Card sx={{ mb: 3, ...sx }}>
+    <Card sx={{ mb: 3 }}>
       <CardHeader
         title="Billing Address"
         action={
@@ -27,17 +29,17 @@ export default function CheckoutBillingInfo({ billing, onBackStep, sx }) {
       />
       <CardContent>
         <Typography variant="subtitle2" gutterBottom>
-          {receiver}&nbsp;
+          {billing?.receiver}&nbsp;
           <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
-            ({addressType})
+            ({billing?.addressType})
           </Typography>
         </Typography>
 
         <Typography variant="body2" gutterBottom>
-          {fullAddress}
+          {billing?.fullAddress}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {phone}
+          {billing?.phone}
         </Typography>
       </CardContent>
     </Card>

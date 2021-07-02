@@ -52,7 +52,7 @@ export default function CheckoutOrderComplete({ ...other }) {
             <Link href="#">01dc1370-3df6-11eb-b378-0242ac130002</Link>
           </Typography>
 
-          <Typography align="left" sx={{ color: 'text.secondary' }}>
+          <Typography align="left">
             We will send you a notification within 5 days when it ships.
             <br /> <br /> If you have any question or queries then fell to get in contact us. <br /> <br /> All the
             best,

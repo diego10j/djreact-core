@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack';
 import plusFill from '@iconify/icons-eva/plus-fill';
 // material
-import { OutlinedInput, Paper, Stack, Button, ClickAwayListener } from '@material-ui/core';
+import { OutlinedInput, Paper, Button, ClickAwayListener } from '@material-ui/core';
 // redux
 import { useDispatch } from '../../../redux/store';
 import { createColumn } from '../../../redux/slices/kanban';
@@ -73,17 +73,15 @@ export default function KanbanColumnAdd() {
 
       {open && (
         <ClickAwayListener onClickAway={handleCreateColumn}>
-          <Stack spacing={2}>
-            <OutlinedInput
-              fullWidth
-              placeholder="New section"
-              inputRef={nameRef}
-              value={name}
-              onChange={handleChangeName}
-              onKeyUp={handleKeyUp}
-              sx={{ typography: 'h6' }}
-            />
-          </Stack>
+          <OutlinedInput
+            fullWidth
+            placeholder="New section"
+            inputRef={nameRef}
+            value={name}
+            onChange={handleChangeName}
+            onKeyUp={handleKeyUp}
+            sx={{ typography: 'h6' }}
+          />
         </ClickAwayListener>
       )}
     </Paper>

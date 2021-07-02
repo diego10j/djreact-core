@@ -28,12 +28,12 @@ ShopProductCard.propTypes = {
   product: PropTypes.object
 };
 
-export default function ShopProductCard({ product, ...other }) {
+export default function ShopProductCard({ product }) {
   const { name, cover, price, colors, status, priceSale } = product;
   const linkTo = `${PATH_DASHBOARD.eCommerce.root}/product/${paramCase(name)}`;
 
   return (
-    <Card {...other}>
+    <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         {status && (
           <Label

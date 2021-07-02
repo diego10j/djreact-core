@@ -5,7 +5,6 @@ function path(root, sublink) {
 }
 
 const ROOTS_AUTH = '/auth';
-const ROOTS_DOCS = '/docs';
 const ROOTS_DASHBOARD = '/dashboard';
 
 // ----------------------------------------------------------------------
@@ -41,9 +40,11 @@ export const PATH_DASHBOARD = {
     analytics: path(ROOTS_DASHBOARD, '/analytics')
   },
   auditoria: {
-    simple: path(ROOTS_DASHBOARD, '/auditoria/consulta-auditoria')
+    root: path(ROOTS_DASHBOARD, '/auditoria'),
+    consultaAuditoria: path(ROOTS_DASHBOARD, '/auditoria/consulta-auditoria')
   },
   sistema: {
+    root: path(ROOTS_DASHBOARD, '/sistema'),
     simple: path(ROOTS_DASHBOARD, '/sistema/simple'),
     empresa: path(ROOTS_DASHBOARD, '/sistema/empresa'),
     usuarios: path(ROOTS_DASHBOARD, '/sistema/usuarios')
@@ -86,35 +87,4 @@ export const PATH_DASHBOARD = {
     postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
     newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
   }
-};
-
-export const PATH_DOCS = {
-  root: ROOTS_DOCS,
-  introduction: path(ROOTS_DOCS, '/introduction'),
-  quickstart: path(ROOTS_DOCS, '/quick-start'),
-  package: path(ROOTS_DOCS, '/package'),
-
-  // Theme UI
-  color: path(ROOTS_DOCS, '/color'),
-  typography: path(ROOTS_DOCS, '/typography'),
-  icon: path(ROOTS_DOCS, '/icon'),
-  shadows: path(ROOTS_DOCS, '/shadows'),
-  components: path(ROOTS_DOCS, '/components'),
-  settings: path(ROOTS_DOCS, '/settings'),
-  tips: path(ROOTS_DOCS, '/tips'),
-
-  // Development
-  routing: path(ROOTS_DOCS, '/routing'),
-  environmentVariables: path(ROOTS_DOCS, '/environment-variables'),
-  stateManagement: path(ROOTS_DOCS, '/state-management'),
-  apiCalls: path(ROOTS_DOCS, '/api-calls'),
-  analytics: path(ROOTS_DOCS, '/analytics'),
-  authentication: path(ROOTS_DOCS, '/authentication'),
-  multiLanguage: path(ROOTS_DOCS, '/multi-language'),
-  lazyload: path(ROOTS_DOCS, '/lazyload-image'),
-  formHelper: path(ROOTS_DOCS, '/form-helper'),
-
-  // Changelog
-  support: path(ROOTS_DOCS, '/support'),
-  changelog: path(ROOTS_DOCS, '/changelog')
 };

@@ -40,7 +40,7 @@ const StyledTextField = withStyles(() => ({
     '& .MuiInputBase-root': {
       fontSize: '0.875rem',
       height: '1.60rem',
-      padding: 0,
+      padding: '0 5px 0 0 !important',
       marggin: 0
     },
     '& .MuiOutlinedInput-root': {
@@ -324,7 +324,7 @@ const Texto = ({
           size="small"
           disabled={column.lectura}
           error={erorr}
-          InputLabelProps={{ style: { textAlign: `${column.alinear}` } }}
+          inputProps={{ style: { textAlign: `${column.alinear}` } }}
           {...other}
         />
       ) : (

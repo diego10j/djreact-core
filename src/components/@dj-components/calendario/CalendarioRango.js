@@ -56,7 +56,7 @@ const CalendarioRango = forwardRef(({ fechaInicio = new Date(), fechaFin = new D
         setValue(newValue);
       }}
       renderInput={(startProps, endProps) => (
-        <Stack alignItems="center" direction="rows">
+        <Stack alignItems="center" direction="row">
           <StyledTextField
             margin="dense"
             variant="outlined"

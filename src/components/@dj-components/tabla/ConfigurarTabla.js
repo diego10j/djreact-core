@@ -147,7 +147,17 @@ export default function ConfigurarTabla({ open, setOpen, columns, getServicioCon
 
   return (
     <ThemeConfig>
-      <Dialog fullScreen={fullScreen} open={open} onClose={cerrar} maxWidth="md">
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={(event, reason) => {
+          if (reason !== 'backdropClick') {
+            cerrar();
+          }
+        }}
+        disableEscapeKeyDown
+        maxWidth="md"
+      >
         <TituloDialogo onClose={cerrar}>Personalizar Columnas</TituloDialogo>
         <DialogContent sx={{ pb: 0 }}>
           <Stack direction={fullScreen ? 'column' : 'row'} spacing={{ xs: 3, sm: 2 }}>
@@ -252,7 +262,7 @@ export default function ConfigurarTabla({ open, setOpen, columns, getServicioCon
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={cerrar}>
+          <Button variant="outlined" onClick={cerrar} disabled={loading}>
             Cancelar
           </Button>
           <LoadingButton variant="contained" autoFocus sx={{ minWidth: 100 }} onClick={aceptar} loading={loading}>

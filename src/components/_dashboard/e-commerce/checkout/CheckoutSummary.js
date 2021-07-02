@@ -27,8 +27,7 @@ CheckoutSummary.propTypes = {
   onEdit: PropTypes.func,
   enableEdit: PropTypes.bool,
   onApplyDiscount: PropTypes.func,
-  enableDiscount: PropTypes.bool,
-  sx: PropTypes.object
+  enableDiscount: PropTypes.bool
 };
 
 export default function CheckoutSummary({
@@ -39,13 +38,12 @@ export default function CheckoutSummary({
   shipping = null,
   onApplyDiscount,
   enableEdit = false,
-  enableDiscount = false,
-  sx
+  enableDiscount = false
 }) {
   const displayShipping = shipping !== null ? 'Free' : '-';
 
   return (
-    <Card sx={{ mb: 3, ...sx }}>
+    <Card sx={{ mb: 3 }}>
       <CardHeader
         title="Order Summary"
         action={

@@ -61,7 +61,7 @@ const CARDS_OPTIONS = [
 export default function CheckoutPayment() {
   const dispatch = useDispatch();
   const { checkout } = useSelector((state) => state.product);
-  const { total, billing, discount, subtotal, shipping } = checkout;
+  const { total, discount, subtotal, shipping } = checkout;
 
   const handleNextStep = () => {
     dispatch(onNextStep());
@@ -125,7 +125,7 @@ export default function CheckoutPayment() {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <CheckoutBillingInfo billing={billing} onBackStep={handleBackStep} />
+            <CheckoutBillingInfo onBackStep={handleBackStep} />
             <CheckoutSummary
               enableEdit
               total={total}

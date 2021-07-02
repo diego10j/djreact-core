@@ -1,7 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
-import DocsLayout from '../layouts/docs';
 import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
@@ -97,16 +96,18 @@ export default function Router() {
             { path: 'invoice', element: <EcommerceInvoice /> }
           ]
         },
-
         {
           path: 'auditoria',
-          children: [{ path: 'consulta-auditoria', element: <ConsultaAuditoria /> }]
+          children: [
+            { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+            { path: 'consulta-auditoria', element: <ConsultaAuditoria /> }
+          ]
         },
-
         {
           path: 'sistema',
           children: [
-            { path: 'simple', element: <Simple /> },
+            { path: '/', element: <Navigate to="/dashboard/app" replace /> },
+            { path: 'simple/:id', element: <Simple /> },
             { path: 'empresa', element: <Empresa /> },
             { path: 'usuarios', element: <Usuarios /> }
           ]
@@ -153,16 +154,6 @@ export default function Router() {
         },
         { path: 'calendar', element: <Calendar /> },
         { path: 'kanban', element: <Kanban /> }
-      ]
-    },
-
-    // Docs Routes
-    {
-      path: 'docs',
-      element: <DocsLayout />,
-      children: [
-        { path: '/', element: <Navigate to="/docs/introduction" replace /> },
-        { path: '*', element: <Docs /> }
       ]
     },
 
@@ -284,8 +275,6 @@ const Simple = Loadable(lazy(() => import('../pages/sistema/simple')));
 const Empresa = Loadable(lazy(() => import('../pages/sistema/empresa')));
 const Usuarios = Loadable(lazy(() => import('../pages/sistema/usuarios')));
 
-// Docs
-const Docs = Loadable(lazy(() => import('../pages/Docs')));
 // Main
 const LandingPage = Loadable(lazy(() => import('../pages/LandingPage')));
 const About = Loadable(lazy(() => import('../pages/About')));

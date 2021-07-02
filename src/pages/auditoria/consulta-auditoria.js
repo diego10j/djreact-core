@@ -75,7 +75,10 @@ export default function ConsultaAuditoria() {
         <Container maxWidth="xl">
           <HeaderBreadcrumbs
             heading="Consulta Auditoria Usuarios"
-            links={[{ name: 'Auditoria', href: PATH_DASHBOARD.root }, { name: 'Consulta Auditoria Usuarios' }]}
+            links={[
+              { name: 'Auditoria', href: PATH_DASHBOARD.auditoria.root },
+              { name: 'Consulta Auditoria Usuarios' }
+            ]}
             action={<BotonEliminar label="Eliminar Auditoria" onClick={abrirConfirmarEliminar} />}
           />
 
