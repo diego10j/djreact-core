@@ -59,7 +59,7 @@ const Tabla = forwardRef(
       campoPadre,
       condiciones,
       servicio,
-      tablaConfiguracion = false,
+      tablaConfiguracion,
       lectura = true,
       tipoFormulario = false,
       numeroColFormulario,
@@ -146,14 +146,15 @@ const Tabla = forwardRef(
     useEffect(() => {
       // Create an scoped async function in the hook
       async function configuracionTabla() {
-        if (tablaConfiguracion === true) {
+        if (isDefined(tablaConfiguracion)) {
+          setIsColumnas(false);
           await getServicioConfiguracion();
         }
         getServicioColumnas();
         getServicioDatos();
       } // Execute the created function directly
       configuracionTabla();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [tablaConfiguracion]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
       if (!vistaFormularo) {
@@ -206,6 +207,7 @@ const Tabla = forwardRef(
           }
         }
       } catch (error) {
+        console.log(error);
         setCargando(false);
         showError(error.mensaje);
       }
@@ -1192,7 +1194,7 @@ Tabla.propTypes = {
     nombre: PropTypes.string.isRequired,
     parametros: PropTypes.object.isRequired
   }),
-  tablaConfiguracion: PropTypes.bool,
+  tablaConfiguracion: PropTypes.string,
   tipoFormulario: PropTypes.bool,
   numeroColFormulario: PropTypes.number,
   calculaPrimaria: PropTypes.bool,

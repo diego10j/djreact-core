@@ -32,6 +32,8 @@ export const PATH_PAGE = {
   components: '/components'
 };
 
+const PANTALLAS_GENRICAS = [{ simple: path(ROOTS_DASHBOARD, '/sistema/simple') }];
+
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   general: {
@@ -40,6 +42,7 @@ export const PATH_DASHBOARD = {
     analytics: path(ROOTS_DASHBOARD, '/analytics')
   },
   auditoria: {
+    ...PANTALLAS_GENRICAS,
     root: path(ROOTS_DASHBOARD, '/auditoria'),
     consultaAuditoria: path(ROOTS_DASHBOARD, '/auditoria/consulta-auditoria')
   },

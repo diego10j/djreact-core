@@ -40,6 +40,7 @@ const Loadable = (Component) => (props) => {
 };
 
 export default function Router() {
+  const pantallasGenericas = [{ path: 'simple/:id', element: <Simple /> }];
   return useRoutes([
     {
       path: 'auth',
@@ -99,6 +100,7 @@ export default function Router() {
         {
           path: 'auditoria',
           children: [
+            ...pantallasGenericas,
             { path: '/', element: <Navigate to="/dashboard/app" replace /> },
             { path: 'consulta-auditoria', element: <ConsultaAuditoria /> }
           ]
@@ -106,8 +108,8 @@ export default function Router() {
         {
           path: 'sistema',
           children: [
+            ...pantallasGenericas,
             { path: '/', element: <Navigate to="/dashboard/app" replace /> },
-            { path: 'simple/:id', element: <Simple /> },
             { path: 'empresa', element: <Empresa /> },
             { path: 'usuarios', element: <Usuarios /> }
           ]
