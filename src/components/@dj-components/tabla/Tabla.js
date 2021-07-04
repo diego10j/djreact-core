@@ -142,6 +142,7 @@ const Tabla = forwardRef(
     const [vistaFormularo, setVistaFormulario] = useState(tipoFormulario);
     const [paginaActual, setPaginaActual] = useState(0);
     const [abrirConfigurar, setAbrirConfigurar] = useState(false);
+    const [configuracion, setConfiguracion] = useState();
 
     useEffect(() => {
       // Create an scoped async function in the hook
@@ -150,6 +151,7 @@ const Tabla = forwardRef(
           setIsColumnas(false);
           await getServicioConfiguracion();
         }
+        initialState();
         getServicioColumnas();
         getServicioDatos();
       } // Execute the created function directly
@@ -169,6 +171,30 @@ const Tabla = forwardRef(
         hookFormulario.setValues(filaSeleccionada);
       }
     }, [filaSeleccionada]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const initialState = () => {
+      setFilaSeleccionada(null);
+      setIndiceTabla(null);
+      setColumnasOcultas([]);
+      setEliminadas([]);
+      setCombos([]);
+      setPaginaActual(0);
+      setConfiguracion({
+        numeroTabla,
+        nombreTabla,
+        campoPrimario,
+        campoOrden,
+        tipoFormulario,
+        campoNombre,
+        campoForanea,
+        campoPadre,
+        filasPorPagina,
+        calculaPrimaria,
+        lectura,
+        numeroFilas: filasPorPagina,
+        ideOpci: getIdeOpci()
+      });
+    };
 
     const getServicioDatos = async () => {
       console.log('---CARGA DATOS');
@@ -233,6 +259,7 @@ const Tabla = forwardRef(
           formarColumnas(data.datos);
         }
       } catch (error) {
+        console.log(error);
         showError(error.mensaje);
       }
     };
@@ -259,6 +286,7 @@ const Tabla = forwardRef(
           ]);
         }
       } catch (error) {
+        console.log(error);
         showError(error.mensaje);
       }
     };
@@ -273,12 +301,11 @@ const Tabla = forwardRef(
         if (isDefined(data.datos)) {
           nombreTabla = data.datos.tabla_tabl;
           campoPrimario = data.datos.primaria_tabl;
-          campoOrden = data.datos.primaria_tabl; // por defecto
           tipoFormulario = data.datos.formulario_tabl === true;
           campoNombre = isDefined(data.datos.nombre_tabl) ? data.datos.nombre_tabl : null;
           campoForanea = isDefined(data.datos.foranea_tabl) ? data.datos.foranea_tabl : null;
           campoPadre = isDefined(data.datos.padre_tabl) ? data.datos.padre_tabl : null;
-          campoOrden = isDefined(data.datos.orden_tabl) ? data.datos.orden_tabl : campoOrden;
+          campoOrden = isDefined(data.datos.orden_tabl) ? data.datos.orden_tabl : data.datos.primaria_tabl;
           filasPorPagina = isDefined(data.datos.filas_tabl) ? data.datos.filas_tabl : filasPorPagina;
         } else {
           showError('No existe configuración de la tabla');
@@ -290,7 +317,11 @@ const Tabla = forwardRef(
 
     const getServicioIsEliminar = async () => {
       try {
-        const { data } = await isEliminar(nombreTabla, campoPrimario, getValorSeleccionado());
+        const { data } = await isEliminar(
+          configuracion.nombreTabla,
+          configuracion.campoPrimario,
+          getValorSeleccionado()
+        );
         return !isDefined(data.datos);
       } catch (error) {
         showError(error.mensaje);
@@ -300,7 +331,7 @@ const Tabla = forwardRef(
 
     const getServicioIsUnico = async (campo, valorCampo) => {
       try {
-        const { data } = await isEliminar(nombreTabla, campo, valorCampo);
+        const { data } = await isEliminar(configuracion.nombreTabla, campo, valorCampo);
         return data.datos;
       } catch (error) {
         showError(error.mensaje);
@@ -310,7 +341,7 @@ const Tabla = forwardRef(
 
     const getServicioSecuencial = async (numeroFilas) => {
       try {
-        const { data } = await getMaximo(nombreTabla, campoPrimario, numeroFilas);
+        const { data } = await getMaximo(configuracion.nombreTabla, configuracion.campoPrimario, numeroFilas);
         return data.datos;
       } catch (error) {
         showError(error.mensaje);
@@ -320,19 +351,7 @@ const Tabla = forwardRef(
 
     const getServicioConfigurarTabla = async () => {
       try {
-        const tabConf = {
-          numeroTabla,
-          nombreTabla,
-          campoPrimario,
-          campoNombre,
-          campoForanea,
-          campoPadre,
-          campoOrden,
-          numeroFilas: filasPorPagina,
-          tipoFormulario,
-          calculaPrimaria
-        };
-        await configurarTabla(getIdeOpci(), tabConf, columns);
+        await configurarTabla(getIdeOpci(), configuracion, columns);
       } catch (error) {
         showError(error.mensaje);
       }
@@ -387,63 +406,44 @@ const Tabla = forwardRef(
       // ordena las columnas
       cols.sort((a, b) => (a.orden < b.orden ? -1 : 1));
 
-      // configuraciones para React Table
-      if (!tipoFormulario) {
-        cols.forEach((_columna) => {
-          // Si la tabla es de lectura todas las columnas son de lectura
-          if (lectura) {
-            _columna.lectura = true;
-          }
-          if (!isDefined(_columna.ordenable)) {
-            _columna.ordenable = true;
-          }
-          if (!isDefined(_columna.requerida)) {
-            _columna.requerida = false;
-          }
-          // valores por defecto
-          if (!isDefined(_columna.valorDefecto)) {
-            _columna.valorDefecto = '';
-          }
-          // alinear
-          if (isDefined(_columna.alinear)) {
-            _columna.alinear = _columna.alinear === 'derecha' ? 'right' : _columna.alinear;
-            _columna.alinear = _columna.alinear === 'izquierda' ? 'left' : _columna.alinear;
-            _columna.alinear = _columna.alinear === 'centro' ? 'center' : _columna.alinear;
-          } else {
-            _columna.alinear = 'left'; // por defecto
-            _columna.alinear = _columna.componente === 'Check' ? 'center' : _columna.alinear;
-            _columna.alinear = _columna.componente === 'TextoEntero' ? 'right' : _columna.alinear;
-            _columna.alinear = _columna.componente === 'TextoNumero' ? 'right' : _columna.alinear;
-          }
+      cols.forEach((_columna) => {
+        _columna.lectura = !isDefined(_columna.lectura) ? lectura : _columna.lectura;
+        _columna.accessor = _columna.nombre;
+        _columna.ordenable = !isDefined(_columna.ordenable) ? true : _columna.ordenable;
+        _columna.requerida = !isDefined(_columna.requerida) ? false : _columna.requerida;
+        _columna.valorDefecto = !isDefined(_columna.valorDefecto) ? '' : _columna.valorDefecto;
+        _columna.filter = _columna.filtro === true ? 'fuzzyText' : null;
 
-          _columna.accessor = _columna.nombre;
-          if (_columna.filtro) {
-            _columna.filter = 'fuzzyText';
-          }
-          if (_columna.componente === 'Check') {
-            // CheckBox de lectura
-            _columna.Cell = CheckLectura;
-            _columna.anchoColumna = 7;
-            if (_columna.valorDefecto === '') {
-              _columna.valorDefecto = false;
-            }
-          } else if (_columna.componente === 'Combo') {
-            // CheckBox de lectura
-            _columna.Cell = ComboLectura;
-            _columna.filter = multiSelectFilter;
-          } else if (_columna.componente === 'Calendario' || _columna.componente === 'Hora') {
-            // ancho de la columna
-            _columna.anchoColumna = 7;
-          } else if (_columna.componente === 'Avatar') {
-            _columna.Cell = AvatarLectura;
-            _columna.anchoColumna = 4;
-          }
+        // alinear
+        if (isDefined(_columna.alinear)) {
+          _columna.alinear = _columna.alinear === 'derecha' ? 'right' : _columna.alinear;
+          _columna.alinear = _columna.alinear === 'izquierda' ? 'left' : _columna.alinear;
+          _columna.alinear = _columna.alinear === 'centro' ? 'center' : _columna.alinear;
+        } else {
+          _columna.alinear = 'left'; // por defecto
+          _columna.alinear = _columna.componente === 'Check' ? 'center' : _columna.alinear;
+          _columna.alinear = _columna.componente === 'TextoEntero' ? 'right' : _columna.alinear;
+          _columna.alinear = _columna.componente === 'TextoNumero' ? 'right' : _columna.alinear;
+        }
+        if (_columna.componente === 'Check') {
+          // CheckBox de lectura
+          _columna.Cell = CheckLectura;
+          _columna.anchoColumna = 7;
+          _columna.valorDefecto = _columna.valorDefecto === '' ? false : _columna.valorDefecto;
+        } else if (_columna.componente === 'Combo') {
+          // CheckBox de lectura
+          _columna.Cell = ComboLectura;
+          _columna.filter = multiSelectFilter;
+        } else if (_columna.componente === 'Calendario' || _columna.componente === 'Hora') {
+          // ancho de la columna
+          _columna.anchoColumna = 7;
+        } else if (_columna.componente === 'Avatar') {
+          _columna.Cell = AvatarLectura;
+          _columna.anchoColumna = 4;
+        }
+        _columna.width = !isDefined(_columna.width) ? _columna.anchoColumna * 17 : _columna.width;
+      });
 
-          if (!isDefined(_columna.width)) {
-            _columna.width = _columna.anchoColumna * 17;
-          }
-        });
-      }
       // Campos requeridos si tiene validationSchema
       if (isDefined(hookFormulario) && isDefined(hookFormulario.validationSchema)) {
         cols.forEach((_columna) => {
@@ -482,11 +482,11 @@ const Tabla = forwardRef(
      * Retorna el valor del campo primario de la fila seleccionada
      * @returns
      */
-    const getValorSeleccionado = () => filaSeleccionada[campoPrimario];
+    const getValorSeleccionado = () => filaSeleccionada[configuracion.campoPrimario];
     const getColumnas = () => columns;
     const getDatos = () => data;
     const getFilaSeleccionada = () => filaSeleccionada;
-    const getFila = (valorPrimaria) => data.filter((fila) => fila[campoPrimario] === valorPrimaria);
+    const getFila = (valorPrimaria) => data.filter((fila) => fila[configuracion.campoPrimario] === valorPrimaria);
     const getInsertadas = () => data.filter((fila) => fila.insertada === true) || [];
     const getEliminadas = () => eliminadas;
     const getModificadas = () => data.filter((fila) => fila.modificada === true) || [];
@@ -500,7 +500,7 @@ const Tabla = forwardRef(
      * @returns
      */
     const isFilaInsertada = (valorPrimario) => {
-      const fila = data.find((col) => col[campoPrimario] === valorPrimario);
+      const fila = data.find((col) => col[configuracion.campoPrimario] === valorPrimario);
       if (isDefined(fila) && fila?.insertada) {
         return true;
       }
@@ -513,7 +513,7 @@ const Tabla = forwardRef(
      * @returns
      */
     const isFilaModificada = (valorPrimario) => {
-      const fila = data.find((col) => col[campoPrimario] === valorPrimario);
+      const fila = data.find((col) => col[configuracion.campoPrimario] === valorPrimario);
       if (isDefined(fila) && fila?.modificada) {
         return true;
       }
@@ -526,7 +526,7 @@ const Tabla = forwardRef(
      * @returns
      */
     const isFilaEliminada = (valorPrimario) => {
-      const fila = eliminadas.find((col) => col[campoPrimario] === valorPrimario);
+      const fila = eliminadas.find((col) => col[configuracion.campoPrimario] === valorPrimario);
       if (isDefined(fila)) {
         return true;
       }
@@ -613,7 +613,7 @@ const Tabla = forwardRef(
      * @param {String} valorPrimario
      */
     const seleccionarFilaPorValorPrimario = (valorPrimario) => {
-      const fila = data.find((col) => col[campoPrimario] === valorPrimario);
+      const fila = data.find((col) => col[configuracion.campoPrimario] === valorPrimario);
       seleccionarFila(fila);
     };
 
@@ -650,7 +650,7 @@ const Tabla = forwardRef(
       columns.forEach((_columna) => {
         const { nombre, valorDefecto } = _columna;
         filaNueva[nombre] = valorDefecto;
-        if (nombre === campoPrimario) {
+        if (nombre === configuracion.campoPrimario) {
           filaNueva[nombre] = tmpPK;
         }
       });
@@ -688,19 +688,25 @@ const Tabla = forwardRef(
     };
 
     const eliminar = async () => {
-      if (lectura === false) {
+      if (configuracion.lectura === false) {
         if (isColumnas && isDefined(filaSeleccionada)) {
           if (filaSeleccionada?.insertada) {
-            setData(data.filter((item) => item[campoPrimario] !== filaSeleccionada[campoPrimario]));
+            setData(
+              data.filter((item) => item[configuracion.campoPrimario] !== filaSeleccionada[configuracion.campoPrimario])
+            );
             setFilaSeleccionada(undefined);
           } else {
             setCargando(true);
             if (await getServicioIsEliminar()) {
               // agrega a filas eliminadas
-              if (eliminadas.indexOf(filaSeleccionada[campoPrimario]) === -1) {
-                setEliminadas((elements) => [...elements, filaSeleccionada[campoPrimario]]);
+              if (eliminadas.indexOf(filaSeleccionada[configuracion.campoPrimario]) === -1) {
+                setEliminadas((elements) => [...elements, filaSeleccionada[configuracion.campoPrimario]]);
               }
-              setData(data.filter((item) => item[campoPrimario] !== filaSeleccionada[campoPrimario]));
+              setData(
+                data.filter(
+                  (item) => item[configuracion.campoPrimario] !== filaSeleccionada[configuracion.campoPrimario]
+                )
+              );
               setFilaSeleccionada(undefined);
             } else {
               showError('El registro tiene relación con otras tablas del sistema', 'No se puede Eliminar');
@@ -788,7 +794,7 @@ const Tabla = forwardRef(
 
       // Calcula valores claves primarias en filas insertadas
       let maximoTabla = 0;
-      if (calculaPrimaria) {
+      if (configuracion.calculaPrimaria) {
         // Calcula valores claves primarias
         if (getInsertadas().length > 0) {
           maximoTabla = await getServicioSecuencial(getInsertadas().length);
@@ -797,7 +803,7 @@ const Tabla = forwardRef(
       }
       getInsertadas().forEach((filaActual) => {
         // Asigna valores primario calculado
-        if (calculaPrimaria) {
+        if (configuracion.calculaPrimaria) {
           filaActual[campoPrimario.toLowerCase()] = maximoTabla;
           maximoTabla += 1;
         }
@@ -886,13 +892,13 @@ const Tabla = forwardRef(
         });
 
         objInsert.tipo = 'insertar';
-        objInsert.nombreTabla = nombreTabla.toLowerCase();
-        objInsert.campoPrimario = campoPrimario.toLowerCase();
+        objInsert.nombreTabla = configuracion.nombreTabla.toLowerCase();
+        objInsert.campoPrimario = configuracion.campoPrimario.toLowerCase();
         objInsert.columnas = columnasInsert;
-        objInsert.serial = calculaPrimaria;
-        if (!calculaPrimaria) {
+        objInsert.serial = configuracion.calculaPrimaria;
+        if (!configuracion.calculaPrimaria) {
           // elimina campo primario cuando es serial
-          delete filaActual[campoPrimario];
+          delete filaActual[configuracion.campoPrimario];
         }
         // Valores Mayusculas
         for (let j = 0; j < colMayusculas.length; j += 1) {
@@ -928,7 +934,7 @@ const Tabla = forwardRef(
         const filaActual = getModificadas()[i];
         const objModifica = {};
         objModifica.tipo = 'modificar';
-        objModifica.nombreTabla = nombreTabla.toLowerCase();
+        objModifica.nombreTabla = configuracion.nombreTabla.toLowerCase();
 
         // Valores Mayusculas
         for (let j = 0; j < colMayusculas.length; j += 1) {
@@ -956,8 +962,8 @@ const Tabla = forwardRef(
         }
         objModifica.valores = valoresModifica;
         const condicionModifica = {
-          condicion: `${campoPrimario} = ?`,
-          valores: [filaActual[campoPrimario.toLowerCase()]]
+          condicion: `${configuracion.campoPrimario} = ?`,
+          valores: [filaActual[configuracion.campoPrimario.toLowerCase()]]
         };
         objModifica.condiciones = [condicionModifica];
         listaSql.push(objModifica);
@@ -967,9 +973,9 @@ const Tabla = forwardRef(
         const filaActual = getEliminadas()[i];
         const objElimina = {};
         objElimina.tipo = 'eliminar';
-        objElimina.nombreTabla = nombreTabla.toLowerCase();
+        objElimina.nombreTabla = configuracion.nombreTabla.toLowerCase();
         const condicionElimina = {
-          condicion: `${campoPrimario} = ?`,
+          condicion: `${configuracion.campoPrimario} = ?`,
           valores: [filaActual]
         };
         objElimina.condiciones = [condicionElimina];
@@ -1055,30 +1061,30 @@ const Tabla = forwardRef(
     };
 
     const handleInsertar = () => {
-      if (!vistaFormularo) {
+      if (!configuracion.vistaFormularo) {
         tablaReact.current.insertarTablaReact();
       }
     };
 
     const handleActualizar = () => {
-      if (!vistaFormularo) {
+      if (!configuracion.vistaFormularo) {
         tablaReact.current.actualizarTablaReact();
       }
     };
 
     const handleEliminar = () => {
-      if (!vistaFormularo) {
+      if (!configuracion.vistaFormularo) {
         tablaReact.current.eliminarTablaReact();
       }
     };
 
     const handleCambiarVista = () => {
-      if (vistaFormularo) {
+      if (configuracion.vistaFormularo) {
         // calcula la página actual
-        const pagina = parseInt(indiceTabla / filasPorPagina, 10);
+        const pagina = parseInt(indiceTabla / configuracion.filasPorPagina, 10);
         setPaginaActual(pagina);
       }
-      setVistaFormulario(!vistaFormularo);
+      setVistaFormulario(!configuracion.vistaFormularo);
     };
 
     return (
