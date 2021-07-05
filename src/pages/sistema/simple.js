@@ -44,7 +44,7 @@ export default function Simple() {
         />
         <Card>
           <TableContainer sx={{ padding: 2 }}>
-            <Tabla ref={tabTabla1} numeroTabla={1} tablaConfiguracion={id} lectura={false} />
+            <Tabla ref={tabTabla1} numeroTabla={1} tablaConfiguracion={id} lectura={false} showRowIndex />
           </TableContainer>
         </Card>
       </Container>

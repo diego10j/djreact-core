@@ -70,8 +70,8 @@ const Tabla = forwardRef(
       calculaPrimaria = true,
       showToolbar = true,
       showPaginador = true,
-      showBotonInsertar = false,
-      showBotonEliminar = false,
+      showBotonInsertar,
+      showBotonEliminar,
       showBotonModificar = false,
       showBuscar = true,
       showRowIndex = false,
@@ -114,16 +114,6 @@ const Tabla = forwardRef(
     const tablaReact = useRef();
     const tablaFormulario = useRef();
 
-    // Aplica valores por defecto en caso de ser la tabla de lectura
-    // if (lectura === true) {
-    //   showBotonInsertar = false;
-    //   showBotonEliminar = false;
-    //   showBotonModificar = false;
-    // } else {
-    //   showBotonInsertar = true;
-    //   showBotonEliminar = true;
-    // }
-
     // const dispatch = useDispatch();
     // const { columnas } = useSelector((state) => state.tabla);
     const isMountedRef = useIsMountedRef();
@@ -141,8 +131,23 @@ const Tabla = forwardRef(
     const [indiceTabla, setIndiceTabla] = useState();
     const [vistaFormularo, setVistaFormulario] = useState(tipoFormulario);
     const [paginaActual, setPaginaActual] = useState(0);
+    const [numFilasNuevas, setNumFilasNuevas] = useState(0);
     const [abrirConfigurar, setAbrirConfigurar] = useState(false);
-    const [configuracion, setConfiguracion] = useState();
+    const [configuracion, setConfiguracion] = useState({
+      numeroTabla,
+      nombreTabla,
+      campoPrimario,
+      campoOrden: campoOrden || campoPrimario,
+      tipoFormulario,
+      campoNombre,
+      campoForanea,
+      campoPadre,
+      filasPorPagina,
+      calculaPrimaria,
+      lectura,
+      showBotonInsertar,
+      showBotonEliminar
+    });
 
     useEffect(() => {
       // Create an scoped async function in the hook
@@ -172,13 +177,19 @@ const Tabla = forwardRef(
       }
     }, [filaSeleccionada]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const initialState = () => {
+    function initialState() {
       setFilaSeleccionada(null);
       setIndiceTabla(null);
       setColumnasOcultas([]);
       setEliminadas([]);
+      setNumFilasNuevas(0);
       setCombos([]);
       setPaginaActual(0);
+      // Caracteristicas de tabla editable
+      if (lectura === false) {
+        showBotonInsertar = !isDefined(showBotonInsertar) ? true : showBotonInsertar;
+        showBotonEliminar = !isDefined(showBotonEliminar) ? true : showBotonEliminar;
+      }
       setConfiguracion({
         numeroTabla,
         nombreTabla,
@@ -192,12 +203,14 @@ const Tabla = forwardRef(
         calculaPrimaria,
         lectura,
         numeroFilas: filasPorPagina,
-        ideOpci: getIdeOpci()
+        ideOpci: getIdeOpci(),
+        showBotonInsertar,
+        showBotonEliminar
       });
-    };
+    }
 
     const getServicioDatos = async () => {
-      console.log('---CARGA DATOS');
+      // console.log('---CARGA DATOS');
       try {
         setCargando(true);
         if (!isDefined(servicio)) {
@@ -206,7 +219,12 @@ const Tabla = forwardRef(
           if (isDefined(condiciones)) {
             condicionesTabla.push(condiciones);
           }
-          const { data } = await consultarTabla(nombreTabla, campoPrimario, campoOrden, condicionesTabla);
+          const { data } = await consultarTabla(
+            nombreTabla || configuracion.nombreTabla,
+            campoPrimario || configuracion.campoPrimario,
+            campoOrden || configuracion.campoOrden,
+            condicionesTabla
+          );
           if (isMountedRef.current) {
             setData([]);
             setData(data.datos);
@@ -243,7 +261,7 @@ const Tabla = forwardRef(
      * Obtiene las columnas del servicio web
      */
     const getServicioColumnas = async () => {
-      console.log('---CARGA COLUMNAS');
+      // console.log('---CARGA COLUMNAS');
       try {
         if (!isDefined(servicio)) {
           const { data } = await getColumnasTabla(nombreTabla, campoPrimario, getIdeOpci(), numeroTabla);
@@ -268,7 +286,7 @@ const Tabla = forwardRef(
      * Obtiene las columnas del servicio web
      */
     const getServicioCombo = async (columna) => {
-      console.log('---CARGA COMBO');
+      // console.log('---CARGA COMBO');
       try {
         const { data } = await getComboTabla(
           columna.nombreTablaCombo,
@@ -295,7 +313,7 @@ const Tabla = forwardRef(
      * Obtiene las columnas del servicio web
      */
     const getServicioConfiguracion = async () => {
-      console.log('---CARGA CONFIGURACIÓN');
+      // console.log('---CARGA CONFIGURACIÓN');
       try {
         const { data } = await getConfiguracion(getIdeOpci(), numeroTabla);
         if (isDefined(data.datos)) {
@@ -359,7 +377,7 @@ const Tabla = forwardRef(
 
     const formarColumnas = (cols) => {
       if (opcionesColumnas) {
-        console.log('---FORMAR COLUMNAS');
+        // console.log('---FORMAR COLUMNAS');
         // Aplica cada configuración realizada a las columnas
         opcionesColumnas.forEach(async (_columna) => {
           const colActual = cols.find((_col) => _col.nombre === _columna.nombre.toLowerCase());
@@ -384,9 +402,7 @@ const Tabla = forwardRef(
           // Configuración Combo
           if (isDefined(_columna.combo)) {
             // Valor por defecto ''
-            if (!isDefined(colActual.valorDefecto)) {
-              colActual.valorDefecto = '';
-            }
+            colActual.valorDefecto = !isDefined(colActual.valorDefecto) ? '' : colActual.valorDefecto;
             colActual.componente = 'Combo';
             colActual.anchoColumna = 18;
             colActual.nombreTablaCombo = _columna.combo.nombreTabla;
@@ -429,7 +445,7 @@ const Tabla = forwardRef(
           // CheckBox de lectura
           _columna.Cell = CheckLectura;
           _columna.anchoColumna = 7;
-          _columna.valorDefecto = _columna.valorDefecto === '' ? false : _columna.valorDefecto;
+          _columna.valorDefecto = _columna.valorDefecto === 'true' || _columna.valorDefecto === true;
         } else if (_columna.componente === 'Combo') {
           // CheckBox de lectura
           _columna.Cell = ComboLectura;
@@ -514,10 +530,7 @@ const Tabla = forwardRef(
      */
     const isFilaModificada = (valorPrimario) => {
       const fila = data.find((col) => col[configuracion.campoPrimario] === valorPrimario);
-      if (isDefined(fila) && fila?.modificada) {
-        return true;
-      }
-      return false;
+      return isDefined(fila) && fila?.modificada;
     };
 
     /**
@@ -527,10 +540,7 @@ const Tabla = forwardRef(
      */
     const isFilaEliminada = (valorPrimario) => {
       const fila = eliminadas.find((col) => col[configuracion.campoPrimario] === valorPrimario);
-      if (isDefined(fila)) {
-        return true;
-      }
-      return false;
+      return isDefined(fila);
     };
 
     /**
@@ -538,6 +548,7 @@ const Tabla = forwardRef(
      */
     const actualizar = () => {
       setEliminadas([]);
+      setNumFilasNuevas(0);
       setFilaSeleccionada(undefined);
       getServicioDatos();
     };
@@ -645,7 +656,7 @@ const Tabla = forwardRef(
      */
     const crearFila = () => {
       // PK temporal negativa
-      const tmpPK = 0 - (getInsertadas().length + 1);
+      const tmpPK = 0 - (1000 - numFilasNuevas);
       const filaNueva = { insertada: true };
       columns.forEach((_columna) => {
         const { nombre, valorDefecto } = _columna;
@@ -654,6 +665,7 @@ const Tabla = forwardRef(
           filaNueva[nombre] = tmpPK;
         }
       });
+
       //  Asigna valor a las relaciones
       // for (const relacion of this.relaciones) {
       // relacion.setValorForanea(this.getValorSeleccionado());
@@ -665,10 +677,12 @@ const Tabla = forwardRef(
       // }
       // setSkipPageReset(false);
       const newData = [filaNueva, ...data];
+      const aux = numFilasNuevas + 1;
+      setNumFilasNuevas(aux);
       setData(newData);
       setFilaSeleccionada(filaNueva);
-      // setIndiceTabla(0);
-      // setSkipPageReset(true);
+      setIndiceTabla(0);
+      setSkipPageReset(false);
       // setFilaSeleccionada(filaNueva);
       // setIndiceTabla(0);
     };
@@ -742,10 +756,13 @@ const Tabla = forwardRef(
         // Valores Obligatorios
         for (let j = 0; j < colObligatorias.length; j += 1) {
           const colActual = colObligatorias[j];
-          const valor = filaActual[colActual.nombre];
-          if (isEmpty(valor)) {
-            showMensajeAdvertencia(`Los valores de la columna ${colActual.nombreVisual} son obligatorios`);
-            return false;
+          if (calculaPrimaria === true && colActual.nombre !== campoPrimario) {
+            // No aplica a campoPrimario
+            const valor = filaActual[colActual.nombre];
+            if (isEmpty(valor)) {
+              showMensajeAdvertencia(`Los valores de la columna ${colActual.nombreVisual} son obligatorios`);
+              return false;
+            }
           }
         }
 
@@ -1001,6 +1018,7 @@ const Tabla = forwardRef(
       // }
 
       setEliminadas([]);
+      setNumFilasNuevas(0);
       for (let i = 0; i < getInsertadas().length; i += 1) {
         const filaActual = getInsertadas()[i];
         // Si tiene arbol, agrega al nodo seleccionado
@@ -1096,8 +1114,8 @@ const Tabla = forwardRef(
             eliminar={handleEliminar}
             cambiarVista={handleCambiarVista}
             filaSeleccionada={filaSeleccionada}
-            showBotonInsertar={showBotonInsertar}
-            showBotonEliminar={showBotonEliminar}
+            showBotonInsertar={configuracion.showBotonInsertar}
+            showBotonEliminar={configuracion.showBotonEliminar}
             showBotonModificar={showBotonModificar}
             vistaFormularo={vistaFormularo}
             lectura={lectura}
@@ -1109,7 +1127,7 @@ const Tabla = forwardRef(
             ref={tablaReact}
             columns={columns}
             data={data}
-            campoOrden={campoOrden}
+            configuracion={configuracion}
             updateMyData={updateMyData}
             skipPageReset={skipPageReset}
             cargando={cargando}
@@ -1130,7 +1148,6 @@ const Tabla = forwardRef(
             getInsertadas={getInsertadas}
             getModificadas={getModificadas}
             getEliminadas={getEliminadas}
-            setCargando={setCargando}
             showPaginador={showPaginador}
             showBuscar={showBuscar}
             showRowIndex={showRowIndex}

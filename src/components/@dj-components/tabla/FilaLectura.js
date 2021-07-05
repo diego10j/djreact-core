@@ -35,7 +35,7 @@ export function CheckLectura({ value: initialValue }) {
 }
 
 CheckLectura.propTypes = {
-  value: PropTypes.bool
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 };
 
 export function AvatarLectura({ value: initialValue, column: { campoNombreAvatar }, row: { values } }) {
