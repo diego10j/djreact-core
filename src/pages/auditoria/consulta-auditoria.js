@@ -22,6 +22,7 @@ import { borrarAuditoria } from '../../services/sistema/servicioAuditroia';
 // ----------------------------------------------------------------------
 
 export default function ConsultaAuditoria() {
+  const titulo = 'Consulta Auditoria Usuarios';
   // refererencias hacia componentes
   const tabTabla1 = useRef();
   const carFechas = useRef();
@@ -71,14 +72,11 @@ export default function ConsultaAuditoria() {
         loading={loading}
       />
 
-      <Page title="Simple">
+      <Page title={titulo}>
         <Container maxWidth="xl">
           <HeaderBreadcrumbs
-            heading="Consulta Auditoria Usuarios"
-            links={[
-              { name: 'Auditoria', href: PATH_DASHBOARD.auditoria.root },
-              { name: 'Consulta Auditoria Usuarios' }
-            ]}
+            heading={titulo}
+            links={[{ name: 'Auditoria', href: PATH_DASHBOARD.auditoria.root }, { name: titulo }]}
             action={<BotonEliminar label="Eliminar Auditoria" onClick={abrirConfirmarEliminar} />}
           />
 
@@ -118,7 +116,7 @@ export default function ConsultaAuditoria() {
             <TableContainer sx={{ padding: 2 }}>
               <Tabla
                 ref={tabTabla1}
-                filasPorPagina={20}
+                filasPorPagina={15}
                 campoPrimario="ide_auac"
                 numeroTabla={1}
                 servicio={{ nombre: 'api/seguridad/getConsultaAuditoria', parametros: paramServicio }}

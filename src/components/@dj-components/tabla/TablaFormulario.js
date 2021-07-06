@@ -62,7 +62,8 @@ const TablaFormulario = forwardRef(
       indiceTabla,
       numeroColFormulario,
       hookFormulario,
-      totalColumnasSkeleton
+      totalColumnasSkeleton,
+      cargando
     },
     ref
   ) => {
@@ -144,7 +145,7 @@ const TablaFormulario = forwardRef(
           </Grid>
         )}
 
-        {isColumnas && data.length > 0 ? (
+        {cargando === false && data.length > 0 ? (
           <Grid container spacing={1}>
             <Grid container item xs={12} spacing={3}>
               {filaSeleccionada &&
@@ -188,6 +189,7 @@ TablaFormulario.propTypes = {
   isColumnas: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,
   filaSeleccionada: PropTypes.object,
+  cargando: PropTypes.bool,
   setValorFilaSeleccionada: PropTypes.func.isRequired,
   getValorFilaSeleccionada: PropTypes.func.isRequired,
   insertar: PropTypes.func.isRequired,

@@ -1,4 +1,4 @@
-import React, { useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, forwardRef, useImperativeHandle, useState } from 'react';
 import PropTypes from 'prop-types';
 // react-table
 import { useGlobalFilter, usePagination, useSortBy, useFilters, useRowSelect, useTable } from 'react-table';
@@ -151,7 +151,6 @@ const TablaReact = forwardRef(
     {
       columns,
       data,
-      configuracion,
       lectura,
       cargando,
       isColumnas,
@@ -166,9 +165,6 @@ const TablaReact = forwardRef(
       eliminar,
       combos,
       setFilaSeleccionada,
-      getInsertadas,
-      getModificadas,
-      getEliminadas,
       updateMyData,
       skipPageReset,
       showPaginador,
@@ -187,11 +183,12 @@ const TablaReact = forwardRef(
       insertarTablaReact,
       eliminarTablaReact,
       actualizarTablaReact,
-      seleccionarFilaTablaReact
+      setPintarFila
     }));
 
     const theme = useTheme();
     const classes = useStyles();
+    const [pintarFila, setPintarFila] = useState(false);
     // Ancho del body cuando todabia esta cargando la data
     const minHeightBody = filasPorPagina * 30;
 
@@ -221,7 +218,7 @@ const TablaReact = forwardRef(
       setGlobalFilter,
       setHiddenColumns,
       page,
-      rows,
+      preGlobalFilteredRows,
       gotoPage,
       toggleAllRowsSelected,
       setPageSize,
@@ -236,7 +233,7 @@ const TablaReact = forwardRef(
         autoResetExpanded: !skipPageReset,
         autoResetGroupBy: !skipPageReset,
         autoResetSelectedRows: !skipPageReset,
-        autoResetSortBy: !skipPageReset,
+        autoResetSortBy: true,
         autoResetFilters: !skipPageReset,
         autoResetRowState: !skipPageReset,
         autoResetGlobalFilter: !skipPageReset,
@@ -249,20 +246,17 @@ const TablaReact = forwardRef(
         modificarFila,
         filterTypes,
         combos,
-        getInsertadas,
-        getModificadas,
-        getEliminadas,
         setColumnaSeleccionada,
         initialState: {
           pageSize: filasPorPagina,
-          pageIndex: paginaActual,
+          pageIndex: paginaActual
           //  selectedRowIds: rowIdSeleccionado,
-          sortBy: [
-            {
-              id: configuracion.campoOrden,
-              desc: false
-            }
-          ]
+          //  sortBy: [
+          //    {
+          //      id: configuracion.campoOrden,
+          //      desc: true
+          //    }
+          //  ]
         }
       },
       useGlobalFilter, // useGlobalFilter!
@@ -278,13 +272,18 @@ const TablaReact = forwardRef(
 
     useEffect(() => {
       async function selectRow() {
-        // Pinta la fila seleccionada por defecto
-        if (rows.length > 0) {
-          // await seleccionarFilaTablaReact();
+        if (pintarFila === true) {
+          // console.log(indiceTabla);
+          // console.log(filaSeleccionada);
+          // console.log(rows.length);
+          if (isDefined(indiceTabla)) {
+            await seleccionarFilaTablaReact();
+          }
+          setPintarFila(false);
         }
       } // Execute the created function directly
       selectRow();
-    }, [cargando]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [pintarFila]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleChangePage = (event, newPage) => {
       gotoPage(newPage);
@@ -303,7 +302,8 @@ const TablaReact = forwardRef(
         // const pagina = parseInt(data.length / filasPorPagina, 10);
         // gotoPage(pagina);
         if (tmpPk) {
-          seleccionarFilaTablaReact(0);
+          setPintarFila(true);
+          // seleccionarFilaTablaReact(0);
           // setCargando(true);
           // const row = page[0]; // selecciona fila insertada
           // selecciona columna 1 para que ponga el autofocus si es Texto
@@ -333,29 +333,26 @@ const TablaReact = forwardRef(
     /**
      * Selecciona la fila del indice actual de la tabla
      */
-    const seleccionarFilaTablaReact = async (numFila = null) => {
-      if (!isDefined(numFila)) {
-        numFila = indiceTabla;
-      }
-      if (numFila >= 0) {
-        const pagina = parseInt(numFila / filasPorPagina, 10);
-        if (pageIndex !== pagina) {
-          await gotoPage(pagina);
+    const seleccionarFilaTablaReact = async () => {
+      if (preGlobalFilteredRows.length > 0) {
+        if (indiceTabla >= 0) {
+          const pagina = parseInt(indiceTabla / filasPorPagina, 10);
+          if (pageIndex !== pagina) {
+            await gotoPage(pagina);
+          }
+          // const auxIndice = numFila - pagina * filasPorPagina;
+          toggleAllRowsSelected(false);
+          const row = preGlobalFilteredRows.find((row) => row.index === indiceTabla);
+          //  const row = rows[numFila];
+          await prepareRow(row);
+          row.toggleRowSelected();
+          // selecciona columna 1 para que ponga el autofocus
+          setColumnaSeleccionada(row.cells[0].column.nombre);
+          // toggleRowSelected(`${indiceTabla}`);
+          // setCargando(true);
+          // setCargando(false);
+          // row.toggleRowSelected();
         }
-        // const auxIndice = numFila - pagina * filasPorPagina;
-        toggleAllRowsSelected(false);
-        const row = rows[numFila];
-        // console.log(row);
-        await prepareRow(row);
-        row.toggleRowSelected();
-        // selecciona columna 1 para que ponga el autofocus
-        setColumnaSeleccionada(row.cells[0].column.nombre);
-        // toggleRowSelected(`${numFila}`);
-
-        // setCargando(true);
-
-        // setCargando(false);
-        // row.toggleRowSelected();
       }
     };
 
@@ -478,7 +475,7 @@ const TablaReact = forwardRef(
                       >
                         {showRowIndex && (
                           <StyledTableCellBodyIndex size="small" padding="none">
-                            {row.index + 1}
+                            {row.index}
                           </StyledTableCellBodyIndex>
                         )}
 
@@ -532,7 +529,6 @@ TablaReact.propTypes = {
   filasPorPagina: PropTypes.number,
   indiceTabla: PropTypes.number,
   data: PropTypes.array.isRequired,
-  configuracion: PropTypes.object,
   setFilaSeleccionada: PropTypes.func.isRequired,
   cargando: PropTypes.bool.isRequired,
   modificarFila: PropTypes.func.isRequired,

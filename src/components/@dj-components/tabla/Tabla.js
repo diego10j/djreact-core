@@ -149,6 +149,9 @@ const Tabla = forwardRef(
       showBotonEliminar
     });
 
+    /**
+     * Sirve para las pantallas genéricas, cuando cambia la configuración de componentes Tabla
+     */
     useEffect(() => {
       // Create an scoped async function in the hook
       async function configuracionTabla() {
@@ -163,28 +166,49 @@ const Tabla = forwardRef(
       configuracionTabla();
     }, [tablaConfiguracion]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    /**
+     * Pinta la fila seleccionada cuando cambia la vista a Tabla
+     */
+    useEffect(() => {
+      if (vistaFormularo === false && data.length > 0) tablaReact.current.setPintarFila(true);
+    }, [vistaFormularo]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    /**
+     *  Oculta columnas para la TablaReact
+     */
     useEffect(() => {
       if (!vistaFormularo) {
-        // Oculta columnas para la TablaReact
         const colOcultas = columns.filter((_col) => _col.visible === false).map((_element) => _element.nombre);
         setColumnasOcultas(colOcultas);
       }
     }, [columns]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    /**
+     * Asigna los valores de la fila seleccionada a los values del hookFormulario
+     */
     useEffect(() => {
       if (isDefined(hookFormulario)) {
         hookFormulario.setValues(filaSeleccionada);
       }
     }, [filaSeleccionada]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+      if (vistaFormularo === false && cargando === false && data.length > 0) tablaReact.current.setPintarFila(true);
+    }, [cargando]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    /**
+     * Inicializa los states para la tabla React, esto debido a las pantallas genéricas
+     */
     function initialState() {
-      setFilaSeleccionada(null);
-      setIndiceTabla(null);
+      setFilaSeleccionada(undefined);
+      setIndiceTabla(undefined);
       setColumnasOcultas([]);
       setEliminadas([]);
       setNumFilasNuevas(0);
       setCombos([]);
       setPaginaActual(0);
+      setData([]);
+      setVistaFormulario(tipoFormulario);
       // Caracteristicas de tabla editable
       if (lectura === false) {
         showBotonInsertar = !isDefined(showBotonInsertar) ? true : showBotonInsertar;
@@ -209,7 +233,11 @@ const Tabla = forwardRef(
       });
     }
 
-    const getServicioDatos = async () => {
+    /**
+     * Consulta en el servicio web los datos de la Tabla
+     * @param {string} valorPrimario  Sirve para seleccionar una fila determinada
+     */
+    const getServicioDatos = async (valorPrimario = null) => {
       // console.log('---CARGA DATOS');
       try {
         setCargando(true);
@@ -228,7 +256,13 @@ const Tabla = forwardRef(
           if (isMountedRef.current) {
             setData([]);
             setData(data.datos);
-            if (!isDefined(indiceTabla)) {
+            // selecciona fila por valor primario anterior
+            if (isDefined(valorPrimario)) {
+              const fila = data.datos.find((col) => col[configuracion.campoPrimario] === valorPrimario);
+              setFilaSeleccionada(fila);
+              setIndiceTabla(data.datos.indexOf(fila));
+            } else {
+              // Selecciona la fila 0 por defecto
               setIndiceTabla(0);
               setFilaSeleccionada(data.datos[0]);
             }
@@ -243,7 +277,13 @@ const Tabla = forwardRef(
           if (isMountedRef.current) {
             setData([]);
             setData(data.datos);
-            if (!isDefined(indiceTabla)) {
+            // selecciona fila por valor primario anterior
+            if (isDefined(valorPrimario)) {
+              const fila = data.datos.find((col) => col[configuracion.campoPrimario] === valorPrimario);
+              setFilaSeleccionada(fila);
+              setIndiceTabla(data.datos.indexOf(fila));
+            } else {
+              // Selecciona la fila 0 por defecto
               setIndiceTabla(0);
               setFilaSeleccionada(data.datos[0]);
             }
@@ -498,7 +538,8 @@ const Tabla = forwardRef(
      * Retorna el valor del campo primario de la fila seleccionada
      * @returns
      */
-    const getValorSeleccionado = () => filaSeleccionada[configuracion.campoPrimario];
+    const getValorSeleccionado = () =>
+      isDefined(filaSeleccionada) ? filaSeleccionada[configuracion.campoPrimario] : undefined;
     const getColumnas = () => columns;
     const getDatos = () => data;
     const getFilaSeleccionada = () => filaSeleccionada;
@@ -546,11 +587,15 @@ const Tabla = forwardRef(
     /**
      * Actualiza la tabla a su estado original
      */
-    const actualizar = () => {
+    const actualizar = async () => {
       setEliminadas([]);
       setNumFilasNuevas(0);
-      setFilaSeleccionada(undefined);
-      getServicioDatos();
+      // guarda pk de la fila seleccionada
+      const respValorSeleccionado =
+        !isDefined(filaSeleccionada) || filaSeleccionada?.insertada
+          ? undefined
+          : filaSeleccionada[configuracion.campoPrimario];
+      await getServicioDatos(respValorSeleccionado);
     };
 
     /**
@@ -634,17 +679,18 @@ const Tabla = forwardRef(
      */
     const seleccionarFilaPorIndice = (index) => {
       const fila = data[index];
-      seleccionarFila(fila);
+      seleccionarFila(fila, index);
     };
 
     /**
      * Selecciona una fila, recibe el objeto fila
      * @param {Fila} fila
      */
-    const seleccionarFila = (fila) => {
+    const seleccionarFila = (fila, index = undefined) => {
       if (isDefined(fila)) {
         setFilaSeleccionada(fila);
-        setIndiceTabla(data.indexOf(fila));
+        if (isDefined(index)) setIndiceTabla(index);
+        else setIndiceTabla(data.indexOf(fila));
       } else {
         setFilaSeleccionada(undefined);
         setIndiceTabla(undefined);
@@ -756,7 +802,7 @@ const Tabla = forwardRef(
         // Valores Obligatorios
         for (let j = 0; j < colObligatorias.length; j += 1) {
           const colActual = colObligatorias[j];
-          if (calculaPrimaria === true && colActual.nombre !== campoPrimario) {
+          if (configuracion.calculaPrimaria === true && colActual.nombre !== configuracion.campoPrimario) {
             // No aplica a campoPrimario
             const valor = filaActual[colActual.nombre];
             if (isEmpty(valor)) {
@@ -821,7 +867,9 @@ const Tabla = forwardRef(
       getInsertadas().forEach((filaActual) => {
         // Asigna valores primario calculado
         if (configuracion.calculaPrimaria) {
-          filaActual[campoPrimario.toLowerCase()] = maximoTabla;
+          filaActual[configuracion.campoPrimario.toLowerCase()] = maximoTabla;
+          setValorFilaSeleccionada(configuracion.campoPrimario.toLowerCase(), maximoTabla);
+          updateMyData(indiceTabla, configuracion.campoPrimario.toLowerCase(), maximoTabla);
           maximoTabla += 1;
         }
       });
@@ -1079,30 +1127,32 @@ const Tabla = forwardRef(
     };
 
     const handleInsertar = () => {
-      if (!configuracion.vistaFormularo) {
+      if (!vistaFormularo) {
         tablaReact.current.insertarTablaReact();
       }
     };
 
     const handleActualizar = () => {
-      if (!configuracion.vistaFormularo) {
+      if (!vistaFormularo) {
         tablaReact.current.actualizarTablaReact();
+      } else {
+        actualizar();
       }
     };
 
     const handleEliminar = () => {
-      if (!configuracion.vistaFormularo) {
+      if (!vistaFormularo) {
         tablaReact.current.eliminarTablaReact();
       }
     };
 
     const handleCambiarVista = () => {
-      if (configuracion.vistaFormularo) {
+      if (vistaFormularo) {
         // calcula la página actual
         const pagina = parseInt(indiceTabla / configuracion.filasPorPagina, 10);
         setPaginaActual(pagina);
       }
-      setVistaFormulario(!configuracion.vistaFormularo);
+      setVistaFormulario(!vistaFormularo);
     };
 
     return (
@@ -1145,9 +1195,6 @@ const Tabla = forwardRef(
             eliminar={eliminar}
             lectura={lectura}
             combos={combos}
-            getInsertadas={getInsertadas}
-            getModificadas={getModificadas}
-            getEliminadas={getEliminadas}
             showPaginador={showPaginador}
             showBuscar={showBuscar}
             showRowIndex={showRowIndex}
