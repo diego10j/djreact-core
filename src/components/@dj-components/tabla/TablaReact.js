@@ -250,13 +250,6 @@ const TablaReact = forwardRef(
         initialState: {
           pageSize: filasPorPagina,
           pageIndex: paginaActual
-          //  selectedRowIds: rowIdSeleccionado,
-          //  sortBy: [
-          //    {
-          //      id: configuracion.campoOrden,
-          //      desc: true
-          //    }
-          //  ]
         }
       },
       useGlobalFilter, // useGlobalFilter!
@@ -266,19 +259,24 @@ const TablaReact = forwardRef(
       useRowSelect
     );
 
+    /**
+     * Oculta columnas
+     */
     useEffect(() => {
       setHiddenColumns(columnasOcultas);
     }, [columnasOcultas]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    /**
+     * Sirve para pintar la fila seleccionada
+     */
     useEffect(() => {
       async function selectRow() {
         if (pintarFila === true) {
           // console.log(indiceTabla);
           // console.log(filaSeleccionada);
           // console.log(rows.length);
-          if (isDefined(indiceTabla)) {
-            await seleccionarFilaTablaReact();
-          }
+          if (isDefined(indiceTabla)) await seleccionarFilaTablaReact();
+
           setPintarFila(false);
         }
       } // Execute the created function directly
@@ -298,29 +296,13 @@ const TablaReact = forwardRef(
       if (!lectura) {
         // setAllFilters([]);
         setAllFilters([]);
-        const tmpPk = insertar();
-        // const pagina = parseInt(data.length / filasPorPagina, 10);
-        // gotoPage(pagina);
-        if (tmpPk) {
-          setPintarFila(true);
-          // seleccionarFilaTablaReact(0);
-          // setCargando(true);
-          // const row = page[0]; // selecciona fila insertada
-          // selecciona columna 1 para que ponga el autofocus si es Texto
-          // setColumnaSeleccionada(row.cells[0].column.nombre);
-          // await prepareRow(row);
-          // toggleAllRowsSelected(false); // clear seleccionadas
-          // toggleRowSelected('0');
-          // setCargando(false);
-        }
+        if (insertar()) setPintarFila(true);
       }
     };
 
     const eliminarTablaReact = async () => {
       if (!lectura) {
-        if (await eliminar()) {
-          toggleAllRowsSelected(false); // clear seleccionadas
-        }
+        if (await eliminar()) toggleAllRowsSelected(false); // clear seleccionadas
       }
     };
 
@@ -337,21 +319,13 @@ const TablaReact = forwardRef(
       if (preGlobalFilteredRows.length > 0) {
         if (indiceTabla >= 0) {
           const pagina = parseInt(indiceTabla / filasPorPagina, 10);
-          if (pageIndex !== pagina) {
-            await gotoPage(pagina);
-          }
-          // const auxIndice = numFila - pagina * filasPorPagina;
+          if (pageIndex !== pagina) await gotoPage(pagina);
           toggleAllRowsSelected(false);
           const row = preGlobalFilteredRows.find((row) => row.index === indiceTabla);
-          //  const row = rows[numFila];
           await prepareRow(row);
           row.toggleRowSelected();
           // selecciona columna 1 para que ponga el autofocus
           setColumnaSeleccionada(row.cells[0].column.nombre);
-          // toggleRowSelected(`${indiceTabla}`);
-          // setCargando(true);
-          // setCargando(false);
-          // row.toggleRowSelected();
         }
       }
     };

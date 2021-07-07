@@ -1,25 +1,28 @@
+// iconos
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import SecurityIcon from '@material-ui/icons/Security';
+import DvrIcon from '@material-ui/icons/Dvr';
+import SettingsIcon from '@material-ui/icons/Settings';
+import EventNoteIcon from '@material-ui/icons/EventNote';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
-// components
-import SvgIconStyle from '../../components/SvgIconStyle';
 
 // ----------------------------------------------------------------------
 
-const getIcon = (name) => (
-  <SvgIconStyle src={`/static/icons/navbar/${name}.svg`} sx={{ width: '100%', height: '100%' }} />
-);
+const getIconoMenu = (modulo) => {
+  switch (modulo) {
+    case 'dashboard':
+      return <DashboardIcon style={{ width: '100%', height: '100%' }} />;
+    case 'calendar':
+      return <EventNoteIcon style={{ width: '100%', height: '100%' }} />;
+    case 'auditoria':
+      return <SecurityIcon style={{ width: '100%', height: '100%' }} />;
+    case 'sistema':
+      return <SettingsIcon style={{ width: '100%', height: '100%' }} />;
 
-const ICONS = {
-  blog: getIcon('ic_blog'),
-  cart: getIcon('ic_cart'),
-  chat: getIcon('ic_chat'),
-  mail: getIcon('ic_mail'),
-  user: getIcon('ic_user'),
-  calendar: getIcon('ic_calendar'),
-  ecommerce: getIcon('ic_ecommerce'),
-  analytics: getIcon('ic_analytics'),
-  dashboard: getIcon('ic_dashboard'),
-  kanban: getIcon('ic_kanban')
+    default:
+      return <DvrIcon style={{ width: '100%', height: '100%' }} />;
+  }
 };
 
 const getMenuOpciones = () => {
@@ -31,9 +34,9 @@ const getMenuOpciones = () => {
         {
           title: 'Dashboard',
           path: PATH_DASHBOARD.general.app,
-          icon: ICONS.dashboard
+          icon: getIconoMenu('dashboard')
         },
-        { title: 'Calendario', path: PATH_DASHBOARD.calendar, icon: ICONS.calendar }
+        { title: 'Calendario', path: PATH_DASHBOARD.calendar, icon: getIconoMenu('calendar') }
       ]
     }
   ];
@@ -53,7 +56,7 @@ const getMenuOpciones = () => {
     hijos.push({
       title: opcionActual.label,
       path: `/dashboard/${opcionActual.paquete}`,
-      icon: ICONS.kanban,
+      icon: getIconoMenu(opcionActual.paquete),
       children: itemsOpcion
     });
   }

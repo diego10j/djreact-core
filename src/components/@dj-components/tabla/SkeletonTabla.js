@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Skeleton } from '@material-ui/core';
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { experimentalStyled as styled } from '@material-ui/core/styles';
+// hooks
+import useWidth from '../../../hooks/useWidth';
 
 const SkeletonTabla = ({ filasPorPagina }) => {
-  const width = useWidth();
+  const { width } = useWidth();
 
   const numColumnas = (width === 'xl' && 6) || (width === 'lg' && 4) || (width === 'md' && 3) || 2;
   return (
@@ -42,23 +43,6 @@ SkeletonTabla.propTypes = {
 };
 
 export default SkeletonTabla;
-
-/**
- * Be careful using this hook. It only works because the number of
- * breakpoints in theme is static. It will break once you change the number of
- * breakpoints. See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
- */
-export function useWidth() {
-  const theme = useTheme();
-  const keys = [...theme.breakpoints.keys].reverse();
-  return (
-    keys.reduce((output, key) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const matches = useMediaQuery(theme.breakpoints.up(key));
-      return !output && matches ? key : output;
-    }, null) || 'xs'
-  );
-}
 
 const StyledTablePagination = styled('div')(() => ({
   width: '100%',

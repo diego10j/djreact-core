@@ -174,6 +174,13 @@ const Tabla = forwardRef(
     }, [vistaFormularo]); // eslint-disable-line react-hooks/exhaustive-deps
 
     /**
+     * Pinta la fila cuando recupera la data
+     */
+    useEffect(() => {
+      if (vistaFormularo === false && cargando === false && data.length > 0) tablaReact.current.setPintarFila(true);
+    }, [cargando]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    /**
      *  Oculta columnas para la TablaReact
      */
     useEffect(() => {
@@ -187,14 +194,8 @@ const Tabla = forwardRef(
      * Asigna los valores de la fila seleccionada a los values del hookFormulario
      */
     useEffect(() => {
-      if (isDefined(hookFormulario)) {
-        hookFormulario.setValues(filaSeleccionada);
-      }
+      if (isDefined(hookFormulario)) hookFormulario.setValues(filaSeleccionada);
     }, [filaSeleccionada]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-      if (vistaFormularo === false && cargando === false && data.length > 0) tablaReact.current.setPintarFila(true);
-    }, [cargando]); // eslint-disable-line react-hooks/exhaustive-deps
 
     /**
      * Inicializa los states para la tabla React, esto debido a las pantallas genéricas
@@ -244,9 +245,8 @@ const Tabla = forwardRef(
         if (!isDefined(servicio)) {
           const condicionesTabla = [];
           // Condicion de la tabla
-          if (isDefined(condiciones)) {
-            condicionesTabla.push(condiciones);
-          }
+          if (isDefined(condiciones)) condicionesTabla.push(condiciones);
+
           const { data } = await consultarTabla(
             nombreTabla || configuracion.nombreTabla,
             campoPrimario || configuracion.campoPrimario,
@@ -529,9 +529,7 @@ const Tabla = forwardRef(
     const getColumna = (nombreColumna) => {
       nombreColumna = nombreColumna.toLowerCase();
       const col = columns.find((col) => col.nombre === nombreColumna);
-      if (!isDefined(col)) {
-        throw new Error(`Error la columna ${nombreColumna} no existe`);
-      }
+      if (!isDefined(col)) throw new Error(`Error la columna ${nombreColumna} no existe`);
       return col;
     };
     /**
@@ -558,10 +556,7 @@ const Tabla = forwardRef(
      */
     const isFilaInsertada = (valorPrimario) => {
       const fila = data.find((col) => col[configuracion.campoPrimario] === valorPrimario);
-      if (isDefined(fila) && fila?.insertada) {
-        return true;
-      }
-      return false;
+      return isDefined(fila) && fila?.insertada;
     };
 
     /**
@@ -707,9 +702,7 @@ const Tabla = forwardRef(
       columns.forEach((_columna) => {
         const { nombre, valorDefecto } = _columna;
         filaNueva[nombre] = valorDefecto;
-        if (nombre === configuracion.campoPrimario) {
-          filaNueva[nombre] = tmpPK;
-        }
+        if (nombre === configuracion.campoPrimario) filaNueva[nombre] = tmpPK;
       });
 
       //  Asigna valor a las relaciones
@@ -729,8 +722,6 @@ const Tabla = forwardRef(
       setFilaSeleccionada(filaNueva);
       setIndiceTabla(0);
       setSkipPageReset(false);
-      // setFilaSeleccionada(filaNueva);
-      // setIndiceTabla(0);
     };
 
     const insertar = () => {

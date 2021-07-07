@@ -3,10 +3,11 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
 import { Grid, TablePagination } from '@material-ui/core';
-import { isDefined } from '../../../utils/utilitario';
-import { SkeletonFormulario, SkeletonPaginador, useWidth } from './SkeletonTabla';
+import { SkeletonFormulario, SkeletonPaginador } from './SkeletonTabla';
 import TablePaginationActions from './PaginationTabla';
 import { ComponenteEditable } from './FilaEditable';
+// hooks
+import useWidth from '../../../hooks/useWidth';
 
 // Estilos
 const StyledDiv = styled('div')(() => ({
@@ -73,23 +74,13 @@ const TablaFormulario = forwardRef(
       actualizarTablaFormulario
     }));
 
-    const width = useWidth();
+    const { width } = useWidth();
     let calculaNumColumnas = (width === 'xl' && 4) || (width === 'lg' && 4) || (width === 'md' && 6) || 12;
-
     if (numeroColFormulario) {
-      const aux = 12 / numeroColFormulario;
+      // Calcula el numero de columnas del formulario
       if (calculaNumColumnas < 12) {
+        const aux = 12 / numeroColFormulario;
         calculaNumColumnas = aux;
-      }
-    }
-
-    // Configuraciones iniciales
-    if (!isDefined(filaSeleccionada)) {
-      if (data.length > 0) {
-        filaSeleccionada = data[0];
-        indiceTabla = 0;
-      } else {
-        insertar();
       }
     }
 

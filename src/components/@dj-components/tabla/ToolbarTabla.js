@@ -11,7 +11,7 @@ import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
 import TableRowsOutlinedIcon from '@material-ui/icons/TableRowsOutlined';
 
 // components
-import { Box, MenuItem, Tooltip, Divider } from '@material-ui/core';
+import { Box, MenuItem, Tooltip, Divider, Stack } from '@material-ui/core';
 import { Icon } from '@iconify/react';
 import { MIconButton } from '../../@material-extend';
 import MenuPopover from '../../MenuPopover';
@@ -72,39 +72,42 @@ export default function ToolbarTabla({
           sx={{
             pt: 0,
             pb: 0,
+            mt: 0,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center'
           }}
         >
-          <Box width="75%" flexGrow={1} sx={{ pt: 0, pb: 0 }}>
-            {showBotonInsertar === true && (
-              <MIconButton aria-label="insertar" title="Insertar" color="success" onClick={insertar}>
-                <AddIcon fontSize="inherit" />
-              </MIconButton>
-            )}
-            {showBotonModificar === true && (
-              <MIconButton
-                aria-label="modificar"
-                title="Modificar"
-                color="info"
-                onClick={handleModificar}
-                disabled={isDefined(filaSeleccionada) === false}
-              >
-                <CreateIcon fontSize="inherit" />
-              </MIconButton>
-            )}
-            {showBotonEliminar === true && (
-              <MIconButton
-                aria-label="eliminar"
-                title="Eliminar"
-                color="error"
-                onClick={eliminar}
-                disabled={isDefined(filaSeleccionada) === false}
-              >
-                <DeleteIcon fontSize="inherit" />
-              </MIconButton>
-            )}
+          <Box width="95%" flexGrow={1} sx={{ pt: 0, pb: 0 }}>
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-start">
+              {showBotonInsertar === true && (
+                <MIconButton aria-label="insertar" title="Insertar" color="success" onClick={insertar}>
+                  <AddIcon fontSize="inherit" />
+                </MIconButton>
+              )}
+              {showBotonModificar === true && (
+                <MIconButton
+                  aria-label="modificar"
+                  title="Modificar"
+                  color="info"
+                  onClick={handleModificar}
+                  disabled={isDefined(filaSeleccionada) === false}
+                >
+                  <CreateIcon fontSize="inherit" />
+                </MIconButton>
+              )}
+              {showBotonEliminar === true && (
+                <MIconButton
+                  aria-label="eliminar"
+                  title="Eliminar"
+                  color="error"
+                  onClick={eliminar}
+                  disabled={isDefined(filaSeleccionada) === false}
+                >
+                  <DeleteIcon fontSize="inherit" />
+                </MIconButton>
+              )}
+            </Stack>
           </Box>
 
           <Box sx={{ pt: 0, pb: 0 }}>

@@ -32,7 +32,10 @@ export const PATH_PAGE = {
   components: '/components'
 };
 
-const PANTALLAS_GENRICAS = [{ simple: path(ROOTS_DASHBOARD, '/sistema/simple') }];
+const PANTALLAS_GENRICAS = [
+  { simple: path(ROOTS_DASHBOARD, '/sistema/simple') },
+  { simpleUI: path(ROOTS_DASHBOARD, '/sistema/simple-ui') }
+];
 
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
@@ -49,6 +52,7 @@ export const PATH_DASHBOARD = {
   sistema: {
     root: path(ROOTS_DASHBOARD, '/sistema'),
     simple: path(ROOTS_DASHBOARD, '/sistema/simple'),
+    simpleUI: path(ROOTS_DASHBOARD, '/sistema/simple-ui'),
     empresa: path(ROOTS_DASHBOARD, '/sistema/empresa'),
     usuarios: path(ROOTS_DASHBOARD, '/sistema/usuarios')
   },
