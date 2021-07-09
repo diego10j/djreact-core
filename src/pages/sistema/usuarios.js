@@ -44,7 +44,6 @@ export default function Usuarios() {
                 ]}
                 showBotonInsertar
                 showBotonEliminar
-                showBotonModificar
               />
             </TableContainer>
           </Card>

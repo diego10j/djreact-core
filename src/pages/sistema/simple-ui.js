@@ -10,19 +10,23 @@ import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Tabla from '../../components/@dj-components/tabla/Tabla';
 import BotonGuardar from '../../components/@dj-components/boton/BotonGuardar';
+import DialogoFormulario from '../../components/@dj-components/dialogo/DialogoFormulario';
 // hooks
 import usePantalla from '../../hooks/usePantalla';
-
+import useWidth from '../../hooks/useWidth';
 // util
 import { getTituloPantalla } from '../../utils/utilitario';
+
 // ----------------------------------------------------------------------
 
 export default function SimpleUI() {
-  const pantalla = usePantalla();
   const tabTabla1 = useRef();
+  const difTabla1 = useRef();
   const [isGuardar, setIsGuardar] = useState(false);
 
   const { id } = useParams();
+  const pantalla = usePantalla();
+  const { windowSize } = useWidth();
 
   const titulo = getTituloPantalla();
 
@@ -34,8 +38,14 @@ export default function SimpleUI() {
     setIsGuardar(false);
   };
 
+  const abrirFormulario = async () => {
+    difTabla1.current.abrir();
+  };
+
   return (
     <Page title={titulo}>
+      <DialogoFormulario ref={difTabla1} />
+
       <Container maxWidth="xl">
         <HeaderBreadcrumbs
           heading={titulo}
@@ -45,8 +55,10 @@ export default function SimpleUI() {
         <Card>
           <TableContainer sx={{ padding: 2 }}>
             <Tabla
+              height={windowSize.height - 320}
               ref={tabTabla1}
-              showBotonModificar
+              filasPorPagina={20}
+              onModificar={abrirFormulario}
               showBotonInsertar
               showBotonEliminar
               numeroTabla={1}

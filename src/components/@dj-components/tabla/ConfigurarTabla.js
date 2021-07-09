@@ -4,19 +4,15 @@ import { Icon } from '@iconify/react';
 // material
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import {
-  Button,
   Dialog,
   DialogContent,
   Stack,
-  DialogActions,
   useMediaQuery,
   List,
   ListItem,
   ListItemText,
-  ListSubheader,
   IconButton
 } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
 // iconos
 import arrowIosUpwardFill from '@iconify/icons-eva/arrow-ios-upward-fill';
 import arrowheadUpFill from '@iconify/icons-eva/arrowhead-up-fill';
@@ -27,11 +23,11 @@ import arrowheadDownFill from '@iconify/icons-eva/arrowhead-down-fill';
 import TituloDialogo from '../dialogo/TituloDialogo';
 import Texto from '../texto/Texto';
 import CheckSeleccion from '../check/CheckSeleccion';
+import BotonesDialogo from '../dialogo/BotonesDialogo';
 // icons
 import ThemeConfig from '../../../theme';
 // utils
 import { isDefined } from '../../../utils/utilitario';
-
 // ----------------------------------------------------------------------
 
 const StyledList = withStyles((theme) => ({
@@ -39,7 +35,8 @@ const StyledList = withStyles((theme) => ({
     width: '100%',
     minWidth: 300,
     height: 350,
-    border: `solid 1px ${theme.palette.divider}`
+    border: `solid 1px ${theme.palette.divider}`,
+    overflow: 'auto'
   }
 }))(List);
 
@@ -201,7 +198,7 @@ export default function ConfigurarTabla({ open, setOpen, columns, getServicioCon
                 </IconButton>
               </Stack>
               <Stack direction="row" justifyContent="flex-start" spacing={1}>
-                <StyledList component="div" role="list" subheader={<ListSubheader>Columnas</ListSubheader>}>
+                <StyledList component="div" role="list">
                   {columnsConfigura.map(
                     (column, i) =>
                       column.visible && (
@@ -261,14 +258,7 @@ export default function ConfigurarTabla({ open, setOpen, columns, getServicioCon
             </Stack>
           </Stack>
         </DialogContent>
-        <DialogActions>
-          <Button variant="outlined" onClick={cerrar} disabled={loading}>
-            Cancelar
-          </Button>
-          <LoadingButton variant="contained" autoFocus sx={{ minWidth: 100 }} onClick={aceptar} loading={loading}>
-            Aplicar
-          </LoadingButton>
-        </DialogActions>
+        <BotonesDialogo labelAceptar="Aplicar" loading={loading} onAceptar={aceptar} onCancelar={cerrar} />
       </Dialog>
     </ThemeConfig>
   );

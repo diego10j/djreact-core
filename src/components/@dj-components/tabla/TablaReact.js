@@ -15,7 +15,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
+import Stack from '@material-ui/core/Stack';
 
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
@@ -175,7 +175,8 @@ const TablaReact = forwardRef(
       setIndiceTabla,
       indiceTabla,
       setPaginaActual,
-      paginaActual
+      paginaActual,
+      height
     },
     ref
   ) => {
@@ -190,7 +191,7 @@ const TablaReact = forwardRef(
     const classes = useStyles();
     const [pintarFila, setPintarFila] = useState(false);
     // Ancho del body cuando todabia esta cargando la data
-    const minHeightBody = filasPorPagina * 30;
+    height = isDefined(height) ? height : filasPorPagina * 30;
 
     // Función filtrar
     const filterTypes = React.useMemo(
@@ -333,21 +334,25 @@ const TablaReact = forwardRef(
     // Render the UI for your table isColumnas && cargando
     return (
       <StyledDiv>
-        <Grid container sx={{ mb: 1 }}>
-          <MHidden width="smDown">
-            <Grid item xs={6}>
-              {showBuscar === true && (
-                <Box sx={{ pt: 0, pb: 0 }}>
-                  <FiltroGlobalTabla
-                    globalFilter={globalFilter}
-                    setGlobalFilter={setGlobalFilter}
-                    setColumnaSeleccionada={setColumnaSeleccionada}
-                  />
-                </Box>
-              )}
-            </Grid>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          spacing={2}
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ pb: '10px' }}
+        >
+          <MHidden width="mdDown">
+            {showBuscar === true && (
+              <Box sx={{ pt: 0, pb: 0 }}>
+                <FiltroGlobalTabla
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                  setColumnaSeleccionada={setColumnaSeleccionada}
+                />
+              </Box>
+            )}
           </MHidden>
-          <Grid item xs>
+          <>
             {showPaginador === true &&
               (data.length > filasPorPagina ? (
                 <StyledTablePagination
@@ -371,19 +376,19 @@ const TablaReact = forwardRef(
               ) : (
                 !isColumnas && <SkeletonPaginador />
               ))}
-          </Grid>
-        </Grid>
+          </>
+        </Stack>
 
         <Scrollbar>
           <TableContainer
             sx={{
-              minHeight: `${minHeightBody}px  !important`
+              height: { xs: `${height + 45}px  !important`, md: `${height}px  !important` }
             }}
           >
             {!isColumnas ? (
-              <SkeletonTabla filasPorPagina={filasPorPagina} />
+              <SkeletonTabla filasPorPagina={filasPorPagina} height={height} />
             ) : (
-              <StyledTable {...getTableProps()} size="small">
+              <StyledTable {...getTableProps()} size="small" stickyHeader>
                 <TableHead>
                   {headerGroups.map((headerGroup, index) => (
                     <TableRow key={index} {...headerGroup.getHeaderGroupProps()}>
@@ -449,7 +454,7 @@ const TablaReact = forwardRef(
                       >
                         {showRowIndex && (
                           <StyledTableCellBodyIndex size="small" padding="none">
-                            {row.index}
+                            {row.index + 1}
                           </StyledTableCellBodyIndex>
                         )}
 
@@ -529,5 +534,6 @@ TablaReact.propTypes = {
   showBuscar: PropTypes.bool,
   showRowIndex: PropTypes.bool,
   setPaginaActual: PropTypes.func.isRequired,
-  paginaActual: PropTypes.number
+  paginaActual: PropTypes.number,
+  height: PropTypes.number
 };

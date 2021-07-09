@@ -116,7 +116,7 @@ export default function ConsultaAuditoria() {
             <TableContainer sx={{ padding: 2 }}>
               <Tabla
                 ref={tabTabla1}
-                filasPorPagina={15}
+                filasPorPagina={20}
                 campoPrimario="ide_auac"
                 numeroTabla={1}
                 servicio={{ nombre: 'api/seguridad/getConsultaAuditoria', parametros: paramServicio }}

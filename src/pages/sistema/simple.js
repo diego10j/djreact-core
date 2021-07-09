@@ -12,7 +12,7 @@ import Tabla from '../../components/@dj-components/tabla/Tabla';
 import BotonGuardar from '../../components/@dj-components/boton/BotonGuardar';
 // hooks
 import usePantalla from '../../hooks/usePantalla';
-
+import useWidth from '../../hooks/useWidth';
 // util
 import { getTituloPantalla } from '../../utils/utilitario';
 // ----------------------------------------------------------------------
@@ -22,6 +22,7 @@ export default function Simple() {
   const tabTabla1 = useRef();
   const [isGuardar, setIsGuardar] = useState(false);
 
+  const { windowSize } = useWidth();
   const { id } = useParams();
 
   const titulo = getTituloPantalla();
@@ -44,7 +45,15 @@ export default function Simple() {
         />
         <Card>
           <TableContainer sx={{ padding: 2 }}>
-            <Tabla ref={tabTabla1} numeroTabla={1} tablaConfiguracion={id} lectura={false} showRowIndex />
+            <Tabla
+              ref={tabTabla1}
+              height={windowSize.height - 320}
+              filasPorPagina={20}
+              numeroTabla={1}
+              tablaConfiguracion={id}
+              lectura={false}
+              showRowIndex
+            />
           </TableContainer>
         </Card>
       </Container>

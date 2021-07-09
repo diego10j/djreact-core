@@ -11,6 +11,7 @@ export default function BotonBuscar({ color = 'primary', onClick }) {
       <Button
         variant="contained"
         aria-label="buscar"
+        size="small"
         color={color}
         onClick={onClick}
         sx={{ minWidth: 0, height: '2rem' }}

@@ -72,11 +72,12 @@ const Tabla = forwardRef(
       showPaginador = true,
       showBotonInsertar,
       showBotonEliminar,
-      showBotonModificar = false,
       showBuscar = true,
       showRowIndex = false,
       hookFormulario,
-      totalColumnasSkeleton
+      totalColumnasSkeleton,
+      height,
+      onModificar
     },
     ref
   ) => {
@@ -746,6 +747,7 @@ const Tabla = forwardRef(
               data.filter((item) => item[configuracion.campoPrimario] !== filaSeleccionada[configuracion.campoPrimario])
             );
             setFilaSeleccionada(undefined);
+            setIndiceTabla(undefined);
           } else {
             setCargando(true);
             if (await getServicioIsEliminar()) {
@@ -759,8 +761,10 @@ const Tabla = forwardRef(
                 )
               );
               setFilaSeleccionada(undefined);
+              setIndiceTabla(undefined);
             } else {
               showError('El registro tiene relación con otras tablas del sistema', 'No se puede Eliminar');
+              return false;
             }
             setCargando(false);
           }
@@ -785,9 +789,7 @@ const Tabla = forwardRef(
         for (let j = 0; j < columns.length; j += 1) {
           const colActual = columns[j];
           // Validaciones
-          if (isValidaciones(filaActual, colActual) === false) {
-            return false;
-          }
+          if (isValidaciones(filaActual, colActual) === false) return false;
         }
 
         // Valores Obligatorios
@@ -832,9 +834,7 @@ const Tabla = forwardRef(
           // solo nombres de columnas modificadas
           const colActual = getColumna(colNombreActual);
           // Validaciones
-          if (isValidaciones(filaActual, colActual) === false) {
-            return false;
-          }
+          if (isValidaciones(filaActual, colActual) === false) return false;
 
           if (colActual.requerida) {
             const valor = filaActual[colNombreActual];
@@ -859,8 +859,7 @@ const Tabla = forwardRef(
         // Asigna valores primario calculado
         if (configuracion.calculaPrimaria) {
           filaActual[configuracion.campoPrimario.toLowerCase()] = maximoTabla;
-          setValorFilaSeleccionada(configuracion.campoPrimario.toLowerCase(), maximoTabla);
-          updateMyData(indiceTabla, configuracion.campoPrimario.toLowerCase(), maximoTabla);
+          filaActual.maximoTabla = maximoTabla;
           maximoTabla += 1;
         }
       });
@@ -872,9 +871,7 @@ const Tabla = forwardRef(
     const isValidaciones = (fila, columna) => {
       let valor = fila[columna.nombre];
       // console.log(` -----  ${columna.nombre}  ${valor}`);
-      if (valor === '') {
-        valor = null;
-      }
+      if (valor === '') valor = null;
 
       // si tiene validationSchema
       // if (isDefined(hookFormulario) && isDefined(hookFormulario.validationSchema)) {
@@ -895,9 +892,8 @@ const Tabla = forwardRef(
       // Valida tipos de datos
       if (isDefined(valor)) {
         if (columna.componente === 'Calendario') {
-          if (typeof valor === 'object') {
-            valor = getFormatoFecha(valor);
-          }
+          if (typeof valor === 'object') valor = getFormatoFecha(valor);
+
           // valida que sea una fecha correcta
           const dt = toDate(getFormatoFecha(valor));
           if (!isDate(dt)) {
@@ -906,9 +902,8 @@ const Tabla = forwardRef(
           }
           // console.log(fila);
         } else if (columna.componente === 'Hora') {
-          if (typeof valor === 'object') {
-            valor = getFormatoHora(valor);
-          }
+          if (typeof valor === 'object') valor = getFormatoHora(valor);
+
           // valida que sea una hora correcta
           const dt = toHora(getFormatoHora(valor));
           if (!isDate(dt)) {
@@ -1058,8 +1053,8 @@ const Tabla = forwardRef(
 
       setEliminadas([]);
       setNumFilasNuevas(0);
-      for (let i = 0; i < getInsertadas().length; i += 1) {
-        const filaActual = getInsertadas()[i];
+
+      getInsertadas().forEach((filaActual) => {
         // Si tiene arbol, agrega al nodo seleccionado
         // if (this.utilitario.isDefined(this.arbol)) {
         // let nuevoHijo = {
@@ -1079,18 +1074,26 @@ const Tabla = forwardRef(
         //     this.arbol.seleccionado.collapsedIcon = 'pi pi-folder-open';
         //    }
         //   }
+        // Asigna valores primario calculado
+        if (configuracion.calculaPrimaria) {
+          const index = data.indexOf(filaActual);
+          filaActual[configuracion.campoPrimario.toLowerCase()] = filaActual.maximoTabla;
+          if (indiceTabla === index) {
+            setValorFilaSeleccionada(configuracion.campoPrimario.toLowerCase(), filaActual.maximoTabla);
+          }
+          updateMyData(index, configuracion.campoPrimario.toLowerCase(), filaActual.maximoTabla);
+        }
         filaActual.insertada = false;
         isCambios = true;
-      }
+      });
+
       for (let i = 0; i < getModificadas().length; i += 1) {
         const filaActual = getModificadas()[i];
         filaActual.modificada = false;
         filaActual.colModificadas = undefined;
         isCambios = true;
       }
-      if (isCambios) {
-        setData(data);
-      }
+      if (isCambios) setData(data);
     };
 
     // We need to keep the table from resetting the pageIndex when we
@@ -1118,9 +1121,7 @@ const Tabla = forwardRef(
     };
 
     const handleInsertar = () => {
-      if (!vistaFormularo) {
-        tablaReact.current.insertarTablaReact();
-      }
+      if (!vistaFormularo) tablaReact.current.insertarTablaReact();
     };
 
     const handleActualizar = () => {
@@ -1132,9 +1133,7 @@ const Tabla = forwardRef(
     };
 
     const handleEliminar = () => {
-      if (!vistaFormularo) {
-        tablaReact.current.eliminarTablaReact();
-      }
+      if (!vistaFormularo) tablaReact.current.eliminarTablaReact();
     };
 
     const handleCambiarVista = () => {
@@ -1157,7 +1156,7 @@ const Tabla = forwardRef(
             filaSeleccionada={filaSeleccionada}
             showBotonInsertar={configuracion.showBotonInsertar}
             showBotonEliminar={configuracion.showBotonEliminar}
-            showBotonModificar={showBotonModificar}
+            onModificar={onModificar}
             vistaFormularo={vistaFormularo}
             lectura={lectura}
             setAbrirConfigurar={setAbrirConfigurar}
@@ -1195,6 +1194,7 @@ const Tabla = forwardRef(
             indiceTabla={indiceTabla}
             setPaginaActual={setPaginaActual}
             paginaActual={paginaActual}
+            height={height}
           />
         ) : (
           <TablaFormulario
@@ -1229,6 +1229,7 @@ const Tabla = forwardRef(
             numeroColFormulario={numeroColFormulario}
             hookFormulario={hookFormulario}
             totalColumnasSkeleton={totalColumnasSkeleton}
+            height={height}
           />
         )}
         <ConfigurarTabla
@@ -1293,11 +1294,13 @@ Tabla.propTypes = {
   showPaginador: PropTypes.bool,
   showBotonInsertar: PropTypes.bool,
   showBotonEliminar: PropTypes.bool,
-  showBotonModificar: PropTypes.bool,
   showBuscar: PropTypes.bool,
   showRowIndex: PropTypes.bool,
   hookFormulario: PropTypes.object,
-  totalColumnasSkeleton: PropTypes.number
+  totalColumnasSkeleton: PropTypes.number,
+  height: PropTypes.number,
+  // Eventos
+  onModificar: PropTypes.func
 };
 
 export default Tabla;

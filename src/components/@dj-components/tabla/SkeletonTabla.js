@@ -1,16 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Skeleton } from '@material-ui/core';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { Box, Grid, Skeleton } from '@material-ui/core';
 // hooks
 import useWidth from '../../../hooks/useWidth';
 
-const SkeletonTabla = ({ filasPorPagina }) => {
+const SkeletonTabla = ({ filasPorPagina, height }) => {
   const { width } = useWidth();
 
   const numColumnas = (width === 'xl' && 6) || (width === 'lg' && 4) || (width === 'md' && 3) || 2;
   return (
-    <>
+    <Box
+      sx={{
+        height: `${height}px  !important`
+      }}
+    >
       <Grid container spacing={1}>
         {[...Array(numColumnas).keys()].map((value) => (
           <Grid key={value} item xs>
@@ -35,30 +38,18 @@ const SkeletonTabla = ({ filasPorPagina }) => {
           ))}
         </Grid>
       ))}
-    </>
+    </Box>
   );
 };
 SkeletonTabla.propTypes = {
-  filasPorPagina: PropTypes.number.isRequired
+  filasPorPagina: PropTypes.number.isRequired,
+  height: PropTypes.number
 };
 
 export default SkeletonTabla;
 
-const StyledTablePagination = styled('div')(() => ({
-  width: '100%',
-  padding: 0,
-  margin: 0,
-  border: 'none',
-  minHeight: '2em',
-  height: '2em'
-}));
-
 export function SkeletonPaginador() {
-  return (
-    <StyledTablePagination>
-      <Skeleton variant="rect" width="22em" height={28} sx={{ mr: 1, float: 'right' }} />
-    </StyledTablePagination>
-  );
+  return <Skeleton variant="rect" width="20em" height={28} />;
 }
 
 SkeletonFormulario.propTypes = {

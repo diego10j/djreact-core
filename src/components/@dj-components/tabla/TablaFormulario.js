@@ -2,7 +2,7 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Grid, TablePagination } from '@material-ui/core';
+import { Box, Grid, TablePagination, Stack } from '@material-ui/core';
 import { SkeletonFormulario, SkeletonPaginador } from './SkeletonTabla';
 import TablePaginationActions from './PaginationTabla';
 import { ComponenteEditable } from './FilaEditable';
@@ -64,7 +64,8 @@ const TablaFormulario = forwardRef(
       numeroColFormulario,
       hookFormulario,
       totalColumnasSkeleton,
-      cargando
+      cargando,
+      height
     },
     ref
   ) => {
@@ -106,66 +107,72 @@ const TablaFormulario = forwardRef(
 
     return (
       <StyledDiv>
-        <Grid container sx={{ mb: 1 }}>
-          <Grid item xs>
-            <Grid item xs>
-              {showPaginador === true &&
-                (data.length ? (
-                  <StyledTablePagination
-                    component="div"
-                    colSpan={3}
-                    count={data.length}
-                    labelRowsPerPage=""
-                    rowsPerPageOptions={[]}
-                    rowsPerPage={1}
-                    page={indiceTabla}
-                    onPageChange={handleChangePage}
-                    ActionsComponent={TablePaginationActions}
-                    labelDisplayedRows={({ from, count }) => `Fila ${from} de ${count}`}
-                  />
-                ) : (
-                  !isColumnas && <SkeletonPaginador />
-                ))}
+        <Stack direction="row" justifyContent="flex-end" alignItems="center" sx={{ pb: '10px' }}>
+          {showPaginador === true &&
+            (data.length ? (
+              <StyledTablePagination
+                component="div"
+                colSpan={3}
+                count={data.length}
+                labelRowsPerPage=""
+                rowsPerPageOptions={[]}
+                rowsPerPage={1}
+                page={indiceTabla}
+                onPageChange={handleChangePage}
+                ActionsComponent={TablePaginationActions}
+                labelDisplayedRows={({ from, count }) => `Fila ${from} de ${count}`}
+              />
+            ) : (
+              !isColumnas && <SkeletonPaginador />
+            ))}
+        </Stack>
+        <Box
+          sx={{
+            pt: 5,
+            px: 2,
+            minHeight: { xs: `${height + 45}px  !important`, md: `${height}px  !important` }
+          }}
+        >
+          {!isColumnas && (
+            <Grid container spacing={1}>
+              <SkeletonFormulario
+                calculaNumColumnas={calculaNumColumnas}
+                totalColumnasSkeleton={totalColumnasSkeleton}
+              />
             </Grid>
-          </Grid>
-        </Grid>
+          )}
 
-        {!isColumnas && (
-          <Grid container spacing={1}>
-            <SkeletonFormulario calculaNumColumnas={calculaNumColumnas} totalColumnasSkeleton={totalColumnasSkeleton} />
-          </Grid>
-        )}
-
-        {cargando === false && data.length > 0 ? (
-          <Grid container spacing={1}>
-            <Grid container item xs={12} spacing={3}>
-              {filaSeleccionada &&
-                columns.map(
-                  (column, index) =>
-                    column.visible && (
-                      <Grid key={index} item xs={calculaNumColumnas}>
-                        <ComponenteEditable
-                          setValorFilaSeleccionada={setValorFilaSeleccionada}
-                          getValorFilaSeleccionada={getValorFilaSeleccionada}
-                          column={column}
-                          foco={columnaSeleccionada === column.nombre}
-                          modificarFila={modificarFila}
-                          updateMyData={updateMyData}
-                          index={indiceTabla}
-                          combos={combos}
-                          vistaFormularo
-                          hookFormulario={hookFormulario}
-                        />
-                      </Grid>
-                    )
-                )}
+          {cargando === false && data.length > 0 ? (
+            <Grid container spacing={1}>
+              <Grid container item xs={12} spacing={3}>
+                {filaSeleccionada &&
+                  columns.map(
+                    (column, index) =>
+                      column.visible && (
+                        <Grid key={index} item xs={calculaNumColumnas}>
+                          <ComponenteEditable
+                            setValorFilaSeleccionada={setValorFilaSeleccionada}
+                            getValorFilaSeleccionada={getValorFilaSeleccionada}
+                            column={column}
+                            foco={columnaSeleccionada === column.nombre}
+                            modificarFila={modificarFila}
+                            updateMyData={updateMyData}
+                            index={indiceTabla}
+                            combos={combos}
+                            vistaFormularo
+                            hookFormulario={hookFormulario}
+                          />
+                        </Grid>
+                      )
+                  )}
+              </Grid>
             </Grid>
-          </Grid>
-        ) : (
-          <Grid container spacing={1}>
-            <SkeletonFormulario calculaNumColumnas={calculaNumColumnas} columns={columns} />
-          </Grid>
-        )}
+          ) : (
+            <Grid container spacing={1}>
+              <SkeletonFormulario calculaNumColumnas={calculaNumColumnas} columns={columns} />
+            </Grid>
+          )}
+        </Box>
       </StyledDiv>
     );
   }
@@ -194,5 +201,6 @@ TablaFormulario.propTypes = {
   indiceTabla: PropTypes.number,
   numeroColFormulario: PropTypes.number,
   hookFormulario: PropTypes.object,
-  totalColumnasSkeleton: PropTypes.number
+  totalColumnasSkeleton: PropTypes.number,
+  height: PropTypes.number
 };

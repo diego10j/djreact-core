@@ -57,6 +57,7 @@ const FiltroGlobalTabla = ({ globalFilter, setGlobalFilter, setColumnaSelecciona
         size="small"
         margin="none"
         value={globalFilter || ''}
+        fullWidth
         onChange={(e) => {
           setColumnaSeleccionada(undefined);
           setGlobalFilter(e.target.value || undefined); // Set undefined to remove the filter entirely

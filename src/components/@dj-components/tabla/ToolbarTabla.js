@@ -26,7 +26,7 @@ export default function ToolbarTabla({
   filaSeleccionada,
   showBotonInsertar,
   showBotonEliminar,
-  showBotonModificar,
+  onModificar,
   vistaFormularo,
   lectura,
   setAbrirConfigurar
@@ -39,10 +39,6 @@ export default function ToolbarTabla({
 
   const handleOpciones = () => {
     setOpen(true);
-  };
-
-  const handleModificar = () => {
-    console.log('modificar');
   };
 
   const handleActualizar = () => {
@@ -85,12 +81,12 @@ export default function ToolbarTabla({
                   <AddIcon fontSize="inherit" />
                 </MIconButton>
               )}
-              {showBotonModificar === true && (
+              {isDefined(onModificar) === true && (
                 <MIconButton
                   aria-label="modificar"
                   title="Modificar"
                   color="info"
-                  onClick={handleModificar}
+                  onClick={onModificar}
                   disabled={isDefined(filaSeleccionada) === false}
                 >
                   <CreateIcon fontSize="inherit" />
@@ -202,7 +198,7 @@ ToolbarTabla.propTypes = {
   filaSeleccionada: PropTypes.object,
   showBotonInsertar: PropTypes.bool,
   showBotonEliminar: PropTypes.bool,
-  showBotonModificar: PropTypes.bool,
+  onModificar: PropTypes.func,
   vistaFormularo: PropTypes.bool,
   lectura: PropTypes.bool,
   setAbrirConfigurar: PropTypes.func
