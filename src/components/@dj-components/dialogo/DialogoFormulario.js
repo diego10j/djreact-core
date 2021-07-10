@@ -1,17 +1,26 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, forwardRef, useImperativeHandle, useRef } from 'react';
 import PropTypes from 'prop-types';
 // material
 import { Dialog, DialogContent } from '@material-ui/core';
-// utils
-import { isDefined } from '../../../utils/utilitario';
+// componentes
 import TituloDialogo from './TituloDialogo';
 import BotonesDialogo from './BotonesDialogo';
+import Tabla from '../tabla/Tabla';
+// utils
+import { isDefined } from '../../../utils/utilitario';
+
 // ----------------------------------------------------------------------
 
 const DialogoFormulario = forwardRef(
   (
     {
       titulo = 'Formulario',
+      numeroTabla,
+      nombreTabla,
+      campoPrimario,
+      condiciones,
+      opcionesColumnas,
+      campoOrden,
       onCancelar,
       onAceptar,
       labelAceptar,
@@ -19,6 +28,9 @@ const DialogoFormulario = forwardRef(
       showBotonAceptar,
       showBotonCancelar,
       loading,
+      hookFormulario,
+      totalColumnasSkeleton = 6,
+      numeroColFormulario = 2,
       ...other
     },
     ref
@@ -27,8 +39,11 @@ const DialogoFormulario = forwardRef(
       open,
       setOpen,
       abrir,
-      cerrar
+      cerrar,
+      getTabla
     }));
+
+    const frmFormulario = useRef();
 
     const [open, setOpen] = useState(false);
 
@@ -47,6 +62,8 @@ const DialogoFormulario = forwardRef(
       }
     };
 
+    const getTabla = () => frmFormulario.current;
+
     return (
       <Dialog
         open={open}
@@ -59,7 +76,24 @@ const DialogoFormulario = forwardRef(
         {...other}
       >
         <TituloDialogo onClose={cerrar}>{titulo}</TituloDialogo>
-        <DialogContent sx={{ pb: 0 }}>Formulario XD</DialogContent>
+        <DialogContent sx={{ pb: 0 }}>
+          <Tabla
+            ref={frmFormulario}
+            numeroTabla={numeroTabla}
+            nombreTabla={nombreTabla}
+            campoPrimario={campoPrimario}
+            campoOrden={campoOrden}
+            condiciones={condiciones}
+            opcionesColumnas={opcionesColumnas}
+            showToolbar={false}
+            showPaginador={false}
+            showBuscar={false}
+            tipoFormulario
+            numeroColFormulario={numeroColFormulario}
+            totalColumnasSkeleton={totalColumnasSkeleton}
+            hookFormulario={hookFormulario}
+          />
+        </DialogContent>
         <BotonesDialogo
           labelAceptar={labelAceptar}
           labelCancelar={labelCancelar}
@@ -75,14 +109,46 @@ const DialogoFormulario = forwardRef(
 );
 
 DialogoFormulario.propTypes = {
+  numeroTabla: PropTypes.number.isRequired,
+  nombreTabla: PropTypes.string.isRequired,
+  campoPrimario: PropTypes.string.isRequired,
+  condiciones: PropTypes.object.isRequired,
+  campoOrden: PropTypes.string,
+  opcionesColumnas: PropTypes.arrayOf(
+    PropTypes.shape({
+      nombre: PropTypes.string.isRequired,
+      nombreVisual: PropTypes.string,
+      valorDefecto: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.object]),
+      requerida: PropTypes.bool,
+      visible: PropTypes.bool,
+      lectura: PropTypes.bool,
+      orden: PropTypes.number,
+      decimales: PropTypes.number,
+      comentario: PropTypes.string,
+      mayusculas: PropTypes.bool,
+      alinear: PropTypes.oneOf(['izquierda', 'derecha', 'centro']),
+      combo: PropTypes.shape({
+        nombreTabla: PropTypes.string.isRequired,
+        campoPrimario: PropTypes.string.isRequired,
+        campoNombre: PropTypes.string.isRequired,
+        condicion: PropTypes.string
+      }),
+      avatar: PropTypes.shape({
+        campoNombre: PropTypes.string.isRequired
+      })
+    })
+  ),
   titulo: PropTypes.string,
-  onCancelar: PropTypes.func.isRequired,
+  onCancelar: PropTypes.func,
   onAceptar: PropTypes.func.isRequired,
   labelAceptar: PropTypes.string,
   labelCancelar: PropTypes.string,
   showBotonAceptar: PropTypes.bool,
   showBotonCancelar: PropTypes.bool,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  hookFormulario: PropTypes.object,
+  totalColumnasSkeleton: PropTypes.number,
+  numeroColFormulario: PropTypes.number
 };
 
 export default DialogoFormulario;

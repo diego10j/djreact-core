@@ -109,7 +109,8 @@ const Tabla = forwardRef(
       commit,
       modificar,
       ejecutarServicio,
-      actualizar
+      actualizar,
+      configuracion
     }));
 
     const tablaReact = useRef();
@@ -197,6 +198,10 @@ const Tabla = forwardRef(
     useEffect(() => {
       if (isDefined(hookFormulario)) hookFormulario.setValues(filaSeleccionada);
     }, [filaSeleccionada]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+      if (isDefined(hookFormulario)) hookFormulario.setConfiguracion(configuracion);
+    }, [configuracion]); // eslint-disable-line react-hooks/exhaustive-deps
 
     /**
      * Inicializa los states para la tabla React, esto debido a las pantallas genéricas

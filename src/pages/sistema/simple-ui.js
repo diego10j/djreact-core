@@ -14,6 +14,7 @@ import DialogoFormulario from '../../components/@dj-components/dialogo/DialogoFo
 // hooks
 import usePantalla from '../../hooks/usePantalla';
 import useWidth from '../../hooks/useWidth';
+import useForm from '../../hooks/useForm';
 // util
 import { getTituloPantalla } from '../../utils/utilitario';
 
@@ -22,30 +23,36 @@ import { getTituloPantalla } from '../../utils/utilitario';
 export default function SimpleUI() {
   const tabTabla1 = useRef();
   const difTabla1 = useRef();
-  const [isGuardar, setIsGuardar] = useState(false);
 
   const { id } = useParams();
   const pantalla = usePantalla();
   const { windowSize } = useWidth();
+  const hookFormulario = useForm(); // hook Formulario
 
   const titulo = getTituloPantalla();
 
+  const [isGuardar, setIsGuardar] = useState(false);
+  const [condFormulario, setCondFormulario] = useState();
+
   const guardar = async () => {
     setIsGuardar(true);
-    if (await tabTabla1.current.isGuardar()) {
-      pantalla.guardar(tabTabla1);
+    if (await difTabla1.current.getTabla().isGuardar()) {
+      pantalla.guardar(difTabla1.current.getTabla());
     }
+    difTabla1.current.cerrar();
     setIsGuardar(false);
   };
 
   const abrirFormulario = async () => {
+    setCondFormulario({
+      condicion: `${hookFormulario.configuracion.campoPrimario} = ?`,
+      valores: [tabTabla1.current.getValorSeleccionado()]
+    });
     difTabla1.current.abrir();
   };
 
   return (
     <Page title={titulo}>
-      <DialogoFormulario ref={difTabla1} />
-
       <Container maxWidth="xl">
         <HeaderBreadcrumbs
           heading={titulo}
@@ -65,10 +72,23 @@ export default function SimpleUI() {
               tablaConfiguracion={id}
               lectura
               showRowIndex
+              hookFormulario={hookFormulario}
             />
           </TableContainer>
         </Card>
       </Container>
+      <DialogoFormulario
+        sx={{ minWidth: 500 }}
+        ref={difTabla1}
+        tablaConfiguracion="no"
+        numeroTabla={1}
+        nombreTabla={hookFormulario.configuracion?.nombreTabla}
+        campoPrimario={hookFormulario.configuracion?.campoPrimario}
+        campoOrden={hookFormulario.configuracion?.campoOrden}
+        condiciones={condFormulario}
+        onAceptar={guardar}
+        loading={isGuardar}
+      />
     </Page>
   );
 }

@@ -128,7 +128,7 @@ const TablaFormulario = forwardRef(
         </Stack>
         <Box
           sx={{
-            pt: 5,
+            pt: 3,
             px: 2,
             minHeight: { xs: `${height + 45}px  !important`, md: `${height}px  !important` }
           }}

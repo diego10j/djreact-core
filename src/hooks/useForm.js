@@ -8,7 +8,9 @@ import { isDefined } from '../utils/utilitario';
 
 const useForm = (_validationSchema) => {
   const validationSchema = _validationSchema;
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({}); // Almacena los valores de la fila seleccionada
+
+  const [configuracion, setConfiguracion] = useState({}); // Almacena la configuracion de la tabla
 
   /**
    * Recupera los errores del formulario y pinta los campos de texto con el error
@@ -42,7 +44,7 @@ const useForm = (_validationSchema) => {
     return true;
   };
 
-  return { validationSchema, isValid, erroresValidacion, setValues, values };
+  return { validationSchema, isValid, erroresValidacion, setValues, values, configuracion, setConfiguracion };
 };
 
 export default useForm;

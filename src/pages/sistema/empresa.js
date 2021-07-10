@@ -78,7 +78,6 @@ export default function Empresa() {
                 <Tabla
                   ref={tabTabla1}
                   numeroTabla={1}
-                  filasPorPagina={20}
                   nombreTabla="sis_empresa"
                   campoPrimario="ide_empr"
                   condiciones={condiciones}
