@@ -26,6 +26,8 @@ const useWidth = () => {
    */
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const isFullWidth = useMediaQuery(theme.breakpoints.down('md'));
+
   const [windowSize, setWindowSize] = useState({
     width: undefined,
     height: undefined
@@ -51,7 +53,7 @@ const useWidth = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []); // Empty array ensures that effect is only run on mount
 
-  return { width, isMobile, windowSize };
+  return { width, isMobile, windowSize, isFullWidth };
 };
 
 export default useWidth;

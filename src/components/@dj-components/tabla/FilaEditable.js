@@ -628,6 +628,10 @@ const Calendario = ({
               error={false}
               label={toCapitalize(column.nombreVisual)}
               onChange={onChangeInput}
+              InputLabelProps={{
+                shrink: true,
+                style: { textAlign: `${column.alinear}` }
+              }}
             />
           )}
         />
@@ -753,6 +757,10 @@ const Hora = ({
               value={value}
               error={false}
               onChange={onChangeInput}
+              InputLabelProps={{
+                shrink: true,
+                style: { textAlign: `${column.alinear}` }
+              }}
             />
           )}
         />

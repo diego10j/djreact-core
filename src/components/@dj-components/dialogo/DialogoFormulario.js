@@ -49,14 +49,14 @@ const DialogoFormulario = forwardRef(
       getTabla
     }));
 
-    const { isMobile, windowSize } = useWidth();
+    const { isFullWidth, windowSize } = useWidth();
 
     if (!isDefined(numeroColFormulario)) {
-      numeroColFormulario = isMobile === true ? 1 : 2;
+      numeroColFormulario = isFullWidth === true ? 1 : 2;
     }
 
-    const widthDialogo = isMobile === false ? (windowSize.width * widthPorcentaje) / 100 : windowSize.width;
-    const heightDialogo = isMobile === false ? (windowSize.height * heightPorcentaje) / 100 : windowSize.height;
+    const widthDialogo = isFullWidth === false ? (windowSize.width * widthPorcentaje) / 100 : windowSize.width - 30;
+    const heightDialogo = isFullWidth === false ? (windowSize.height * heightPorcentaje) / 100 : windowSize.height;
 
     const frmFormulario = useRef();
 
@@ -86,7 +86,7 @@ const DialogoFormulario = forwardRef(
       <Dialog
         maxWidth={false}
         open={open}
-        fullScreen={isMobile}
+        fullScreen={isFullWidth}
         onClose={(event, reason) => {
           if (reason !== 'backdropClick') {
             handleCancelar();
@@ -97,7 +97,7 @@ const DialogoFormulario = forwardRef(
       >
         <TituloDialogo onClose={cerrar}>{_titulo}</TituloDialogo>
         <DialogContent sx={{ pb: 3 }}>
-          <div style={{ width: widthDialogo, height: heightDialogo }}>
+          <div style={{ width: widthDialogo, maxHeight: heightDialogo }}>
             <Tabla
               ref={frmFormulario}
               numeroTabla={numeroTabla}

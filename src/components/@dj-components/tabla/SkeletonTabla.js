@@ -67,13 +67,13 @@ export function SkeletonFormulario({ columns, calculaNumColumnas, totalColumnasS
               (column, index) =>
                 column.visible && (
                   <Grid key={index} item xs={calculaNumColumnas}>
-                    <Skeleton variant="rect" width="90%" height={40} sx={{ mb: 0.3 }} />
+                    <Skeleton variant="rect" width="100%" height={40} sx={{ mb: 0.3 }} />
                   </Grid>
                 )
             )
           : [...Array(totalColumnasSkeleton).keys()].map((value) => (
               <Grid key={value} item xs={calculaNumColumnas}>
-                <Skeleton variant="rect" width="90%" height={40} sx={{ mb: 0.3 }} />
+                <Skeleton variant="rect" width="100%" height={40} sx={{ mb: 0.3 }} />
               </Grid>
             ))}
       </Grid>
