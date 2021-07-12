@@ -48,6 +48,10 @@ export default function SimpleUI() {
       condicion: `${hookFormulario.configuracion.campoPrimario} = ?`,
       valores: [tabTabla1.current.getValorSeleccionado()]
     });
+    difTabla1.current.setTotalColumnasSkeleton(
+      tabTabla1.current.getColumnas().filter((_col) => _col.visible === true).length
+    );
+    difTabla1.current.setTitulo('Modificar');
     difTabla1.current.abrir();
   };
 
@@ -78,9 +82,7 @@ export default function SimpleUI() {
         </Card>
       </Container>
       <DialogoFormulario
-        sx={{ minWidth: 500 }}
         ref={difTabla1}
-        tablaConfiguracion="no"
         numeroTabla={1}
         nombreTabla={hookFormulario.configuracion?.nombreTabla}
         campoPrimario={hookFormulario.configuracion?.campoPrimario}

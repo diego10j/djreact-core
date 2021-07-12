@@ -6,6 +6,8 @@ import { Dialog, DialogContent } from '@material-ui/core';
 import TituloDialogo from './TituloDialogo';
 import BotonesDialogo from './BotonesDialogo';
 import Tabla from '../tabla/Tabla';
+// hooks
+import useWidth from '../../../hooks/useWidth';
 // utils
 import { isDefined } from '../../../utils/utilitario';
 
@@ -29,13 +31,17 @@ const DialogoFormulario = forwardRef(
       showBotonCancelar,
       loading,
       hookFormulario,
-      totalColumnasSkeleton = 6,
-      numeroColFormulario = 2,
+      totalColumnasSkeleton = 8,
+      numeroColFormulario,
+      widthPorcentaje = 55,
+      heightPorcentaje = 40,
       ...other
     },
     ref
   ) => {
     useImperativeHandle(ref, () => ({
+      setTitulo,
+      setTotalColumnasSkeleton,
       open,
       setOpen,
       abrir,
@@ -43,9 +49,21 @@ const DialogoFormulario = forwardRef(
       getTabla
     }));
 
+    const { isMobile, windowSize } = useWidth();
+
+    if (!isDefined(numeroColFormulario)) {
+      numeroColFormulario = isMobile === true ? 1 : 2;
+    }
+
+    const widthDialogo = isMobile === false ? (windowSize.width * widthPorcentaje) / 100 : windowSize.width;
+    const heightDialogo = isMobile === false ? (windowSize.height * heightPorcentaje) / 100 : windowSize.height;
+
     const frmFormulario = useRef();
 
     const [open, setOpen] = useState(false);
+
+    const [_titulo, setTitulo] = useState(titulo);
+    const [_totalColumnasSkeleton, setTotalColumnasSkeleton] = useState(totalColumnasSkeleton);
 
     const abrir = () => {
       setOpen(true);
@@ -66,7 +84,9 @@ const DialogoFormulario = forwardRef(
 
     return (
       <Dialog
+        maxWidth={false}
         open={open}
+        fullScreen={isMobile}
         onClose={(event, reason) => {
           if (reason !== 'backdropClick') {
             handleCancelar();
@@ -75,24 +95,26 @@ const DialogoFormulario = forwardRef(
         disableEscapeKeyDown
         {...other}
       >
-        <TituloDialogo onClose={cerrar}>{titulo}</TituloDialogo>
-        <DialogContent sx={{ pb: 0 }}>
-          <Tabla
-            ref={frmFormulario}
-            numeroTabla={numeroTabla}
-            nombreTabla={nombreTabla}
-            campoPrimario={campoPrimario}
-            campoOrden={campoOrden}
-            condiciones={condiciones}
-            opcionesColumnas={opcionesColumnas}
-            showToolbar={false}
-            showPaginador={false}
-            showBuscar={false}
-            tipoFormulario
-            numeroColFormulario={numeroColFormulario}
-            totalColumnasSkeleton={totalColumnasSkeleton}
-            hookFormulario={hookFormulario}
-          />
+        <TituloDialogo onClose={cerrar}>{_titulo}</TituloDialogo>
+        <DialogContent sx={{ pb: 3 }}>
+          <div style={{ width: widthDialogo, height: heightDialogo }}>
+            <Tabla
+              ref={frmFormulario}
+              numeroTabla={numeroTabla}
+              nombreTabla={nombreTabla}
+              campoPrimario={campoPrimario}
+              campoOrden={campoOrden}
+              condiciones={condiciones}
+              opcionesColumnas={opcionesColumnas}
+              showToolbar={false}
+              showPaginador={false}
+              showBuscar={false}
+              tipoFormulario
+              numeroColFormulario={numeroColFormulario}
+              totalColumnasSkeleton={_totalColumnasSkeleton}
+              hookFormulario={hookFormulario}
+            />
+          </div>
         </DialogContent>
         <BotonesDialogo
           labelAceptar={labelAceptar}
@@ -148,7 +170,9 @@ DialogoFormulario.propTypes = {
   loading: PropTypes.bool,
   hookFormulario: PropTypes.object,
   totalColumnasSkeleton: PropTypes.number,
-  numeroColFormulario: PropTypes.number
+  numeroColFormulario: PropTypes.number,
+  widthPorcentaje: PropTypes.number,
+  heightPorcentaje: PropTypes.number
 };
 
 export default DialogoFormulario;
