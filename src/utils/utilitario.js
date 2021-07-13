@@ -3,7 +3,7 @@ export function isDefined(_variable) {
 }
 
 export function isEmpty(_variable) {
-  return isDefined && _variable === '';
+  return !isDefined(_variable) || _variable === '';
 }
 
 export function isNumber(valor) {

@@ -17,7 +17,7 @@ export default function usePantalla() {
       const tabla = tablas[i].current;
       const lista = tabla.guardar();
       if (lista.length > 0) {
-        tabla.setCargando(true);
+        // tabla.setCargando(true);
         listaSQL.push(...lista);
       }
     }
@@ -27,17 +27,19 @@ export default function usePantalla() {
         for (let i = 0; i < tablas.length; i += 1) {
           const tabla = tablas[i].current;
           tabla.commit();
-          tabla.setCargando(false);
+          // tabla.setCargando(false);
         }
         mensaje.showMensajeExito('Datos guardados exitosamente');
       } catch (error) {
         mensaje.showMensajeError(error.mensaje);
-        for (let i = 0; i < tablas.length; i += 1) {
-          const tabla = tablas[i].current;
-          tabla.setCargando(false);
-        }
+        return false;
+        // for (let i = 0; i < tablas.length; i += 1) {
+        // const tabla = tablas[i].current;
+        // tabla.setCargando(false);
+        // }
       }
     }
+    return true;
   };
 
   return {

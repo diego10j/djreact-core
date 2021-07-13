@@ -46,6 +46,7 @@ const DialogoFormulario = forwardRef(
       setOpen,
       abrir,
       cerrar,
+      tabla,
       getTabla
     }));
 
@@ -58,7 +59,7 @@ const DialogoFormulario = forwardRef(
     const widthDialogo = isFullWidth === false ? (windowSize.width * widthPorcentaje) / 100 : windowSize.width - 30;
     const heightDialogo = isFullWidth === false ? (windowSize.height * heightPorcentaje) / 100 : windowSize.height;
 
-    const frmFormulario = useRef();
+    const tabla = useRef();
 
     const [open, setOpen] = useState(false);
 
@@ -80,7 +81,7 @@ const DialogoFormulario = forwardRef(
       }
     };
 
-    const getTabla = () => frmFormulario.current;
+    const getTabla = () => tabla.current;
 
     return (
       <Dialog
@@ -99,7 +100,7 @@ const DialogoFormulario = forwardRef(
         <DialogContent sx={{ pb: 3 }}>
           <div style={{ width: widthDialogo, maxHeight: heightDialogo }}>
             <Tabla
-              ref={frmFormulario}
+              ref={tabla}
               numeroTabla={numeroTabla}
               nombreTabla={nombreTabla}
               campoPrimario={campoPrimario}

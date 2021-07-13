@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
 // material
 import { Container, Card, TableContainer } from '@material-ui/core';
 // routes
@@ -32,18 +31,33 @@ export default function SimpleUI() {
   const titulo = getTituloPantalla();
 
   const [isGuardar, setIsGuardar] = useState(false);
+  const [accion, setAccion] = useState();
   const [condFormulario, setCondFormulario] = useState();
 
   const guardar = async () => {
     setIsGuardar(true);
     if (await difTabla1.current.getTabla().isGuardar()) {
-      pantalla.guardar(difTabla1.current.getTabla());
+      if ((await pantalla.guardar(difTabla1.current.tabla)) === true) {
+        const { filaSeleccionada } = difTabla1.current.getTabla();
+        const { indiceTabla, data } = tabTabla1.current;
+
+        if (accion === 'modificar') {
+          // actualiza la data de la tabla con los valores del formulario
+          tabTabla1.current.updateMyDataByRow(indiceTabla, filaSeleccionada);
+        } else {
+          // inserta una fila
+          const newData = [filaSeleccionada, ...data];
+          tabTabla1.current.setData(newData);
+          tabTabla1.current.setFilaSeleccionada(filaSeleccionada);
+        }
+      }
+      difTabla1.current.cerrar();
     }
-    difTabla1.current.cerrar();
     setIsGuardar(false);
   };
 
-  const abrirFormulario = async () => {
+  const onModificar = async () => {
+    setAccion('modificar');
     setCondFormulario({
       condicion: `${hookFormulario.configuracion.campoPrimario} = ?`,
       valores: [tabTabla1.current.getValorSeleccionado()]
@@ -52,6 +66,19 @@ export default function SimpleUI() {
       tabTabla1.current.getColumnas().filter((_col) => _col.visible === true).length
     );
     difTabla1.current.setTitulo('Modificar');
+    difTabla1.current.abrir();
+  };
+
+  const onInsertar = async () => {
+    setAccion('insertar');
+    setCondFormulario({
+      condicion: `${hookFormulario.configuracion.campoPrimario} = ?`,
+      valores: ['-1']
+    });
+    difTabla1.current.setTotalColumnasSkeleton(
+      tabTabla1.current.getColumnas().filter((_col) => _col.visible === true).length
+    );
+    difTabla1.current.setTitulo('Crear');
     difTabla1.current.abrir();
   };
 
@@ -69,7 +96,8 @@ export default function SimpleUI() {
               height={windowSize.height - 320}
               ref={tabTabla1}
               filasPorPagina={20}
-              onModificar={abrirFormulario}
+              onModificar={onModificar}
+              onInsertar={onInsertar}
               showBotonInsertar
               showBotonEliminar
               numeroTabla={1}

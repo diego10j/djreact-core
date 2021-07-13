@@ -77,7 +77,8 @@ const Tabla = forwardRef(
       hookFormulario,
       totalColumnasSkeleton,
       height,
-      onModificar
+      onModificar,
+      onInsertar
     },
     ref
   ) => {
@@ -87,6 +88,7 @@ const Tabla = forwardRef(
       getColumna,
       getFilaSeleccionada,
       filaSeleccionada,
+      setFilaSeleccionada,
       getValorSeleccionado,
       getInsertadas,
       getEliminadas,
@@ -110,7 +112,12 @@ const Tabla = forwardRef(
       modificar,
       ejecutarServicio,
       actualizar,
-      configuracion
+      configuracion,
+      updateMyData,
+      updateMyDataByRow,
+      indiceTabla,
+      setData,
+      data
     }));
 
     const tablaReact = useRef();
@@ -262,6 +269,7 @@ const Tabla = forwardRef(
           if (isMountedRef.current) {
             setData([]);
             setData(data.datos);
+
             // selecciona fila por valor primario anterior
             if (isDefined(valorPrimario)) {
               const fila = data.datos.find((col) => col[configuracion.campoPrimario] === valorPrimario);
@@ -272,6 +280,12 @@ const Tabla = forwardRef(
               setIndiceTabla(0);
               setFilaSeleccionada(data.datos[0]);
             }
+
+            // inserta una fila si es formulario y no tiene data
+            if (vistaFormularo === true && data.datos.length === 0) {
+              crearFila();
+            }
+
             setCargando(false);
           }
         } else {
@@ -1125,7 +1139,33 @@ const Tabla = forwardRef(
       // setSkipPageReset(false);
     };
 
+    /**
+     * Actualiza toda una fila de la data
+     * @param {} rowIndex
+     * @param {*} filaSeleccionada
+     */
+    const updateMyDataByRow = (rowIndex, filaSeleccionada) => {
+      // We also turn on the flag to not reset the page
+      setSkipPageReset(true);
+      setData((old) =>
+        old.map((row, index) => {
+          if (index === rowIndex) {
+            return {
+              ...old[rowIndex],
+              ...filaSeleccionada
+            };
+          }
+          return row;
+        })
+      );
+      // setSkipPageReset(false);
+    };
+
     const handleInsertar = () => {
+      if (isDefined(onInsertar)) {
+        onInsertar();
+        return;
+      }
       if (!vistaFormularo) tablaReact.current.insertarTablaReact();
     };
 
@@ -1305,7 +1345,8 @@ Tabla.propTypes = {
   totalColumnasSkeleton: PropTypes.number,
   height: PropTypes.number,
   // Eventos
-  onModificar: PropTypes.func
+  onModificar: PropTypes.func,
+  onInsertar: PropTypes.func
 };
 
 export default Tabla;
