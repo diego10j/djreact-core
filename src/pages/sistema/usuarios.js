@@ -8,6 +8,7 @@ import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Tabla from '../../components/@dj-components/tabla/Tabla';
 // hooks
+import useWidth from '../../hooks/useWidth';
 // util
 // servicios
 
@@ -16,6 +17,8 @@ import Tabla from '../../components/@dj-components/tabla/Tabla';
 export default function Usuarios() {
   // refererencias hacia componentes
   const tabTabla1 = useRef();
+
+  const { windowSize } = useWidth();
 
   return (
     <>
@@ -30,6 +33,7 @@ export default function Usuarios() {
             <TableContainer sx={{ padding: 2 }}>
               <Tabla
                 ref={tabTabla1}
+                height={windowSize.height - 320}
                 filasPorPagina={20}
                 campoPrimario="ide_usua"
                 numeroTabla={1}

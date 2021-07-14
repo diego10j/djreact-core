@@ -78,7 +78,8 @@ const Tabla = forwardRef(
       totalColumnasSkeleton,
       height,
       onModificar,
-      onInsertar
+      onInsertar,
+      onEliminar
     },
     ref
   ) => {
@@ -116,8 +117,12 @@ const Tabla = forwardRef(
       updateMyData,
       updateMyDataByRow,
       indiceTabla,
+      setIndiceTabla,
       setData,
-      data
+      data,
+      getFormatoFrontFilaSeleccionada,
+      limpiarSeleccion,
+      pintarFilaTablaReact
     }));
 
     const tablaReact = useRef();
@@ -179,14 +184,14 @@ const Tabla = forwardRef(
      * Pinta la fila seleccionada cuando cambia la vista a Tabla
      */
     useEffect(() => {
-      if (vistaFormularo === false && data.length > 0) tablaReact.current.setPintarFila(true);
+      pintarFilaTablaReact();
     }, [vistaFormularo]); // eslint-disable-line react-hooks/exhaustive-deps
 
     /**
      * Pinta la fila cuando recupera la data
      */
     useEffect(() => {
-      if (vistaFormularo === false && cargando === false && data.length > 0) tablaReact.current.setPintarFila(true);
+      if (cargando === false && data.length > 0) pintarFilaTablaReact();
     }, [cargando]); // eslint-disable-line react-hooks/exhaustive-deps
 
     /**
@@ -246,6 +251,13 @@ const Tabla = forwardRef(
         showBotonEliminar
       });
     }
+
+    /**
+     * Pinta la fila de la Tabla tipo React
+     */
+    const pintarFilaTablaReact = () => {
+      if (vistaFormularo === false && data.length > 0) tablaReact.current.setPintarFila(true);
+    };
 
     /**
      * Consulta en el servicio web los datos de la Tabla
@@ -569,6 +581,22 @@ const Tabla = forwardRef(
     const getIndiceTabla = () => indiceTabla;
     const isCargando = () => cargando;
 
+    /** Retorna los valores de la fila seleccionada en formato Front */
+    const getFormatoFrontFilaSeleccionada = () => {
+      const fila = filaSeleccionada;
+      columns.forEach(async (colActual) => {
+        const valor = fila[colActual.nombre];
+        if (isDefined(valor)) {
+          if (colActual.componente === 'Calendario') {
+            fila[colActual.nombre] = getFormatoFecha(valor);
+          } else if (colActual.componente === 'CalendarioHora') {
+            fila[colActual.nombre] = getFormatoFechaHora(valor);
+          }
+        }
+      });
+      return fila;
+    };
+
     /**
      * Retorna si una fila es insertada
      * @param {*} valorPrimario
@@ -707,9 +735,13 @@ const Tabla = forwardRef(
         if (isDefined(index)) setIndiceTabla(index);
         else setIndiceTabla(data.indexOf(fila));
       } else {
-        setFilaSeleccionada(undefined);
-        setIndiceTabla(undefined);
+        limpiarSeleccion();
       }
+    };
+
+    const limpiarSeleccion = () => {
+      setFilaSeleccionada(undefined);
+      setIndiceTabla(undefined);
     };
 
     /**
@@ -1178,6 +1210,10 @@ const Tabla = forwardRef(
     };
 
     const handleEliminar = () => {
+      if (isDefined(onEliminar)) {
+        onEliminar();
+        return;
+      }
       if (!vistaFormularo) tablaReact.current.eliminarTablaReact();
     };
 
@@ -1346,7 +1382,8 @@ Tabla.propTypes = {
   height: PropTypes.number,
   // Eventos
   onModificar: PropTypes.func,
-  onInsertar: PropTypes.func
+  onInsertar: PropTypes.func,
+  onEliminar: PropTypes.func
 };
 
 export default Tabla;

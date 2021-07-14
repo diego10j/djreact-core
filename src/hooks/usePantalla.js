@@ -11,6 +11,21 @@ import useMensaje from './useMensaje';
 export default function usePantalla() {
   const mensaje = useMensaje();
 
+  /**
+   * Retorna el objeto sql Eliminar para el API
+   * @param {string} nombreTabla
+   * @param {Array [{condicion: '' , valores}]} condiciones
+   * @returns
+   */
+  const getSqlEliminar = (nombreTabla, condiciones) => {
+    const resp = {
+      tipo: 'eliminar',
+      nombreTabla,
+      condiciones
+    };
+    return resp;
+  };
+
   const guardar = async (...tablas) => {
     const listaSQL = [];
     for (let i = 0; i < tablas.length; i += 1) {
@@ -42,8 +57,27 @@ export default function usePantalla() {
     return true;
   };
 
+  /**
+   * Ejecuta una lista de Objetos Sql
+   * @param {Array} listaSQL
+   * @param {Boolean} mensaje
+   * @returns
+   */
+  const ejecutarListaSql = async (listaSQL, showMensaje = true) => {
+    try {
+      await ejecutarListaSQL(listaSQL);
+      if (showMensaje === true) mensaje.showMensajeExito('Datos guardados exitosamente');
+    } catch (error) {
+      mensaje.showMensajeError(error.mensaje);
+      return false;
+    }
+    return true;
+  };
+
   return {
     guardar,
-    mensaje
+    mensaje,
+    getSqlEliminar,
+    ejecutarListaSql
   };
 }

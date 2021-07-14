@@ -8,8 +8,8 @@ import { PATH_DASHBOARD } from '../../routes/paths';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Tabla from '../../components/@dj-components/tabla/Tabla';
-import BotonGuardar from '../../components/@dj-components/boton/BotonGuardar';
 import DialogoFormulario from '../../components/@dj-components/dialogo/DialogoFormulario';
+import DialogoConfirmar from '../../components/@dj-components/dialogo/DialogoConfirmar';
 // hooks
 import usePantalla from '../../hooks/usePantalla';
 import useWidth from '../../hooks/useWidth';
@@ -20,8 +20,9 @@ import { getTituloPantalla } from '../../utils/utilitario';
 // ----------------------------------------------------------------------
 
 export default function SimpleUI() {
-  const tabTabla1 = useRef();
-  const difTabla1 = useRef();
+  const tabTabla1 = useRef(); // Tabla
+  const difTabla1 = useRef(); // DialogoFormulario
+  const diaConfirmar = useRef(); // DialogoConfirmar
 
   const { id } = useParams();
   const pantalla = usePantalla();
@@ -34,21 +35,25 @@ export default function SimpleUI() {
   const [accion, setAccion] = useState();
   const [condFormulario, setCondFormulario] = useState();
 
+  /**
+   * Guarda los cambios en el Formulario
+   */
   const guardar = async () => {
     setIsGuardar(true);
     if (await difTabla1.current.getTabla().isGuardar()) {
       if ((await pantalla.guardar(difTabla1.current.tabla)) === true) {
-        const { filaSeleccionada } = difTabla1.current.getTabla();
+        const { getFormatoFrontFilaSeleccionada } = difTabla1.current.getTabla();
         const { indiceTabla, data } = tabTabla1.current;
 
         if (accion === 'modificar') {
           // actualiza la data de la tabla con los valores del formulario
-          tabTabla1.current.updateMyDataByRow(indiceTabla, filaSeleccionada);
-        } else {
+          tabTabla1.current.updateMyDataByRow(indiceTabla, getFormatoFrontFilaSeleccionada());
+        } else if (accion === 'insertar') {
           // inserta una fila
-          const newData = [filaSeleccionada, ...data];
+          const newData = [getFormatoFrontFilaSeleccionada(), ...data];
           tabTabla1.current.setData(newData);
-          tabTabla1.current.setFilaSeleccionada(filaSeleccionada);
+          tabTabla1.current.seleccionarFilaPorIndice(0);
+          tabTabla1.current.pintarFilaTablaReact();
         }
       }
       difTabla1.current.cerrar();
@@ -56,6 +61,9 @@ export default function SimpleUI() {
     setIsGuardar(false);
   };
 
+  /**
+   * Configura el DialogoFormulario para la accion Modificar
+   */
   const onModificar = async () => {
     setAccion('modificar');
     setCondFormulario({
@@ -69,6 +77,9 @@ export default function SimpleUI() {
     difTabla1.current.abrir();
   };
 
+  /**
+   * Configura el DialogoFormulario para la accion Insertar
+   */
   const onInsertar = async () => {
     setAccion('insertar');
     setCondFormulario({
@@ -82,13 +93,46 @@ export default function SimpleUI() {
     difTabla1.current.abrir();
   };
 
+  /**
+   * Despliega el DialogoConfirmar
+   */
+  const onEliminar = async () => {
+    setCondFormulario({
+      condicion: `${hookFormulario.configuracion.campoPrimario} = ?`,
+      valores: [tabTabla1.current.getValorSeleccionado()]
+    });
+    diaConfirmar.current.abrir();
+  };
+
+  /**
+   * Elimina el registro
+   */
+  const eliminar = async () => {
+    setIsGuardar(true);
+    const objEliminar = pantalla.getSqlEliminar(hookFormulario.configuracion.nombreTabla, [condFormulario]);
+    if ((await pantalla.ejecutarListaSql([objEliminar])) === true) {
+      // Elimina de la tabla
+      const { data, filaSeleccionada } = tabTabla1.current;
+      tabTabla1.current.setData(
+        data.filter(
+          (item) =>
+            item[hookFormulario.configuracion.campoPrimario] !==
+            filaSeleccionada[hookFormulario.configuracion.campoPrimario]
+        )
+      );
+      // Borra seleccion
+      tabTabla1.current.limpiarSeleccion();
+    }
+    diaConfirmar.current.cerrar();
+    setIsGuardar(false);
+  };
+
   return (
     <Page title={titulo}>
       <Container maxWidth="xl">
         <HeaderBreadcrumbs
           heading={titulo}
           links={[{ name: 'Sistema', href: PATH_DASHBOARD.root }, { name: titulo }]}
-          action={<BotonGuardar onClick={guardar} loading={isGuardar} />}
         />
         <Card>
           <TableContainer sx={{ padding: 2 }}>
@@ -98,6 +142,7 @@ export default function SimpleUI() {
               filasPorPagina={20}
               onModificar={onModificar}
               onInsertar={onInsertar}
+              onEliminar={onEliminar}
               showBotonInsertar
               showBotonEliminar
               numeroTabla={1}
@@ -117,6 +162,12 @@ export default function SimpleUI() {
         campoOrden={hookFormulario.configuracion?.campoOrden}
         condiciones={condFormulario}
         onAceptar={guardar}
+        loading={isGuardar}
+      />
+      <DialogoConfirmar
+        ref={diaConfirmar}
+        mensaje="Está seguro de que desea eliminar el registro seleccionado ?"
+        onAceptar={eliminar}
         loading={isGuardar}
       />
     </Page>
