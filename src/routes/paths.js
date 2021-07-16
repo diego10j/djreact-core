@@ -53,6 +53,7 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/sistema'),
     simple: path(ROOTS_DASHBOARD, '/sistema/simple'),
     simpleUI: path(ROOTS_DASHBOARD, '/sistema/simple-ui'),
+    recursiva: path(ROOTS_DASHBOARD, '/sistema/recursiva'),
     empresa: path(ROOTS_DASHBOARD, '/sistema/empresa'),
     usuarios: path(ROOTS_DASHBOARD, '/sistema/usuarios')
   },

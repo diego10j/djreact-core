@@ -42,7 +42,8 @@ const Loadable = (Component) => (props) => {
 export default function Router() {
   const pantallasGenericas = [
     { path: 'simple/:id', element: <Simple /> },
-    { path: 'simple-ui/:id', element: <SimpleUI /> }
+    { path: 'simple-ui/:id', element: <SimpleUI /> },
+    { path: 'recursiva/:id', element: <Recursiva /> }
   ];
   return useRoutes([
     {
@@ -237,6 +238,7 @@ const ConsultaAuditoria = Loadable(lazy(() => import('../pages/auditoria/consult
 // Sistema
 const Simple = Loadable(lazy(() => import('../pages/sistema/simple')));
 const SimpleUI = Loadable(lazy(() => import('../pages/sistema/simple-ui')));
+const Recursiva = Loadable(lazy(() => import('../pages/sistema/recursiva')));
 const Empresa = Loadable(lazy(() => import('../pages/sistema/empresa')));
 const Usuarios = Loadable(lazy(() => import('../pages/sistema/usuarios')));
 
