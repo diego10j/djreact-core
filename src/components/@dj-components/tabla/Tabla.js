@@ -112,6 +112,7 @@ const Tabla = forwardRef(
       commit,
       modificar,
       ejecutarServicio,
+      ejecutar,
       actualizar,
       configuracion,
       updateMyData,
@@ -160,7 +161,8 @@ const Tabla = forwardRef(
       calculaPrimaria,
       lectura,
       showBotonInsertar,
-      showBotonEliminar
+      showBotonEliminar,
+      condiciones
     });
 
     /**
@@ -248,7 +250,8 @@ const Tabla = forwardRef(
         numeroFilas: filasPorPagina,
         ideOpci: getIdeOpci(),
         showBotonInsertar,
-        showBotonEliminar
+        showBotonEliminar,
+        condiciones
       });
     }
 
@@ -270,7 +273,7 @@ const Tabla = forwardRef(
         if (!isDefined(servicio)) {
           const condicionesTabla = [];
           // Condicion de la tabla
-          if (isDefined(condiciones)) condicionesTabla.push(condiciones);
+          if (isDefined(configuracion.condiciones)) condicionesTabla.push(configuracion.condiciones);
 
           const { data } = await consultarTabla(
             nombreTabla || configuracion.nombreTabla,
@@ -646,6 +649,16 @@ const Tabla = forwardRef(
      */
     const ejecutarServicio = (parametros) => {
       servicio.parametros = parametros;
+      getServicioDatos();
+    };
+
+    /**
+     * Actualiza la tabla a su estado original
+     */
+    const ejecutar = (_condiciones) => {
+      const _conf = configuracion;
+      _conf.condiciones = _condiciones;
+      setConfiguracion(_conf);
       getServicioDatos();
     };
 

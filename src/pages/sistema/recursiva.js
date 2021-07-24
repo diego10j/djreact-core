@@ -13,6 +13,7 @@ import Arbol from '../../components/@dj-components/arbol/Arbol';
 import BotonGuardar from '../../components/@dj-components/boton/BotonGuardar';
 // hooks
 import usePantalla from '../../hooks/usePantalla';
+import useWidth from '../../hooks/useWidth';
 // util
 import { getTituloPantalla } from '../../utils/utilitario';
 
@@ -21,7 +22,11 @@ import { getTituloPantalla } from '../../utils/utilitario';
 export default function Recursiva() {
   const pantalla = usePantalla();
   const tabTabla1 = useRef();
+  const arbArbol = useRef();
+  const { windowSize } = useWidth();
   const [isGuardar, setIsGuardar] = useState(false);
+
+  let condiciones = { condicion: 'sis_ide_opci is null', valores: [] }; // de la tabla
 
   const { id } = useParams();
 
@@ -35,6 +40,18 @@ export default function Recursiva() {
     setIsGuardar(false);
   };
 
+  const onSelectArbol = async () => {
+    const { nodoSeleccionado } = arbArbol.current;
+    if (nodoSeleccionado === 'root') {
+      // raiz
+      condiciones = { condicion: 'sis_ide_opci is null', valores: [] };
+    } else {
+      condiciones = { condicion: 'sis_ide_opci = ?', valores: [nodoSeleccionado] };
+    }
+    // actualiza la tabla
+    tabTabla1.current.ejecutar(condiciones);
+  };
+
   return (
     <Page title={titulo}>
       <Container maxWidth="xl">
@@ -44,9 +61,12 @@ export default function Recursiva() {
           action={<BotonGuardar onClick={guardar} loading={isGuardar} />}
         />
 
-        <Split className="split" gutterSize={8} sizes={[25, 75]}>
+        <Split className="split" gutterSize={8} sizes={[25, 75]} direction="horizontal">
           <Card sx={{ m: 1 }}>
             <Arbol
+              ref={arbArbol}
+              onSelect={onSelectArbol}
+              height={windowSize.height - 230}
               nombreTabla="sis_opcion"
               campoPrimario="ide_opci"
               campoNombre="nom_opci"
@@ -59,9 +79,11 @@ export default function Recursiva() {
             <TableContainer sx={{ padding: 2, overflow: 'auto' }}>
               <Tabla
                 ref={tabTabla1}
+                height={windowSize.height - 333}
                 filasPorPagina={20}
                 numeroTabla={1}
                 tablaConfiguracion={id}
+                condiciones={condiciones}
                 lectura={false}
                 showRowIndex
               />

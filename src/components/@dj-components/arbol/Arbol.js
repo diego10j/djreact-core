@@ -5,6 +5,7 @@ import { alpha, makeStyles, withStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import SvgIcon from '@material-ui/core/SvgIcon';
+import { Box } from '@material-ui/core';
 // hooks
 import useMensaje from '../../../hooks/useMensaje';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -59,20 +60,36 @@ const useStyles = makeStyles({
   root: {
     height: '100%',
     flexGrow: 1,
-    maxWidth: '100%'
+    maxWidth: '100%',
+    padding: '10px'
   }
 });
 
 const Arbol = forwardRef(
   (
-    { titulo = 'Raiz', nombreTabla, campoPrimario, campoNombre, campoPadre, campoOrden, condiciones, ...other },
+    {
+      titulo = 'Raiz',
+      height = 100,
+      nombreTabla,
+      campoPrimario,
+      campoNombre,
+      campoPadre,
+      campoOrden,
+      condiciones,
+      onSelect,
+      ...other
+    },
     ref
   ) => {
     useImperativeHandle(ref, () => ({
-      configuracion
+      configuracion,
+      nodoSeleccionado,
+      setNodoSeleccionado
     }));
 
     const [data, setData] = useState([]);
+
+    const [nodoSeleccionado, setNodoSeleccionado] = useState();
 
     const [configuracion, setConfiguracion] = useState({
       nombreTabla,
@@ -122,23 +139,38 @@ const Arbol = forwardRef(
     };
 
     const renderTree = (nodes) => (
-      <StyledTreeItem key={nodes.data} nodeId={nodes.data} label={nodes.label}>
+      <StyledTreeItem key={nodes.data} nodeId={nodes.data} label={nodes.label} onLabelClick={test1}>
         {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
       </StyledTreeItem>
     );
 
+    const test1 = async () => {
+      console.log('xxxx1');
+    };
+
     return (
-      <>
+      <Box sx={{ overflow: 'auto', maxHeight: `${height}px  !important`, height: `${height}px  !important` }}>
         <TreeView
           className={classes.root}
           defaultExpanded={['root']}
           defaultCollapseIcon={<MinusSquare />}
           defaultExpandIcon={<PlusSquare />}
           defaultEndIcon={<CloseSquare />}
+          defaultSelected={['root']}
+          onNodeSelect={async (event, nodeIds) => {
+            if (!isDefined(onSelect)) {
+              if (nodoSeleccionado !== nodeIds) setNodoSeleccionado(nodeIds);
+            } else {
+              if (nodoSeleccionado !== nodeIds) await setNodoSeleccionado(nodeIds);
+              if (nodoSeleccionado !== nodeIds) onSelect();
+            }
+          }}
+          selected={nodoSeleccionado}
+          {...other}
         >
           {renderTree(data)}
         </TreeView>
-      </>
+      </Box>
     );
   }
 );
