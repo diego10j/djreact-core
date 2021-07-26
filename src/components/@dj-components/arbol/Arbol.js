@@ -6,6 +6,8 @@ import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import { Box } from '@material-ui/core';
+// componentes
+import SkeletonArbol from './SkeletonArbol';
 // hooks
 import useMensaje from '../../../hooks/useMensaje';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -88,8 +90,9 @@ const Arbol = forwardRef(
     }));
 
     const [data, setData] = useState([]);
-
-    const [nodoSeleccionado, setNodoSeleccionado] = useState();
+    const [cargando, setCargando] = useState(true);
+    const [expanded, setExpanded] = React.useState(['root']);
+    const [nodoSeleccionado, setNodoSeleccionado] = useState(['root']);
 
     const [configuracion, setConfiguracion] = useState({
       nombreTabla,
@@ -131,6 +134,7 @@ const Arbol = forwardRef(
             label: titulo,
             children: data.datos
           });
+          setCargando(false);
         }
       } catch (error) {
         console.log(error);
@@ -139,13 +143,15 @@ const Arbol = forwardRef(
     };
 
     const renderTree = (nodes) => (
-      <StyledTreeItem key={nodes.data} nodeId={nodes.data} label={nodes.label} onLabelClick={test1}>
+      <StyledTreeItem key={nodes.data} nodeId={nodes.data} label={nodes.label}>
         {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
       </StyledTreeItem>
     );
 
-    const test1 = async () => {
-      console.log('xxxx1');
+    const handleToggle = (event, nodeIds) => {
+      if (event.target.closest('.MuiTreeItem-iconContainer')) {
+        setExpanded(nodeIds);
+      }
     };
 
     return (
@@ -157,6 +163,8 @@ const Arbol = forwardRef(
           defaultExpandIcon={<PlusSquare />}
           defaultEndIcon={<CloseSquare />}
           defaultSelected={['root']}
+          onNodeToggle={handleToggle}
+          expanded={expanded}
           onNodeSelect={async (event, nodeIds) => {
             if (!isDefined(onSelect)) {
               if (nodoSeleccionado !== nodeIds) setNodoSeleccionado(nodeIds);
@@ -168,7 +176,7 @@ const Arbol = forwardRef(
           selected={nodoSeleccionado}
           {...other}
         >
-          {renderTree(data)}
+          {cargando === true ? <SkeletonArbol /> : renderTree(data)}
         </TreeView>
       </Box>
     );
