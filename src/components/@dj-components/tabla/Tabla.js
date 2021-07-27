@@ -400,6 +400,19 @@ const Tabla = forwardRef(
           campoPadre = isDefined(data.datos.padre_tabl) ? data.datos.padre_tabl : null;
           campoOrden = isDefined(data.datos.orden_tabl) ? data.datos.orden_tabl : data.datos.primaria_tabl;
           filasPorPagina = isDefined(data.datos.filas_tabl) ? data.datos.filas_tabl : filasPorPagina;
+
+          if (isDefined(condiciones)) {
+            // Remplaza condiciones en pantallas genericas con condición
+            let { condicion } = condiciones;
+            condicion = condicion.replace('tabla.campoPadre', campoPadre);
+            condicion = condicion.replace('tabla.campoPrimario', campoPrimario);
+            condicion = condicion.replace('tabla.campoForanea', campoForanea);
+            condicion = condicion.replace('tabla.campoNombre', campoNombre);
+            condiciones = { condicion, valores: condiciones.valores };
+            const _conf = configuracion;
+            _conf.condiciones = condiciones;
+            setConfiguracion(_conf);
+          }
         } else {
           showError('No existe configuración de la tabla');
         }
@@ -827,6 +840,7 @@ const Tabla = forwardRef(
               setFilaSeleccionada(undefined);
               setIndiceTabla(undefined);
             } else {
+              setCargando(false);
               showError('El registro tiene relación con otras tablas del sistema', 'No se puede Eliminar');
               return false;
             }

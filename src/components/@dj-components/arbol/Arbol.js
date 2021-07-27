@@ -84,24 +84,15 @@ const Arbol = forwardRef(
     ref
   ) => {
     useImperativeHandle(ref, () => ({
-      configuracion,
       nodoSeleccionado,
-      setNodoSeleccionado
+      setNodoSeleccionado,
+      actualizar
     }));
 
     const [data, setData] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [expanded, setExpanded] = React.useState(['root']);
     const [nodoSeleccionado, setNodoSeleccionado] = useState(['root']);
-
-    const [configuracion, setConfiguracion] = useState({
-      nombreTabla,
-      campoPrimario,
-      campoNombre,
-      campoPadre,
-      campoOrden,
-      condiciones
-    });
 
     /**
      * Sirve para las pantallas genéricas, cuando cambia la configuración de componentes Tabla
@@ -121,14 +112,15 @@ const Arbol = forwardRef(
       // console.log('---CARGA COLUMNAS');
       try {
         const { data } = await consultarArbol(
-          configuracion.nombreTabla,
-          configuracion.campoPrimario,
-          configuracion.campoNombre,
-          configuracion.campoPadre,
-          configuracion.campoOrden,
-          configuracion.condiciones
+          nombreTabla,
+          campoPrimario,
+          campoNombre,
+          campoPadre,
+          campoOrden,
+          condiciones
         );
         if (isMountedRef.current) {
+          setData([]);
           setData({
             data: 'root',
             label: titulo,
@@ -152,6 +144,10 @@ const Arbol = forwardRef(
       if (event.target.closest('.MuiTreeItem-iconContainer')) {
         setExpanded(nodeIds);
       }
+    };
+
+    const actualizar = () => {
+      getServicioArbol();
     };
 
     return (
