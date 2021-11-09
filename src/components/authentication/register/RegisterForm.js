@@ -7,8 +7,8 @@ import eyeFill from '@iconify/icons-eva/eye-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 // material
-import { Stack, TextField, IconButton, InputAdornment, Alert } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Stack, TextField, IconButton, InputAdornment, Alert } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';

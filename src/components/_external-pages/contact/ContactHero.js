@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Typography, Grid } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Container, Typography, Grid } from '@mui/material';
 //
 import { varFadeIn, varWrapEnter, varFadeInRight, TextAnimate } from '../../animate';
 
@@ -32,6 +32,7 @@ const CONTACTS = [
 
 const RootStyle = styled(motion.div)(({ theme }) => ({
   backgroundSize: 'cover',
+  backgroundPosition: 'center',
   backgroundImage: 'url(/static/overlay.svg), url(/static/contact/hero.jpg)',
   padding: theme.spacing(10, 0),
   [theme.breakpoints.up('md')]: {

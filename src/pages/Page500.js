@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 // material
-import { Box, Button, Typography, Container } from '@material-ui/core';
+import { Box, Button, Typography, Container } from '@mui/material';
 // components
 import Page from '../components/Page';
 import { SeverErrorIllustration } from '../assets';

@@ -2,16 +2,15 @@ import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import awardFill from '@iconify/icons-eva/award-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-import { Box, Grid, Checkbox, FormGroup, Container, FormControl, FormControlLabel } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import Favorite from '@mui/icons-material/Favorite';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import { Box, Grid, Checkbox, FormGroup, Container, FormControl, FormControlLabel } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { MCheckbox } from '../../../components/@material-extend';
 //
 import { Block } from '../Block';
 
@@ -59,7 +58,7 @@ export default function RadioButtons() {
           <HeaderBreadcrumbs
             heading="Checkboxes"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Checkboxes' }]}
-            moreLink="https://next.material-ui.com/components/checkboxes"
+            moreLink="https://mui.com/components/checkboxes"
           />
         </Container>
       </Box>
@@ -84,12 +83,12 @@ export default function RadioButtons() {
                   <FormControlLabel label="Normal" control={<Checkbox defaultChecked />} />
                   <FormControlLabel label="Small" control={<Checkbox defaultChecked size="small" />} />
                   <FormControlLabel
-                    control={<MCheckbox color="info" icon={<FavoriteBorder />} checkedIcon={<Favorite />} />}
+                    control={<Checkbox color="info" icon={<FavoriteBorder />} checkedIcon={<Favorite />} />}
                     label="Custom icon"
                   />
                   <FormControlLabel
                     control={
-                      <MCheckbox
+                      <Checkbox
                         size="small"
                         color="error"
                         icon={<Icon icon={awardFill} />}
@@ -125,14 +124,14 @@ export default function RadioButtons() {
                       <FormGroup>
                         <FormControlLabel control={<Checkbox defaultChecked color="default" />} label="Default" />
                         <FormControlLabel control={<Checkbox defaultChecked />} label="Primary" />
-                        <FormControlLabel control={<MCheckbox defaultChecked color="secondary" />} label="Secondary" />
-                        <FormControlLabel control={<MCheckbox defaultChecked color="info" />} label="Info" />
-                        <FormControlLabel control={<MCheckbox defaultChecked color="success" />} label="Success" />
-                        <FormControlLabel control={<MCheckbox defaultChecked color="warning" />} label="Warning" />
-                        <FormControlLabel control={<MCheckbox defaultChecked color="error" />} label="Error" />
+                        <FormControlLabel control={<Checkbox defaultChecked color="secondary" />} label="Secondary" />
+                        <FormControlLabel control={<Checkbox defaultChecked color="info" />} label="Info" />
+                        <FormControlLabel control={<Checkbox defaultChecked color="success" />} label="Success" />
+                        <FormControlLabel control={<Checkbox defaultChecked color="warning" />} label="Warning" />
+                        <FormControlLabel control={<Checkbox defaultChecked color="error" />} label="Error" />
                         <FormControlLabel
                           disabled
-                          control={<MCheckbox defaultChecked color="error" />}
+                          control={<Checkbox defaultChecked color="error" />}
                           label="Disabled"
                         />
                       </FormGroup>
@@ -147,28 +146,28 @@ export default function RadioButtons() {
                           />
                           <FormControlLabel control={<Checkbox defaultChecked indeterminate />} label="Primary" />
                           <FormControlLabel
-                            control={<MCheckbox defaultChecked indeterminate color="secondary" />}
+                            control={<Checkbox defaultChecked indeterminate color="secondary" />}
                             label="Secondary"
                           />
                           <FormControlLabel
-                            control={<MCheckbox defaultChecked indeterminate color="info" />}
+                            control={<Checkbox defaultChecked indeterminate color="info" />}
                             label="Info"
                           />
                           <FormControlLabel
-                            control={<MCheckbox defaultChecked indeterminate color="success" />}
+                            control={<Checkbox defaultChecked indeterminate color="success" />}
                             label="Success"
                           />
                           <FormControlLabel
-                            control={<MCheckbox defaultChecked indeterminate color="warning" />}
+                            control={<Checkbox defaultChecked indeterminate color="warning" />}
                             label="Warning"
                           />
                           <FormControlLabel
-                            control={<MCheckbox defaultChecked indeterminate color="error" />}
+                            control={<Checkbox defaultChecked indeterminate color="error" />}
                             label="Error"
                           />
                           <FormControlLabel
                             disabled
-                            control={<MCheckbox defaultChecked indeterminate color="error" />}
+                            control={<Checkbox defaultChecked indeterminate color="error" />}
                             label="Disabled"
                           />
                         </FormGroup>

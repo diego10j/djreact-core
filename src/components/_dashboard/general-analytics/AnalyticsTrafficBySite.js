@@ -1,44 +1,53 @@
-import faker from 'faker';
 import PropTypes from 'prop-types';
+import { random } from 'lodash';
 import { Icon } from '@iconify/react';
 import googleFill from '@iconify/icons-eva/google-fill';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 // material
-import { Box, Grid, Card, Paper, Typography, CardHeader, CardContent } from '@material-ui/core';
+import { Box, Grid, Card, Paper, Typography, CardHeader, CardContent } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
-const SOCIALS = [
+const ICON_SIZE = {
+  width: 32,
+  height: 32
+};
+
+const MOCK_SOCIALS = [
   {
     name: 'FaceBook',
-    value: faker.datatype.number(),
-    icon: <Icon icon={facebookFill} color="#1877F2" width={32} height={32} />
+    value: random(9999, 99999),
+    icon: <Icon icon={facebookFill} color="#1877F2" {...ICON_SIZE} />
   },
   {
     name: 'Google',
-    value: faker.datatype.number(),
-    icon: <Icon icon={googleFill} color="#DF3E30" width={32} height={32} />
+    value: random(9999, 99999),
+    icon: <Icon icon={googleFill} color="#DF3E30" {...ICON_SIZE} />
   },
   {
     name: 'Linkedin',
-    value: faker.datatype.number(),
-    icon: <Icon icon={linkedinFill} color="#006097" width={32} height={32} />
+    value: random(9999, 99999),
+    icon: <Icon icon={linkedinFill} color="#006097" {...ICON_SIZE} />
   },
   {
     name: 'Twitter',
-    value: faker.datatype.number(),
-    icon: <Icon icon={twitterFill} color="#1C9CEA" width={32} height={32} />
+    value: random(9999, 99999),
+    icon: <Icon icon={twitterFill} color="#1C9CEA" {...ICON_SIZE} />
   }
 ];
 
 // ----------------------------------------------------------------------
 
 SiteItem.propTypes = {
-  site: PropTypes.object
+  site: PropTypes.shape({
+    icon: PropTypes.object,
+    name: PropTypes.string,
+    value: PropTypes.number
+  })
 };
 
 function SiteItem({ site }) {
@@ -63,7 +72,7 @@ export default function AnalyticsTrafficBySite() {
       <CardHeader title="Traffic by Site" />
       <CardContent>
         <Grid container spacing={2}>
-          {SOCIALS.map((site) => (
+          {MOCK_SOCIALS.map((site) => (
             <SiteItem key={site.name} site={site} />
           ))}
         </Grid>

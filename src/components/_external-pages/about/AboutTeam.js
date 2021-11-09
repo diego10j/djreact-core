@@ -1,7 +1,6 @@
-import faker from 'faker';
+import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import Slider from 'react-slick';
-import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import twitterFill from '@iconify/icons-eva/twitter-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
@@ -9,51 +8,32 @@ import facebookFill from '@iconify/icons-eva/facebook-fill';
 import roundArrowRightAlt from '@iconify/icons-ic/round-arrow-right-alt';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 // material
-import { useTheme } from '@material-ui/core/styles';
-import { Box, Card, Button, Container, Typography, IconButton } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { Box, Card, Button, Container, Typography, IconButton } from '@mui/material';
+// utils
+import mockData from '../../../utils/mock-data';
 //
 import { varFadeIn, varFadeInUp, MotionInView, varFadeInDown } from '../../animate';
 import { CarouselControlsArrowsBasic2 } from '../../carousel';
 
 // ----------------------------------------------------------------------
 
-const MEMBERS = [
-  {
-    name: faker.name.findName(),
-    role: 'UI Designer',
-    avatar: '/static/about/avatar-1.jpg'
-  },
-  {
-    name: faker.name.findName(),
-    role: 'UI/UX Designer',
-    avatar: '/static/about/avatar-2.jpg'
-  },
-  {
-    name: faker.name.findName(),
-    role: 'Full Stack Developer',
-    avatar: '/static/about/avatar-3.jpg'
-  },
-  {
-    name: faker.name.findName(),
-    role: 'Leader',
-    avatar: '/static/about/avatar-4.jpg'
-  },
-  {
-    name: faker.name.findName(),
-    role: 'Leader',
-    avatar: '/static/about/avatar-5.jpg'
-  },
-  {
-    name: faker.name.findName(),
-    role: 'Leader',
-    avatar: '/static/about/avatar-6.jpg'
-  }
-];
+const MOCK_MEMBERS = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  name: mockData.name.fullName(index),
+  role: mockData.role(index),
+  avatar: mockData.image.avatar(index)
+}));
 
 // ----------------------------------------------------------------------
 
 MemberCard.propTypes = {
-  member: PropTypes.object
+  member: PropTypes.shape({
+    id: PropTypes.string,
+    avatar: PropTypes.string,
+    name: PropTypes.string,
+    role: PropTypes.string
+  })
 };
 
 function MemberCard({ member }) {
@@ -83,7 +63,6 @@ export default function AboutTeam() {
   const theme = useTheme();
 
   const settings = {
-    speed: 500,
     slidesToShow: 4,
     centerMode: true,
     centerPadding: '0 80px',
@@ -142,9 +121,9 @@ export default function AboutTeam() {
 
       <Box sx={{ position: 'relative' }}>
         <Slider ref={carouselRef} {...settings}>
-          {MEMBERS.map((member) => (
-            <MotionInView key={member.name} variants={varFadeIn}>
-              <MemberCard key={member.name} member={member} />
+          {MOCK_MEMBERS.map((member) => (
+            <MotionInView key={member.id} variants={varFadeIn}>
+              <MemberCard member={member} />
             </MotionInView>
           ))}
         </Slider>

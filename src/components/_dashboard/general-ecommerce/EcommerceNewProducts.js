@@ -1,29 +1,28 @@
-import Slider from 'react-slick';
 import PropTypes from 'prop-types';
+import Slider from 'react-slick';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Button, CardContent, Typography } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Card, Button, CardContent, Typography } from '@mui/material';
 // utils
-import { mockImgProduct } from '../../../utils/mockImages';
+import mockData from '../../../utils/mock-data';
 //
 import { CarouselControlsPaging1 } from '../../carousel';
 
 // ----------------------------------------------------------------------
-
-const PRODUCTS = [
+const NAMES = [
   'Nike Air Max 97',
   'Nike Zoom Gravity',
   'Nike DBreak-Type',
   'Kyrie Flytrap 3 EP Basketball Shoe',
   'Nike Air Max Fusion Men'
-].map((product, index) => {
-  const setIndex = index + 1;
-  return {
-    name: product,
-    image: mockImgProduct(setIndex)
-  };
-});
+];
+
+const PRODUCTS = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  name: NAMES[index],
+  image: mockData.image.product(index)
+}));
 
 const CarouselImgStyle = styled('img')(({ theme }) => ({
   width: '100%',
@@ -37,7 +36,10 @@ const CarouselImgStyle = styled('img')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 CarouselItem.propTypes = {
-  item: PropTypes.object
+  item: PropTypes.shape({
+    image: PropTypes.string,
+    name: PropTypes.string
+  })
 };
 
 function CarouselItem({ item }) {
@@ -79,7 +81,7 @@ function CarouselItem({ item }) {
   );
 }
 
-export default function EcommerceLatestProducts() {
+export default function EcommerceNewProducts() {
   const theme = useTheme();
 
   const settings = {

@@ -26,7 +26,7 @@ const CHART_DATA = [
 export default function ChartMixed() {
   const chartOptions = merge(BaseOptionChart(), {
     stroke: { width: [0, 2, 3] },
-    plotOptions: { bar: { columnWidth: '18%', borderRadius: 4 } },
+    plotOptions: { bar: { columnWidth: '20%' } },
     fill: { type: ['solid', 'gradient', 'solid'] },
     labels: [
       '01/01/2003',
@@ -47,7 +47,7 @@ export default function ChartMixed() {
       shared: true,
       intersect: false,
       y: {
-        formatter(y) {
+        formatter: (y) => {
           if (typeof y !== 'undefined') {
             return `${y.toFixed(0)} points`;
           }

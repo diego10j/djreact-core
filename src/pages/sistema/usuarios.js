@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 // material
-import { Container, Card, TableContainer } from '@material-ui/core';
+import { Container, Card, TableContainer } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components

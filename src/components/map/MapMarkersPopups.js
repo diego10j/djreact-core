@@ -2,7 +2,7 @@ import MapGL from 'react-map-gl';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 // material
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 //
 import {
   MapControlPopup,

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Divider, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Divider, Typography } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../../redux/store';
 import { getMail } from '../../../redux/slices/mail';

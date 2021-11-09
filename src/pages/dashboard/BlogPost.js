@@ -2,12 +2,14 @@ import { useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { useParams } from 'react-router-dom';
 // material
-import { Box, Card, Divider, Skeleton, Container, Typography, Pagination } from '@material-ui/core';
+import { Box, Card, Divider, Skeleton, Container, Typography, Pagination } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getPost, getRecentPosts } from '../../redux/slices/blog';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import Markdown from '../../components/Markdown';
@@ -37,6 +39,7 @@ const SkeletonLoad = (
 );
 
 export default function BlogPost() {
+  const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { title } = useParams();
   const { post, error, recentPosts } = useSelector((state) => state.blog);
@@ -48,7 +51,7 @@ export default function BlogPost() {
 
   return (
     <Page title="Blog: Post Details | Minimal-UI">
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Post Details"
           links={[

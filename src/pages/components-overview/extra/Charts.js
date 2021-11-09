@@ -1,6 +1,6 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Grid, Container, CardHeader, CardContent } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Card, Grid, Container, CardHeader, CardContent } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -51,79 +51,79 @@ export default function Charts() {
       <Container maxWidth="lg">
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Area" />
-              <CardContent dir="ltr">
+              <CardContent>
                 <ChartArea />
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Line" />
-              <CardContent dir="ltr">
+              <CardContent>
                 <ChartLine />
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Column Single" />
-              <CardContent dir="ltr">
+              <CardContent>
                 <ChartColumnSingle />
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Column Multiple" />
-              <CardContent dir="ltr">
+              <CardContent>
                 <ChartColumnMultiple />
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Column Stacked" />
-              <CardContent dir="ltr">
+              <CardContent>
                 <ChartColumnStacked />
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Column Negative" />
-              <CardContent dir="ltr">
+              <CardContent>
                 <ChartColumnNegative />
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Bar" />
-              <CardContent dir="ltr">
+              <CardContent>
                 <ChartBar />
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Mixed" />
-              <CardContent dir="ltr">
+              <CardContent>
                 <ChartMixed />
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Pie" />
               <CardContent
                 sx={{
@@ -139,7 +139,7 @@ export default function Charts() {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Donut" />
               <CardContent
                 sx={{
@@ -155,7 +155,7 @@ export default function Charts() {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Radial Bar" />
               <CardContent
                 sx={{
@@ -171,7 +171,7 @@ export default function Charts() {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card dir="ltr">
               <CardHeader title="Radar" />
               <CardContent
                 sx={{

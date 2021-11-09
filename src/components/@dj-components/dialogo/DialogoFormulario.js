@@ -1,7 +1,7 @@
 import React, { useState, forwardRef, useImperativeHandle, useRef } from 'react';
 import PropTypes from 'prop-types';
 // material
-import { Dialog, DialogContent } from '@material-ui/core';
+import { Dialog, DialogContent } from '@mui/material';
 // componentes
 import TituloDialogo from './TituloDialogo';
 import BotonesDialogo from './BotonesDialogo';

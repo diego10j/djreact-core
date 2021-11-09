@@ -1,10 +1,11 @@
-import faker from 'faker';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Accordion, AccordionSummary, Typography, AccordionDetails } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Container, Accordion, AccordionSummary, Typography, AccordionDetails } from '@mui/material';
+// utils
+import mockData from '../../../utils/mock-data';
 // components
 import Page from '../../../components/Page';
 import { PATH_PAGE } from '../../../routes/paths';
@@ -14,15 +15,13 @@ import { Block } from '../Block';
 
 // ----------------------------------------------------------------------
 
-const ACCORDIONS = [...Array(4)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    value: `panel${setIndex}`,
-    heading: `Accordion ${setIndex}`,
-    subHeading: faker.lorem.slug(),
-    detail: faker.lorem.lines()
-  };
-});
+const MOCK_ACCORDIONS = [...Array(4)].map((_, index) => ({
+  id: mockData.id(index),
+  value: `panel${index + 1}`,
+  heading: `Accordion ${index + 1}`,
+  subHeading: mockData.text.title(index),
+  detail: mockData.text.description(index)
+}));
 
 const RootStyle = styled(Page)(({ theme }) => ({
   paddingTop: theme.spacing(11),
@@ -52,14 +51,14 @@ export default function AccordionComponent() {
           <HeaderBreadcrumbs
             heading="Accordion"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Accordion' }]}
-            moreLink="https://next.material-ui.com/components/accordion"
+            moreLink="https://mui.com/components/accordion"
           />
         </Container>
       </Box>
 
       <Container>
         <Block title="Simple" sx={{ mb: 5 }}>
-          {ACCORDIONS.map((accordion, index) => (
+          {MOCK_ACCORDIONS.map((accordion, index) => (
             <Accordion key={accordion.value} disabled={index === 3}>
               <AccordionSummary expandIcon={<Icon icon={arrowIosDownwardFill} width={20} height={20} />}>
                 <Typography variant="subtitle1">{accordion.heading}</Typography>
@@ -72,7 +71,7 @@ export default function AccordionComponent() {
         </Block>
 
         <Block title="Controlled">
-          {ACCORDIONS.map((item, index) => (
+          {MOCK_ACCORDIONS.map((item, index) => (
             <Accordion
               key={item.value}
               disabled={index === 3}

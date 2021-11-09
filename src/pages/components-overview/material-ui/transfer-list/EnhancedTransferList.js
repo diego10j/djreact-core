@@ -10,11 +10,11 @@ import {
   Button,
   Divider,
   Checkbox,
-  ListItem,
   CardHeader,
   ListItemText,
-  ListItemIcon
-} from '@material-ui/core';
+  ListItemIcon,
+  ListItemButton
+} from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -102,7 +102,7 @@ export default function EnhancedTransferList() {
         {items.map((value) => {
           const labelId = `transfer-list-all-item-${value}-label`;
           return (
-            <ListItem button key={value} role="listitem" onClick={handleToggle(value)}>
+            <ListItemButton key={value} role="listitem" onClick={handleToggle(value)}>
               <ListItemIcon>
                 <Checkbox
                   checked={checked.indexOf(value) !== -1}
@@ -112,7 +112,7 @@ export default function EnhancedTransferList() {
                 />
               </ListItemIcon>
               <ListItemText id={labelId} primary={`List item ${value + 1}`} />
-            </ListItem>
+            </ListItemButton>
           );
         })}
       </List>

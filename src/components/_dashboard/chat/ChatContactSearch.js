@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import searchFill from '@iconify/icons-eva/search-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, FormControl, OutlinedInput, InputAdornment, ClickAwayListener } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, FormControl, OutlinedInput, InputAdornment, ClickAwayListener } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

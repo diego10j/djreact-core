@@ -11,7 +11,7 @@ import {
   TableContainer,
   TablePagination,
   FormControlLabel
-} from '@material-ui/core';
+} from '@mui/material';
 // components
 import Scrollbar from '../../../../../components/Scrollbar';
 //

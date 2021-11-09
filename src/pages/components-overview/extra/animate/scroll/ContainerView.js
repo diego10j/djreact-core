@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // material
-import { Box, Paper, Typography } from '@material-ui/core';
+import { Box, Paper, Typography } from '@mui/material';
 // components
 import Scrollbar from '../../../../../components/Scrollbar';
 import { MotionInView } from '../../../../../components/animate';

@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Stack, Link, Container, Typography, Button } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Stack, Link, Container, Typography, Button } from '@mui/material';
 // routes
 import { PATH_AUTH } from '../../routes/paths';
 // hooks

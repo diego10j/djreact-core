@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // material
-import { Table, TableRow, TableHead, TableBody, TableCell, TableContainer, TablePagination } from '@material-ui/core';
+import { Table, TableRow, TableHead, TableBody, TableCell, TableContainer, TablePagination } from '@mui/material';
 // components
 import Scrollbar from '../../../../components/Scrollbar';
 

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 // material
-import VolumeUp from '@material-ui/icons/VolumeUp';
-import VolumeDown from '@material-ui/icons/VolumeDown';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Slider, Container, Typography } from '@material-ui/core';
+import VolumeUp from '@mui/icons-material/VolumeUp';
+import VolumeDown from '@mui/icons-material/VolumeDown';
+import { styled } from '@mui/material/styles';
+import { Box, Grid, Slider, Container, Typography } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -86,7 +86,7 @@ export default function SliderComponent() {
           <HeaderBreadcrumbs
             heading="Slider"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Slider' }]}
-            moreLink="https://next.material-ui.com/components/slider"
+            moreLink="https://mui.com/components/slider"
           />
         </Container>
       </Box>
@@ -110,7 +110,7 @@ export default function SliderComponent() {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Block title="Disabled slider" sx={style}>
+            <Block title="Disabled" sx={style}>
               <Slider disabled defaultValue={30} />
             </Block>
           </Grid>
@@ -130,11 +130,21 @@ export default function SliderComponent() {
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <Block title="Disabled" sx={style}>
+            <Block title="Size" sx={style}>
+              <Slider
+                size="medium"
+                marks
+                min={10}
+                step={10}
+                max={110}
+                defaultValue={30}
+                valueLabelDisplay="auto"
+                getAriaValueText={valuetext}
+              />
+
               <Slider
                 marks
                 min={10}
-                disabled
                 step={10}
                 max={110}
                 defaultValue={30}

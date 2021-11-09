@@ -2,8 +2,8 @@ import { last } from 'lodash';
 import PropTypes from 'prop-types';
 import { formatDistanceToNowStrict } from 'date-fns';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Avatar, ListItem, ListItemText, ListItemAvatar } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Avatar, ListItemText, ListItemAvatar, ListItemButton } from '@mui/material';
 //
 import BadgeStatus from '../../BadgeStatus';
 
@@ -12,7 +12,7 @@ import BadgeStatus from '../../BadgeStatus';
 const AVATAR_SIZE = 48;
 const AVATAR_SIZE_GROUP = 32;
 
-const RootStyle = styled(ListItem)(({ theme }) => ({
+const RootStyle = styled(ListItemButton)(({ theme }) => ({
   padding: theme.spacing(1.5, 3),
   transition: theme.transitions.create('all')
 }));
@@ -47,13 +47,7 @@ ChatConversationItem.propTypes = {
   onSelectConversation: PropTypes.func
 };
 
-export default function ChatConversationItem({
-  isSelected,
-  conversation,
-  onSelectConversation,
-  isOpenSidebar,
-  ...other
-}) {
+export default function ChatConversationItem({ isSelected, conversation, isOpenSidebar, onSelectConversation }) {
   const details = getDetails(conversation, '8864c717-587d-472a-929a-8e5f298024da-0');
 
   const displayLastActivity = last(conversation.messages).createdAt;
@@ -63,13 +57,10 @@ export default function ChatConversationItem({
 
   return (
     <RootStyle
-      button
-      disableGutters
       onClick={onSelectConversation}
       sx={{
         ...(isSelected && { bgcolor: 'action.selected' })
       }}
-      {...other}
     >
       <ListItemAvatar>
         <Box
@@ -82,7 +73,7 @@ export default function ChatConversationItem({
                 position: 'absolute',
                 width: AVATAR_SIZE_GROUP,
                 height: AVATAR_SIZE_GROUP,
-                '&:nth-child(1)': {
+                '&:nth-of-type(1)': {
                   left: 0,
                   zIndex: 9,
                   bottom: 2,
@@ -90,7 +81,7 @@ export default function ChatConversationItem({
                     border: (theme) => `solid 2px ${theme.palette.background.paper}`
                   }
                 },
-                '&:nth-child(2)': { top: 2, right: 0 }
+                '&:nth-of-type(2)': { top: 2, right: 0 }
               }
             })
           }}
@@ -103,6 +94,7 @@ export default function ChatConversationItem({
               )}
             </AvatarWrapperStyle>
           ))}
+
           {isOnlineGroup && <BadgeStatus status="online" sx={{ right: 2, bottom: 2, position: 'absolute' }} />}
         </Box>
       </ListItemAvatar>

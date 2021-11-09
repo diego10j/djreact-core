@@ -1,5 +1,5 @@
 // material
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid } from '@mui/material';
 //
 import ComponentCard from './ComponentCard';
 import { MATERIAL_LIST } from './PathConfig';

@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import infoFill from '@iconify/icons-eva/info-fill';
 // material
-import { Paper, Stack, Button, Popover, TextField, Typography, InputAdornment } from '@material-ui/core';
+import { Paper, Stack, Button, Popover, TextField, Typography, InputAdornment } from '@mui/material';
 //
 import { MIconButton } from '../../@material-extend';
 

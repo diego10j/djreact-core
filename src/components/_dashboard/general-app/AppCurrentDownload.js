@@ -1,8 +1,8 @@
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Card, CardHeader } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Card, CardHeader } from '@mui/material';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
@@ -51,7 +51,7 @@ export default function AppCurrentDownload() {
       y: {
         formatter: (seriesName) => fNumber(seriesName),
         title: {
-          formatter: (seriesName) => `#${seriesName}`
+          formatter: (seriesName) => `${seriesName}`
         }
       }
     },

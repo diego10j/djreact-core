@@ -4,8 +4,8 @@
  * Author: DFJG
  */
 import { useState, useEffect } from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import { useMediaQuery } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 
 const useWidth = () => {
   const theme = useTheme();

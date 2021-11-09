@@ -1,8 +1,8 @@
 import MapGL, { Layer, Source } from 'react-map-gl';
 import { useState, useCallback, useMemo } from 'react';
 // material
-import { useTheme } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 //
 import {
   MapControlPopup,

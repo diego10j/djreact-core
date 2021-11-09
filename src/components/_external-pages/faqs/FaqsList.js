@@ -1,29 +1,27 @@
-import faker from 'faker';
 import { Icon } from '@iconify/react';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
-import { Accordion, Typography, AccordionSummary, AccordionDetails } from '@material-ui/core';
+import { Accordion, Typography, AccordionSummary, AccordionDetails } from '@mui/material';
+// utils
+import mockData from '../../../utils/mock-data';
 //
 import { varFadeIn, MotionInView } from '../../animate';
 
 // ----------------------------------------------------------------------
 
-const ACCORDIONS = [...Array(8)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    value: `panel${setIndex}`,
-    heading: `Questions ${setIndex}`,
-    subHeading: faker.lorem.slug(),
-    detail: faker.lorem.lines()
-  };
-});
+const MOCK_FAQS = [...Array(8)].map((_, index) => ({
+  id: mockData.id(index),
+  value: `panel${index + 1}`,
+  heading: `Questions ${index + 1}`,
+  detail: mockData.text.description(index)
+}));
 
 // ----------------------------------------------------------------------
 
 export default function FaqsList() {
   return (
     <MotionInView variants={varFadeIn}>
-      {ACCORDIONS.map((accordion) => (
+      {MOCK_FAQS.map((accordion) => (
         <Accordion key={accordion.value}>
           <AccordionSummary expandIcon={<Icon icon={arrowIosDownwardFill} width={20} height={20} />}>
             <Typography variant="subtitle1">{accordion.heading}</Typography>

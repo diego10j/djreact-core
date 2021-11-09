@@ -16,8 +16,8 @@ import {
   IconButton,
   DialogActions,
   FormControlLabel
-} from '@material-ui/core';
-import { LoadingButton, MobileDateTimePicker } from '@material-ui/lab';
+} from '@mui/material';
+import { LoadingButton, MobileDateTimePicker } from '@mui/lab';
 // redux
 import { useDispatch } from '../../../redux/store';
 import { createEvent, updateEvent, deleteEvent } from '../../../redux/slices/calendar';

@@ -1,19 +1,19 @@
 import { useState } from 'react';
 // material
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   List,
   Stack,
   Menu,
   Button,
-  ListItem,
   MenuItem,
   Container,
   IconButton,
-  ListItemText
-} from '@material-ui/core';
+  ListItemText,
+  ListItemButton
+} from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -106,7 +106,7 @@ export default function MenusComponent() {
           <HeaderBreadcrumbs
             heading="Menus"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Menus' }]}
-            moreLink="https://next.material-ui.com/components/menus"
+            moreLink="https://mui.com/components/menus"
           />
         </Container>
       </Box>
@@ -127,15 +127,14 @@ export default function MenusComponent() {
 
           <Block title="Selected" sx={style}>
             <List component="nav" aria-label="Device settings">
-              <ListItem
-                button
+              <ListItemButton
                 aria-haspopup="true"
                 aria-controls="lock-menu"
                 aria-label="when device is locked"
                 onClick={handleClickListItem}
               >
                 <ListItemText primary="When device is locked" secondary={OPTIONS[selectedIndex]} />
-              </ListItem>
+              </ListItemButton>
             </List>
             <Menu keepMounted id="lock-menu" anchorEl={isOpenList} onClose={handleClose} open={Boolean(isOpenList)}>
               {OPTIONS.map((option, index) => (

@@ -1,9 +1,7 @@
 // material
-import FaceIcon from '@material-ui/icons/Face';
-import DoneIcon from '@material-ui/icons/Done';
-import { Avatar, Chip, Stack, Paper } from '@material-ui/core';
-// components
-import { MChip } from '../../../../components/@material-extend';
+import FaceIcon from '@mui/icons-material/Face';
+import DoneIcon from '@mui/icons-material/Done';
+import { Avatar, Chip, Stack, Paper } from '@mui/material';
 //
 import { Label } from '../../Block';
 
@@ -83,7 +81,7 @@ export default function ChipOutlined() {
       <div>
         <Label title="Colors" />
         <Paper variant="outlined" sx={style}>
-          <MChip
+          <Chip
             variant="outlined"
             label="Default deletable"
             avatar={<Avatar alt="Natacha" src="/static/mock-images/avatars/avatar_1.jpg" />}
@@ -91,7 +89,7 @@ export default function ChipOutlined() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             clickable
             label="Default clickable"
@@ -100,7 +98,7 @@ export default function ChipOutlined() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             label="Primary deletable"
             avatar={<Avatar alt="Natacha" src="/static/mock-images/avatars/avatar_1.jpg" />}
@@ -109,7 +107,7 @@ export default function ChipOutlined() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             clickable
             label="Primary clickable"
@@ -119,7 +117,7 @@ export default function ChipOutlined() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             icon={<FaceIcon />}
             label="Secondary deletable"
@@ -128,7 +126,7 @@ export default function ChipOutlined() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             clickable
             icon={<FaceIcon />}
@@ -138,7 +136,7 @@ export default function ChipOutlined() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             icon={<FaceIcon />}
             label="Info deletable"
@@ -147,7 +145,7 @@ export default function ChipOutlined() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             clickable
             icon={<FaceIcon />}
@@ -157,7 +155,7 @@ export default function ChipOutlined() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             icon={<FaceIcon />}
             label="Success deletable"
@@ -165,7 +163,7 @@ export default function ChipOutlined() {
             color="success"
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             clickable
             icon={<FaceIcon />}
@@ -174,7 +172,7 @@ export default function ChipOutlined() {
             color="success"
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             icon={<FaceIcon />}
             label="Warning deletable"
@@ -182,7 +180,7 @@ export default function ChipOutlined() {
             color="warning"
           />
 
-          <MChip
+          <Chip
             variant="outlined"
             clickable
             icon={<FaceIcon />}
@@ -191,9 +189,9 @@ export default function ChipOutlined() {
             color="warning"
           />
 
-          <MChip variant="outlined" icon={<FaceIcon />} label="Error deletable" onDelete={handleDelete} color="error" />
+          <Chip variant="outlined" icon={<FaceIcon />} label="Error deletable" onDelete={handleDelete} color="error" />
 
-          <MChip
+          <Chip
             variant="outlined"
             clickable
             icon={<FaceIcon />}
@@ -207,9 +205,9 @@ export default function ChipOutlined() {
       <div>
         <Label title="Size" />
         <Paper variant="outlined" sx={style}>
-          <MChip variant="outlined" avatar={<Avatar>M</Avatar>} label="Normal" onDelete={handleDelete} color="info" />
+          <Chip variant="outlined" avatar={<Avatar>M</Avatar>} label="Normal" onDelete={handleDelete} color="info" />
 
-          <MChip
+          <Chip
             variant="outlined"
             size="small"
             avatar={<Avatar>M</Avatar>}

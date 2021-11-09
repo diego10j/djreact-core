@@ -1,6 +1,7 @@
+import { motion } from 'framer-motion';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Button, Box, Container, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Button, Box, Container, Typography } from '@mui/material';
 //
 import { varFadeInDown, varFadeInUp, MotionInView } from '../../animate';
 
@@ -35,7 +36,9 @@ export default function LandingAdvertisement() {
             mb: { xs: 3, md: 0 }
           }}
         >
-          <Box component="img" alt="rocket" src="/static/home/rocket.png" sx={{ maxWidth: 460, width: 1 }} />
+          <motion.div animate={{ y: [-20, 0, -20] }} transition={{ duration: 4, repeat: Infinity }}>
+            <Box component="img" alt="rocket" src="/static/home/rocket.png" sx={{ maxWidth: 460, width: 1 }} />
+          </motion.div>
         </MotionInView>
 
         <Box

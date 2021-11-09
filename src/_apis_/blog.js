@@ -1,40 +1,12 @@
-/* eslint-disable no-irregular-whitespace */
-/* eslint-disable no-useless-escape */
-import faker from 'faker';
+import { random } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 import { paramCase } from 'change-case';
 // utils
-import { mockImgCover } from '../utils/mockImages';
-//
 import mock from './mock';
+// utils
+import mockData from '../utils/mock-data';
 
 // ----------------------------------------------------------------------
-
-const POST_TITLES = [
-  'Whiteboard Templates By Industry Leaders',
-  'Tesla Cybertruck-inspired camper trailer for Tesla fans who can’t just wait for the truck!',
-  'Designify Agency Landing Page Design',
-  '✨What is Done is Done ✨',
-  'Fresh Prince',
-  'Six Socks Studio',
-  'vincenzo de cotiis’ crossing over showcases a research on contamination',
-  'Simple, Great Looking Animations in Your Project | Video Tutorial',
-  '40 Free Serif Fonts for Digital Designers',
-  'Examining the Evolution of the Typical Web Design Client',
-  'Katie Griffin loves making that homey art',
-  'The American Dream retold through mid-century railroad graphics',
-  'Illustration System Design',
-  'CarZio-Delivery Driver App SignIn/SignUp',
-  'How to create a client-serverless Jamstack app using Netlify, Gatsby and Fauna',
-  'Tylko Organise effortlessly -3D & Motion Design',
-  'RAYO ?? A expanded visual arts festival identity',
-  'Anthony Burrill and Wired mag’s Andrew Diprose discuss how they made January’s Change Everything cover',
-  'Inside the Mind of Samuel Day',
-  'Portfolio Review: Is This Portfolio Too Creative?',
-  'Akkers van Margraten',
-  'Gradient Ticket icon',
-  'Here’s a Dyson motorcycle concept that doesn’t ‘suck’!',
-  'How to Animate a SVG with border-image'
-];
 
 // Made with React Quill
 const POST_BODY = `
@@ -52,7 +24,10 @@ const POST_BODY = `
 <br/>
 <p><strong>This is strong text.</strong></p>
 <p><em>This is italic text</em></p>
-${`<p><u>This is underline text</u><span class=\"ql-cursor\">﻿</span></p>`}
+${
+  /* eslint-disable-next-line */
+  `<p><u>This is underline text</u><span class=\"ql-cursor\">﻿</span></p>`
+}
 
 <hr>
 <h3>Unordered list</h3><br/>
@@ -60,7 +35,7 @@ ${
   /* eslint-disable */
   `<ul>
 	<li>Implements&nbsp;&nbsp;
-		<a href=\"GitHub Flavored Markdown\" rel=\"noopener noreferrer\" target=\"_blank\">GitHub Flavored Markdown</a>
+		<a href=\"#" rel=\"noopener noreferrer\" target=\"_blank\">GitHub Flavored Markdown</a>
 	</li>
 	<li>Renders actual, \"native\" React DOM elements</li>
 	<li>Allows you to escape or skip HTML (try toggling the checkboxes above)</li>
@@ -83,17 +58,26 @@ ${
 
 <hr>
 <h3>Block Code</h3><br/>
-${`<pre class=\"ql-syntax\" spellcheck=\"false\">cd project-folder\nnpm install\n</pre>`}
+${
+  /* eslint-disable-next-line */
+  `<pre class=\"ql-syntax\" spellcheck=\"false\">cd project-folder\nnpm install\n</pre>`
+}
 
 <br/>
 <br/>
 
-${`<pre class=\"ql-syntax\" spellcheck=\"false\"><span class=\"hljs-keyword\">var</span> React = <span class=\"hljs-built_in\">require</span>(<span class=\"hljs-string\">'react'</span>);\n<span class=\"hljs-keyword\">var</span> Markdown = <span class=\"hljs-built_in\">require</span>(<span class=\"hljs-string\">'react-markdown'</span>);\n\nReact.render(\n  <span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">Markdown1</span> <span class=\"hljs-attr\">source</span>=<span class=\"hljs-string\">\"# Your markdown here\"</span> /&gt;</span>,\n  <span class=\"hljs-built_in\">document</span>.getElementById(<span class=\"hljs-string\">'content'</span>)\n);\n</pre>`}
+${
+  /* eslint-disable-next-line */
+  `<pre class=\"ql-syntax\" spellcheck=\"false\"><span class=\"hljs-keyword\">var</span> React = <span class=\"hljs-built_in\">require</span>(<span class=\"hljs-string\">'react'</span>);\n<span class=\"hljs-keyword\">var</span> Markdown = <span class=\"hljs-built_in\">require</span>(<span class=\"hljs-string\">'react-markdown'</span>);\n\nReact.render(\n  <span class=\"hljs-tag\">&lt;<span class=\"hljs-name\">Markdown1</span> <span class=\"hljs-attr\">source</span>=<span class=\"hljs-string\">\"# Your markdown here\"</span> /&gt;</span>,\n  <span class=\"hljs-built_in\">document</span>.getElementById(<span class=\"hljs-string\">'content'</span>)\n);\n</pre>`
+}
 
 <br/>
 <br/>
 
-${`<pre class=\"ql-syntax\" spellcheck=\"false\"><span class=\"hljs-function\"><span class=\"hljs-keyword\">function</span> <span class=\"hljs-title\">createStyleObject</span>(<span class=\"hljs-params\">classNames, style</span>) </span>{\n  <span class=\"hljs-keyword\">return</span> classNames.reduce(<span class=\"hljs-function\">(<span class=\"hljs-params\">styleObject, className</span>) =&gt;</span> {\n   <span class=\"hljs-keyword\">return</span> {...styleObject, ...style[className]};\n  }, {});\n }\n</pre>`}
+${
+  /* eslint-disable-next-line */
+  `<pre class=\"ql-syntax\" spellcheck=\"false\"><span class=\"hljs-function\"><span class=\"hljs-keyword\">function</span> <span class=\"hljs-title\">createStyleObject</span>(<span class=\"hljs-params\">classNames, style</span>) </span>{\n  <span class=\"hljs-keyword\">return</span> classNames.reduce(<span class=\"hljs-function\">(<span class=\"hljs-params\">styleObject, className</span>) =&gt;</span> {\n   <span class=\"hljs-keyword\">return</span> {...styleObject, ...style[className]};\n  }, {});\n }\n</pre>`
+}
 
 <br/>
 <br/>
@@ -104,7 +88,7 @@ ${`<pre class=\"ql-syntax\" spellcheck=\"false\"><span class=\"hljs-function\"><
 <br/>
 
 <p>
-<img src='https://res.cloudinary.com/minimal-ui/image/upload/c_scale,w_1440/upload_minimal/covers/cover_6.jpg'/>
+<img src='https://res.cloudinary.com/trinhmai/image/upload/c_scale,w_1440/v1611411340/upload_minimal/covers/cover_6.jpg'/>
 </p>
 
 
@@ -119,120 +103,118 @@ It is important that you buy links because the links are what get you the result
 <br/>
 
 <p>
-<img src='https://res.cloudinary.com/minimal-ui/image/upload/c_scale,w_1440/upload_minimal/covers/cover_4.jpg'/>
+<img src='https://res.cloudinary.com/trinhmai/image/upload/c_scale,w_1440/v1611411339/upload_minimal/covers/cover_4.jpg'/>
 </p>
 
 `;
 
-const users = [...Array(12)].map((_, index) => {
-  const setIndex = index + 1;
+export const users = [...Array(12)].map((_, index) => {
   return {
-    id: `31a6d8e0-12d4-4aef-88c3-39229ea852f7-${setIndex}`,
-    name: faker.name.findName(),
-    avatarUrl: `/static/mock-images/avatars/avatar_${setIndex}.jpg`
+    id: mockData.id(index),
+    name: mockData.name.fullName(index),
+    avatarUrl: mockData.image.avatar(index)
   };
 });
 
 const POST_COMMENTS = [
   {
-    id: faker.datatype.uuid(),
+    id: uuidv4(),
     name: users[0].name,
     avatarUrl: users[0].avatarUrl,
-    message: faker.lorem.lines(),
-    postedAt: faker.date.past(),
+    message: mockData.text.sentence(1),
+    postedAt: mockData.time(1),
     users: [users[0], users[1], users[2]],
     replyComment: [
       {
-        id: faker.datatype.uuid(),
+        id: uuidv4(),
         userId: users[1].id,
-        message: faker.lorem.lines(),
-        postedAt: faker.date.past()
+        message: mockData.text.sentence(2),
+        postedAt: mockData.time(2)
       },
       {
-        id: faker.datatype.uuid(),
+        id: uuidv4(),
         userId: users[0].id,
-        message: faker.lorem.lines(),
+        message: mockData.text.sentence(3),
         tagUser: users[1].name,
-        postedAt: faker.date.past()
+        postedAt: mockData.time(3)
       },
       {
-        id: faker.datatype.uuid(),
+        id: uuidv4(),
         userId: users[2].id,
-        message: faker.lorem.lines(),
-        postedAt: faker.date.past()
+        message: mockData.text.sentence(4),
+        postedAt: mockData.time(4)
       }
     ]
   },
   {
-    id: faker.datatype.uuid(),
+    id: uuidv4(),
     name: users[4].name,
     avatarUrl: users[4].avatarUrl,
-    message: faker.lorem.lines(),
-    postedAt: faker.date.past(),
+    message: mockData.text.sentence(5),
+    postedAt: mockData.time(5),
     users: [users[5], users[6], users[7]],
     replyComment: [
       {
-        id: faker.datatype.uuid(),
+        id: uuidv4(),
         userId: users[5].id,
-        message: faker.lorem.lines(),
-        postedAt: faker.date.past()
+        message: mockData.text.sentence(6),
+        postedAt: mockData.time(6)
       },
       {
-        id: faker.datatype.uuid(),
+        id: uuidv4(),
         userId: users[6].id,
-        message: faker.lorem.lines(),
-        postedAt: faker.date.past()
+        message: mockData.text.sentence(7),
+        postedAt: mockData.time(7)
       },
       {
-        id: faker.datatype.uuid(),
+        id: uuidv4(),
         userId: users[7].id,
-        message: faker.lorem.lines(),
-        postedAt: faker.date.past()
+        message: mockData.text.sentence(8),
+        postedAt: mockData.time(8)
       }
     ]
   },
   {
-    id: faker.datatype.uuid(),
+    id: uuidv4(),
     name: users[8].name,
     avatarUrl: users[8].avatarUrl,
-    message: faker.lorem.lines(),
-    postedAt: faker.date.past(),
+    message: mockData.text.sentence(9),
+    postedAt: mockData.time(9),
     users: [],
     replyComment: []
   },
   {
-    id: faker.datatype.uuid(),
+    id: uuidv4(),
     name: users[9].name,
     avatarUrl: users[9].avatarUrl,
-    message: faker.lorem.lines(),
-    postedAt: faker.date.past(),
+    message: mockData.text.sentence(10),
+    postedAt: mockData.time(10),
     users: [],
     replyComment: []
   }
 ];
 
-let posts = [...Array(23)].map((_, index) => {
-  const setIndex = index + 1;
+export const posts = [...Array(23)].map((_, index) => {
   return {
-    id: `0feb2990-4210-4170-93a4-37e8f5958a18-${setIndex}`,
-    cover: mockImgCover(setIndex),
-    title: POST_TITLES[setIndex],
-    description: faker.lorem.paragraph(),
-    createdAt: faker.date.past(),
-    view: faker.datatype.number(),
-    comment: faker.datatype.number(),
-    share: faker.datatype.number(),
-    favorite: faker.datatype.number(),
+    id: mockData.id(index),
+    cover: mockData.image.cover(index),
+    title: mockData.text.title(index),
+    description: mockData.text.sentence(index),
+    createdAt: mockData.time(index),
+    view: random(9999),
+    comment: random(9999),
+    share: random(9999),
+    favorite: random(9999),
     author: {
-      name: faker.name.findName(),
-      avatarUrl: `/static/mock-images/avatars/avatar_${setIndex}.jpg`
+      name: mockData.name.fullName(index),
+      avatarUrl: mockData.image.avatar(index)
     },
     tags: ['Lamp', 'A man', 'Human', 'Lantern', 'Festival'],
     body: POST_BODY,
-    favoritePerson: [...Array(50)].map((_, index) => {
+    favoritePerson: [...Array(40)].map((_, index) => {
       return {
-        name: faker.name.findName(),
-        avatarUrl: `/static/mock-images/avatars/avatar_${index + 1}.jpg`
+        name: mockData.name.fullName(index),
+        avatarUrl: mockData.image.avatar(index)
       };
     }),
     comments: POST_COMMENTS
@@ -252,7 +234,7 @@ mock.onGet('/api/blog/posts').reply((config) => {
     const loadMore = index + step;
 
     const sortPosts = [...posts].sort((a, b) => {
-      return new Date(b.createdAt) - new Date(a.createdAt);
+      return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
     });
 
     const results = sortPosts.slice(0, loadMore);

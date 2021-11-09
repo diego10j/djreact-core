@@ -4,8 +4,8 @@ import { Icon } from '@iconify/react';
 import { useDropzone } from 'react-dropzone';
 import roundAddAPhoto from '@iconify/icons-ic/round-add-a-photo';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Typography, Paper } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Typography, Paper } from '@mui/material';
 // utils
 import { fData } from '../../utils/formatNumber';
 
@@ -69,6 +69,7 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }) {
     multiple: false,
     ...other
   });
+
   const ShowRejectionItems = () => (
     <Paper
       variant="outlined"
@@ -122,6 +123,7 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }) {
               sx={{ zIndex: 8, objectFit: 'cover' }}
             />
           )}
+
           <PlaceholderStyle
             className="placeholder"
             sx={{
@@ -134,7 +136,7 @@ export default function UploadAvatar({ error, file, caption, sx, ...other }) {
             }}
           >
             <Box component={Icon} icon={roundAddAPhoto} sx={{ width: 24, height: 24, mb: 1 }} />
-            <Typography variant="caption">{file ? 'Actualizar Imágen' : 'Subir Imágen'}</Typography>
+            <Typography variant="caption">{file ? 'Update photo' : 'Upload photo'}</Typography>
           </PlaceholderStyle>
         </DropZoneStyle>
       </RootStyle>

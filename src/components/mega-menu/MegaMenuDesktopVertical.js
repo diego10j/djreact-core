@@ -4,8 +4,8 @@ import { Icon } from '@iconify/react';
 import { NavLink as RouterLink } from 'react-router-dom';
 import chevronRightFill from '@iconify/icons-eva/chevron-right-fill';
 // material
-import { alpha } from '@material-ui/core/styles';
-import { Box, Link, List, Paper, ListItem, Typography, Divider, Stack } from '@material-ui/core';
+import { alpha } from '@mui/material/styles';
+import { Box, Link, List, Paper, ListItem, Typography, Divider, Stack } from '@mui/material';
 //
 import MenuHotProducts from './MenuHotProducts';
 import MegaMenuCarousel from './MegaMenuCarousel';
@@ -18,9 +18,9 @@ const CONTENT_HEIGHT = 400;
 const ITEM_HEIGHT = 40;
 const ITEM_ON_ROW = {
   width: 'calc((100%/3) - 16px)',
-  '&:nth-child(3n+1)': { order: 1 },
-  '&:nth-child(3n+2)': { order: 2 },
-  '&:nth-child(3n)': { order: 3 }
+  '&:nth-of-type(3n+1)': { order: 1 },
+  '&:nth-of-type(3n+2)': { order: 2 },
+  '&:nth-of-type(3n)': { order: 3 }
 };
 
 // ----------------------------------------------------------------------
@@ -40,7 +40,6 @@ function ParentItem({ path, title, open, hasSub, ...other }) {
 
   return (
     <ListItem
-      disableGutters
       to={path}
       component={RouterLink}
       sx={{

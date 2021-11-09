@@ -3,8 +3,8 @@ import Slider from 'react-slick';
 import PropTypes from 'prop-types';
 import { NavLink as RouterLink } from 'react-router-dom';
 // material
-import { useTheme } from '@material-ui/core/styles';
-import { Box, Link, Typography } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { Box, Link, Typography } from '@mui/material';
 //
 import { CarouselControlsPaging1, CarouselControlsArrowsBasic2 } from '../carousel';
 
@@ -21,7 +21,6 @@ export default function MegaMenuCarousel({ products, numberShow, sx }) {
   const carouselRef = useRef();
 
   const settings = {
-    speed: 500,
     dots: true,
     arrows: false,
     slidesToShow: numberShow,

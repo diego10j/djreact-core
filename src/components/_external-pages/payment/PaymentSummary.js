@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import shieldFill from '@iconify/icons-eva/shield-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Switch, Divider, Typography, Stack } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { styled } from '@mui/material/styles';
+import { Box, Switch, Divider, Typography, Stack } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 //
 import Label from '../../Label';
 
@@ -101,7 +101,7 @@ export default function PaymentSummary({ formik }) {
           <Box component={Icon} icon={shieldFill} sx={{ width: 20, height: 20, color: 'primary.main' }} />
           <Typography variant="subtitle2">Secure credit card payment</Typography>
         </Stack>
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+        <Typography variant="caption" sx={{ color: 'text.secondary', textAlign: 'center' }}>
           This is a secure 128-bit SSL encrypted payment
         </Typography>
       </Stack>

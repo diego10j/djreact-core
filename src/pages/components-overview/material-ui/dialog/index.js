@@ -1,6 +1,6 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Container } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Grid, Container } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // components
@@ -47,7 +47,7 @@ export default function DialogComponent() {
           <HeaderBreadcrumbs
             heading="Dialog"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Dialog' }]}
-            moreLink="https://next.material-ui.com/components/dialogs"
+            moreLink="https://mui.com/components/dialogs"
           />
         </Container>
       </Box>

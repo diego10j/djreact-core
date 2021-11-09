@@ -1,9 +1,7 @@
-import faker from 'faker';
+import { v4 as uuidv4 } from 'uuid';
 import { addDays } from 'date-fns';
-import { reject, map, assign } from 'lodash';
-
 // utils
-import { mockImgAvatar, mockImgFeed } from '../utils/mockImages';
+import mockData from '../utils/mock-data';
 //
 import mock from './mock';
 
@@ -39,125 +37,118 @@ const memberIds = {
   member5: 'a3be5485-03bf-47a6-b553-a9cf9f070ed8'
 };
 
-const COMMENTS = [...Array(8)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    id: faker.datatype.uuid(),
-    avatar: mockImgAvatar(setIndex),
-    name: faker.name.findName(),
-    createdAt: faker.date.past(),
-    messageType: setIndex === 3 || setIndex === 5 ? 'image' : 'text',
-    message: (setIndex === 3 && mockImgFeed(6)) || (setIndex === 5 && mockImgFeed(8)) || faker.lorem.sentence()
-  };
-});
+const COMMENTS = [...Array(8)].map((_, index) => ({
+  id: uuidv4(),
+  avatar: mockData.image.avatar(index),
+  name: mockData.name.fullName(index),
+  createdAt: mockData.time(index),
+  messageType: index === 3 || index === 5 ? 'image' : 'text',
+  message:
+    (index === 3 && mockData.image.feed(6)) || (index === 5 && mockData.image.feed(8)) || mockData.text.sentence(index)
+}));
 
 // ----------------------------------------------------------------------
 
-let board = {
-  columns: [
-    {
-      id: columnIds.column1,
-      name: 'Backlog',
-      cards: [
-        {
-          id: cardIds.card1,
-          attachments: [],
-          comments: COMMENTS,
-          description:
-            'Duis condimentum lacus finibus felis pellentesque, ac auctor nibh fermentum. Duis sed dui ante. Phasellus id eros tincidunt, dictum lorem vitae, pellentesque sem. Aenean eu enim sit amet mauris rhoncus mollis. Sed enim turpis, porta a felis et, luctus faucibus nisi. Phasellus et metus fermentum, ultrices arcu aliquam, facilisis justo. Cras nunc nunc, elementum sed euismod ut, maximus eget nibh. Phasellus condimentum lorem neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce sagittis pharetra eleifend. Suspendisse potenti.',
-          due: addDays(now, 7).getTime(),
-          columnId: columnIds.column1,
-          assignee: [{ id: memberIds.member1, avatar: mockImgAvatar(1), name: faker.name.findName() }],
-          name: 'Call with sales of HubSpot',
-          completed: true
-        },
-        {
-          id: cardIds.card3,
-          attachments: [],
-          comments: [],
-          description: 'We nede to make it aggressive with pricing because it’s in their interest to acquire us',
-          due: null,
-          columnId: columnIds.column1,
-          assignee: [],
-          name: 'Change the height of the top bar because it looks too chunky',
-          completed: true
-        },
-        {
-          id: cardIds.card4,
-          attachments: [mockImgFeed(3)],
-          comments: [],
-          description: 'We nede to make it aggresive with pricing because it’s in their interest to acquire us',
-          due: null,
-          columnId: columnIds.column1,
-          assignee: [
-            { id: memberIds.member2, avatar: mockImgAvatar(2), name: faker.name.findName() },
-            { id: memberIds.member5, avatar: mockImgAvatar(5), name: faker.name.findName() }
-          ],
-          name: 'Integrate Stripe API',
-          completed: false
-        }
-      ]
-    },
-    {
-      id: columnIds.column2,
-      name: 'Progress',
-      cards: [
-        {
-          id: cardIds.card4,
-          attachments: [mockImgFeed(3)],
-          comments: [],
-          description: 'We nede to make it aggresive with pricing because it’s in their interest to acquire us',
-          due: null,
-          columnId: columnIds.column1,
-          assignee: [
-            { id: memberIds.member2, avatar: mockImgAvatar(2), name: faker.name.findName() },
-            { id: memberIds.member5, avatar: mockImgAvatar(5), name: faker.name.findName() }
-          ],
-          name: 'Integrate Stripe API',
-          completed: false
-        },
-        {
-          id: cardIds.card5,
-          attachments: [],
-          comments: [],
-          description: 'We need to make it aggresive with pricing because it’s in their interest to acquire us',
-          due: null,
-          columnId: columnIds.column2,
-          assignee: [{ id: memberIds.member1, avatar: mockImgAvatar(1), name: faker.name.findName() }],
-          name: 'Update the customer API for payments',
-          completed: true
-        }
-      ]
-    },
-    {
-      id: columnIds.column3,
-      name: 'Q&A',
-      cards: [
-        {
-          id: cardIds.card2,
-          attachments: [mockImgFeed(1)],
-          comments: [],
-          description: 'We are looking for vue experience and of course node js strong knowledge',
-          due: addDays(now, 6).getTime(),
-          columnId: columnIds.column1,
-          assignee: [
-            { id: memberIds.member1, avatar: mockImgAvatar(1), name: faker.name.findName() },
-            { id: memberIds.member2, avatar: mockImgAvatar(2), name: faker.name.findName() },
-            { id: memberIds.member4, avatar: mockImgAvatar(2), name: faker.name.findName() },
-            { id: memberIds.member5, avatar: mockImgAvatar(2), name: faker.name.findName() },
-            { id: memberIds.member3, avatar: mockImgAvatar(3), name: faker.name.findName() }
-          ],
-          name: 'Interview for the Asis. Sales Manager',
-          completed: false
-        }
-      ]
-    },
-    {
-      id: columnIds.column4,
-      name: 'Production',
-      cards: []
-    }
-  ]
+const cardList = [
+  {
+    id: cardIds.card1,
+    name: 'Call with sales of HubSpot',
+    description:
+      'Duis condimentum lacus finibus felis pellentesque, ac auctor nibh fermentum. Duis sed dui ante. Phasellus id eros tincidunt, dictum lorem vitae, pellentesque sem. Aenean eu enim sit amet mauris rhoncus mollis. Sed enim turpis, porta a felis et, luctus faucibus nisi. Phasellus et metus fermentum, ultrices arcu aliquam, facilisis justo. Cras nunc nunc, elementum sed euismod ut, maximus eget nibh. Phasellus condimentum lorem neque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce sagittis pharetra eleifend. Suspendisse potenti.',
+    assignee: [{ id: memberIds.member1, avatar: mockData.image.avatar(1), name: mockData.name.fullName(1) }],
+    due: [addDays(now, 6).getTime(), addDays(now, 7).getTime()],
+    attachments: [],
+    comments: COMMENTS,
+    completed: true
+  },
+  {
+    id: cardIds.card2,
+    name: 'Interview for the Asis. Sales Manager',
+    description: 'We are looking for vue experience and of course node js strong knowledge',
+    assignee: [
+      { id: memberIds.member1, avatar: mockData.image.avatar(1), name: mockData.name.fullName(2) },
+      { id: memberIds.member2, avatar: mockData.image.avatar(2), name: mockData.name.fullName(3) },
+      { id: memberIds.member4, avatar: mockData.image.avatar(3), name: mockData.name.fullName(4) },
+      { id: memberIds.member5, avatar: mockData.image.avatar(4), name: mockData.name.fullName(5) },
+      { id: memberIds.member3, avatar: mockData.image.avatar(5), name: mockData.name.fullName(6) }
+    ],
+    due: [addDays(now, 6).getTime(), addDays(now, 7).getTime()],
+    attachments: [mockData.image.feed(1)],
+    comments: [],
+    completed: false
+  },
+  {
+    id: cardIds.card3,
+    name: 'Change the height of the top bar because it looks too chunky',
+    description: 'We nede to make it aggressive with pricing because it’s in their interest to acquire us',
+    assignee: [],
+    due: [null, null],
+    attachments: [],
+    comments: [],
+    completed: true
+  },
+  {
+    id: cardIds.card4,
+    name: 'Integrate Stripe API',
+    description: 'We nede to make it aggresive with pricing because it’s in their interest to acquire us',
+    assignee: [
+      { id: memberIds.member2, avatar: mockData.image.avatar(2), name: mockData.name.fullName(7) },
+      { id: memberIds.member5, avatar: mockData.image.avatar(5), name: mockData.name.fullName(8) }
+    ],
+    due: [null, null],
+    attachments: [mockData.image.feed(3)],
+    comments: [],
+    completed: false
+  },
+  {
+    id: cardIds.card5,
+    name: 'Update the customer API for payments',
+    description: 'We need to make it aggresive with pricing because it’s in their interest to acquire us',
+    assignee: [{ id: memberIds.member1, avatar: mockData.image.avatar(1), name: mockData.name.fullName(9) }],
+    due: [null, null],
+    attachments: [],
+    comments: [],
+    completed: true
+  },
+  {
+    id: cardIds.card6,
+    name: 'Release minimals DS',
+    description: 'Production',
+    assignee: [{ id: memberIds.member1, avatar: mockData.image.avatar(1), name: mockData.name.fullName(10) }],
+    due: [null, null],
+    attachments: [],
+    comments: [],
+    completed: true
+  }
+];
+
+const columnList = [
+  {
+    id: columnIds.column1,
+    name: 'Backlog',
+    cardIds: [cardIds.card1, cardIds.card2, cardIds.card3]
+  },
+  {
+    id: columnIds.column2,
+    name: 'Progress',
+    cardIds: [cardIds.card4, cardIds.card5]
+  },
+  {
+    id: columnIds.column3,
+    name: 'Q&A',
+    cardIds: []
+  },
+  {
+    id: columnIds.column4,
+    name: 'Production',
+    cardIds: [cardIds.card6]
+  }
+];
+
+const board = {
+  cards: cardList,
+  columns: columnList,
+  columnOrder: [columnIds.column1, columnIds.column2, columnIds.column3, columnIds.column4]
 };
 
 // ----------------------------------------------------------------------
@@ -170,13 +161,12 @@ mock.onPost('/api/kanban/columns/new').reply((request) => {
   try {
     const { name } = JSON.parse(request.data);
     const column = {
-      id: faker.datatype.uuid(),
+      id: uuidv4(),
       name,
-      cards: []
+      cardIds: []
     };
-    board = {
-      columns: [...board.columns, column]
-    };
+    board.columns.push(column);
+    board.columnOrder.push(column.id);
     return [200, { column }];
   } catch (error) {
     console.error(error);
@@ -189,19 +179,14 @@ mock.onPost('/api/kanban/columns/new').reply((request) => {
 mock.onPost('/api/kanban/columns/update').reply((request) => {
   try {
     const { columnId, updateColumn } = JSON.parse(request.data);
-    let column = null;
+    const columnIndex = board.columns.findIndex((column) => column.id === columnId);
 
-    board = {
-      columns: map(board.columns, (_column) => {
-        if (_column.id === columnId) {
-          assign(_column, { ...updateColumn });
-          column = _column;
-        }
-        return _column;
-      })
+    board.columns[columnIndex] = {
+      ...board.columns[columnIndex],
+      ...updateColumn
     };
 
-    return [200, { column }];
+    return [200, { column: board.columns[columnIndex] }];
   } catch (error) {
     console.error(error);
     return [500, { message: 'Internal server error' }];
@@ -213,9 +198,16 @@ mock.onPost('/api/kanban/columns/update').reply((request) => {
 mock.onPost('/api/kanban/columns/delete').reply((request) => {
   try {
     const { columnId } = JSON.parse(request.data);
-    board = {
-      columns: reject(board.columns, { id: columnId })
-    };
+
+    const column = board.columns.find((c) => c.id === columnId);
+
+    if (column) {
+      board.cards = board.cards.filter((card) => !column.cardIds.includes(card.id));
+    }
+
+    board.columns = board.columns.filter((id) => id !== columnId);
+    board.columnOrder = board.columnOrder.filter((id) => id !== columnId);
+
     return [200, { columnId }];
   } catch (error) {
     console.error(error);

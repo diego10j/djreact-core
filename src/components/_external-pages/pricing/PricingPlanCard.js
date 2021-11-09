@@ -3,8 +3,8 @@ import { Icon } from '@iconify/react';
 import { Link as RouterLink } from 'react-router-dom';
 import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Card, Button, Typography, Box, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Card, Button, Typography, Box, Stack } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 //

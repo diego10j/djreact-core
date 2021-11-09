@@ -4,8 +4,8 @@ import ReactApexChart from 'react-apexcharts';
 import trendingUpFill from '@iconify/icons-eva/trending-up-fill';
 import trendingDownFill from '@iconify/icons-eva/trending-down-fill';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Typography, Stack } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Card, Typography, Stack } from '@mui/material';
 // utils
 import { fNumber, fPercent } from '../../../utils/formatNumber';
 //
@@ -29,12 +29,12 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 const PERCENT = -0.06;
 const TOTAL_BALANCE = 18765.093383;
-const CHART_DATA = [{ data: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14] }];
+const CHART_DATA = [{ data: [56, 47, 40, 62, 73, 30, 23, 54, 67, 68] }];
 
 export default function EcommerceTotalBalance() {
   const theme = useTheme();
   const chartOptions = merge(BaseOptionChart(), {
-    colors: [theme.palette.info.main],
+    colors: [theme.palette.chart.green[0]],
     chart: { animations: { enabled: true }, sparkline: { enabled: true } },
     stroke: { width: 2 },
     tooltip: {
@@ -42,7 +42,7 @@ export default function EcommerceTotalBalance() {
       y: {
         formatter: (seriesName) => fNumber(seriesName),
         title: {
-          formatter: (seriesName) => `#${seriesName}`
+          formatter: () => ''
         }
       },
       marker: { show: false }

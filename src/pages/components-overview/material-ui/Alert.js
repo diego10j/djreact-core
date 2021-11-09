@@ -1,12 +1,11 @@
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Alert, Button, Container, AlertTitle, Stack } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Alert, Button, Container, AlertTitle, Stack } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { MButton } from '../../../components/@material-extend';
 //
 import { Block } from '../Block';
 
@@ -34,7 +33,7 @@ export default function AlertsComponent() {
           <HeaderBreadcrumbs
             heading="Alert"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Alert' }]}
-            moreLink="https://next.material-ui.com/components/alert"
+            moreLink="https://mui.com/components/alert"
           />
         </Container>
       </Box>
@@ -114,9 +113,9 @@ export default function AlertsComponent() {
               <Alert
                 severity="info"
                 action={
-                  <MButton color="info" size="small" variant="outlined">
+                  <Button color="info" size="small" variant="outlined">
                     Undo
-                  </MButton>
+                  </Button>
                 }
               >
                 This is an info alert — check it out!
@@ -143,9 +142,9 @@ export default function AlertsComponent() {
                 severity="info"
                 variant="outlined"
                 action={
-                  <MButton color="info" size="small" variant="outlined">
+                  <Button color="info" size="small" variant="outlined">
                     Undo
-                  </MButton>
+                  </Button>
                 }
               >
                 This is an info alert — check it out!

@@ -9,7 +9,7 @@ import facebookFill from '@iconify/icons-eva/facebook-fill';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Grid,
@@ -21,7 +21,7 @@ import {
   Typography,
   OutlinedInput,
   InputAdornment
-} from '@material-ui/core';
+} from '@mui/material';
 //
 import SearchNotFound from '../../../SearchNotFound';
 

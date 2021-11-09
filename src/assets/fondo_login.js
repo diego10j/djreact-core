@@ -1,13 +1,13 @@
 // material
-import { useTheme } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
 export default function FondoLogin({ ...other }) {
   const theme = useTheme();
-  const PRIMARY_MAIN = theme.palette.primary.main;
-  const PRIMARY_LIGHT = theme.palette.primary.light;
+  const PRIMARY_MAIN = theme.palette.primary.contrastText;
+  const PRIMARY_LIGHT = theme.palette.primary.main;
   return (
     <Box {...other}>
       <svg

@@ -2,7 +2,7 @@ import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import refreshFill from '@iconify/icons-eva/refresh-fill';
 // material
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid } from '@mui/material';
 // components
 import { MIconButton } from '../../../../../components/@material-extend';
 //

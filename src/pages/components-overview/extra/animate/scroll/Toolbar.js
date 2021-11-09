@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import refreshFill from '@iconify/icons-eva/refresh-fill';
 // material
-import { Paper } from '@material-ui/core';
+import { Paper } from '@mui/material';
 // components
 import { MIconButton } from '../../../../../components/@material-extend';
 

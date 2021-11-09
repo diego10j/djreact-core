@@ -1,18 +1,18 @@
 import { Icon } from '@iconify/react';
 import listFill from '@iconify/icons-eva/list-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Paper, Stack, Container, AppBar, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Card, Paper, Stack, Container, AppBar, Typography } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import {
-  MegaMenuDesktopVertical,
-  MegaMenuDesktopHorizon,
+  MenuConfig,
   MegaMenuMobile,
-  MenuConfig
+  MegaMenuDesktopHorizon,
+  MegaMenuDesktopVertical
 } from '../../../components/mega-menu';
 
 // ----------------------------------------------------------------------

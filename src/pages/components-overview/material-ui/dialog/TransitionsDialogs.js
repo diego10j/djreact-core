@@ -1,8 +1,6 @@
 import { forwardRef, useState } from 'react';
 // material
-import { Slide, Dialog, Button, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
-//
-import { MButton } from '../../../../components/@material-extend';
+import { Slide, Dialog, Button, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -21,9 +19,9 @@ export default function TransitionsDialogs() {
 
   return (
     <div>
-      <MButton variant="outlined" color="success" onClick={handleClickOpen}>
+      <Button variant="outlined" color="success" onClick={handleClickOpen}>
         Transitions Dialogs
-      </MButton>
+      </Button>
 
       <Dialog
         open={open}

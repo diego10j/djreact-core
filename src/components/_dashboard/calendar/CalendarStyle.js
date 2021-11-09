@@ -1,4 +1,4 @@
-import { experimentalStyled as styled, alpha } from '@material-ui/core/styles';
+import { styled, alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 

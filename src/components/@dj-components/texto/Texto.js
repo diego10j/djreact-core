@@ -1,8 +1,8 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/styles';
 // material
-import { TextField } from '@material-ui/core';
+import { TextField } from '@mui/material';
 // utils
 import { isDefined, toCapitalize } from '../../../utils/utilitario';
 // ----------------------------------------------------------------------

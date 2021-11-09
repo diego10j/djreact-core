@@ -1,9 +1,7 @@
 // material
-import FaceIcon from '@material-ui/icons/Face';
-import DoneIcon from '@material-ui/icons/Done';
-import { Avatar, Chip, Stack, Paper } from '@material-ui/core';
-// components
-import { MChip } from '../../../../components/@material-extend';
+import FaceIcon from '@mui/icons-material/Face';
+import DoneIcon from '@mui/icons-material/Done';
+import { Avatar, Chip, Stack, Paper } from '@mui/material';
 //
 import { Label } from '../../Block';
 
@@ -68,14 +66,14 @@ export default function ChipFilled() {
       <div>
         <Label title="Colors" />
         <Paper variant="outlined" sx={style}>
-          <MChip
+          <Chip
             label="Default deletable"
             avatar={<Avatar alt="Natacha" src="/static/mock-images/avatars/avatar_1.jpg" />}
             onDelete={handleDelete}
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             clickable
             label="Default clickable"
             avatar={<Avatar alt="Natacha" src="/static/mock-images/avatars/avatar_1.jpg" />}
@@ -83,7 +81,7 @@ export default function ChipFilled() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             label="Primary deletable"
             avatar={<Avatar alt="Natacha" src="/static/mock-images/avatars/avatar_1.jpg" />}
             color="primary"
@@ -91,7 +89,7 @@ export default function ChipFilled() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             clickable
             label="Primary clickable"
             avatar={<Avatar alt="Natacha" src="/static/mock-images/avatars/avatar_1.jpg" />}
@@ -100,7 +98,7 @@ export default function ChipFilled() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             icon={<FaceIcon />}
             label="Secondary deletable"
             onDelete={handleDelete}
@@ -108,7 +106,7 @@ export default function ChipFilled() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             clickable
             icon={<FaceIcon />}
             label="Secondary clickable"
@@ -117,7 +115,7 @@ export default function ChipFilled() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             icon={<FaceIcon />}
             label="Info deletable"
             onDelete={handleDelete}
@@ -125,7 +123,7 @@ export default function ChipFilled() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip
+          <Chip
             clickable
             icon={<FaceIcon />}
             label="Info clickable"
@@ -134,20 +132,20 @@ export default function ChipFilled() {
             deleteIcon={<DoneIcon />}
           />
 
-          <MChip icon={<FaceIcon />} label="Success deletable" onDelete={handleDelete} color="success" />
-          <MChip clickable icon={<FaceIcon />} label="Success clickable" onDelete={handleDelete} color="success" />
-          <MChip icon={<FaceIcon />} label="Warning deletable" onDelete={handleDelete} color="warning" />
-          <MChip clickable icon={<FaceIcon />} label="Warning clickable" onDelete={handleDelete} color="warning" />
-          <MChip icon={<FaceIcon />} label="Error deletable" onDelete={handleDelete} color="error" />
-          <MChip clickable icon={<FaceIcon />} label="Error clickable" onDelete={handleDelete} color="error" />
+          <Chip icon={<FaceIcon />} label="Success deletable" onDelete={handleDelete} color="success" />
+          <Chip clickable icon={<FaceIcon />} label="Success clickable" onDelete={handleDelete} color="success" />
+          <Chip icon={<FaceIcon />} label="Warning deletable" onDelete={handleDelete} color="warning" />
+          <Chip clickable icon={<FaceIcon />} label="Warning clickable" onDelete={handleDelete} color="warning" />
+          <Chip icon={<FaceIcon />} label="Error deletable" onDelete={handleDelete} color="error" />
+          <Chip clickable icon={<FaceIcon />} label="Error clickable" onDelete={handleDelete} color="error" />
         </Paper>
       </div>
 
       <div>
         <Label title="Size" />
         <Paper variant="outlined" sx={style}>
-          <MChip avatar={<Avatar>M</Avatar>} label="Normal" onDelete={handleDelete} color="info" />
-          <MChip size="small" avatar={<Avatar>M</Avatar>} label="Small" onDelete={handleDelete} color="info" />
+          <Chip avatar={<Avatar>M</Avatar>} label="Normal" onDelete={handleDelete} color="info" />
+          <Chip size="small" avatar={<Avatar>M</Avatar>} label="Small" onDelete={handleDelete} color="info" />
         </Paper>
       </div>
     </Stack>

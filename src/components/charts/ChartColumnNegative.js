@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 //
 import BaseOptionChart from './BaseOptionChart';
 
@@ -24,9 +24,7 @@ export default function ChartColumnNegative() {
     stroke: { show: false },
     yaxis: {
       labels: {
-        formatter(y) {
-          return `${y.toFixed(0)}%`;
-        }
+        formatter: (y) => `${y.toFixed(0)}%`
       }
     },
     xaxis: {
@@ -70,11 +68,10 @@ export default function ChartColumnNegative() {
     plotOptions: {
       bar: {
         columnWidth: '58%',
-        borderRadius: 4,
         colors: {
           ranges: [
-            { from: -100, to: -46, color: theme.palette.warning.main },
-            { from: -45, to: 0, color: theme.palette.error.main }
+            { from: -100, to: -46, color: theme.palette.chart.yellow[0] },
+            { from: -45, to: 0, color: theme.palette.chart.red[0] }
           ]
         }
       }

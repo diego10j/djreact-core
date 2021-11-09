@@ -1,11 +1,10 @@
-import faker from 'faker';
 import MapGL from 'react-map-gl';
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import phoneFill from '@iconify/icons-eva/phone-fill';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box, Typography } from '@mui/material';
 //
 import { MapControlPopup, MapControlMarker, MapControlScale, MapControlNavigation } from '../../map';
 import { mapConfig } from '../../../config';
@@ -13,16 +12,16 @@ import { varFadeIn, MotionInView } from '../../animate';
 
 // ----------------------------------------------------------------------
 
-export const ADDRESS = [
+export const MOCK_ADDRESS = [
   {
     latlng: [33, 65],
     address: '720 Devonshire Ave. Fort Mill, SC 29708',
-    phoneNumber: faker.phone.phoneNumberFormat()
+    phoneNumber: '905-659-7545'
   },
   {
     latlng: [-12.5, 18.5],
     address: '8559 Valley Court Owosso, MI 48867',
-    phoneNumber: faker.phone.phoneNumberFormat()
+    phoneNumber: '1-350-356-2625'
   }
 ];
 
@@ -63,7 +62,7 @@ export default function ContactMap() {
           <MapControlScale />
           <MapControlNavigation />
 
-          {ADDRESS.map((country) => (
+          {MOCK_ADDRESS.map((country) => (
             <MapControlMarker
               key={country.latlng}
               latitude={country.latlng[0]}

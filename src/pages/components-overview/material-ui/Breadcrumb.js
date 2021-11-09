@@ -1,9 +1,9 @@
 // material
-import HomeIcon from '@material-ui/icons/Home';
-import GrainIcon from '@material-ui/icons/Grain';
-import WhatshotIcon from '@material-ui/icons/Whatshot';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Link, Grid, Container, Typography, Breadcrumbs } from '@material-ui/core';
+import HomeIcon from '@mui/icons-material/Home';
+import GrainIcon from '@mui/icons-material/Grain';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import { styled } from '@mui/material/styles';
+import { Box, Link, Grid, Container, Typography, Breadcrumbs } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -35,7 +35,7 @@ export default function BreadcrumbComponent() {
           <HeaderBreadcrumbs
             heading="Breadcrumbs"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Breadcrumbs' }]}
-            moreLink="https://next.material-ui.com/components/breadcrumbs"
+            moreLink="https://mui.com/components/breadcrumbs"
           />
         </Container>
       </Box>

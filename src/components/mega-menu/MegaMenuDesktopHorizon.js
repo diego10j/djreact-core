@@ -4,7 +4,7 @@ import { NavLink as RouterLink } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import chevronDownFill from '@iconify/icons-eva/chevron-down-fill';
 // material
-import { Box, Link, Paper, Typography, Divider, Stack } from '@material-ui/core';
+import { Box, Link, Paper, Typography, Divider, Stack } from '@mui/material';
 //
 import MenuHotProducts from './MenuHotProducts';
 import MegaMenuCarousel from './MegaMenuCarousel';
@@ -16,9 +16,9 @@ const ITEM_SPACING = 4;
 const ITEM_HEIGHT = 64;
 const ITEM_ON_ROW = {
   width: 'calc((100%/3) - 16px)',
-  '&:nth-child(3n+1)': { order: 1 },
-  '&:nth-child(3n+2)': { order: 2 },
-  '&:nth-child(3n)': { order: 3 }
+  '&:nth-of-type(3n+1)': { order: 1 },
+  '&:nth-of-type(3n+2)': { order: 2 },
+  '&:nth-of-type(3n)': { order: 3 }
 };
 
 // ----------------------------------------------------------------------

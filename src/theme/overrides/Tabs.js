@@ -12,7 +12,7 @@ export default function Tabs(theme) {
           '&.Mui-selected': {
             color: theme.palette.text.primary
           },
-          '&:not(:last-child)': {
+          '&:not(:last-of-type)': {
             marginRight: theme.spacing(5)
           },
           '@media (min-width: 600px)': {
@@ -21,8 +21,8 @@ export default function Tabs(theme) {
         },
         labelIcon: {
           minHeight: 48,
-          paddingTop: 0,
-          '& > .MuiTab-wrapper > *:first-of-type': {
+          flexDirection: 'row',
+          '& > *:first-of-type': {
             marginBottom: 0,
             marginRight: theme.spacing(1)
           }

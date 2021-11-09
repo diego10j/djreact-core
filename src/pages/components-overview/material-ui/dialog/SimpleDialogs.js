@@ -1,19 +1,19 @@
 import { useState } from 'react';
 // material
-import AddIcon from '@material-ui/icons/Add';
-import PersonIcon from '@material-ui/icons/Person';
+import AddIcon from '@mui/icons-material/Add';
+import PersonIcon from '@mui/icons-material/Person';
 import {
   Box,
   List,
   Avatar,
   Button,
   Dialog,
-  ListItem,
   Typography,
   DialogTitle,
   ListItemText,
-  ListItemAvatar
-} from '@material-ui/core';
+  ListItemAvatar,
+  ListItemButton
+} from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ export default function SimpleDialog() {
         <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
         <List>
           {emails.map((email) => (
-            <ListItem button onClick={() => handleClose(email)} key={email}>
+            <ListItemButton onClick={() => handleClose(email)} key={email}>
               <ListItemAvatar>
                 <Avatar
                   sx={{
@@ -58,17 +58,17 @@ export default function SimpleDialog() {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText primary={email} />
-            </ListItem>
+            </ListItemButton>
           ))}
 
-          <ListItem autoFocus button onClick={() => handleClose('addAccount')}>
+          <ListItemButton autoFocus onClick={() => handleClose('addAccount')}>
             <ListItemAvatar>
               <Avatar>
                 <AddIcon />
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary="Add account" />
-          </ListItem>
+          </ListItemButton>
         </List>
       </Dialog>
     </Box>

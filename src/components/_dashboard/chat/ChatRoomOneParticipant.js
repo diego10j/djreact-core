@@ -6,8 +6,8 @@ import emailFill from '@iconify/icons-eva/email-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Avatar, Button, Divider, Collapse, Typography, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Avatar, Button, Divider, Collapse, Typography, Stack } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

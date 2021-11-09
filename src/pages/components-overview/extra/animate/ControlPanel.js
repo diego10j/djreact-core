@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // material
-import { Box, Radio, Paper, Typography, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { Box, Radio, Paper, Typography, RadioGroup, FormControlLabel } from '@mui/material';
 // components
 import Scrollbar from '../../../../components/Scrollbar';
 

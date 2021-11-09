@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 // material
-import { Fab, Button, IconButton } from '@material-ui/core';
+import { Fab, Button, IconButton } from '@mui/material';
 // components
 import { ButtonAnimate } from '../../../../../components/animate';
 

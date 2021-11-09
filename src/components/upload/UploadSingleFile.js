@@ -2,8 +2,8 @@ import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Paper, Box, Typography } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Paper, Box, Typography } from '@mui/material';
 // utils
 import { fData } from '../../utils/formatNumber';
 //
@@ -100,7 +100,7 @@ export default function UploadSingleFile({ error, file, sx, ...other }) {
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Drop files here or click&nbsp;
-            <Typography variant="body2" component="span" sx={{ color: 'primary.main' }}>
+            <Typography variant="body2" component="span" sx={{ color: 'primary.main', textDecoration: 'underline' }}>
               browse
             </Typography>
             &nbsp;thorough your machine

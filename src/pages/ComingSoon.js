@@ -4,14 +4,14 @@ import facebookFill from '@iconify/icons-eva/facebook-fill';
 import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Button, Tooltip, Container, Typography, InputAdornment, OutlinedInput } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Button, Tooltip, Container, Typography, InputAdornment, OutlinedInput } from '@mui/material';
 // hooks
 import useCountdown from '../hooks/useCountdown';
 // components
 import { MIconButton } from '../components/@material-extend';
 import Page from '../components/Page';
-import { MaintenanceIllustration } from '../assets';
+import { ComingSoonIllustration } from '../assets';
 
 // ----------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ export default function ComingSoon() {
           </Typography>
           <Typography sx={{ color: 'text.secondary' }}>We are currently working hard on this page!</Typography>
 
-          <MaintenanceIllustration sx={{ my: 10, height: 240 }} />
+          <ComingSoonIllustration sx={{ my: 10, height: 240 }} />
 
           <CountdownStyle>
             <div>

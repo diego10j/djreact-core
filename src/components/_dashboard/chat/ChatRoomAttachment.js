@@ -4,8 +4,8 @@ import { uniq, flatten } from 'lodash';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Button, Divider, Collapse, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Button, Divider, Collapse, Typography } from '@mui/material';
 // utils
 import { fDateTime } from '../../../utils/formatTime';
 import { getFileFullName, getFileThumb } from '../../../utils/getFileFormat';
@@ -40,9 +40,7 @@ const FileThumbStyle = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   color: theme.palette.text.secondary,
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.grey[500_16],
-  '& img': { width: '100%', height: '100%' },
-  '& svg': { width: 24, height: 24 }
+  backgroundColor: theme.palette.grey[500_16]
 }));
 
 const CollapseButtonStyle = styled(Button)(({ theme }) => ({

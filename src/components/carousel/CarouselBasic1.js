@@ -1,25 +1,22 @@
-import faker from 'faker';
 import Slider from 'react-slick';
 import PropTypes from 'prop-types';
 import { useState, useRef } from 'react';
 // material
-import { useTheme } from '@material-ui/core/styles';
-import { Box, Card } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { Box, Card } from '@mui/material';
 // utils
-import { mockImgFeed } from '../../utils/mockImages';
+import mockData from '../../utils/mock-data';
 //
 import { CarouselControlsArrowsIndex } from './controls';
 
 // ----------------------------------------------------------------------
 
-const CAROUSELS = [...Array(5)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    title: faker.name.title(),
-    description: faker.lorem.paragraphs(),
-    image: mockImgFeed(setIndex)
-  };
-});
+const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  title: mockData.text.title(index),
+  image: mockData.image.feed(index),
+  description: mockData.text.description(index)
+}));
 
 CarouselItem.propTypes = {
   item: PropTypes.object
@@ -34,10 +31,9 @@ function CarouselItem({ item }) {
 export default function CarouselBasic1() {
   const theme = useTheme();
   const carouselRef = useRef();
-  const [currentIndex, setCurrentIndex] = useState(theme.direction === 'rtl' ? CAROUSELS.length - 1 : 0);
+  const [currentIndex, setCurrentIndex] = useState(theme.direction === 'rtl' ? MOCK_CAROUSELS.length - 1 : 0);
 
   const settings = {
-    speed: 500,
     dots: false,
     arrows: false,
     autoplay: true,
@@ -58,14 +54,14 @@ export default function CarouselBasic1() {
   return (
     <Card>
       <Slider ref={carouselRef} {...settings}>
-        {CAROUSELS.map((item) => (
+        {MOCK_CAROUSELS.map((item) => (
           <CarouselItem key={item.title} item={item} />
         ))}
       </Slider>
 
       <CarouselControlsArrowsIndex
         index={currentIndex}
-        total={CAROUSELS.length}
+        total={MOCK_CAROUSELS.length}
         onNext={handleNext}
         onPrevious={handlePrevious}
       />

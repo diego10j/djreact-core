@@ -4,8 +4,8 @@ import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Card, IconButton, Typography, CardContent } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Grid, Card, IconButton, Typography, CardContent } from '@mui/material';
 // utils
 import { fDate } from '../../../../utils/formatTime';
 import LightboxModal from '../../../LightboxModal';

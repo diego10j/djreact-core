@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import closeFill from '@iconify/icons-eva/close-fill';
 // material
-import { Box, Backdrop, Paper, Divider, Typography, Stack } from '@material-ui/core';
+import { Box, Backdrop, Paper, Divider, Typography, Stack } from '@mui/material';
 //
 import Scrollbar from '../Scrollbar';
 import { MIconButton } from '../@material-extend';
@@ -16,6 +17,14 @@ import SettingFullscreen from './SettingFullscreen';
 const DRAWER_WIDTH = 260;
 
 export default function Settings({ openOpciones, setOpenOpciones }) {
+  useEffect(() => {
+    if (openOpciones) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [openOpciones]);
+
   const handleClose = () => {
     setOpenOpciones(false);
   };
@@ -23,13 +32,14 @@ export default function Settings({ openOpciones, setOpenOpciones }) {
   return (
     <>
       <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={openOpciones} onClick={handleClose} />
+
       <Box
         sx={{
           top: 12,
           bottom: 12,
           right: 0,
           position: 'fixed',
-          zIndex: (theme) => theme.zIndex.drawer + 2,
+          zIndex: 2001,
           ...(openOpciones && { right: 12 })
         }}
       >
@@ -59,7 +69,7 @@ export default function Settings({ openOpciones, setOpenOpciones }) {
               </Stack>
 
               <Stack spacing={1.5}>
-                <Typography variant="subtitle2">DIrección</Typography>
+                <Typography variant="subtitle2">Dirección</Typography>
                 <SettingDirection />
               </Stack>
 
@@ -67,7 +77,6 @@ export default function Settings({ openOpciones, setOpenOpciones }) {
                 <Typography variant="subtitle2">Color</Typography>
                 <SettingColor />
               </Stack>
-
               <SettingFullscreen />
             </Stack>
           </Scrollbar>

@@ -1,6 +1,6 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Typography, Button, Card, CardContent } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Typography, Button, Card, CardContent } from '@mui/material';
 //
 import { MotivationIllustration } from '../../../assets';
 
@@ -11,12 +11,12 @@ const RootStyle = styled(Card)(({ theme }) => ({
   textAlign: 'center',
   backgroundColor: theme.palette.primary.lighter,
   [theme.breakpoints.up('md')]: {
+    height: '100%',
     display: 'flex',
     textAlign: 'left',
     alignItems: 'center',
     justifyContent: 'space-between'
-  },
-  [theme.breakpoints.up('xl')]: { height: 320 }
+  }
 }));
 
 // ----------------------------------------------------------------------
@@ -45,8 +45,8 @@ export default function EcommerceWelcome() {
 
       <MotivationIllustration
         sx={{
-          p: 2,
-          height: 280,
+          p: 3,
+          width: 360,
           margin: { xs: 'auto', md: 'inherit' }
         }}
       />

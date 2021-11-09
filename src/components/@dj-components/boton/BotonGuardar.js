@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // material
 import { Icon } from '@iconify/react';
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton } from '@mui/lab';
 // iconos
 import saveOutline from '@iconify/icons-eva/save-outline';
 

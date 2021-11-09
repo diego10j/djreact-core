@@ -3,18 +3,8 @@ import { useSnackbar } from 'notistack';
 import { useCallback } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import {
-  Box,
-  Grid,
-  Card,
-  Stack,
-  Switch,
-  TextField,
-  FormControlLabel,
-  Typography,
-  FormHelperText
-} from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Box, Grid, Card, Stack, Switch, TextField, FormControlLabel, Typography, FormHelperText } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '../../../../hooks/useAuth';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';

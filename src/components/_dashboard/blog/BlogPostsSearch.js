@@ -7,8 +7,8 @@ import match from 'autosuggest-highlight/match';
 import { Link as RouterLink } from 'react-router-dom';
 import searchFill from '@iconify/icons-eva/search-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Link, TextField, Typography, Autocomplete, InputAdornment } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Link, TextField, Typography, Autocomplete, InputAdornment } from '@mui/material';
 // utils
 import axios from '../../../utils/axios';
 // routes
@@ -39,7 +39,7 @@ const RootStyle = styled('div')(({ theme }) => ({
     }
   },
   '& .MuiAutocomplete-option': {
-    '&:not(:last-child)': {
+    '&:not(:last-of-type)': {
       borderBottom: `solid 1px ${theme.palette.divider}`
     }
   }

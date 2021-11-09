@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { getColumnasR } from '../../../redux/slices/tabla';
 // components
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { experimentalStyled as styled } from '@mui/material/styles';
 import TablaReact from './TablaReact';
 import ToolbarTabla from './ToolbarTabla';
 import TablaFormulario from './TablaFormulario';
 import ConfigurarTabla from './ConfigurarTabla';
 import { AvatarLectura, CheckLectura, ComboLectura } from './FilaLectura';
+import DialogoConfirmar from '../dialogo/DialogoConfirmar';
 // hooks
 import useMensaje from '../../../hooks/useMensaje';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -164,6 +165,8 @@ const Tabla = forwardRef(
       showBotonEliminar,
       condiciones
     });
+
+    const diaConfElimina = useRef(); // DialogoConfirmar Eliminar
 
     /**
      * Sirve para las pantallas genéricas, cuando cambia la configuración de componentes Tabla
@@ -816,7 +819,7 @@ const Tabla = forwardRef(
       return false;
     };
 
-    const eliminar = async () => {
+    const confirmarEliminar = async () => {
       if (configuracion.lectura === false) {
         if (isColumnas && isDefined(filaSeleccionada)) {
           if (filaSeleccionada?.insertada) {
@@ -841,13 +844,20 @@ const Tabla = forwardRef(
               setIndiceTabla(undefined);
             } else {
               setCargando(false);
+              diaConfElimina.current.cerrar();
               showError('El registro tiene relación con otras tablas del sistema', 'No se puede Eliminar');
               return false;
             }
             setCargando(false);
+            diaConfElimina.current.cerrar();
           }
         }
       }
+      return true;
+    };
+
+    const eliminar = async () => {
+      diaConfElimina.current.abrir();
       return true;
     };
 
@@ -1346,6 +1356,12 @@ const Tabla = forwardRef(
           setOpen={setAbrirConfigurar}
           setColumns={setColumns}
           getServicioConfigurarTabla={getServicioConfigurarTabla}
+        />
+        <DialogoConfirmar
+          ref={diaConfElimina}
+          mensaje="Está seguro de que desea eliminar el registro seleccionado ?"
+          onAceptar={confirmarEliminar}
+          loading={cargando}
         />
       </StyledDiv>
     );

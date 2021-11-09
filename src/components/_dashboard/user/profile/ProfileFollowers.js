@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import pinFill from '@iconify/icons-eva/pin-fill';
 import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
 // material
-import { Box, Grid, Card, Button, Avatar, Typography } from '@material-ui/core';
+import { Box, Grid, Card, Button, Avatar, Typography } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

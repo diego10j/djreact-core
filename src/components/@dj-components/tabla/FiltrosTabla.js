@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, useTheme, experimentalStyled as styled, alpha } from '@material-ui/core/styles';
+import { useTheme, experimentalStyled as styled, alpha } from '@mui/material/styles';
+import { withStyles } from '@mui/styles';
 // components
 import {
   Autocomplete,
@@ -12,16 +13,16 @@ import {
   TextField,
   Checkbox,
   Tooltip
-} from '@material-ui/core';
-import { autocompleteClasses } from '@material-ui/core/Autocomplete';
+} from '@mui/material';
+import { autocompleteClasses } from '@mui/material/Autocomplete';
 // icons
-import FilterAltOutlinedIcon from '@material-ui/icons/FilterAltOutlined';
-import CloseIcon from '@material-ui/icons/Close';
-import DoneIcon from '@material-ui/icons/Done';
-import ClearIcon from '@material-ui/icons/Clear';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
-import IndeterminateCheckBoxOutlinedIcon from '@material-ui/icons/IndeterminateCheckBoxOutlined';
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+import CloseIcon from '@mui/icons-material/Close';
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from '@mui/icons-material/Clear';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
 
 const StyledTextField = withStyles((theme) => ({
   root: {

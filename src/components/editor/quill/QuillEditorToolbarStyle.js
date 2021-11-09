@@ -1,4 +1,4 @@
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +18,9 @@ const QuillEditorToolbarStyle = styled('div')(({ theme }) => {
       {
         stroke: theme.palette.primary.main
       },
-    '& .ql-stroke': { stroke: theme.palette.text.primary },
+    '& .ql-stroke': {
+      stroke: theme.palette.text.primary
+    },
     '& .ql-fill, .ql-stroke.ql-fill': {
       fill: theme.palette.text.primary
     },
@@ -29,7 +31,7 @@ const QuillEditorToolbarStyle = styled('div')(({ theme }) => {
       border: 'none',
       borderBottom: `solid 1px ${theme.palette.grey[500_32]}`,
       '& .ql-formats': {
-        '&:not(:last-child)': {
+        '&:not(:last-of-type)': {
           marginRight: theme.spacing(2)
         }
       },
@@ -44,14 +46,25 @@ const QuillEditorToolbarStyle = styled('div')(({ theme }) => {
         color: theme.palette.text.primary
       },
 
+      // Icon svg
+      '& button svg, span svg': {
+        width: 20,
+        height: 20
+      },
+
       // Select
       '& .ql-picker-label': {
         ...theme.typography.subtitle2,
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
+        '& .ql-stroke': {
+          stroke: theme.palette.text.primary
+        }
       },
       '& .ql-picker-label svg': {
-        right: isRTL && '0 !important',
-        left: isRTL && 'auto !important'
+        ...(isRTL && {
+          right: '0 !important',
+          left: 'auto !important'
+        })
       },
       '& .ql-color,& .ql-background,& .ql-align ': {
         '& .ql-picker-label': {

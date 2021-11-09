@@ -1,8 +1,8 @@
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Card, CardHeader } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Card, CardHeader } from '@mui/material';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
@@ -37,7 +37,12 @@ export default function AnalyticsCurrentVisits() {
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
-    colors: [theme.palette.primary.main, theme.palette.info.main, theme.palette.warning.main, theme.palette.error.main],
+    colors: [
+      theme.palette.primary.main,
+      theme.palette.chart.blue[0],
+      theme.palette.chart.violet[0],
+      theme.palette.chart.yellow[0]
+    ],
     labels: ['America', 'Asia', 'Europe', 'Africa'],
     stroke: { colors: [theme.palette.background.paper] },
     legend: { floating: true, horizontalAlign: 'center' },
@@ -47,7 +52,7 @@ export default function AnalyticsCurrentVisits() {
       y: {
         formatter: (seriesName) => fNumber(seriesName),
         title: {
-          formatter: (seriesName) => `#${seriesName}`
+          formatter: (seriesName) => `${seriesName}`
         }
       }
     },

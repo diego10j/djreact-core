@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 // material
-import { Container, Stack, Skeleton, Grid } from '@material-ui/core';
+import { Container, Stack, Skeleton, Grid } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getBoard, persistColumn, persistCard } from '../../redux/slices/kanban';

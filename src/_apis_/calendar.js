@@ -1,6 +1,8 @@
-import faker from 'faker';
+import { v4 as uuidv4 } from 'uuid';
 import { add, set, sub } from 'date-fns';
 import { map, assign, reject } from 'lodash';
+// utils
+import mockData from '../utils/mock-data';
 //
 import mock from './mock';
 
@@ -16,7 +18,7 @@ const COLOR_OPTIONS = [
   '#7A0C2E' // theme.palette.error.darker
 ];
 
-const setColorTime = (index) => {
+const setColorAndTime = (index) => {
   if (index === 0)
     return {
       textColor: COLOR_OPTIONS[0],
@@ -73,11 +75,11 @@ const setColorTime = (index) => {
 };
 
 let events = [...Array(9)].map((_, index) => ({
-  id: faker.datatype.uuid(),
-  title: faker.name.title(),
-  description: faker.lorem.sentences(),
-  allDay: faker.datatype.boolean(),
-  ...setColorTime(index)
+  id: uuidv4(),
+  title: mockData.text.title(index),
+  description: mockData.text.description(index),
+  allDay: mockData.boolean(index),
+  ...setColorAndTime(index)
 }));
 
 // ----------------------------------------------------------------------
@@ -90,7 +92,7 @@ mock.onPost('/api/calendar/events/new').reply((request) => {
   try {
     const { title, description, textColor, allDay, end, start } = JSON.parse(request.data);
     const event = {
-      id: faker.datatype.uuid(),
+      id: uuidv4(),
       title,
       description,
       textColor,

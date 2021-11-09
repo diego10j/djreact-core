@@ -1,18 +1,18 @@
 import { useState } from 'react';
 // material
-import SendIcon from '@material-ui/icons/Send';
-import WorkIcon from '@material-ui/icons/Work';
-import WifiIcon from '@material-ui/icons/Wifi';
-import InboxIcon from '@material-ui/icons/Inbox';
-import ImageIcon from '@material-ui/icons/Image';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import CommentIcon from '@material-ui/icons/Comment';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
-import BluetoothIcon from '@material-ui/icons/Bluetooth';
-import BeachAccessIcon from '@material-ui/icons/BeachAccess';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import SendIcon from '@mui/icons-material/Send';
+import WorkIcon from '@mui/icons-material/Work';
+import WifiIcon from '@mui/icons-material/Wifi';
+import InboxIcon from '@mui/icons-material/Inbox';
+import ImageIcon from '@mui/icons-material/Image';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import CommentIcon from '@mui/icons-material/Comment';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import StarBorder from '@mui/icons-material/StarBorder';
+import BluetoothIcon from '@mui/icons-material/Bluetooth';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Grid,
@@ -28,10 +28,11 @@ import {
   IconButton,
   ListItemText,
   ListItemIcon,
+  ListItemButton,
   ListSubheader,
   ListItemAvatar,
   ListItemSecondaryAction
-} from '@material-ui/core';
+} from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -55,7 +56,7 @@ const ListWrapperStyle = styled(Paper)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
+  return <ListItemButton component="a" {...props} />;
 }
 
 export default function ListsComponent() {
@@ -110,7 +111,7 @@ export default function ListsComponent() {
           <HeaderBreadcrumbs
             heading="Lists"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Lists' }]}
-            moreLink="https://next.material-ui.com/components/lists"
+            moreLink="https://mui.com/components/lists"
           />
         </Container>
       </Box>
@@ -121,26 +122,26 @@ export default function ListsComponent() {
             <Block title="Simple">
               <ListWrapperStyle>
                 <List component="nav" aria-label="main mailbox folders">
-                  <ListItem button>
+                  <ListItemButton>
                     <ListItemIcon>
                       <InboxIcon />
                     </ListItemIcon>
                     <ListItemText primary="Inbox" />
-                  </ListItem>
-                  <ListItem button>
+                  </ListItemButton>
+                  <ListItemButton>
                     <ListItemIcon>
                       <DraftsIcon />
                     </ListItemIcon>
                     <ListItemText primary="Drafts" />
-                  </ListItem>
+                  </ListItemButton>
                 </List>
 
                 <Divider />
 
                 <List component="nav" aria-label="secondary mailbox folders">
-                  <ListItem button>
+                  <ListItemButton>
                     <ListItemText primary="Trash" />
-                  </ListItem>
+                  </ListItemButton>
                   <ListItemLink href="#simple-list">
                     <ListItemText primary="Spam" />
                   </ListItemLink>
@@ -161,33 +162,33 @@ export default function ListsComponent() {
                     </ListSubheader>
                   }
                 >
-                  <ListItem button>
+                  <ListItemButton>
                     <ListItemIcon>
                       <SendIcon />
                     </ListItemIcon>
                     <ListItemText primary="Sent mail" />
-                  </ListItem>
-                  <ListItem button>
+                  </ListItemButton>
+                  <ListItemButton>
                     <ListItemIcon>
                       <DraftsIcon />
                     </ListItemIcon>
                     <ListItemText primary="Drafts" />
-                  </ListItem>
-                  <ListItem button onClick={handleClick}>
+                  </ListItemButton>
+                  <ListItemButton onClick={handleClick}>
                     <ListItemIcon>
                       <InboxIcon />
                     </ListItemIcon>
                     <ListItemText primary="Inbox" />
                     {open ? <ExpandLess /> : <ExpandMore />}
-                  </ListItem>
+                  </ListItemButton>
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                      <ListItem button>
+                      <ListItemButton>
                         <ListItemIcon>
                           <StarBorder />
                         </ListItemIcon>
                         <ListItemText primary="Starred" />
-                      </ListItem>
+                      </ListItemButton>
                     </List>
                   </Collapse>
                 </List>
@@ -232,29 +233,29 @@ export default function ListsComponent() {
             <Block title="Selected">
               <ListWrapperStyle>
                 <List component="nav" aria-label="main mailbox folders">
-                  <ListItem button selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
+                  <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
                     <ListItemIcon>
                       <InboxIcon />
                     </ListItemIcon>
                     <ListItemText primary="Inbox" />
-                  </ListItem>
-                  <ListItem button selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)}>
+                  </ListItemButton>
+                  <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)}>
                     <ListItemIcon>
                       <DraftsIcon />
                     </ListItemIcon>
                     <ListItemText primary="Drafts" />
-                  </ListItem>
+                  </ListItemButton>
                 </List>
 
                 <Divider />
 
                 <List component="nav" aria-label="secondary mailbox folder">
-                  <ListItem button selected={selectedIndex === 2} onClick={(event) => handleListItemClick(event, 2)}>
+                  <ListItemButton selected={selectedIndex === 2} onClick={(event) => handleListItemClick(event, 2)}>
                     <ListItemText primary="Trash" />
-                  </ListItem>
-                  <ListItem button selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)}>
+                  </ListItemButton>
+                  <ListItemButton selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)}>
                     <ListItemText primary="Spam" />
-                  </ListItem>
+                  </ListItemButton>
                 </List>
               </ListWrapperStyle>
             </Block>
@@ -267,7 +268,7 @@ export default function ListsComponent() {
                   {[0, 1, 2, 3].map((value) => {
                     const labelId = `checkbox-list-label-${value}`;
                     return (
-                      <ListItem key={value} role={undefined} dense button onClick={handleCheck(value)}>
+                      <ListItemButton key={value} role={undefined} dense onClick={handleCheck(value)}>
                         <ListItemIcon>
                           <Checkbox
                             edge="start"
@@ -283,7 +284,7 @@ export default function ListsComponent() {
                             <CommentIcon />
                           </IconButton>
                         </ListItemSecondaryAction>
-                      </ListItem>
+                      </ListItemButton>
                     );
                   })}
                 </List>

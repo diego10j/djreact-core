@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { formatDistanceToNowStrict } from 'date-fns';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Avatar, Box, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Avatar, Box, Typography } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -26,12 +26,14 @@ const InfoStyle = styled(Typography)(({ theme }) => ({
 }));
 
 const MessageImgStyle = styled('img')(({ theme }) => ({
-  height: 200,
-  minWidth: 296,
   width: '100%',
   cursor: 'pointer',
   objectFit: 'cover',
-  borderRadius: theme.shape.borderRadius
+  borderRadius: theme.shape.borderRadius,
+  [theme.breakpoints.up('md')]: {
+    height: 200,
+    minWidth: 296
+  }
 }));
 
 // ----------------------------------------------------------------------
@@ -42,19 +44,19 @@ ChatMessageItem.propTypes = {
   onOpenLightbox: PropTypes.func
 };
 
-export default function ChatMessageItem({ message, conversation, onOpenLightbox, ...other }) {
+export default function ChatMessageItem({ message, conversation, onOpenLightbox }) {
   const sender = conversation.participants.find((participant) => participant.id === message.senderId);
   const senderDetails =
     message.senderId === '8864c717-587d-472a-929a-8e5f298024da-0'
       ? { type: 'me' }
-      : { avatar: sender.avatar, name: sender.name };
+      : { avatar: sender?.avatar, name: sender?.name };
 
   const isMe = senderDetails.type === 'me';
   const isImage = message.contentType === 'image';
   const firstName = senderDetails.name && senderDetails.name.split(' ')[0];
 
   return (
-    <RootStyle {...other}>
+    <RootStyle>
       <Box
         sx={{
           display: 'flex',
@@ -64,11 +66,11 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox,
         }}
       >
         {senderDetails.type !== 'me' && (
-          <Avatar alt={senderDetails.name} src={senderDetails.avatar} sx={{ width: 32, height: 32 }} />
+          <Avatar alt={senderDetails.name} src={senderDetails.avatar} sx={{ width: 32, height: 32, mr: 2 }} />
         )}
 
-        <Box sx={{ ml: 2 }}>
-          <InfoStyle noWrap variant="caption" sx={{ ...(isMe && { justifyContent: 'flex-end' }) }}>
+        <div>
+          <InfoStyle variant="caption" sx={{ ...(isMe && { justifyContent: 'flex-end' }) }}>
             {!isMe && `${firstName},`}&nbsp;
             {formatDistanceToNowStrict(new Date(message.createdAt), {
               addSuffix: true
@@ -77,10 +79,8 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox,
 
           <ContentStyle
             sx={{
-              ...(isMe && {
-                color: 'grey.800',
-                bgcolor: 'primary.lighter'
-              })
+              ...(isMe && { color: 'grey.800', bgcolor: 'primary.lighter' }),
+              ...(isImage && { p: 0 })
             }}
           >
             {isImage ? (
@@ -89,7 +89,7 @@ export default function ChatMessageItem({ message, conversation, onOpenLightbox,
               <Typography variant="body2">{message.body}</Typography>
             )}
           </ContentStyle>
-        </Box>
+        </div>
       </Box>
     </RootStyle>
   );

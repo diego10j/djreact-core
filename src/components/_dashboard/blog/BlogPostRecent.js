@@ -6,8 +6,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import shareFill from '@iconify/icons-eva/share-fill';
 import messageCircleFill from '@iconify/icons-eva/message-circle-fill';
 // material
-import { Box, Grid, Link, Card, Avatar, Typography, CardContent } from '@material-ui/core';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { Box, Grid, Link, Card, Avatar, Typography, CardContent } from '@mui/material';
+import { styled } from '@mui/material/styles';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // utils

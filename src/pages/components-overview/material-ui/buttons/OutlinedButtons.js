@@ -1,9 +1,7 @@
-import AlarmIcon from '@material-ui/icons/Alarm';
+import AlarmIcon from '@mui/icons-material/Alarm';
 // material
-import { Grid, Button } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
-// components
-import { MButton } from '../../../../components/@material-extend';
+import { Grid, Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 //
 import { Block } from '../../Block';
 
@@ -38,36 +36,36 @@ export default function OutlinedButtons() {
 
       <Grid item xs={12} md={6}>
         <Block title="Adding Colors" sx={style}>
-          <MButton variant="outlined" color="inherit">
+          <Button variant="outlined" color="inherit">
             Default
-          </MButton>
-          <MButton variant="outlined">Primary</MButton>
-          <MButton variant="outlined" color="secondary">
+          </Button>
+          <Button variant="outlined">Primary</Button>
+          <Button variant="outlined" color="secondary">
             Secondary
-          </MButton>
-          <MButton variant="outlined" color="info">
+          </Button>
+          <Button variant="outlined" color="info">
             Info
-          </MButton>
-          <MButton variant="outlined" color="success">
+          </Button>
+          <Button variant="outlined" color="success">
             Success
-          </MButton>
-          <MButton variant="outlined" color="warning">
+          </Button>
+          <Button variant="outlined" color="warning">
             Warning
-          </MButton>
-          <MButton variant="outlined" color="error">
+          </Button>
+          <Button variant="outlined" color="error">
             Error
-          </MButton>
+          </Button>
         </Block>
       </Grid>
 
       <Grid item xs={12} md={6}>
         <Block title="With Icon & Loading" sx={style}>
-          <MButton variant="outlined" color="error" startIcon={<AlarmIcon />}>
+          <Button variant="outlined" color="error" startIcon={<AlarmIcon />}>
             Icon Left
-          </MButton>
-          <MButton variant="outlined" color="error" endIcon={<AlarmIcon />}>
+          </Button>
+          <Button variant="outlined" color="error" endIcon={<AlarmIcon />}>
             Icon Right
-          </MButton>
+          </Button>
           <LoadingButton loading variant="outlined">
             Submit
           </LoadingButton>
@@ -82,15 +80,15 @@ export default function OutlinedButtons() {
 
       <Grid item xs={12} md={6}>
         <Block title="Size" sx={style}>
-          <MButton variant="outlined" color="info" size="small">
+          <Button variant="outlined" color="info" size="small">
             Small
-          </MButton>
-          <MButton variant="outlined" color="info">
+          </Button>
+          <Button variant="outlined" color="info">
             Medium
-          </MButton>
-          <MButton variant="outlined" color="info" size="large">
+          </Button>
+          <Button variant="outlined" color="info" size="large">
             Large
-          </MButton>
+          </Button>
         </Block>
       </Grid>
     </Grid>

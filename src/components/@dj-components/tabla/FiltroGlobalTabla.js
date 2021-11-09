@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/styles';
 // components
-import { InputAdornment, TextField } from '@material-ui/core';
+import { InputAdornment, TextField } from '@mui/material';
 // icons
-import SearchIcon from '@material-ui/icons/Search';
-import CloseIcon from '@material-ui/icons/Close';
+import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 
 const StyledTextField = withStyles((theme) => ({
   root: {
@@ -17,6 +17,7 @@ const StyledTextField = withStyles((theme) => ({
     paddingTop: 2,
     '& .MuiInputBase-root': {
       height: '2em',
+      width: '20em',
       padding: 0,
       paddingLeft: 5,
       fontSize: '0.875rem',

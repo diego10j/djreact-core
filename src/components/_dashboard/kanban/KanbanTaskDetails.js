@@ -9,8 +9,8 @@ import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import moreHorizontalFill from '@iconify/icons-eva/more-horizontal-fill';
 // material
-import { MobileDateRangePicker } from '@material-ui/lab';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { MobileDateRangePicker } from '@mui/lab';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Stack,
@@ -23,7 +23,7 @@ import {
   TextField,
   Typography,
   OutlinedInput
-} from '@material-ui/core';
+} from '@mui/material';
 //
 import Scrollbar from '../../Scrollbar';
 import { MIconButton, MHidden } from '../../@material-extend';

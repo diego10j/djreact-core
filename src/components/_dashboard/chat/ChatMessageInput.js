@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
@@ -7,8 +7,8 @@ import roundSend from '@iconify/icons-ic/round-send';
 import attach2Fill from '@iconify/icons-eva/attach-2-fill';
 import roundAddPhotoAlternate from '@iconify/icons-ic/round-add-photo-alternate';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Input, Divider, IconButton, InputAdornment, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Input, Divider, IconButton, InputAdornment, Stack } from '@mui/material';
 //
 import EmojiPicker from '../../EmojiPicker';
 
@@ -43,7 +43,7 @@ export default function ChatMessageInput({ disabled, conversationId, onSend, ...
   };
 
   const handleKeyUp = (event) => {
-    if (event.key === 'Enter' || event.keyCode === 13) {
+    if (event.key === 'Enter') {
       handleSend();
     }
   };
@@ -55,7 +55,7 @@ export default function ChatMessageInput({ disabled, conversationId, onSend, ...
     if (onSend) {
       onSend({
         conversationId,
-        messageId: faker.datatype.uuid(),
+        messageId: uuidv4(),
         message,
         contentType: 'text',
         attachments: [],

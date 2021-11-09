@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('span')(({ theme, styleProps }) => {
-  const { size, status } = styleProps;
+const RootStyle = styled('span')(({ theme, ownerState }) => {
+  const { status, size } = ownerState;
 
   return {
+    width: 10,
+    height: 10,
     display: 'flex',
     borderRadius: '50%',
     alignItems: 'center',
@@ -18,13 +20,11 @@ const RootStyle = styled('span')(({ theme, styleProps }) => {
       backgroundColor: theme.palette.common.white
     },
 
-    ...(size === 'small'
-      ? { height: theme.spacing(1), width: theme.spacing(1) }
-      : { height: theme.spacing(1.25), width: theme.spacing(1.25) }),
+    ...(size === 'small' && { width: 8, height: 8 }),
 
-    ...(status === 'offline' && {
-      backgroundColor: 'transparent'
-    }),
+    ...(size === 'large' && { width: 12, height: 12 }),
+
+    ...(status === 'offline' && { backgroundColor: 'transparent' }),
 
     ...(status === 'away' && {
       backgroundColor: theme.palette.warning.main,
@@ -66,11 +66,11 @@ const RootStyle = styled('span')(({ theme, styleProps }) => {
 
 // ----------------------------------------------------------------------
 
-export default function BadgeStatus({ size = 'medium', status = 'offline', ...other }) {
-  return <RootStyle styleProps={{ status, size }} {...other} />;
-}
-
 BadgeStatus.propTypes = {
-  size: PropTypes.oneOf(['small', 'medium']),
+  size: PropTypes.oneOf(['small', 'medium', 'large']),
   status: PropTypes.oneOf(['away', 'busy', 'unread', 'online', 'offline', 'invisible'])
 };
+
+export default function BadgeStatus({ size = 'medium', status = 'offline', ...other }) {
+  return <RootStyle ownerState={{ status, size }} {...other} />;
+}

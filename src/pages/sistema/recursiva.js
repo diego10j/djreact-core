@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Split from 'react-split';
 // material
-import { Container, Card, TableContainer } from '@material-ui/core';
+import { Container, Card, TableContainer } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components
@@ -17,7 +17,7 @@ import useForm from '../../hooks/useForm';
 import useWidth from '../../hooks/useWidth';
 // util
 import { getTituloPantalla, isDefined } from '../../utils/utilitario';
-
+import './recursiva.css';
 // ----------------------------------------------------------------------
 
 export default function Recursiva() {

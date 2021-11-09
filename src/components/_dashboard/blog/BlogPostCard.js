@@ -6,8 +6,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import shareFill from '@iconify/icons-eva/share-fill';
 import messageCircleFill from '@iconify/icons-eva/message-circle-fill';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Link, Card, Grid, Avatar, Typography, CardContent } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Card, Grid, Avatar, Typography, CardContent } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // utils
@@ -23,13 +23,19 @@ const CardMediaStyle = styled('div')({
   paddingTop: 'calc(100% * 3 / 4)'
 });
 
-const TitleStyle = styled(Link)({
+const TitleStyle = styled(RouterLink)(({ theme }) => ({
+  ...theme.typography.subtitle2,
   height: 44,
+  color: 'inherit',
   overflow: 'hidden',
   WebkitLineClamp: 2,
   display: '-webkit-box',
-  WebkitBoxOrient: 'vertical'
-});
+  WebkitBoxOrient: 'vertical',
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline'
+  }
+}));
 
 const AvatarStyle = styled(Avatar)(({ theme }) => ({
   zIndex: 9,
@@ -144,9 +150,6 @@ export default function BlogPostCard({ post, index }) {
 
           <TitleStyle
             to={linkTo}
-            color="inherit"
-            variant="subtitle2"
-            component={RouterLink}
             sx={{
               ...(latestPostLarge && { typography: 'h5', height: 60 }),
               ...((latestPostLarge || latestPost) && {

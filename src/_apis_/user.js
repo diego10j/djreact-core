@@ -1,28 +1,22 @@
-import faker from 'faker';
-import { sample } from 'lodash';
+import { random, sample } from 'lodash';
 // utils
-import { mockImgCover, mockImgFeed, mockImgAvatar } from '../utils/mockImages';
-//
 import mock from './mock';
-
-// ----------------------------------------------------------------------
-
-const createId = (index) => `fc68bad5-d430-4033-b8f8-4bc069dc0ba0-${index}`;
+import mockData from '../utils/mock-data';
 
 // ----------------------------------------------------------------------
 
 mock.onGet('/api/user/profile').reply(() => {
   const profile = {
-    id: createId(1),
-    cover: mockImgCover(1),
+    id: mockData.id(1),
+    cover: mockData.image.cover(1),
     position: 'UI Designer',
-    follower: faker.datatype.number(),
-    following: faker.datatype.number(),
+    follower: random(99999),
+    following: random(99999),
     quote: 'Tart I love sugar plum I love oat cake. Sweet roll caramels I love jujubes. Topping cake wafer..',
-    country: faker.address.country(),
-    email: faker.internet.email(),
-    company: faker.company.companyName(),
-    school: faker.company.companyName(),
+    country: mockData.address.country(1),
+    email: mockData.email(1),
+    company: mockData.company(1),
+    school: mockData.company(2),
     role: 'Manager',
     facebookLink: `https://www.facebook.com/caitlyn.kerluke`,
     instagramLink: `https://www.instagram.com/caitlyn.kerluke`,
@@ -36,94 +30,39 @@ mock.onGet('/api/user/profile').reply(() => {
 // ----------------------------------------------------------------------
 
 mock.onGet('/api/user/all').reply(() => {
-  const users = [...Array(24)].map((_, index) => {
-    const setIndex = index + 1;
-    return {
-      id: createId(setIndex),
-      avatarUrl: mockImgAvatar(setIndex),
-      cover: mockImgCover(setIndex),
-      name: faker.name.findName(),
-      follower: faker.datatype.number(),
-      following: faker.datatype.number(),
-      totalPost: faker.datatype.number(),
-      position: sample([
-        'Leader',
-        'Hr Manager',
-        'UI Designer',
-        'UX Designer',
-        'UI/UX Designer',
-        'Project Manager',
-        'Backend Developer',
-        'Full Stack Designer',
-        'Front End Developer',
-        'Full Stack Developer'
-      ])
-    };
-  });
+  const users = [...Array(24)].map((_, index) => ({
+    id: mockData.id(index),
+    avatarUrl: mockData.image.avatar(index),
+    cover: mockData.image.cover(index),
+    name: mockData.name.fullName(index),
+    follower: random(9999),
+    following: random(9999),
+    totalPost: random(9999),
+    position: mockData.role(index)
+  }));
 
   return [200, { users }];
 });
 
 // ----------------------------------------------------------------------
 
-const NAME = [
-  'Craig Okuneva',
-  'Jacquelyn Schimmel',
-  'Olive Stokes',
-  'Holly Denesik',
-  'Julie Haag MD',
-  'Mrs. Desiree Senger',
-  'Gerardo Gutkowski',
-  'Joanne Emard',
-  'Mr. Terrence Zieme',
-  'Ronnie Mann',
-  'Ramon Ebert',
-  'Julie Kautzer',
-  'Kristin Funk PhD',
-  'Mr. Jon Jacobson',
-  'Ada Lindgren',
-  'Dr. Willie Renner',
-  'Pat Conroy',
-  'Jonathan Rippin',
-  'Gordon Reilly',
-  'Jim Schultz DDS',
-  'Tommie Weber',
-  'Doris Walsh',
-  'Ginger Abernathy',
-  'Deanna Gerlach'
-];
-
 mock.onGet('/api/user/manage-users').reply(() => {
-  const users = [...Array(24)].map((_, index) => {
-    const setIndex = index + 1;
-    return {
-      id: createId(setIndex),
-      avatarUrl: mockImgAvatar(setIndex),
-      name: NAME[index],
-      email: faker.internet.email(),
-      phoneNumber: faker.phone.phoneNumber(),
-      address: faker.address.streetAddress(),
-      country: faker.address.country(),
-      state: faker.address.state(),
-      city: faker.address.city(),
-      zipCode: faker.address.zipCodeByState(),
-      company: faker.company.companyName(),
-      isVerified: faker.datatype.boolean(),
-      status: sample(['active', 'banned']),
-      role: sample([
-        'Leader',
-        'Hr Manager',
-        'UI Designer',
-        'UX Designer',
-        'UI/UX Designer',
-        'Project Manager',
-        'Backend Developer',
-        'Full Stack Designer',
-        'Front End Developer',
-        'Full Stack Developer'
-      ])
-    };
-  });
+  const users = [...Array(24)].map((_, index) => ({
+    id: mockData.id(index),
+    avatarUrl: mockData.image.avatar(index),
+    name: mockData.name.fullName(index),
+    email: mockData.email(index),
+    phoneNumber: mockData.phoneNumber(index),
+    address: '908 Jack Locks',
+    country: mockData.address.country(index),
+    state: 'Virginia',
+    city: 'Rancho Cordova',
+    zipCode: '85807',
+    company: mockData.company(index),
+    isVerified: mockData.boolean(index),
+    status: sample(['active', 'banned']) || 'active',
+    role: mockData.role(index)
+  }));
 
   return [200, { users }];
 });
@@ -131,16 +70,13 @@ mock.onGet('/api/user/manage-users').reply(() => {
 // ----------------------------------------------------------------------
 
 mock.onGet('/api/user/social/followers').reply(() => {
-  const followers = [...Array(18)].map((_, index) => {
-    const setIndex = index + 2;
-    return {
-      id: createId(setIndex),
-      avatarUrl: mockImgAvatar(setIndex),
-      name: faker.name.findName(),
-      country: faker.address.country(),
-      isFollowed: faker.datatype.boolean()
-    };
-  });
+  const followers = [...Array(18)].map((_, index) => ({
+    id: mockData.id(index),
+    avatarUrl: mockData.image.avatar(index),
+    name: mockData.name.fullName(index),
+    country: mockData.address.country(index),
+    isFollowed: mockData.boolean(index)
+  }));
 
   return [200, { followers }];
 });
@@ -148,26 +84,12 @@ mock.onGet('/api/user/social/followers').reply(() => {
 // ----------------------------------------------------------------------
 
 mock.onGet('/api/user/social/friends').reply(() => {
-  const friends = [...Array(18)].map((_, index) => {
-    const setIndex = index + 2;
-    return {
-      id: createId(setIndex),
-      avatarUrl: mockImgAvatar(setIndex),
-      name: faker.name.findName(),
-      role: sample([
-        'Leader',
-        'Hr Manager',
-        'UI Designer',
-        'UX Designer',
-        'UI/UX Designer',
-        'Project Manager',
-        'Backend Developer',
-        'Full Stack Designer',
-        'Front End Developer',
-        'Full Stack Developer'
-      ])
-    };
-  });
+  const friends = [...Array(18)].map((_, index) => ({
+    id: mockData.id(index),
+    avatarUrl: mockData.image.avatar(index),
+    name: mockData.name.fullName(index),
+    role: mockData.role(index)
+  }));
 
   return [200, { friends }];
 });
@@ -175,15 +97,12 @@ mock.onGet('/api/user/social/friends').reply(() => {
 // ----------------------------------------------------------------------
 
 mock.onGet('/api/user/social/gallery').reply(() => {
-  const gallery = [...Array(18)].map((_, index) => {
-    const setIndex = index + 2;
-    return {
-      id: createId(setIndex),
-      title: faker.name.title(),
-      postAt: faker.date.past(),
-      imageUrl: mockImgCover(setIndex)
-    };
-  });
+  const gallery = [...Array(18)].map((_, index) => ({
+    id: mockData.id(index),
+    title: mockData.text.title(index),
+    postAt: mockData.time(index),
+    imageUrl: mockData.image.cover(index)
+  }));
 
   return [200, { gallery }];
 });
@@ -192,9 +111,10 @@ mock.onGet('/api/user/social/gallery').reply(() => {
 
 mock.onGet('/api/user/account/cards').reply(() => {
   const cards = [...Array(2)].map((_, index) => ({
-    id: faker.datatype.uuid(),
-    cardNumber: (index === 0 && '**** **** **** 1234') || (index === 1 && '**** **** **** 5678'),
-    cardType: (index === 0 && 'master_card') || (index === 1 && 'visa')
+    id: mockData.id(index),
+    cardNumber:
+      (index === 0 && '**** **** **** 1234') || (index === 1 && '**** **** **** 5678') || '**** **** **** 5678',
+    cardType: (index === 0 && 'master_card') || (index === 1 && 'visa') || 'master_card'
   }));
 
   return [200, { cards }];
@@ -203,15 +123,15 @@ mock.onGet('/api/user/account/cards').reply(() => {
 // ----------------------------------------------------------------------
 
 mock.onGet('/api/user/account/address-book').reply(() => {
-  const addressBook = [...Array(4)].map(() => ({
-    id: faker.datatype.uuid(),
-    name: faker.name.findName(),
-    phone: faker.phone.phoneNumber(),
-    country: faker.address.country(),
-    state: faker.address.state(),
-    city: faker.address.city(),
-    street: faker.address.streetAddress(),
-    zipCode: faker.address.zipCode()
+  const addressBook = [...Array(4)].map((_, index) => ({
+    id: mockData.id(index),
+    name: mockData.name.fullName(index),
+    phone: mockData.phoneNumber(index),
+    country: mockData.address.country(index),
+    state: 'New Hampshire',
+    city: 'East Sambury',
+    street: '41256 Kamille Turnpike',
+    zipCode: '85807'
   }));
 
   return [200, { addressBook }];
@@ -220,10 +140,10 @@ mock.onGet('/api/user/account/address-book').reply(() => {
 // ----------------------------------------------------------------------
 
 mock.onGet('/api/user/account/invoices').reply(() => {
-  const invoices = [...Array(10)].map(() => ({
-    id: faker.datatype.uuid(),
-    createdAt: faker.date.past(),
-    price: faker.datatype.number({ min: 4, max: 99, precision: 0.01 })
+  const invoices = [...Array(10)].map((_, index) => ({
+    id: mockData.id(index),
+    createdAt: mockData.time(index),
+    price: mockData.number.price(index)
   }));
 
   return [200, { invoices }];
@@ -247,47 +167,45 @@ mock.onGet('/api/user/account/notifications-settings').reply(() => {
 // ----------------------------------------------------------------------
 
 mock.onGet('/api/user/posts').reply(() => {
-  const posts = [...Array(3)].map((_, index) => {
-    const setIndex = index + 1;
-    return {
-      id: faker.datatype.uuid(),
-      author: {
-        id: createId(1),
-        avatarUrl: mockImgAvatar(1),
-        name: 'Caitlyn Kerluke'
-      },
-      isLiked: true,
-      createdAt: faker.date.past(),
-      media: mockImgFeed(setIndex),
-      message: faker.lorem.sentence(),
-      personLikes: [...Array(50)].map((_, index) => ({
-        name: faker.name.findName(),
-        avatarUrl: mockImgAvatar(index + 2)
-      })),
-      comments: (setIndex === 2 && []) || [
-        {
-          id: faker.datatype.uuid(),
-          author: {
-            id: createId(2),
-            avatarUrl: mockImgAvatar(sample([2, 3, 4, 5, 6])),
-            name: faker.name.findName()
-          },
-          createdAt: faker.date.past(),
-          message: faker.lorem.sentence()
+  const posts = [...Array(3)].map((_, index) => ({
+    id: mockData.id(index),
+    author: {
+      id: mockData.id(8),
+      avatarUrl: mockData.image.avatar(1),
+      name: 'Caitlyn Kerluke'
+    },
+    isLiked: true,
+    createdAt: mockData.time(index),
+    media: mockData.image.feed(index),
+    message: mockData.text.sentence(index),
+    personLikes: [...Array(36)].map((_, index) => ({
+      name: mockData.name.fullName(index),
+      avatarUrl: mockData.image.avatar(index + 2)
+    })),
+    comments: (index === 2 && []) || [
+      {
+        id: mockData.id(7),
+        author: {
+          id: mockData.id(8),
+          avatarUrl: mockData.image.avatar(sample([2, 3, 4, 5, 6]) || 2),
+          name: mockData.name.fullName(index + 5)
         },
-        {
-          id: faker.datatype.uuid(),
-          author: {
-            id: createId(3),
-            avatarUrl: mockImgAvatar(sample([7, 8, 9, 10, 11])),
-            name: faker.name.findName()
-          },
-          createdAt: faker.date.past(),
-          message: faker.lorem.sentence()
-        }
-      ]
-    };
-  });
+        createdAt: mockData.time(2),
+        message: 'Praesent venenatis metus at'
+      },
+      {
+        id: mockData.id(9),
+        author: {
+          id: mockData.id(10),
+          avatarUrl: mockData.image.avatar(sample([7, 8, 9, 10, 11]) || 7),
+          name: mockData.name.fullName(index + 6)
+        },
+        createdAt: mockData.time(3),
+        message:
+          'Etiam rhoncus. Nullam vel sem. Pellentesque libero tortor, tincidunt et, tincidunt eget, semper nec, quam. Sed lectus.'
+      }
+    ]
+  }));
 
   return [200, { posts }];
 });

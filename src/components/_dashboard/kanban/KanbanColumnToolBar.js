@@ -5,7 +5,7 @@ import editFill from '@iconify/icons-eva/edit-fill';
 import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import moreHorizontalFill from '@iconify/icons-eva/more-horizontal-fill';
 // material
-import { Stack, OutlinedInput, MenuItem, Box, Typography } from '@material-ui/core';
+import { Stack, OutlinedInput, MenuItem, Box, Typography } from '@mui/material';
 //
 import MenuPopover from '../../MenuPopover';
 import { MIconButton } from '../../@material-extend';
@@ -49,7 +49,7 @@ export default function KanbanColumnToolBar({ columnName, onDelete, onUpdate }) 
   };
 
   const handleUpdateColumn = (event) => {
-    if (event.key === 'Enter' || event.keyCode === 13) {
+    if (event.key === 'Enter') {
       renameRef.current.blur();
       onUpdate(event.target.value);
     }

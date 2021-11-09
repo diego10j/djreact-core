@@ -5,8 +5,8 @@ import { Icon } from '@iconify/react';
 import { useDropzone } from 'react-dropzone';
 import roundAddAPhoto from '@iconify/icons-ic/round-add-a-photo';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Typography, Paper, LinearProgress } from '@material-ui/core';
+import { alpha, experimentalStyled as styled } from '@mui/material/styles';
+import { Box, Typography, Paper, LinearProgress } from '@mui/material';
 // hooks
 import useMensaje from '../../../hooks/useMensaje';
 // utils

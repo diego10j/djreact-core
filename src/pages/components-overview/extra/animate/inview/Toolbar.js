@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import refreshFill from '@iconify/icons-eva/refresh-fill';
 // material
-import { FormControlLabel, Switch, Stack } from '@material-ui/core';
+import { FormControlLabel, Switch, Stack } from '@mui/material';
 // components
 import { MIconButton } from '../../../../../components/@material-extend';
 

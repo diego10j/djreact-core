@@ -1,12 +1,10 @@
-// THIS IS THE DEFAULT VALUE YOU CAN CHANGE IF YOU WANT
-
 const breakpoints = {
   values: {
     xs: 0,
     sm: 600,
-    md: 960,
-    lg: 1280,
-    xl: 1920
+    md: 900, // OLD 960
+    lg: 1200, // OLD 1280
+    xl: 1920 // OLD 1920
   }
 };
 

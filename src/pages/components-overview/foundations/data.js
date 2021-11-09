@@ -1,11 +1,11 @@
 export const material = `
 ~~~ js
 
-import AdbIcon from '@material-ui/icons/Adb';
-import AddIcon from '@material-ui/icons/Add';
-import AppleIcon from '@material-ui/icons/Apple';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
+import AdbIcon from '@mui/icons-material/Adb';
+import AddIcon from '@mui/icons-material/Add';
+import AppleIcon from '@mui/icons-material/Apple';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ export const iconify = `
 ~~~ js
 
 import { Icon } from '@iconify/react';
-import { SvgIcon } from '@material-ui/core';
+import { SvgIcon } from '@mui/material';
 import clockFill from '@iconify/icons-eva/clock-fill';
 import chargingFill from '@iconify/icons-eva/charging-fill';
 import alertCircleFill from '@iconify/icons-eva/alert-circle-fill';

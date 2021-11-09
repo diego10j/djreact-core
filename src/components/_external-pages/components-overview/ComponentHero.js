@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import roundArrowRightAlt from '@iconify/icons-ic/round-arrow-right-alt';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Link, Container, Typography, Stack } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box, Link, Container, Typography, Stack } from '@mui/material';
 // components
 import { varFadeInUp, varWrapEnter, varFadeInDown } from '../../animate';
 //
@@ -62,7 +62,7 @@ export default function ComponentHero() {
 
           <MHidden width="mdDown">
             <motion.div variants={varFadeInDown}>
-              <Box component="img" src="/static/components/hero.png" sx={{ maxHeight: 320 }} />
+              <Box component="img" src="/static/illustrations/illustration_components.png" sx={{ maxHeight: 320 }} />
             </motion.div>
           </MHidden>
         </Container>

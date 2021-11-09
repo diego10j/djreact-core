@@ -1,16 +1,6 @@
 import { useState } from 'react';
 // material
-import {
-  Button,
-  Dialog,
-  TextField,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText
-} from '@material-ui/core';
-//
-import { MButton } from '../../../../components/@material-extend';
+import { Button, Dialog, TextField, DialogTitle, DialogContent, DialogActions, DialogContentText } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -27,9 +17,9 @@ export default function FormDialogs() {
 
   return (
     <div>
-      <MButton variant="outlined" color="warning" onClick={handleClickOpen}>
+      <Button variant="outlined" color="warning" onClick={handleClickOpen}>
         Form Dialogs
-      </MButton>
+      </Button>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Subscribe</DialogTitle>

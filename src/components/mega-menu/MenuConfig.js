@@ -1,5 +1,7 @@
 import { Icon } from '@iconify/react';
 import fileFill from '@iconify/icons-eva/file-fill';
+// utils
+import mockData from '../../utils/mock-data';
 
 // ----------------------------------------------------------------------
 
@@ -8,14 +10,11 @@ const ICON_SIZE = {
   height: '100%'
 };
 
-const PRODUCTS = [...Array(10)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    name: `Product Phasellus volutpat metus eget egestas ${setIndex}`,
-    image: `/static/mock-images/feeds/feed_${setIndex}.jpg`,
-    path: '#'
-  };
-});
+const MOCK_PRODUCTS = [...Array(10)].map((_, index) => ({
+  name: mockData.text.title(index),
+  image: mockData.image.feed(index),
+  path: '#'
+}));
 
 const TAGS = [
   { name: 'Paper Cup', path: '#' },
@@ -31,7 +30,7 @@ const menuConfig = [
     path: '#',
     icon: <Icon icon={fileFill} {...ICON_SIZE} />,
     more: { title: 'More Categories', path: '#' },
-    products: PRODUCTS,
+    products: MOCK_PRODUCTS,
     tags: TAGS,
     children: [
       {
@@ -98,7 +97,7 @@ const menuConfig = [
     path: '#',
     icon: <Icon icon={fileFill} {...ICON_SIZE} />,
     more: { title: 'More Categories', path: '#' },
-    products: PRODUCTS,
+    products: MOCK_PRODUCTS,
     tags: TAGS,
     children: [
       {

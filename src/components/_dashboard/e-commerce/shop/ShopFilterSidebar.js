@@ -18,7 +18,7 @@ import {
   Typography,
   RadioGroup,
   FormControlLabel
-} from '@material-ui/core';
+} from '@mui/material';
 //
 import { MIconButton } from '../../../@material-extend';
 import Scrollbar from '../../../Scrollbar';
@@ -160,19 +160,18 @@ export default function ShopFilterSidebar({ isOpenFilter, onResetFilter, onOpenF
                             color="default"
                             icon={<Rating readOnly value={4 - index} />}
                             checkedIcon={<Rating readOnly value={4 - index} />}
+                            sx={{
+                              '&:hover': { bgcolor: 'transparent' }
+                            }}
                           />
                         }
                         label="& Up"
                         sx={{
                           my: 0.5,
                           borderRadius: 1,
-                          '& > :first-child': { py: 0.5 },
-                          '&:hover': {
-                            opacity: 0.48,
-                            '& > *': { bgcolor: 'transparent' }
-                          },
+                          '&:hover': { opacity: 0.48 },
                           ...(values.rating.includes(item) && {
-                            bgcolor: 'background.neutral'
+                            bgcolor: 'action.selected'
                           })
                         }}
                       />

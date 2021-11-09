@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // material
-import { Stack } from '@material-ui/core';
+import { Stack } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import MapGL, { Layer, Source } from 'react-map-gl';
 // material
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 //
 import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from './controls';
 

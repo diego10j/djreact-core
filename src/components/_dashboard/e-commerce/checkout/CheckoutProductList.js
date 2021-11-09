@@ -4,7 +4,7 @@ import plusFill from '@iconify/icons-eva/plus-fill';
 import minusFill from '@iconify/icons-eva/minus-fill';
 import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Table,
@@ -16,7 +16,7 @@ import {
   TableHead,
   Typography,
   TableContainer
-} from '@material-ui/core';
+} from '@mui/material';
 // utils
 import getColorName from '../../../../utils/getColorName';
 import { fCurrency } from '../../../../utils/formatNumber';

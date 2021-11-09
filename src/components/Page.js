@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 import { forwardRef, useEffect, useCallback } from 'react';
 // material
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 // utils
 import track from '../utils/analytics';
 

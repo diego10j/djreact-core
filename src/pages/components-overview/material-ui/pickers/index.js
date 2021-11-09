@@ -1,8 +1,8 @@
 import { useState } from 'react';
 // material
-import { TabPanel, TabContext, TabList } from '@material-ui/lab';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Tab } from '@material-ui/core';
+import { TabPanel, TabContext, TabList } from '@mui/lab';
+import { styled } from '@mui/material/styles';
+import { Box, Container, Tab } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // components
@@ -51,7 +51,7 @@ export default function PickersComponent() {
           <HeaderBreadcrumbs
             heading="Date / Time pickers"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Date / Time pickers' }]}
-            moreLink="https://next.material-ui.com/components/pickers"
+            moreLink="https://mui.com/components/pickers"
           />
         </Container>
       </Box>

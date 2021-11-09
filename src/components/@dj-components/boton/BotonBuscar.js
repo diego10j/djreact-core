@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // iconos
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@mui/icons-material/Search';
 // material
-import { Tooltip, Button } from '@material-ui/core';
+import { Tooltip, Button } from '@mui/material';
 
 export default function BotonBuscar({ color = 'primary', onClick }) {
   return (

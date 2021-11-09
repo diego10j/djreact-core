@@ -42,18 +42,20 @@ export const PATH_DASHBOARD = {
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
-    analytics: path(ROOTS_DASHBOARD, '/analytics')
+    analytics: path(ROOTS_DASHBOARD, '/analytics'),
+    banking: path(ROOTS_DASHBOARD, '/banking'),
+    booking: path(ROOTS_DASHBOARD, '/booking')
   },
   auditoria: {
-    ...PANTALLAS_GENRICAS,
     root: path(ROOTS_DASHBOARD, '/auditoria'),
+    ...PANTALLAS_GENRICAS,
     consultaAuditoria: path(ROOTS_DASHBOARD, '/auditoria/consulta-auditoria')
   },
   sistema: {
     root: path(ROOTS_DASHBOARD, '/sistema'),
-    simple: path(ROOTS_DASHBOARD, '/sistema/simple'),
-    simpleUI: path(ROOTS_DASHBOARD, '/sistema/simple-ui'),
+    ...PANTALLAS_GENRICAS,
     recursiva: path(ROOTS_DASHBOARD, '/sistema/recursiva'),
+    doble: path(ROOTS_DASHBOARD, '/sistema/doble'),
     empresa: path(ROOTS_DASHBOARD, '/sistema/empresa'),
     usuarios: path(ROOTS_DASHBOARD, '/sistema/usuarios')
   },
@@ -74,7 +76,7 @@ export const PATH_DASHBOARD = {
     cards: path(ROOTS_DASHBOARD, '/user/cards'),
     list: path(ROOTS_DASHBOARD, '/user/list'),
     newUser: path(ROOTS_DASHBOARD, '/user/new'),
-    editById: path(ROOTS_DASHBOARD, '/user/ada-lindgren/edit'),
+    editById: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
     account: path(ROOTS_DASHBOARD, '/user/account')
   },
   eCommerce: {
@@ -92,7 +94,7 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/blog'),
     posts: path(ROOTS_DASHBOARD, '/blog/posts'),
     post: path(ROOTS_DASHBOARD, '/blog/post/:title'),
-    postById: path(ROOTS_DASHBOARD, '/blog/post/portfolio-review-is-this-portfolio-too-creative'),
+    postById: path(ROOTS_DASHBOARD, '/blog/post/apply-these-7-secret-techniques-to-improve-event'),
     newPost: path(ROOTS_DASHBOARD, '/blog/new-post')
   }
 };

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // material
-import { Grid, Stack } from '@material-ui/core';
+import { Grid, Stack } from '@mui/material';
 //
 import ProfileAbout from './ProfileAbout';
 import ProfilePostCard from './ProfilePostCard';

@@ -1,13 +1,11 @@
 // iconos
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import SecurityIcon from '@material-ui/icons/Security';
-import DvrIcon from '@material-ui/icons/Dvr';
-import SettingsIcon from '@material-ui/icons/Settings';
-import EventNoteIcon from '@material-ui/icons/EventNote';
+import EventNoteIcon from '@mui/icons-material/EventNote';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import SecurityIcon from '@mui/icons-material/Security';
+import DvrIcon from '@mui/icons-material/Dvr';
+import SettingsIcon from '@mui/icons-material/Settings';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
-
-// ----------------------------------------------------------------------
 
 const getIconoMenu = (modulo) => {
   switch (modulo) {
@@ -19,27 +17,28 @@ const getIconoMenu = (modulo) => {
       return <SecurityIcon style={{ width: '100%', height: '100%' }} />;
     case 'sistema':
       return <SettingsIcon style={{ width: '100%', height: '100%' }} />;
-
     default:
       return <DvrIcon style={{ width: '100%', height: '100%' }} />;
   }
 };
 
-const getMenuOpciones = () => {
+const menu = [];
+
+export const getMenuOpciones = () => {
   const menuUsuario = JSON.parse(localStorage.getItem('menu')) || [];
-  const menu = [
-    {
-      subheader: 'General',
-      items: [
-        {
-          title: 'Dashboard',
-          path: PATH_DASHBOARD.general.app,
-          icon: getIconoMenu('dashboard')
-        },
-        { title: 'Calendario', path: PATH_DASHBOARD.calendar, icon: getIconoMenu('calendar') }
-      ]
-    }
-  ];
+  menu.splice(0, menu.length);
+
+  menu.push({
+    items: [
+      {
+        title: 'Dashboard',
+        path: PATH_DASHBOARD.general.app,
+        icon: getIconoMenu('dashboard')
+      },
+      { title: 'Calendario', path: PATH_DASHBOARD.calendar, icon: getIconoMenu('calendar') }
+    ]
+  });
+
   const hijos = [];
   for (let i = 0; i < menuUsuario.length; i += 1) {
     const opcionActual = menuUsuario[i];
@@ -61,10 +60,11 @@ const getMenuOpciones = () => {
     });
   }
   menu.push({
-    subheader: 'Opciones',
+    subheader: 'OPCIONES DEL SISTEMA',
     items: hijos
   });
-  return menu;
 };
 
-export default getMenuOpciones;
+getMenuOpciones();
+
+export default menu;

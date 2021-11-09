@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 // material
-import { Container, Card, TableContainer } from '@material-ui/core';
+import { Container, Card, TableContainer } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components

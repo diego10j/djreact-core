@@ -4,12 +4,10 @@ import { Icon } from '@iconify/react';
 import { sentenceCase } from 'change-case';
 import roundClearAll from '@iconify/icons-ic/round-clear-all';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Chip, Typography, Stack } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Chip, Typography, Stack, Button } from '@mui/material';
 // utils
 import getColorName from '../../../../utils/getColorName';
-//
-import { MButton } from '../../../@material-extend';
 
 // ----------------------------------------------------------------------
 
@@ -54,10 +52,11 @@ ShopTagFiltered.propTypes = {
   formik: PropTypes.object,
   filters: PropTypes.object,
   isShowReset: PropTypes.bool,
+  isDefault: PropTypes.bool,
   onResetFilter: PropTypes.func
 };
 
-export default function ShopTagFiltered({ formik, filters, isShowReset, onResetFilter }) {
+export default function ShopTagFiltered({ formik, filters, isShowReset, isDefault, onResetFilter }) {
   const theme = useTheme();
   const { values, handleSubmit, setFieldValue, initialValues } = formik;
   const { gender, category, colors, priceRange, rating } = filters;
@@ -163,8 +162,8 @@ export default function ShopTagFiltered({ formik, filters, isShowReset, onResetF
         </WrapperStyle>
       )}
 
-      {isShow && (
-        <MButton
+      {isShow && !isDefault && (
+        <Button
           color="error"
           size="small"
           type="button"
@@ -172,7 +171,7 @@ export default function ShopTagFiltered({ formik, filters, isShowReset, onResetF
           startIcon={<Icon icon={roundClearAll} />}
         >
           Clear All
-        </MButton>
+        </Button>
       )}
     </RootStyle>
   );

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 // material
-import { Box, Divider } from '@material-ui/core';
+import { Box, Divider, Stack } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../../redux/store';
 import {
@@ -25,16 +25,18 @@ import ChatHeaderCompose from './ChatHeaderCompose';
 
 const conversationSelector = (state) => {
   const { conversations, activeConversationId } = state.chat;
-  const conversation = conversations.byId[activeConversationId];
+  const conversation = activeConversationId ? conversations.byId[activeConversationId] : null;
   if (conversation) {
     return conversation;
   }
-  return {
-    id: null,
+  const initState = {
+    id: '',
     messages: [],
     participants: [],
-    unreadMessages: 0
+    unreadCount: 0,
+    type: ''
   };
+  return initState;
 };
 
 export default function ChatWindow() {
@@ -44,15 +46,15 @@ export default function ChatWindow() {
   const { conversationKey } = useParams();
   const { contacts, recipients, participants, activeConversationId } = useSelector((state) => state.chat);
   const conversation = useSelector((state) => conversationSelector(state));
-  const mode = conversationKey ? 'DETAIL' : 'COMPOSE';
 
+  const mode = conversationKey ? 'DETAIL' : 'COMPOSE';
   const displayParticipants = participants.filter((item) => item.id !== '8864c717-587d-472a-929a-8e5f298024da-0');
 
   useEffect(() => {
     const getDetails = async () => {
       dispatch(getParticipants(conversationKey));
       try {
-        dispatch(getConversation(conversationKey));
+        await dispatch(getConversation(conversationKey));
       } catch (error) {
         console.error(error);
         navigate(PATH_DASHBOARD.chat.new);
@@ -72,8 +74,8 @@ export default function ChatWindow() {
     }
   }, [dispatch, activeConversationId]);
 
-  const handleAddRecipient = (recipient) => {
-    dispatch(addRecipients(recipient));
+  const handleAddRecipients = (recipients) => {
+    dispatch(addRecipients(recipients));
   };
 
   const handleSendMessage = async (value) => {
@@ -85,21 +87,21 @@ export default function ChatWindow() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+    <Stack sx={{ flexGrow: 1, minWidth: '1px' }}>
       {mode === 'DETAIL' ? (
         <ChatHeaderDetail participants={displayParticipants} />
       ) : (
         <ChatHeaderCompose
           recipients={recipients}
           contacts={Object.values(contacts.byId)}
-          onAddRecipient={handleAddRecipient}
+          onAddRecipients={handleAddRecipients}
         />
       )}
 
       <Divider />
 
       <Box sx={{ flexGrow: 1, display: 'flex', overflow: 'hidden' }}>
-        <Box sx={{ display: 'flex', flexGrow: 1, flexDirection: 'column' }}>
+        <Stack sx={{ flexGrow: 1 }}>
           <ChatMessageList conversation={conversation} />
 
           <Divider />
@@ -109,10 +111,10 @@ export default function ChatWindow() {
             onSend={handleSendMessage}
             disabled={pathname === PATH_DASHBOARD.chat.new}
           />
-        </Box>
+        </Stack>
 
         {mode === 'DETAIL' && <ChatRoom conversation={conversation} participants={displayParticipants} />}
       </Box>
-    </Box>
+    </Stack>
   );
 }

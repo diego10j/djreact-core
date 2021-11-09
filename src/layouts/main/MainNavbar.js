@@ -1,7 +1,7 @@
-import { NavLink as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Button, AppBar, Toolbar, Container } from '@mui/material';
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop';
 // components
@@ -50,7 +50,7 @@ export default function MainNavbar() {
   const isHome = pathname === '/';
 
   return (
-    <AppBar color={isHome ? 'transparent' : 'default'} sx={{ boxShadow: 0 }}>
+    <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
       <ToolbarStyle
         disableGutters
         sx={{
@@ -72,7 +72,7 @@ export default function MainNavbar() {
             <Logo />
           </RouterLink>
           <Label color="info" sx={{ ml: 1 }}>
-            v2.2.0
+            v2.6.0
           </Label>
           <Box sx={{ flexGrow: 1 }} />
 

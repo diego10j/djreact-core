@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // material
-import { Card, Grid } from '@material-ui/core';
+import { Card, Grid } from '@mui/material';
 //
 import variantTypes from './types';
 import Toolbar from './Toolbar';

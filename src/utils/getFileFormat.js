@@ -1,16 +1,10 @@
+// material
+import { Box } from '@mui/material';
+//
 import { Icon } from '@iconify/react';
 import fileFill from '@iconify/icons-eva/file-fill';
-import fileTypePdf from '@iconify/icons-vscode-icons/file-type-pdf';
-import fileTypeAi2 from '@iconify/icons-vscode-icons/file-type-ai2';
-import fileTypeWord from '@iconify/icons-vscode-icons/file-type-word';
-import fileTypeExcel from '@iconify/icons-vscode-icons/file-type-excel';
-import fileTypeVideo from '@iconify/icons-vscode-icons/file-type-video';
-import fileTypePowerpoint from '@iconify/icons-vscode-icons/file-type-powerpoint';
-import fileTypePhotoshop2 from '@iconify/icons-vscode-icons/file-type-photoshop2';
 
 // ----------------------------------------------------------------------
-
-const ICON_SIZE = { width: 28, height: 28 };
 
 const FORMAT_IMG = ['jpg', 'jpeg', 'gif', 'bmp', 'png'];
 const FORMAT_VIDEO = ['m4v', 'avi', 'mpg', 'mp4', 'webm'];
@@ -68,35 +62,39 @@ export function getFileFormat(fileUrl) {
   return format;
 }
 
+const getIcon = (name) => (
+  <Box component="img" src={`/static/icons/file/${name}.svg`} alt={name} sx={{ width: 28, height: 28 }} />
+);
+
 export function getFileThumb(fileUrl) {
   let thumb;
   switch (getFileFormat(fileUrl)) {
     case 'image':
-      thumb = <img src={fileUrl} alt={fileUrl} />;
+      thumb = <Box component="img" src={fileUrl} alt={fileUrl} sx={{ width: 1, height: 1 }} />;
       break;
     case 'video':
-      thumb = <Icon icon={fileTypeVideo} {...ICON_SIZE} />;
+      thumb = getIcon('file_type_video');
       break;
     case 'word':
-      thumb = <Icon icon={fileTypeWord} {...ICON_SIZE} />;
+      thumb = getIcon('file_type_word');
       break;
     case 'excel':
-      thumb = <Icon icon={fileTypeExcel} {...ICON_SIZE} />;
+      thumb = getIcon('file_type_excel');
       break;
     case 'powerpoint':
-      thumb = <Icon icon={fileTypePowerpoint} {...ICON_SIZE} />;
+      thumb = getIcon('file_type_powerpoint');
       break;
     case 'pdf':
-      thumb = <Icon icon={fileTypePdf} {...ICON_SIZE} />;
+      thumb = getIcon('file_type_pdf');
       break;
     case 'photoshop':
-      thumb = <Icon icon={fileTypePhotoshop2} {...ICON_SIZE} />;
+      thumb = getIcon('file_type_photoshop');
       break;
     case 'illustrator':
-      thumb = <Icon icon={fileTypeAi2} {...ICON_SIZE} />;
+      thumb = getIcon('file_type_ai');
       break;
     default:
-      thumb = <Icon icon={fileFill} {...ICON_SIZE} />;
+      thumb = <Box component={Icon} icon={fileFill} sx={{ width: 28, height: 28 }} />;
   }
   return thumb;
 }

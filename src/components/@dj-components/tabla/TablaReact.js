@@ -3,23 +3,24 @@ import PropTypes from 'prop-types';
 // react-table
 import { useGlobalFilter, usePagination, useSortBy, useFilters, useRowSelect, useTable } from 'react-table';
 // componentes
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TableContainer from '@material-ui/core/TableContainer';
-import TablePagination from '@material-ui/core/TablePagination';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Backdrop from '@material-ui/core/Backdrop';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Stack from '@material-ui/core/Stack';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
+import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from '@mui/material/Backdrop';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
-import { withStyles, makeStyles, experimentalStyled as styled, alpha, useTheme } from '@material-ui/core/styles';
+import { experimentalStyled as styled, alpha, useTheme } from '@mui/material/styles';
+import { withStyles, makeStyles } from '@mui/styles';
 import Scrollbar from '../../Scrollbar';
 import { DefaultColumnFilter } from './FiltrosTabla';
 import TablePaginationActions from './PaginationTabla';
@@ -34,8 +35,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     position: 'absolute',
     zIndex: theme.zIndex.drawer + 1,
-    opacity: '0.6 !important',
-    transition: 'none !important'
+    opacity: '0.2 !important'
   }
 }));
 
@@ -77,7 +77,7 @@ const StyledTableCellHeader = withStyles(() => ({
 const StyledTableCellBody = withStyles((theme) => ({
   root: {
     padding: '0px 5px 0px 5px !important',
-    borderBottom: `solid 1px ${theme.palette.divider}`
+    borderBottom: `solid 1px ${theme.palette.divider} !important`
     // borderRight: `solid 1px ${theme.palette.divider}`
   }
 }))(TableCell);

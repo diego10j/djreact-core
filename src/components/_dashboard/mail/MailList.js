@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Divider, Box } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Divider, Box } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../../redux/store';
 import { getMails } from '../../../redux/slices/mail';

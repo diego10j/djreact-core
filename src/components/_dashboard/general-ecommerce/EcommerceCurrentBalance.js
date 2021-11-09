@@ -1,10 +1,8 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Button, Card, Typography, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Button, Card, Typography, Stack } from '@mui/material';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
-//
-import { MButton } from '../../@material-extend';
 
 // ----------------------------------------------------------------------
 
@@ -51,9 +49,9 @@ export default function EcommerceCurrentBalance() {
         </RowStyle>
 
         <Stack direction="row" spacing={1.5}>
-          <MButton fullWidth variant="contained" color="warning">
+          <Button fullWidth variant="contained" color="warning">
             Transfer
-          </MButton>
+          </Button>
           <Button fullWidth variant="contained">
             Receive
           </Button>

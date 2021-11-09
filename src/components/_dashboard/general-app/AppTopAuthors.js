@@ -1,34 +1,23 @@
-import faker from 'faker';
-import { orderBy } from 'lodash';
 import PropTypes from 'prop-types';
+import { random, orderBy } from 'lodash';
 import { Icon } from '@iconify/react';
 import heartFill from '@iconify/icons-eva/heart-fill';
 import trophyFilled from '@iconify/icons-ant-design/trophy-filled';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Stack, Card, Avatar, CardHeader, Typography } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Stack, Card, Avatar, CardHeader, Typography } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../utils/formatNumber';
+import mockData from '../../../utils/mock-data';
 
 // ----------------------------------------------------------------------
 
-const AUTHORS = [
-  {
-    name: faker.name.findName(),
-    favourite: faker.datatype.number(),
-    avatar: '/static/mock-images/avatars/avatar_2.jpg'
-  },
-  {
-    name: faker.name.findName(),
-    favourite: faker.datatype.number(),
-    avatar: '/static/mock-images/avatars/avatar_3.jpg'
-  },
-  {
-    name: faker.name.findName(),
-    favourite: faker.datatype.number(),
-    avatar: '/static/mock-images/avatars/avatar_4.jpg'
-  }
-];
+const MOCK_AUTHORS = [...Array(3)].map((_, index) => ({
+  id: mockData.id(index),
+  name: mockData.name.fullName(index),
+  avatar: mockData.image.avatar(index),
+  favourite: random(9999, 19999)
+}));
 
 const IconWrapperStyle = styled('div')(({ theme }) => ({
   width: 40,
@@ -44,7 +33,11 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 AuthorItem.propTypes = {
-  author: PropTypes.object,
+  author: PropTypes.shape({
+    avatar: PropTypes.string,
+    favourite: PropTypes.number,
+    name: PropTypes.string
+  }),
   index: PropTypes.number
 };
 
@@ -87,14 +80,14 @@ function AuthorItem({ author, index }) {
 }
 
 export default function AppTopAuthors() {
-  const displayAuthor = orderBy(AUTHORS, ['favourite'], ['desc']);
+  const displayAuthor = orderBy(MOCK_AUTHORS, ['favourite'], ['desc']);
 
   return (
     <Card>
       <CardHeader title="Top Authors" />
       <Stack spacing={3} sx={{ p: 3 }}>
         {displayAuthor.map((author, index) => (
-          <AuthorItem key={author.name} author={author} index={index} />
+          <AuthorItem key={author.id} author={author} index={index} />
         ))}
       </Stack>
     </Card>

@@ -1,14 +1,14 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 // material
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
-import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';
-import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
-import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Stack, Rating, Container } from '@material-ui/core';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
+import { styled } from '@mui/material/styles';
+import { Box, Stack, Rating, Container } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -68,11 +68,6 @@ const RootStyle = styled(Page)(({ theme }) => ({
   paddingBottom: theme.spacing(15)
 }));
 
-const StyledRating = withStyles({
-  iconFilled: { color: '#FF4842' },
-  iconHover: { color: '#B72136' }
-})(Rating);
-
 // ----------------------------------------------------------------------
 
 IconContainer.propTypes = {
@@ -102,7 +97,7 @@ export default function RatingComponent() {
           <HeaderBreadcrumbs
             heading="Rating"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Rating' }]}
-            moreLink="https://next.material-ui.com/components/rating"
+            moreLink="https://mui.com/components/rating"
           />
         </Container>
       </Box>
@@ -135,13 +130,17 @@ export default function RatingComponent() {
               <Rating name="customized-empty" defaultValue={2} precision={0.5} />
             </Block>
             <Block title="Custom icon and color" sx={style}>
-              <StyledRating
+              <Rating
                 name="customized-color"
                 defaultValue={2}
                 getLabelText={(value) => `${value} Heart${value !== 1 ? 's' : ''}`}
                 precision={0.5}
                 icon={<FavoriteIcon />}
                 emptyIcon={<FavoriteIcon />}
+                sx={{
+                  color: 'info.main',
+                  '&:hover': { color: 'info.dark' }
+                }}
               />
             </Block>
           </Stack>

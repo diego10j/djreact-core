@@ -1,6 +1,6 @@
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Typography, useTheme } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Container, Typography, useTheme } from '@mui/material';
 //
 import { varFadeInUp, MotionInView } from '../../animate';
 

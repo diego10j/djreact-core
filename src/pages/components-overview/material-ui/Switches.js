@@ -1,12 +1,11 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Stack, Switch, Container, FormGroup, FormControl, FormControlLabel } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Stack, Switch, Container, FormGroup, FormControl, FormControlLabel } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { MSwitch } from '../../../components/@material-extend';
 //
 import { Block } from '../Block';
 
@@ -42,7 +41,7 @@ export default function Switches() {
           <HeaderBreadcrumbs
             heading="Switches"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Switches' }]}
-            moreLink="https://next.material-ui.com/components/alert"
+            moreLink="https://mui.com/components/alert"
           />
         </Container>
       </Box>
@@ -80,12 +79,12 @@ export default function Switches() {
               <FormGroup>
                 <FormControlLabel control={<Switch defaultChecked color="default" />} label="Default" />
                 <FormControlLabel control={<Switch defaultChecked />} label="Primary" />
-                <FormControlLabel control={<MSwitch defaultChecked color="info" />} label="Info" />
-                <FormControlLabel control={<MSwitch defaultChecked color="success" />} label="Success" />
-                <FormControlLabel control={<MSwitch defaultChecked color="warning" />} label="Warning" />
-                <FormControlLabel control={<MSwitch defaultChecked color="error" />} label="Error" />
-                <FormControlLabel disabled control={<MSwitch defaultChecked color="error" />} label="Disabled" />
-                <FormControlLabel disabled control={<MSwitch color="error" />} label="Disabled" />
+                <FormControlLabel control={<Switch defaultChecked color="info" />} label="Info" />
+                <FormControlLabel control={<Switch defaultChecked color="success" />} label="Success" />
+                <FormControlLabel control={<Switch defaultChecked color="warning" />} label="Warning" />
+                <FormControlLabel control={<Switch defaultChecked color="error" />} label="Error" />
+                <FormControlLabel disabled control={<Switch defaultChecked color="error" />} label="Disabled" />
+                <FormControlLabel disabled control={<Switch color="error" />} label="Disabled" />
               </FormGroup>
             </FormControl>
           </Block>

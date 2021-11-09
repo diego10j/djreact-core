@@ -4,8 +4,8 @@ import ReactApexChart from 'react-apexcharts';
 import trendingUpFill from '@iconify/icons-eva/trending-up-fill';
 import trendingDownFill from '@iconify/icons-eva/trending-down-fill';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Typography, Stack } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Card, Typography, Stack } from '@mui/material';
 // utils
 import { fNumber, fPercent } from '../../../utils/formatNumber';
 //
@@ -29,7 +29,7 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 const PERCENT = 2.6;
 const TOTAL_SOLD = 765;
-const CHART_DATA = [{ data: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14] }];
+const CHART_DATA = [{ data: [22, 8, 35, 50, 82, 84, 77, 12, 87, 43] }];
 
 export default function EcommerceProductSold() {
   const chartOptions = merge(BaseOptionChart(), {
@@ -40,7 +40,7 @@ export default function EcommerceProductSold() {
       y: {
         formatter: (seriesName) => fNumber(seriesName),
         title: {
-          formatter: (seriesName) => `#${seriesName}`
+          formatter: () => ''
         }
       },
       marker: { show: false }

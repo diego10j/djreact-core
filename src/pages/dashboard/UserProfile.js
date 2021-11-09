@@ -6,8 +6,8 @@ import peopleFill from '@iconify/icons-eva/people-fill';
 import roundPermMedia from '@iconify/icons-ic/round-perm-media';
 import roundAccountBox from '@iconify/icons-ic/round-account-box';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Tab, Box, Card, Tabs, Container } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Tab, Box, Card, Tabs, Container } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getPosts, getGallery, getFriends, getProfile, getFollowers, onToggleFollow } from '../../redux/slices/user';
@@ -15,6 +15,7 @@ import { getPosts, getGallery, getFriends, getProfile, getFollowers, onToggleFol
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useAuth from '../../hooks/useAuth';
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -47,6 +48,7 @@ const TabsWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function UserProfile() {
+  const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { myProfile, posts, followers, friends, gallery } = useSelector((state) => state.user);
   const { user } = useAuth();
@@ -102,7 +104,7 @@ export default function UserProfile() {
 
   return (
     <Page title="User: Profile | Minimal-UI">
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Profile"
           links={[

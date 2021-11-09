@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 // material
-import { Paper, Stack, Button } from '@material-ui/core';
+import { Paper, Stack, Button } from '@mui/material';
 // redux
 import { useDispatch } from '../../../redux/store';
 import { deleteColumn, updateColumn, addTask, deleteTask } from '../../../redux/slices/kanban';

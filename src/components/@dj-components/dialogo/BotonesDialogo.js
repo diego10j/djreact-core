@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // material
-import { Button, DialogActions } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Button, DialogActions } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 const BotonesDialogo = (props) => {
   const {

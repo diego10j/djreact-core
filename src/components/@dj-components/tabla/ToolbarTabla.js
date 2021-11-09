@@ -1,17 +1,17 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 // icons
-import AddIcon from '@material-ui/icons/Add';
-import CreateIcon from '@material-ui/icons/Create';
-import DeleteIcon from '@material-ui/icons/Delete';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import AddIcon from '@mui/icons-material/Add';
+import CreateIcon from '@mui/icons-material/Create';
+import DeleteIcon from '@mui/icons-material/Delete';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import brushOutline from '@iconify/icons-eva/brush-outline';
 import refreshOutline from '@iconify/icons-eva/refresh-outline';
-import ListAltOutlinedIcon from '@material-ui/icons/ListAltOutlined';
-import TableRowsOutlinedIcon from '@material-ui/icons/TableRowsOutlined';
+import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
+import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
 
 // components
-import { Box, MenuItem, Tooltip, Divider, Stack } from '@material-ui/core';
+import { Box, MenuItem, Tooltip, Divider, Stack } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { MIconButton } from '../../@material-extend';
 import MenuPopover from '../../MenuPopover';

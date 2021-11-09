@@ -1,8 +1,8 @@
 import { useState } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Tab } from '@material-ui/core';
-import { TabPanel, TabContext, TabList } from '@material-ui/lab';
+import { styled } from '@mui/material/styles';
+import { Box, Container, Tab } from '@mui/material';
+import { TabPanel, TabContext, TabList } from '@mui/lab';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // components
@@ -58,10 +58,10 @@ export default function ButtonsComponent() {
             heading="Buttons"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Buttons' }]}
             moreLink={[
-              'https://next.material-ui.com/components/buttons',
-              'https://next.material-ui.com/components/button-group',
-              'https://next.material-ui.com/components/floating-action-button',
-              'https://next.material-ui.com/components/toggle-button'
+              'https://mui.com/components/buttons',
+              'https://mui.com/components/button-group',
+              'https://mui.com/components/floating-action-button',
+              'https://mui.com/components/toggle-button'
             ]}
           />
         </Container>

@@ -1,11 +1,13 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 // components
 import Page from '../components/Page';
 import {
   LandingHero,
   LandingMinimal,
   LandingDarkMode,
+  LandingThemeColor,
+  LandingPricingPlans,
   LandingAdvertisement,
   LandingCleanInterfaces,
   LandingHugePackElements
@@ -27,13 +29,15 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function LandingPage() {
   return (
-    <RootStyle title="ProduApps" id="move_top">
+    <RootStyle title="The starting point for your next project | Minimal-UI" id="move_top">
       <LandingHero />
       <ContentStyle>
         <LandingMinimal />
         <LandingHugePackElements />
         <LandingDarkMode />
+        <LandingThemeColor />
         <LandingCleanInterfaces />
+        <LandingPricingPlans />
         <LandingAdvertisement />
       </ContentStyle>
     </RootStyle>

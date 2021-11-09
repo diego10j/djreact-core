@@ -1,6 +1,6 @@
 import { forwardRef, useState } from 'react';
 // material
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   List,
   Slide,
@@ -9,13 +9,11 @@ import {
   AppBar,
   Toolbar,
   Divider,
-  ListItem,
   IconButton,
   Typography,
-  ListItemText
-} from '@material-ui/core';
-//
-import { MButton } from '../../../../components/@material-extend';
+  ListItemText,
+  ListItemButton
+} from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -34,9 +32,9 @@ export default function FullScreenDialogs() {
 
   return (
     <>
-      <MButton variant="outlined" color="error" onClick={handleClickOpen}>
+      <Button variant="outlined" color="error" onClick={handleClickOpen}>
         Full Screen Dialogs
-      </MButton>
+      </Button>
 
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar position="relative">
@@ -53,15 +51,15 @@ export default function FullScreenDialogs() {
           </Toolbar>
         </AppBar>
         <List>
-          <ListItem button>
+          <ListItemButton>
             <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItem>
+          </ListItemButton>
 
           <Divider />
 
-          <ListItem button>
+          <ListItemButton>
             <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-          </ListItem>
+          </ListItemButton>
         </List>
       </Dialog>
     </>

@@ -1,66 +1,117 @@
-import faker from 'faker';
 import { Icon } from '@iconify/react';
+import { useRef, useState } from 'react';
 import { sentenceCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';
+import shareFill from '@iconify/icons-eva/share-fill';
+import printerFill from '@iconify/icons-eva/printer-fill';
+import archiveFill from '@iconify/icons-eva/archive-fill';
+import downloadFill from '@iconify/icons-eva/download-fill';
+import trash2Outline from '@iconify/icons-eva/trash-2-outline';
+import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 // material
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import {
   Box,
+  Menu,
   Card,
   Table,
   Button,
   Divider,
+  MenuItem,
   TableRow,
   TableBody,
   TableCell,
   TableHead,
+  Typography,
   CardHeader,
   TableContainer
-} from '@material-ui/core';
+} from '@mui/material';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
+import mockData from '../../../utils/mock-data';
 //
 import Label from '../../Label';
 import Scrollbar from '../../Scrollbar';
-import MoreMenuButton from '../../MoreMenuButton';
+import { MIconButton } from '../../@material-extend';
 
 // ----------------------------------------------------------------------
 
-const INVOICES = [
-  {
-    id: faker.datatype.uuid(),
-    category: 'Android',
-    price: faker.finance.amount(),
-    status: 'in_progress'
-  },
-  {
-    id: faker.datatype.uuid(),
-    category: 'Windows',
-    price: faker.finance.amount(),
-    status: 'paid'
-  },
-  {
-    id: faker.datatype.uuid(),
-    category: 'Mac',
-    price: faker.finance.amount(),
-    status: 'out_of_date'
-  },
-  {
-    id: faker.datatype.uuid(),
-    category: 'Windows',
-    price: faker.finance.amount(),
-    status: 'paid'
-  },
-  {
-    id: faker.datatype.uuid(),
-    category: 'Windows',
-    price: faker.finance.amount(),
-    status: 'in_progress'
-  }
-];
+const MOCK_INVOICES = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  price: mockData.number.price(index),
+  category: (index === 0 && 'Android') || (index === 2 && 'Mac') || 'Windows',
+  status: (index === 0 && 'paid') || (index === 2 && 'out_of_date') || 'in_progress'
+}));
 
 // ----------------------------------------------------------------------
+
+function MoreMenuButton() {
+  const menuRef = useRef(null);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <>
+        <MIconButton ref={menuRef} size="large" onClick={handleOpen}>
+          <Icon icon={moreVerticalFill} width={20} height={20} />
+        </MIconButton>
+      </>
+
+      <Menu
+        open={open}
+        anchorEl={menuRef.current}
+        onClose={handleClose}
+        PaperProps={{
+          sx: { width: 200, maxWidth: '100%' }
+        }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <MenuItem>
+          <Icon icon={downloadFill} width={20} height={20} />
+          <Typography variant="body2" sx={{ ml: 2 }}>
+            Download
+          </Typography>
+        </MenuItem>
+        <MenuItem>
+          <Icon icon={printerFill} width={20} height={20} />
+          <Typography variant="body2" sx={{ ml: 2 }}>
+            Print
+          </Typography>
+        </MenuItem>
+        <MenuItem>
+          <Icon icon={shareFill} width={20} height={20} />
+          <Typography variant="body2" sx={{ ml: 2 }}>
+            Share
+          </Typography>
+        </MenuItem>
+        <MenuItem>
+          <Icon icon={archiveFill} width={20} height={20} />
+          <Typography variant="body2" sx={{ ml: 2 }}>
+            Archive
+          </Typography>
+        </MenuItem>
+
+        <Divider />
+        <MenuItem sx={{ color: 'error.main' }}>
+          <Icon icon={trash2Outline} width={20} height={20} />
+          <Typography variant="body2" sx={{ ml: 2 }}>
+            Delete
+          </Typography>
+        </MenuItem>
+      </Menu>
+    </>
+  );
+}
 
 export default function AppNewInvoice() {
   const theme = useTheme();
@@ -81,7 +132,7 @@ export default function AppNewInvoice() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {INVOICES.map((row) => (
+              {MOCK_INVOICES.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell>{`INV-${row.id}`}</TableCell>
                   <TableCell>{row.category}</TableCell>

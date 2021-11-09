@@ -5,8 +5,8 @@ import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import archiveFill from '@iconify/icons-eva/archive-fill';
 import roundMarkEmailRead from '@iconify/icons-ic/round-mark-email-read';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Tooltip, IconButton } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Tooltip, IconButton } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

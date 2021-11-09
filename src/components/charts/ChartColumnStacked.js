@@ -14,9 +14,12 @@ const CHART_DATA = [
 
 export default function ChartColumnStacked() {
   const chartOptions = merge(BaseOptionChart(), {
-    chart: { stacked: true, zoom: { enabled: true } },
+    chart: {
+      stacked: true,
+      zoom: { enabled: true }
+    },
     legend: { itemMargin: { vertical: 8 }, position: 'right', offsetY: 20 },
-    plotOptions: { bar: { columnWidth: '14%', borderRadius: 4 } },
+    plotOptions: { bar: { columnWidth: '16%' } },
     stroke: { show: false },
     xaxis: {
       type: 'datetime',

@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## 1.install
+## 1.Install
 
 ### npm
 
@@ -29,14 +29,6 @@ yarn start
 ```sh
 npm run build or yarn build
 ```
-
-## Demo
-
-https://demo-react-core.produapps.com/dashboard
-
-* Usuario :  admin@produapps.com
-* Contraseña: 1234
-
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.

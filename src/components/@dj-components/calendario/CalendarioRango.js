@@ -1,13 +1,14 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
+//
+import { withStyles } from '@mui/styles';
 // material
-import { DateRangePicker } from '@material-ui/lab';
-import { Box, Stack, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-// componentes
-import BotonBuscar from '../boton/BotonBuscar';
+import { DateRangePicker } from '@mui/lab';
+import { Box, Stack, TextField } from '@mui/material';
 // util
 import { getFormatoFecha } from '../../../utils/formatTime';
+// componentes
+import BotonBuscar from '../boton/BotonBuscar';
 // ----------------------------------------------------------------------
 
 const StyledTextField = withStyles(() => ({

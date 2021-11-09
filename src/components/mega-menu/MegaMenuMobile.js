@@ -15,12 +15,12 @@ import {
   Drawer,
   Button,
   Divider,
-  ListItem,
   Typography,
   IconButton,
   ListItemText,
-  ListItemIcon
-} from '@material-ui/core';
+  ListItemIcon,
+  ListItemButton
+} from '@mui/material';
 //
 import Logo from '../Logo';
 import Scrollbar from '../Scrollbar';
@@ -41,11 +41,11 @@ ParentItem.propTypes = {
 
 function ParentItem({ icon, title, hasSub, ...other }) {
   return (
-    <ListItem button sx={{ textTransform: 'capitalize', height: 44 }} {...other}>
+    <ListItemButton sx={{ textTransform: 'capitalize', height: 44 }} {...other}>
       <ListItemIcon sx={{ width: 22, height: 22 }}>{icon}</ListItemIcon>
       <ListItemText primaryTypographyProps={{ typography: 'body2' }}>{title}</ListItemText>
       {hasSub && <Box component={Icon} icon={arrowIosForwardFill} />}
-    </ListItem>
+    </ListItemButton>
   );
 }
 
@@ -110,14 +110,7 @@ function SubMenu({ parent, pathname }) {
                       {subheader}
                     </Typography>
                     {items.map((link) => (
-                      <ListItem
-                        button
-                        disableGutters
-                        key={link.title}
-                        component={RouterLink}
-                        to={link.path}
-                        sx={{ px: 1.5 }}
-                      >
+                      <ListItemButton key={link.title} component={RouterLink} to={link.path} sx={{ px: 1.5 }}>
                         <ListItemIcon
                           sx={{
                             mr: 0.5,
@@ -134,7 +127,7 @@ function SubMenu({ parent, pathname }) {
                           primary={link.title}
                           primaryTypographyProps={{ typography: 'body2', noWrap: true }}
                         />
-                      </ListItem>
+                      </ListItemButton>
                     ))}
                   </List>
                 );

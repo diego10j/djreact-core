@@ -1,8 +1,8 @@
 import { useState } from 'react';
 // material
-import Visibility from '@material-ui/icons/Visibility';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
   Stack,
   Input,
@@ -13,7 +13,7 @@ import {
   FormControl,
   InputAdornment,
   FormHelperText
-} from '@material-ui/core';
+} from '@mui/material';
 //
 import { Block } from '../../Block';
 

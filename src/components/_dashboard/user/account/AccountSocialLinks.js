@@ -6,8 +6,8 @@ import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import facebookFill from '@iconify/icons-eva/facebook-fill';
 import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 // material
-import { Stack, Card, TextField, InputAdornment } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Stack, Card, TextField, InputAdornment } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 // redux
 import { useSelector } from '../../../../redux/store';
 // utils

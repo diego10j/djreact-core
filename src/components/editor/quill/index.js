@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 //
 import EditorToolbar, { formats, redoChange, undoChange } from './QuillEditorToolbar';
 
@@ -45,7 +45,10 @@ export default function QuillEditor({ id, error, value, onChange, simple = false
   const modules = {
     toolbar: {
       container: `#${id}`,
-      handlers: { undo: undoChange, redo: redoChange }
+      handlers: {
+        undo: undoChange,
+        redo: redoChange
+      }
     },
     history: {
       delay: 500,

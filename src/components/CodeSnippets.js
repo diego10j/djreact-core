@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import codeFill from '@iconify/icons-eva/code-fill';
 // material
-import { Box, Tooltip, IconButton, DialogTitle, DialogContent } from '@material-ui/core';
+import { Box, Tooltip, IconButton, DialogTitle, DialogContent } from '@mui/material';
 //
 import Markdown from './Markdown';
 import { DialogAnimate } from './animate';

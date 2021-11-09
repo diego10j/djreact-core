@@ -1,33 +1,27 @@
-import faker from 'faker';
 import Slider from 'react-slick';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { CardContent, Box, Card, Typography } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { CardContent, Box, Card, Typography } from '@mui/material';
 // utils
-import { mockImgFeed } from '../../../utils/mockImages';
+import mockData from '../../../utils/mock-data';
 //
 import { varFadeInRight, MotionContainer } from '../../animate';
 import { CarouselControlsPaging1, CarouselControlsArrowsBasic1 } from '../../carousel';
 
 // ----------------------------------------------------------------------
 
-const CAROUSELS = [
-  'Harry Potter and the Deathly Hallows - Part 2',
-  'Disney Zombies 2',
-  'Lightroom mobile - Koloro'
-].map((item, index) => {
-  const setIndex = index + 1;
+const TITLES = ['Harry Potter and the Deathly Hallows - Part 2', 'Disney Zombies 2', 'Lightroom mobile - Koloro'];
 
-  return {
-    title: item,
-    description: faker.lorem.lines(),
-    image: mockImgFeed(setIndex)
-  };
-});
+const MOCK_APPS = [...Array(3)].map((_, index) => ({
+  id: mockData.id(index),
+  title: TITLES[index],
+  description: mockData.text.title(index),
+  image: mockData.image.feed(index)
+}));
 
 const CarouselImgStyle = styled('img')(({ theme }) => ({
   height: 280,
@@ -54,8 +48,8 @@ function CarouselItem({ item, isActive }) {
         <Box
           sx={{
             top: 0,
-            width: '100%',
-            height: '100%',
+            width: 1,
+            height: 1,
             position: 'absolute',
             bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72)
           }}
@@ -64,7 +58,7 @@ function CarouselItem({ item, isActive }) {
         <CardContent
           sx={{
             bottom: 0,
-            width: '100%',
+            width: 1,
             textAlign: 'left',
             position: 'absolute',
             color: 'common.white'
@@ -103,7 +97,7 @@ function CarouselItem({ item, isActive }) {
 export default function AppFeatured() {
   const theme = useTheme();
   const carouselRef = useRef();
-  const [currentIndex, setCurrentIndex] = useState(theme.direction === 'rtl' ? CAROUSELS.length - 1 : 0);
+  const [currentIndex, setCurrentIndex] = useState(theme.direction === 'rtl' ? MOCK_APPS.length - 1 : 0);
 
   const settings = {
     speed: 800,
@@ -136,8 +130,8 @@ export default function AppFeatured() {
   return (
     <Card>
       <Slider ref={carouselRef} {...settings}>
-        {CAROUSELS.map((item, index) => (
-          <CarouselItem key={item.title} item={item} isActive={index === currentIndex} />
+        {MOCK_APPS.map((app, index) => (
+          <CarouselItem key={app.id} item={app} isActive={index === currentIndex} />
         ))}
       </Slider>
 

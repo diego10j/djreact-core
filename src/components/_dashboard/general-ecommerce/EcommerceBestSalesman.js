@@ -1,7 +1,5 @@
-import faker from 'faker';
-import { sentenceCase } from 'change-case';
 // material
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Card,
@@ -14,62 +12,29 @@ import {
   CardHeader,
   Typography,
   TableContainer
-} from '@material-ui/core';
+} from '@mui/material';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
+import mockData from '../../../utils/mock-data';
 //
 import Label from '../../Label';
 import Scrollbar from '../../Scrollbar';
 
 // ----------------------------------------------------------------------
 
-const BEST_SALES = [
-  {
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    avatar: '/static/mock-images/avatars/avatar_8.jpg',
-    category: 'CAP',
-    flag: '/static/icons/ic_flag_de.svg',
-    total: faker.finance.amount(),
-    rank: 'top_1'
-  },
-  {
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    avatar: '/static/mock-images/avatars/avatar_2.jpg',
-    category: 'Branded Shoes',
-    flag: '/static/icons/ic_flag_en.svg',
-    total: faker.finance.amount(),
-    rank: 'top_2'
-  },
-  {
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    avatar: '/static/mock-images/avatars/avatar_3.jpg',
-    category: 'Headphone',
-    flag: '/static/icons/ic_flag_fr.svg',
-    total: faker.finance.amount(),
-    rank: 'top_3'
-  },
-  {
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    avatar: '/static/mock-images/avatars/avatar_4.jpg',
-    category: 'Cell Phone',
-    flag: '/static/icons/ic_flags_kr.svg',
-    total: faker.finance.amount(),
-    rank: 'top_4'
-  },
-  {
-    name: faker.name.findName(),
-    email: faker.internet.email(),
-    avatar: '/static/mock-images/avatars/avatar_5.jpg',
-    category: 'Earings',
-    flag: '/static/icons/ic_flags_us.svg',
-    total: faker.finance.amount(),
-    rank: 'top_5'
-  }
-];
+const COUNTRY = ['de', 'en', 'fr', 'kr', 'us'];
+const CATEGORY = ['CAP', 'Branded Shoes', 'Headphone', 'Cell Phone', 'Earings'];
+
+const MOCK_SALES = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  name: mockData.name.fullName(index),
+  email: mockData.email(index),
+  avatar: mockData.image.avatar(index + 8),
+  category: CATEGORY[index],
+  flag: `/static/icons/ic_flag_${COUNTRY[index]}.svg`,
+  total: mockData.number.price(index),
+  rank: `Top ${index + 1}`
+}));
 
 // ----------------------------------------------------------------------
 
@@ -92,7 +57,7 @@ export default function EcommerceBestSalesman() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {BEST_SALES.map((row) => (
+              {MOCK_SALES.map((row) => (
                 <TableRow key={row.name}>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -114,14 +79,14 @@ export default function EcommerceBestSalesman() {
                     <Label
                       variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
                       color={
-                        (row.rank === 'top_1' && 'primary') ||
-                        (row.rank === 'top_2' && 'info') ||
-                        (row.rank === 'top_3' && 'success') ||
-                        (row.rank === 'top_4' && 'warning') ||
+                        (row.rank === 'Top 1' && 'primary') ||
+                        (row.rank === 'Top 2' && 'info') ||
+                        (row.rank === 'Top 3' && 'success') ||
+                        (row.rank === 'Top 4' && 'warning') ||
                         'error'
                       }
                     >
-                      {sentenceCase(row.rank)}
+                      {row.rank}
                     </Label>
                   </TableCell>
                 </TableRow>

@@ -1,23 +1,8 @@
 // ----------------------------------------------------------------------
 
-export default function IconButton(theme) {
+export default function IconButton() {
   return {
     MuiIconButton: {
-      variants: [
-        {
-          props: { color: 'default' },
-          style: {
-            '&:hover': { backgroundColor: theme.palette.action.hover }
-          }
-        },
-        {
-          props: { color: 'inherit' },
-          style: {
-            '&:hover': { backgroundColor: theme.palette.action.hover }
-          }
-        }
-      ],
-
       styleOverrides: {
         root: {}
       }

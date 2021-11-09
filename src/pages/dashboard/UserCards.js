@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 // material
-import { Container, Grid, Skeleton } from '@material-ui/core';
+import { Container, Grid, Skeleton } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getUsers } from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import { UserCard } from '../../components/_dashboard/user/cards';
@@ -24,6 +26,7 @@ const SkeletonLoad = (
 );
 
 export default function UserCards() {
+  const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.user);
 
@@ -33,7 +36,7 @@ export default function UserCards() {
 
   return (
     <Page title="User: Cards | Minimal-UI">
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="User Cards"
           links={[

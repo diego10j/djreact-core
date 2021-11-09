@@ -2,8 +2,8 @@ import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Grid, Container, Typography, useMediaQuery } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box, Card, Grid, Container, Typography, useMediaQuery } from '@mui/material';
 // utils
 import fakeRequest from '../utils/fakeRequest';
 // components

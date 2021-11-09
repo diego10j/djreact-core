@@ -1,5 +1,7 @@
 // material
-import { Box, Grid, Container, Typography } from '@material-ui/core';
+import { Box, Grid, Container, Typography } from '@mui/material';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import {
@@ -20,9 +22,11 @@ import {
 // ----------------------------------------------------------------------
 
 export default function GeneralAnalytics() {
+  const { themeStretch } = useSettings();
+
   return (
     <Page title="General: Analytics | Minimal-UI">
-      <Container maxWidth="xl">
+      <Container maxWidth={themeStretch ? false : 'xl'}>
         <Box sx={{ pb: 5 }}>
           <Typography variant="h4">Hi, Welcome back</Typography>
         </Box>

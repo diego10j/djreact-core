@@ -1,12 +1,7 @@
 import { useState } from 'react';
 // material
-import { Box, TextField, Typography, Stack } from '@material-ui/core';
-import {
-  DateRangePicker,
-  MobileDateRangePicker,
-  DesktopDateRangePicker,
-  StaticDateRangePicker
-} from '@material-ui/lab';
+import { Box, TextField, Typography, Stack } from '@mui/material';
+import { DateRangePicker, MobileDateRangePicker, DesktopDateRangePicker, StaticDateRangePicker } from '@mui/lab';
 //
 import { Block } from '../../Block';
 

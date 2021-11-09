@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Radio, Typography, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Radio, Typography, RadioGroup, FormControlLabel } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

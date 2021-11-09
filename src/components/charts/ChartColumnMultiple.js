@@ -23,7 +23,7 @@ export default function ChartColumnMultiple() {
         }
       }
     },
-    plotOptions: { bar: { columnWidth: '34%', borderRadius: 4 } }
+    plotOptions: { bar: { columnWidth: '36%' } }
   });
 
   return <ReactApexChart type="bar" series={CHART_DATA} options={chartOptions} height={320} />;

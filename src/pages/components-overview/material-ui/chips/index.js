@@ -1,6 +1,6 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Card, Container, CardHeader, CardContent } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Grid, Card, Container, CardHeader, CardContent } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // components
@@ -32,7 +32,7 @@ export default function ChipsComponent() {
           <HeaderBreadcrumbs
             heading="Chip"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Chip' }]}
-            moreLink="https://next.material-ui.com/components/chips"
+            moreLink="https://mui.com/components/chips"
           />
         </Container>
       </Box>

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
 // material
-import { Box, Grid, Step, Stepper, Container, StepLabel, StepConnector } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import { Box, Grid, Step, Stepper, Container, StepLabel, StepConnector } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getCart, createBilling } from '../../redux/slices/product';
@@ -12,6 +12,7 @@ import { getCart, createBilling } from '../../redux/slices/product';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
 import useIsMountedRef from '../../hooks/useIsMountedRef';
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -26,23 +27,20 @@ import {
 
 const STEPS = ['Cart', 'Billing & address', 'Payment'];
 
-const QontoConnector = withStyles((theme) => ({
-  alternativeLabel: {
-    top: 10,
-    left: 'calc(-50% + 20px)',
-    right: 'calc(50% + 20px)'
-  },
-  active: {
-    '& $line': { borderColor: theme.palette.primary.main }
-  },
-  completed: {
-    '& $line': { borderColor: theme.palette.primary.main }
-  },
-  line: {
+const QontoConnector = styled(StepConnector)(({ theme }) => ({
+  top: 10,
+  left: 'calc(-50% + 20px)',
+  right: 'calc(50% + 20px)',
+  '& .MuiStepConnector-line': {
     borderTopWidth: 2,
     borderColor: theme.palette.divider
+  },
+  '&.Mui-active, &.Mui-completed': {
+    '& .MuiStepConnector-line': {
+      borderColor: theme.palette.primary.main
+    }
   }
-}))(StepConnector);
+}));
 
 QontoStepIcon.propTypes = {
   active: PropTypes.bool,
@@ -59,8 +57,7 @@ function QontoStepIcon({ active, completed }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: active ? 'primary.main' : 'divider',
-        bgcolor: 'background.default'
+        color: active ? 'primary.main' : 'text.disabled'
       }}
     >
       {completed ? (
@@ -80,6 +77,7 @@ function QontoStepIcon({ active, completed }) {
 }
 
 export default function EcommerceCheckout() {
+  const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const isMountedRef = useIsMountedRef();
   const { checkout } = useSelector((state) => state.product);
@@ -100,7 +98,7 @@ export default function EcommerceCheckout() {
 
   return (
     <Page title="Ecommerce: Checkout | Minimal-UI">
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Checkout"
           links={[

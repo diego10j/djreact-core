@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { useLocation } from 'react-router-dom';
 import plusFill from '@iconify/icons-eva/plus-fill';
 // material
-import { Box, List, Drawer, Button, Divider } from '@material-ui/core';
+import { Box, List, Drawer, Button, Divider } from '@mui/material';
 // redux
 import { useSelector } from '../../../redux/store';
 //

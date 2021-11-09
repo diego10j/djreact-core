@@ -1,7 +1,7 @@
-import faker from 'faker';
-import { sum } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+import { random, sum } from 'lodash';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Grid,
@@ -15,11 +15,14 @@ import {
   TableCell,
   Typography,
   TableContainer
-} from '@material-ui/core';
+} from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // utils
 import { fCurrency } from '../../utils/formatNumber';
+import mockData from '../../utils/mock-data';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -30,30 +33,30 @@ import { InvoiceToolbar } from '../../components/_dashboard/e-commerce/invoice';
 // ----------------------------------------------------------------------
 
 const INVOICE = {
-  id: faker.datatype.uuid(),
+  id: mockData.id(1),
   taxes: 5,
   discount: 10,
   status: 'paid',
   invoiceFrom: {
-    name: faker.name.findName(),
+    name: 'Kathlyn Hauck',
     address: 'DieSachbearbeiter Choriner Straße 49 10435 Berlin',
-    company: faker.company.companyName(),
-    email: faker.internet.email(),
-    phone: faker.phone.phoneNumberFormat()
+    company: 'Durgan Group',
+    email: 'Dion.collins23@gmail.com',
+    phone: '227-940-9869'
   },
   invoiceTo: {
-    name: faker.name.findName(),
+    name: 'Lesly Reichel',
     address: 'Keas 69 Str. 15234, Chalandri Athens, Greece',
-    company: faker.company.companyName(),
-    email: faker.internet.email(),
-    phone: faker.phone.phoneNumberFormat()
+    company: 'Stracke LLC',
+    email: 'kurt_durgan46@hotmail.com',
+    phone: '261-433-6689'
   },
-  items: [...Array(3)].map(() => ({
-    id: faker.datatype.uuid(),
-    title: faker.lorem.sentence(),
-    description: faker.lorem.lines(),
-    qty: faker.datatype.number({ min: 1, max: 5 }),
-    price: faker.datatype.number({ min: 4, max: 99, precision: 0.01 })
+  items: [...Array(3)].map((_, index) => ({
+    id: uuidv4(),
+    title: mockData.text.title(index),
+    description: mockData.text.description(index),
+    qty: random(5),
+    price: mockData.number.price(index)
   }))
 };
 
@@ -67,12 +70,14 @@ const RowResultStyle = styled(TableRow)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function EcommerceInvoice() {
+  const { themeStretch } = useSettings();
+
   const subTotal = sum(INVOICE.items.map((item) => item.price * item.qty));
   const total = subTotal - INVOICE.discount + INVOICE.taxes;
 
   return (
     <Page title="Ecommerce: Invoice | Minimal-UI">
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Invoice Details"
           links={[

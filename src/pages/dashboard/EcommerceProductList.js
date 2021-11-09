@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
+import { useTheme, styled } from '@mui/material/styles';
 import {
   Box,
   Card,
@@ -19,7 +19,7 @@ import {
   Typography,
   TableContainer,
   TablePagination
-} from '@material-ui/core';
+} from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getProducts, deleteProduct } from '../../redux/slices/product';
@@ -28,6 +28,8 @@ import { fDate } from '../../utils/formatTime';
 import { fCurrency } from '../../utils/formatNumber';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -94,6 +96,7 @@ function applySortFilter(array, comparator, query) {
 // ----------------------------------------------------------------------
 
 export default function EcommerceProductList() {
+  const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.product);
@@ -163,7 +166,7 @@ export default function EcommerceProductList() {
 
   return (
     <Page title="Ecommerce: Product List | Minimal-UI">
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Product List"
           links={[

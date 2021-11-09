@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import searchFill from '@iconify/icons-eva/search-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, alpha, Container, OutlinedInput, InputAdornment } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, alpha, Container, OutlinedInput, InputAdornment } from '@mui/material';
 //
 import { varFadeInUp, TextAnimate, MotionInView, varWrapEnter, varFadeInRight } from '../../animate';
 

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 // material
-import { List } from '@material-ui/core';
+import { List } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 //

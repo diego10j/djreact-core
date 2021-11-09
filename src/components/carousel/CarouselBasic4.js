@@ -1,14 +1,13 @@
-import faker from 'faker';
 import Slider from 'react-slick';
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import { Icon } from '@iconify/react';
 import moreHorizontalFill from '@iconify/icons-eva/more-horizontal-fill';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Typography } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Card, Typography } from '@mui/material';
 // utils
-import { mockImgFeed } from '../../utils/mockImages';
+import mockData from '../../utils/mock-data';
 //
 import { CarouselControlsArrowsBasic2 } from './controls';
 //
@@ -16,14 +15,12 @@ import { MIconButton } from '../@material-extend';
 
 // ----------------------------------------------------------------------
 
-const CAROUSELS = [...Array(5)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    title: faker.name.title(),
-    description: faker.lorem.paragraphs(),
-    image: mockImgFeed(setIndex)
-  };
-});
+const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  title: mockData.text.title(index),
+  image: mockData.image.feed(index),
+  description: mockData.text.description(index)
+}));
 
 const ContentItemStyle = styled('div')(({ theme }) => ({
   bottom: 0,
@@ -80,7 +77,6 @@ export default function CarouselBasic4() {
   const carouselRef = useRef();
 
   const settings = {
-    speed: 500,
     dots: false,
     arrows: false,
     autoplay: true,
@@ -101,7 +97,7 @@ export default function CarouselBasic4() {
   return (
     <Card>
       <Slider ref={carouselRef} {...settings}>
-        {CAROUSELS.map((item) => (
+        {MOCK_CAROUSELS.map((item) => (
           <CarouselItem key={item.title} item={item} />
         ))}
       </Slider>

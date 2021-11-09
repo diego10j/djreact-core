@@ -1,6 +1,6 @@
 // material
-import AlarmIcon from '@material-ui/icons/Alarm';
-import { Grid, Fab } from '@material-ui/core';
+import AlarmIcon from '@mui/icons-material/Alarm';
+import { Grid, Fab } from '@mui/material';
 // components
 import { MFab } from '../../../../components/@material-extend';
 //
@@ -79,6 +79,10 @@ export default function FloatingActionButton() {
           <MFab variant="extended">
             <AlarmIcon />
             Primary
+          </MFab>
+          <MFab variant="extended" color="secondary">
+            <AlarmIcon />
+            Secondary
           </MFab>
           <MFab variant="extended" color="info">
             <AlarmIcon />

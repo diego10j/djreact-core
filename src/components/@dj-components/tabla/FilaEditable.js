@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 // componentes
-import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Checkbox from '@mui/material/Checkbox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import {
   FormControl,
   FormControlLabel,
@@ -14,10 +14,11 @@ import {
   Skeleton,
   TextField,
   Avatar
-} from '@material-ui/core';
-import { withStyles, experimentalStyled as styled, alpha } from '@material-ui/core/styles';
-import DatePicker from '@material-ui/lab/DatePicker';
-import TimePicker from '@material-ui/lab/TimePicker';
+} from '@mui/material';
+import { experimentalStyled as styled, alpha } from '@mui/material/styles';
+import { withStyles } from '@mui/styles';
+import DatePicker from '@mui/lab/DatePicker';
+import TimePicker from '@mui/lab/TimePicker';
 import { toDate, isFechaValida, isDate, toHora, getFormatoFecha, getFormatoHora } from '../../../utils/formatTime';
 import { isDefined, toCapitalize } from '../../../utils/utilitario';
 

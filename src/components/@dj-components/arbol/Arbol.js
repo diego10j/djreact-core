@@ -1,11 +1,12 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
-import { alpha, makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@mui/styles';
+import { alpha } from '@mui/material/styles';
 // material
-import TreeView from '@material-ui/lab/TreeView';
-import TreeItem from '@material-ui/lab/TreeItem';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import { Box } from '@material-ui/core';
+import TreeView from '@mui/lab/TreeView';
+import TreeItem from '@mui/lab/TreeItem';
+import SvgIcon from '@mui/material/SvgIcon';
+import { Box } from '@mui/material';
 // componentes
 import SkeletonArbol from './SkeletonArbol';
 // hooks
@@ -185,7 +186,11 @@ Arbol.propTypes = {
   campoNombre: PropTypes.string,
   campoPadre: PropTypes.string,
   campoOrden: PropTypes.string,
-  condiciones: PropTypes.string
+  condiciones: PropTypes.string,
+  titulo: PropTypes.string,
+  height: PropTypes.number,
+  // Eventos
+  onSelect: PropTypes.func
 };
 
 export default Arbol;

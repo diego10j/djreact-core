@@ -1,9 +1,9 @@
 // material
-import FolderIcon from '@material-ui/icons/Folder';
-import PageviewIcon from '@material-ui/icons/Pageview';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Badge, Avatar, Container, AvatarGroup } from '@material-ui/core';
+import FolderIcon from '@mui/icons-material/Folder';
+import PageviewIcon from '@mui/icons-material/Pageview';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box, Grid, Badge, Avatar, Container, AvatarGroup } from '@mui/material';
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
@@ -39,7 +39,7 @@ export default function AvatarComponent() {
           <HeaderBreadcrumbs
             heading="Avatar"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Avatar' }]}
-            moreLink="https://next.material-ui.com/components/avatars"
+            moreLink="https://mui.com/components/avatars"
           />
         </Container>
       </Box>

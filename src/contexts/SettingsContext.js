@@ -65,6 +65,10 @@ const PRIMARY_COLOR = [
   }
 ];
 
+SetColor.propTypes = {
+  themeColor: PropTypes.oneOf(['default', 'purple', 'cyan', 'blue', 'orange', 'red'])
+};
+
 function SetColor(themeColor) {
   let color;
   const DEFAULT = PRIMARY_COLOR[0];
@@ -100,9 +104,11 @@ const initialState = {
   themeMode: 'light',
   themeDirection: 'ltr',
   themeColor: 'default',
+  themeStretch: true,
   onChangeMode: () => {},
   onChangeDirection: () => {},
   onChangeColor: () => {},
+  onToggleStretch: () => {},
   setColor: PRIMARY_COLOR[0],
   colorOption: []
 };
@@ -115,9 +121,10 @@ SettingsProvider.propTypes = {
 
 function SettingsProvider({ children }) {
   const [settings, setSettings] = useLocalStorage('settings', {
-    themeMode: 'light',
-    themeDirection: 'ltr',
-    themeColor: 'default'
+    themeMode: initialState.themeMode,
+    themeDirection: initialState.themeDirection,
+    themeColor: initialState.themeColor,
+    themeStretch: initialState.themeStretch
   });
 
   const onChangeMode = (event) => {
@@ -141,6 +148,13 @@ function SettingsProvider({ children }) {
     });
   };
 
+  const onToggleStretch = () => {
+    setSettings({
+      ...settings,
+      themeStretch: !settings.themeStretch
+    });
+  };
+
   return (
     <SettingsContext.Provider
       value={{
@@ -155,7 +169,9 @@ function SettingsProvider({ children }) {
         colorOption: PRIMARY_COLOR.map((color) => ({
           name: color.name,
           value: color.main
-        }))
+        })),
+        // Stretch
+        onToggleStretch
       }}
     >
       {children}

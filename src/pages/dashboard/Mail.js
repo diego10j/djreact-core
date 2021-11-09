@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 // material
-import { Container, Card } from '@material-ui/core';
+import { Container, Card } from '@mui/material';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getLabels } from '../../redux/slices/mail';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -15,6 +17,7 @@ import { MailList, MailDetails, MailSidebar, MailCompose } from '../../component
 // ----------------------------------------------------------------------
 
 export default function Mail() {
+  const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { mailId } = useParams();
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -26,7 +29,7 @@ export default function Mail() {
 
   return (
     <Page title="Mail | Minimal-UI">
-      <Container maxWidth="xl">
+      <Container maxWidth={themeStretch ? false : 'xl'}>
         <HeaderBreadcrumbs
           heading="Mail"
           links={[

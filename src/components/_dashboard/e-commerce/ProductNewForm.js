@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { LoadingButton } from '@material-ui/lab';
+import { styled } from '@mui/material/styles';
+import { LoadingButton } from '@mui/lab';
 import {
   Card,
   Chip,
@@ -24,7 +24,7 @@ import {
   InputAdornment,
   FormHelperText,
   FormControlLabel
-} from '@material-ui/core';
+} from '@mui/material';
 // utils
 import fakeRequest from '../../../utils/fakeRequest';
 // routes
@@ -241,7 +241,7 @@ export default function ProductNewForm({ isEdit, currentProduct }) {
                     options={TAGS_OPTION.map((option) => option)}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (
-                        <Chip key={option} size="small" label={option} {...getTagProps({ index })} />
+                        <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
                       ))
                     }
                     renderInput={(params) => <TextField label="Tags" {...params} />}

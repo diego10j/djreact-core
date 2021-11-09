@@ -1,25 +1,22 @@
-import faker from 'faker';
 import Slider from 'react-slick';
 import PropTypes from 'prop-types';
 import { useState, useRef } from 'react';
 // material
-import { useTheme } from '@material-ui/core/styles';
-import { Box, Card, Typography, CardContent } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { Box, Card, Typography, CardContent } from '@mui/material';
 // utils
-import { mockImgFeed } from '../../utils/mockImages';
+import mockData from '../../utils/mock-data';
 //
 import { CarouselControlsArrowsIndex } from './controls';
 
 // ----------------------------------------------------------------------
 
-const CAROUSELS = [...Array(5)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    title: faker.name.title(),
-    description: faker.lorem.paragraphs(),
-    image: mockImgFeed(setIndex)
-  };
-});
+const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  title: mockData.text.title(index),
+  image: mockData.image.feed(index),
+  description: mockData.text.description(index)
+}));
 
 CarouselItem.propTypes = {
   item: PropTypes.object
@@ -50,7 +47,6 @@ export default function CarouselBasic2() {
   const [currentIndex, setCurrentIndex] = useState(2);
 
   const settings = {
-    speed: 500,
     dots: false,
     arrows: false,
     autoplay: true,
@@ -73,14 +69,14 @@ export default function CarouselBasic2() {
   return (
     <Card>
       <Slider ref={carouselRef} {...settings}>
-        {CAROUSELS.map((item) => (
+        {MOCK_CAROUSELS.map((item) => (
           <CarouselItem key={item.title} item={item} />
         ))}
       </Slider>
 
       <CarouselControlsArrowsIndex
         index={currentIndex}
-        total={CAROUSELS.length}
+        total={MOCK_CAROUSELS.length}
         onNext={handleNext}
         onPrevious={handlePrevious}
         sx={{ bottom: 120 }}

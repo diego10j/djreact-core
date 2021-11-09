@@ -1,6 +1,6 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Switch, Container, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Grid, Switch, Container, Typography, Stack } from '@mui/material';
 // components
 import Page from '../components/Page';
 import { PricingPlanCard } from '../components/_external-pages/pricing';
@@ -75,13 +75,7 @@ export default function Pricing() {
         </Typography>
 
         <Box sx={{ my: 5 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end'
-            }}
-          >
+          <Stack direction="row" alignItems="center" justifyContent="flex-end">
             <Typography variant="overline" sx={{ mr: 1.5 }}>
               MONTHLY
             </Typography>
@@ -89,7 +83,7 @@ export default function Pricing() {
             <Typography variant="overline" sx={{ ml: 1.5 }}>
               YEARLY (save 10%)
             </Typography>
-          </Box>
+          </Stack>
           <Typography variant="caption" align="right" sx={{ color: 'text.secondary', display: 'block' }}>
             * Plus applicable taxes
           </Typography>

@@ -1,14 +1,14 @@
 // material
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Fab, Zoom, Grid, Fade, Button, Tooltip, Container, IconButton } from '@material-ui/core';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { styled } from '@mui/material/styles';
+import { Box, Fab, Zoom, Grid, Fade, Button, Tooltip, Container, IconButton } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { MFab, MButton, MIconButton } from '../../../components/@material-extend';
+import { MFab, MIconButton } from '../../../components/@material-extend';
 //
 import { Block } from '../Block';
 
@@ -49,7 +49,7 @@ export default function TooltipsComponent() {
           <HeaderBreadcrumbs
             heading="Tooltip"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Tooltip' }]}
-            moreLink="https://next.material-ui.com/components/tooltips"
+            moreLink="https://mui.com/components/tooltips"
           />
         </Container>
       </Box>
@@ -79,9 +79,9 @@ export default function TooltipsComponent() {
                 </MFab>
               </Tooltip>
               <Tooltip title="Add">
-                <MButton variant="outlined" color="info">
+                <Button variant="outlined" color="info">
                   Button
-                </MButton>
+                </Button>
               </Tooltip>
             </Block>
           </Grid>

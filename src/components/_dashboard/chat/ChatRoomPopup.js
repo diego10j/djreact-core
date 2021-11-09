@@ -4,8 +4,8 @@ import pinFill from '@iconify/icons-eva/pin-fill';
 import phoneFill from '@iconify/icons-eva/phone-fill';
 import emailFill from '@iconify/icons-eva/email-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Avatar, Typography, DialogContent } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Avatar, Typography, DialogContent } from '@mui/material';
 //
 import { DialogAnimate } from '../../animate';
 

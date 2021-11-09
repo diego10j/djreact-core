@@ -6,11 +6,10 @@ import fileFill from '@iconify/icons-eva/file-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 import { motion, AnimatePresence } from 'framer-motion';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
+import { alpha, styled } from '@mui/material/styles';
 import {
   Box,
   List,
-  Link,
   Stack,
   Paper,
   Button,
@@ -19,7 +18,7 @@ import {
   ListItemIcon,
   ListItemText,
   ListItemSecondaryAction
-} from '@material-ui/core';
+} from '@mui/material';
 // utils
 import { fData } from '../../utils/formatNumber';
 //
@@ -115,7 +114,10 @@ export default function UploadMultiFile({ error, showPreview = false, files, onR
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Drop files here or click&nbsp;
-            <Link underline="always">browse</Link>&nbsp;thorough your machine
+            <Typography variant="body2" component="span" sx={{ color: 'primary.main', textDecoration: 'underline' }}>
+              browse
+            </Typography>
+            &nbsp;thorough your machine
           </Typography>
         </Box>
       </DropZoneStyle>

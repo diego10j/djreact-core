@@ -1,11 +1,11 @@
 import { last, slice } from 'lodash';
 // material
-import HotelIcon from '@material-ui/icons/Hotel';
-import RepeatIcon from '@material-ui/icons/Repeat';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Paper, Container, Typography } from '@material-ui/core';
+import HotelIcon from '@mui/icons-material/Hotel';
+import RepeatIcon from '@mui/icons-material/Repeat';
+import FastfoodIcon from '@mui/icons-material/Fastfood';
+import LaptopMacIcon from '@mui/icons-material/LaptopMac';
+import { styled } from '@mui/material/styles';
+import { Box, Grid, Paper, Container, Typography } from '@mui/material';
 import {
   Timeline,
   TimelineDot,
@@ -14,13 +14,12 @@ import {
   TimelineSeparator,
   TimelineConnector,
   TimelineOppositeContent
-} from '@material-ui/lab';
+} from '@mui/lab';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { MTimelineDot } from '../../../components/@material-extend';
 //
 import { Block } from '../Block';
 
@@ -109,7 +108,7 @@ export default function TimelineComponent() {
           <HeaderBreadcrumbs
             heading="Timeline"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Timeline' }]}
-            moreLink="https://next.material-ui.com/components/timeline"
+            moreLink="https://mui.com/components/timeline"
           />
         </Container>
       </Box>
@@ -170,7 +169,7 @@ export default function TimelineComponent() {
                 {TIMELINES.map((item) => (
                   <TimelineItem key={item.key}>
                     <TimelineSeparator>
-                      <MTimelineDot color={item.color} />
+                      <TimelineDot color={item.color} />
                       {lastItem === item.key ? null : <TimelineConnector />}
                     </TimelineSeparator>
                     <TimelineContent>{item.title}</TimelineContent>
@@ -186,7 +185,7 @@ export default function TimelineComponent() {
                 {TIMELINES.map((item) => (
                   <TimelineItem key={item.key}>
                     <TimelineSeparator>
-                      <MTimelineDot variant="outlined" color={item.color} />
+                      <TimelineDot variant="outlined" color={item.color} />
                       {lastItem === item.key ? null : <TimelineConnector />}
                     </TimelineSeparator>
                     <TimelineContent>{item.title}</TimelineContent>
@@ -205,7 +204,7 @@ export default function TimelineComponent() {
                       <Typography sx={{ color: 'text.secondary' }}>{item.time}</Typography>
                     </TimelineOppositeContent>
                     <TimelineSeparator>
-                      <MTimelineDot color={item.color} />
+                      <TimelineDot color={item.color} />
                       {lastItem === item.key ? null : <TimelineConnector />}
                     </TimelineSeparator>
                     <TimelineContent>
@@ -228,7 +227,7 @@ export default function TimelineComponent() {
                       </Typography>
                     </TimelineOppositeContent>
                     <TimelineSeparator>
-                      <MTimelineDot color={item.color}>{item.icon}</MTimelineDot>
+                      <TimelineDot color={item.color}>{item.icon}</TimelineDot>
                       <TimelineConnector />
                     </TimelineSeparator>
                     <TimelineContent>

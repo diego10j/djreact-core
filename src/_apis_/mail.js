@@ -1,13 +1,9 @@
-import faker from 'faker';
 import { sample } from 'lodash';
 // utils
-import { mockImgFeed, mockImgAvatar } from '../utils/mockImages';
-//
 import mock from './mock';
+import mockData from '../utils/mock-data';
 
 // ----------------------------------------------------------------------
-
-const createId = (index) => `fc68bad5-d430-4033-b8f8-4bc069dc0ba0-${index}`;
 
 const createLabelIds = (index) => {
   if (index === 1) {
@@ -24,7 +20,7 @@ const createLabelIds = (index) => {
 
 const createAttachment = (index) => {
   if (index === 1) {
-    return [mockImgFeed(1), mockImgFeed(2)];
+    return [mockData.image.feed(1), mockData.image.feed(2)];
   }
   if (index === 2) {
     return [
@@ -36,8 +32,8 @@ const createAttachment = (index) => {
   }
   if (index === 5) {
     return [
-      mockImgFeed(1),
-      mockImgFeed(2),
+      mockData.image.feed(1),
+      mockData.image.feed(2),
       '/static/mock-images/avatars/avatar_12.mp4',
       'https://mail.google.com/mail/u/file1.docx',
       'https://mail.google.com/mail/u/file2.xlsx',
@@ -87,36 +83,31 @@ const labels = [
   }
 ];
 
-const mails = [...Array(9)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    id: createId(setIndex),
-    labelIds: createLabelIds(setIndex),
-    folder: sample(FOLDER),
-    isImportant: faker.datatype.boolean(),
-    isStarred: faker.datatype.boolean(),
-    isUnread: faker.datatype.boolean(),
-    subject: faker.lorem.words(),
-    message: faker.lorem.paragraphs(),
-    createdAt: faker.date.past(),
-    files: createAttachment(setIndex),
-    from: {
-      name: faker.name.findName(),
-      email: faker.internet.email(),
-      avatar:
-        setIndex === 1 || setIndex === 2 || setIndex === 5 || setIndex === 6 || setIndex === 8
-          ? null
-          : mockImgAvatar(setIndex)
-    },
-    to: [
-      {
-        name: faker.name.findName(),
-        email: 'demo@minimals.cc',
-        avatar: null
-      }
-    ]
-  };
-});
+const mails = [...Array(9)].map((_, index) => ({
+  id: mockData.id(index),
+  labelIds: createLabelIds(index + 1),
+  folder: sample(FOLDER),
+  isImportant: mockData.boolean(index),
+  isStarred: mockData.boolean(index),
+  isUnread: mockData.boolean(index),
+  subject: mockData.text.title(index),
+  message: mockData.text.sentence(index),
+  createdAt: mockData.time(index),
+  files: createAttachment(index),
+  from: {
+    name: mockData.name.fullName(index),
+    email: mockData.email(index),
+    avatar:
+      index === 1 || index === 2 || index === 5 || index === 6 || index === 8 ? null : mockData.image.avatar(index)
+  },
+  to: [
+    {
+      name: 'Jaydon Frankie',
+      email: 'demo@minimals.cc',
+      avatar: null
+    }
+  ]
+}));
 
 // ----------------------------------------------------------------------
 

@@ -6,8 +6,8 @@ import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 import arrowIosUpwardFill from '@iconify/icons-eva/arrow-ios-upward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Link, Grid, List, Stack, Popover, ListItem, ListSubheader, CardActionArea } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Link, Grid, List, Stack, Popover, ListItem, ListSubheader, CardActionArea } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +21,17 @@ const LinkStyle = styled(Link)(({ theme }) => ({
   '&:hover': {
     opacity: 0.48,
     textDecoration: 'none'
+  }
+}));
+
+const ListItemStyle = styled(ListItem)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: 0,
+  marginTop: theme.spacing(3),
+  color: theme.palette.text.secondary,
+  transition: theme.transitions.create('color'),
+  '&:hover': {
+    color: theme.palette.text.primary
   }
 }));
 
@@ -50,7 +61,6 @@ function IconBullet({ type = 'item' }) {
 
 MenuDesktopItem.propTypes = {
   item: PropTypes.object,
-  pathname: PropTypes.string,
   isHome: PropTypes.bool,
   isOffset: PropTypes.bool,
   isOpen: PropTypes.bool,
@@ -58,13 +68,12 @@ MenuDesktopItem.propTypes = {
   onClose: PropTypes.func
 };
 
-function MenuDesktopItem({ item, pathname, isHome, isOpen, isOffset, onOpen, onClose }) {
+function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose }) {
   const { title, path, children } = item;
-  const isActive = pathname === path;
 
   if (children) {
     return (
-      <div key={title}>
+      <>
         <LinkStyle
           onClick={onOpen}
           sx={{
@@ -97,9 +106,9 @@ function MenuDesktopItem({ item, pathname, isHome, isOpen, isOffset, onOpen, onC
               pt: 5,
               pb: 3,
               right: 16,
-              margin: 'auto',
-              maxWidth: 1280,
+              m: 'auto',
               borderRadius: 2,
+              maxWidth: (theme) => theme.breakpoints.values.lg,
               boxShadow: (theme) => theme.customShadows.z24
             }
           }}
@@ -126,22 +135,16 @@ function MenuDesktopItem({ item, pathname, isHome, isOpen, isOffset, onOpen, onC
                     </ListSubheader>
 
                     {items.map((item) => (
-                      <ListItem
+                      <ListItemStyle
                         key={item.title}
                         to={item.path}
                         component={RouterLink}
                         underline="none"
                         sx={{
-                          p: 0,
-                          mt: 3,
-                          typography: 'body2',
-                          color: 'text.secondary',
-                          transition: (theme) => theme.transitions.create('color'),
-                          '&:hover': { color: 'text.primary' },
-                          ...(item.path === pathname && {
-                            typography: 'subtitle2',
-                            color: 'text.primary'
-                          })
+                          '&.active': {
+                            color: 'text.primary',
+                            typography: 'subtitle2'
+                          }
                         }}
                       >
                         {item.title === 'Dashboard' ? (
@@ -163,7 +166,6 @@ function MenuDesktopItem({ item, pathname, isHome, isOpen, isOffset, onOpen, onC
                                 tap: { scale: 0.98 }
                               }}
                               src="/static/illustrations/illustration_dashboard.png"
-                              sx={{ minWidth: 420 }}
                             />
                           </CardActionArea>
                         ) : (
@@ -172,7 +174,7 @@ function MenuDesktopItem({ item, pathname, isHome, isOpen, isOffset, onOpen, onC
                             {item.title}
                           </>
                         )}
-                      </ListItem>
+                      </ListItemStyle>
                     ))}
                   </List>
                 </Grid>
@@ -180,19 +182,36 @@ function MenuDesktopItem({ item, pathname, isHome, isOpen, isOffset, onOpen, onC
             })}
           </Grid>
         </Popover>
-      </div>
+      </>
+    );
+  }
+
+  if (title === 'Documentation') {
+    return (
+      <LinkStyle
+        href={path}
+        target="_blank"
+        sx={{
+          ...(isHome && { color: 'common.white' }),
+          ...(isOffset && { color: 'text.primary' })
+        }}
+      >
+        {title}
+      </LinkStyle>
     );
   }
 
   return (
     <LinkStyle
-      key={title}
       to={path}
       component={RouterLink}
+      end={path === '/'}
       sx={{
         ...(isHome && { color: 'common.white' }),
         ...(isOffset && { color: 'text.primary' }),
-        ...(isActive && { color: 'primary.main' })
+        '&.active': {
+          color: 'primary.main'
+        }
       }}
     >
       {title}
@@ -231,7 +250,6 @@ export default function MenuDesktop({ isOffset, isHome, navConfig }) {
         <MenuDesktopItem
           key={link.title}
           item={link}
-          pathname={pathname}
           isOpen={open}
           onOpen={handleOpen}
           onClose={handleClose}

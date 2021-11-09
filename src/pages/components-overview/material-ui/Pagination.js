@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Container, Pagination, TablePagination } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Grid, Container, Pagination, TablePagination } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -54,7 +54,7 @@ export default function PaginationComponent() {
           <HeaderBreadcrumbs
             heading="Pagination"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Pagination' }]}
-            moreLink="https://next.material-ui.com/components/pagination"
+            moreLink="https://mui.com/components/pagination"
           />
         </Container>
       </Box>

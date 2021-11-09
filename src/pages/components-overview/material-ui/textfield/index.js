@@ -1,8 +1,8 @@
 import { useState } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Tab } from '@material-ui/core';
-import { TabPanel, TabContext, TabList } from '@material-ui/lab';
+import { styled } from '@mui/material/styles';
+import { Box, Container, Tab } from '@mui/material';
+import { TabPanel, TabContext, TabList } from '@mui/lab';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // material
@@ -51,7 +51,7 @@ export default function TextFieldComponent() {
           <HeaderBreadcrumbs
             heading="TextField"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'TextField' }]}
-            moreLink="https://next.material-ui.com/components/text-fields"
+            moreLink="https://mui.com/components/text-fields"
           />
         </Container>
       </Box>

@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { v4 as uuidv4 } from 'uuid';
 // utils
 import fakeRequest from '../utils/fakeRequest';
 import { verify, sign } from '../utils/jwt';
@@ -23,7 +23,7 @@ const users = [
     state: 'California',
     city: 'San Francisco',
     zipCode: '94116',
-    about: faker.lorem.paragraphs(),
+    about: 'Praesent turpis. Phasellus viverra nulla ut metus varius laoreet. Phasellus tempus.',
     role: 'admin',
     isPublic: true
   }
@@ -71,7 +71,7 @@ mock.onPost('/api/account/register').reply(async (config) => {
     }
 
     user = {
-      id: faker.datatype.uuid(),
+      id: uuidv4(),
       displayName: `${firstName} ${lastName}`,
       email,
       password,
@@ -109,7 +109,8 @@ mock.onGet('/api/account/my-account').reply((config) => {
     }
 
     const accessToken = Authorization.split(' ')[1];
-    const { userId } = verify(accessToken, JWT_SECRET);
+    const data = verify(accessToken, JWT_SECRET);
+    const userId = typeof data === 'object' ? data?.userId : '';
     const user = users.find((_user) => _user.id === userId);
 
     if (!user) {

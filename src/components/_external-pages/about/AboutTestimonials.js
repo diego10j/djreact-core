@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import roundArrowRightAlt from '@iconify/icons-ic/round-arrow-right-alt';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Link, Paper, Rating, Container, Typography, useMediaQuery } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Grid, Link, Paper, Rating, Container, Typography, useMediaQuery } from '@mui/material';
 //
 import { varFadeInUp, varFadeInLeft, MotionInView } from '../../animate';
 import { MHidden } from '../../@material-extend';
@@ -12,37 +12,37 @@ import { MHidden } from '../../@material-extend';
 
 const TESTIMONIALS = [
   {
-    name: 'jjgonzales3',
+    name: 'Jenny Wilson',
     rating: 5,
     dateCreate: 'April 19, 2021',
     content: `Excellent Work! Thanks a lot!`
   },
   {
-    name: 'James Davidson',
+    name: 'Cody Fisher',
     rating: 5,
     dateCreate: 'April 19, 2021',
     content: `It's a very good dashboard and we are really liking the product . We've done some things, like migrate to TS and implementing a react useContext api, to fit our job methodology but the product is one of the best in terms of design and application architecture. The team did a really good job.`
   },
   {
-    name: 'John Thurston',
+    name: 'Marvin McKinney',
     rating: 5,
     dateCreate: 'April 19, 2021',
-    content: `customer support is realy fast and helpful the desgin of this theme is looks amazing also the code is very clean and readble realy good job !`
+    content: `Customer support is realy fast and helpful the desgin of this theme is looks amazing also the code is very clean and readble realy good job !`
   },
   {
-    name: 'nedy yehuda',
+    name: 'Darrell Steward',
     rating: 5,
     dateCreate: 'April 19, 2021',
-    content: `Trinh's work on this React UI kit is amazing. The animations, visuals, coding, and documentation is just excellent. Furthermore, the support when I have emailed for help has been A+. Thank you Trinh for creating this!`
+    content: `Amazing, really good code quality and gives you a lot of examples for implementations.`
   },
   {
-    name: 'Joris Ruitenbeek',
+    name: 'Jacob Jones',
     rating: 5,
     dateCreate: 'April 19, 2021',
     content: `Got a few questions after purchasing the product. The owner responded very fast and very helpfull. Overall the code is excellent and works very good. 5/5 stars!`
   },
   {
-    name: 'Miguel Asipavicins',
+    name: 'Bessie Cooper',
     rating: 5,
     dateCreate: 'April 19, 2021',
     content: `CEO of Codealy.io here. We’ve built a developer assessment platform that makes sense - tasks are based on git repositories and run in virtual machines. We automate the pain points - storing candidates code, running it and sharing test results with the whole team, remotely. Bought this template as we need to provide an awesome dashboard for our early customers. I am super happy with purchase. The code is just as good as the design. Thanks!`

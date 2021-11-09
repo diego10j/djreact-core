@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Container, CardHeader, CardContent, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Card, Grid, Stack, Container, CardHeader, Typography, CardContent } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
+import Markdown from '../../../components/Markdown';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { QuillEditor, DraftEditor } from '../../../components/editor';
 
@@ -16,10 +19,12 @@ const RootStyle = styled(Page)(({ theme }) => ({
   paddingBottom: theme.spacing(15)
 }));
 
+// ----------------------------------------------------------------------
+
 export default function Editor() {
-  const [text1, setText1] = useState('');
-  const [text2, setText2] = useState('');
-  const [text3, setText3] = useState('');
+  const [quillSimple, setQuillSimple] = useState('');
+  const [quillFull, setQuillFull] = useState('');
+  const [draftSimple, setDraftSimple] = useState(EditorState.createEmpty());
 
   return (
     <RootStyle title="Components: Editor | Minimal-UI">
@@ -41,28 +46,82 @@ export default function Editor() {
       </Box>
 
       <Container maxWidth="lg">
-        <Stack spacing={5}>
-          <Card>
-            <CardHeader title="Quill Simple Editor" />
-            <CardContent>
-              <QuillEditor simple id="simple-editor" value={text1} onChange={(value) => setText1(value)} />
-            </CardContent>
-          </Card>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={8}>
+            <Card>
+              <CardHeader title="Quill Editor Simple" />
+              <CardContent>
+                <QuillEditor
+                  simple
+                  id="simple-editor"
+                  value={quillSimple}
+                  onChange={(value) => setQuillSimple(value)}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader title="Quill Full Editor" />
-            <CardContent>
-              <QuillEditor id="full-editor" value={text2} onChange={(value) => setText2(value)} />
-            </CardContent>
-          </Card>
+          <Grid item xs={12} md={4}>
+            <Stack spacing={3} sx={{ height: 1 }}>
+              <Card sx={{ height: 1, boxShadow: 0, bgcolor: 'background.neutral' }}>
+                <CardHeader title="Preview Plain Text" />
+                <Box sx={{ p: 3 }}>
+                  <Markdown children={quillSimple} />
+                </Box>
+              </Card>
+              <Card sx={{ height: 1, boxShadow: 0, bgcolor: 'background.neutral' }}>
+                <CardHeader title="Preview Html" />
+                <Typography sx={{ p: 3 }}>{quillSimple}</Typography>
+              </Card>
+            </Stack>
+          </Grid>
+        </Grid>
 
-          <Card>
-            <CardHeader title="Draft Editor" />
-            <CardContent>
-              <DraftEditor editorState={text3} onEditorStateChange={(value) => setText3(value)} />
-            </CardContent>
-          </Card>
-        </Stack>
+        <Grid container sx={{ mt: 3, mb: 5 }}>
+          <Grid item xs={12} md={8}>
+            <Card>
+              <CardHeader title="Quill Editor Full" />
+              <CardContent>
+                <QuillEditor id="full-editor" value={quillFull} onChange={(value) => setQuillFull(value)} />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} sx={{ mb: 3 }}>
+          <Grid item xs={12} md={8}>
+            <Card>
+              <CardHeader title="Draft Editor Simple" />
+              <CardContent>
+                <DraftEditor simple editorState={draftSimple} onEditorStateChange={(value) => setDraftSimple(value)} />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Stack spacing={3} sx={{ height: 1 }}>
+              <Card sx={{ height: 1, boxShadow: 0, bgcolor: 'background.neutral' }}>
+                <CardHeader title="Preview Plain Text" />
+                <Typography sx={{ p: 3 }}>{draftSimple.getCurrentContent().getPlainText('\u0001')}</Typography>
+              </Card>
+
+              <Card sx={{ height: 1, boxShadow: 0, bgcolor: 'background.neutral' }}>
+                <CardHeader title="Preview Html" />
+                <Typography sx={{ p: 3 }}>{draftToHtml(convertToRaw(draftSimple.getCurrentContent()))}</Typography>
+              </Card>
+            </Stack>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={8}>
+            <Card>
+              <CardHeader title="Draft Editor Full" />
+              <CardContent>
+                <DraftEditor />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Container>
     </RootStyle>
   );

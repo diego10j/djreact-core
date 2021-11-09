@@ -1,6 +1,6 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Container } from '@mui/material';
 // components
 import Page from '../components/Page';
 import {

@@ -1,14 +1,15 @@
-import faker from 'faker';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 // material
-import { Box, Grid, Card, Button, Typography } from '@material-ui/core';
+import { Box, Grid, Card, Button, Typography } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../../../redux/store';
 import { onBackStep, onNextStep, createBilling } from '../../../../redux/slices/product';
+// utils
+import mockData from '../../../../utils/mock-data';
 //
 import Label from '../../../Label';
 import CheckoutSummary from './CheckoutSummary';
@@ -16,36 +17,16 @@ import CheckoutNewAddressForm from './CheckoutNewAddressForm';
 
 // ----------------------------------------------------------------------
 
-const ADDRESS_BOOKS = [
-  {
-    receiver: faker.name.findName(),
-    fullAddress: faker.address.streetAddress(),
-    phone: faker.phone.phoneNumberFormat(),
-    addressType: 'Home',
-    isDefault: true
-  },
-  {
-    receiver: faker.name.findName(),
-    fullAddress: faker.address.streetAddress(),
-    phone: faker.phone.phoneNumberFormat(),
-    addressType: 'Office',
-    isDefault: false
-  },
-  {
-    receiver: faker.name.findName(),
-    fullAddress: faker.address.streetAddress(),
-    phone: faker.phone.phoneNumberFormat(),
-    addressType: 'Office',
-    isDefault: false
-  },
-  {
-    receiver: faker.name.findName(),
-    fullAddress: faker.address.streetAddress(),
-    phone: faker.phone.phoneNumberFormat(),
-    addressType: 'Office',
-    isDefault: false
-  }
-];
+const MOCK_ADDRESS_BOOKS = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  receiver: mockData.name.fullName(index),
+  fullAddress: mockData.address.fullAddress(index),
+  phone: mockData.phoneNumber(index),
+  addressType: index === 0 ? 'Home' : 'Office',
+  isDefault: index === 0
+}));
+
+// ----------------------------------------------------------------------
 
 AddressItem.propTypes = {
   address: PropTypes.object,
@@ -134,7 +115,7 @@ export default function CheckoutBillingAddress() {
     <>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          {ADDRESS_BOOKS.map((address, index) => (
+          {MOCK_ADDRESS_BOOKS.map((address, index) => (
             <AddressItem
               key={index}
               address={address}

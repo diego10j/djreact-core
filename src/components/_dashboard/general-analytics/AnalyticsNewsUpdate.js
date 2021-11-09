@@ -1,32 +1,35 @@
-import faker from 'faker';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
-import { formatDistance } from 'date-fns';
 import { Link as RouterLink } from 'react-router-dom';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
-import { Box, Stack, Link, Card, Button, Divider, Typography, CardHeader } from '@material-ui/core';
+import { Box, Stack, Link, Card, Button, Divider, Typography, CardHeader } from '@mui/material';
 // utils
-import { mockImgCover } from '../../../utils/mockImages';
+import { fToNow } from '../../../utils/formatTime';
+import mockData from '../../../utils/mock-data';
 //
 import Scrollbar from '../../Scrollbar';
 
 // ----------------------------------------------------------------------
 
-const NEWS = [...Array(5)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    title: faker.name.title(),
-    description: faker.lorem.paragraphs(),
-    image: mockImgCover(setIndex),
-    postedAt: faker.date.soon()
-  };
-});
+const MOCK_NEWS = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  title: mockData.text.title(index),
+  description: mockData.text.description(index),
+  image: mockData.image.cover(index),
+  postedAt: mockData.time(index)
+}));
 
 // ----------------------------------------------------------------------
 
 NewsItem.propTypes = {
-  news: PropTypes.object.isRequired
+  news: PropTypes.shape({
+    id: PropTypes.string,
+    description: PropTypes.string,
+    image: PropTypes.string,
+    postedAt: PropTypes.instanceOf(Date),
+    title: PropTypes.string
+  })
 };
 
 function NewsItem({ news }) {
@@ -46,7 +49,7 @@ function NewsItem({ news }) {
         </Typography>
       </Box>
       <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, color: 'text.secondary' }}>
-        {formatDistance(postedAt, new Date())}
+        {fToNow(postedAt)}
       </Typography>
     </Stack>
   );
@@ -59,8 +62,8 @@ export default function AnalyticsNewsUpdate() {
 
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-          {NEWS.map((news) => (
-            <NewsItem key={news.title} news={news} />
+          {MOCK_NEWS.map((news) => (
+            <NewsItem key={news.id} news={news} />
           ))}
         </Stack>
       </Scrollbar>

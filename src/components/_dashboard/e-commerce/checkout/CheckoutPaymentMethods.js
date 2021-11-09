@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Card,
@@ -18,7 +18,7 @@ import {
   CardContent,
   FormHelperText,
   FormControlLabel
-} from '@material-ui/core';
+} from '@mui/material';
 //
 import { MHidden } from '../../../@material-extend';
 
@@ -80,13 +80,15 @@ export default function CheckoutPaymentMethods({ paymentOptions, cardOptions, fo
                     />
                     <MHidden width="smDown">
                       <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-                        {icons.map((icon) => (
+                        {icons.map((icon, index) => (
                           <Box
                             key={icon}
                             component="img"
                             alt="logo card"
                             src={icon}
-                            sx={{ '&:last-child': { ml: 1 } }}
+                            sx={{
+                              ...(index === 0 && { mr: 1 })
+                            }}
                           />
                         ))}
                       </Box>

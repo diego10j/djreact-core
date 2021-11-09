@@ -1,42 +1,27 @@
-import faker from 'faker';
 import PropTypes from 'prop-types';
 // material
-import { Card, Typography, CardHeader, CardContent } from '@material-ui/core';
-import { Timeline, TimelineItem, TimelineContent, TimelineConnector, TimelineSeparator } from '@material-ui/lab';
+import { Card, Typography, CardHeader, CardContent } from '@mui/material';
+import { Timeline, TimelineDot, TimelineItem, TimelineContent, TimelineConnector, TimelineSeparator } from '@mui/lab';
 // utils
 import { fDateTime } from '../../../utils/formatTime';
-//
-import { MTimelineDot } from '../../@material-extend';
+import mockData from '../../../utils/mock-data';
 
 // ----------------------------------------------------------------------
 
-const TIMELINES = [
-  {
-    title: '1983, orders, $4220',
-    time: faker.date.past(),
-    type: 'order1'
-  },
-  {
-    title: '12 Invoices have been paid',
-    time: faker.date.past(),
-    type: 'order2'
-  },
-  {
-    title: 'Order #37745 from September',
-    time: faker.date.past(),
-    type: 'order3'
-  },
-  {
-    title: 'New order placed #XF-2356',
-    time: faker.date.past(),
-    type: 'order4'
-  },
-  {
-    title: 'New order placed #XF-2346',
-    time: faker.date.past(),
-    type: 'order5'
-  }
+const TITLES = [
+  '1983, orders, $4220',
+  '12 Invoices have been paid',
+  'Order #37745 from September',
+  'New order placed #XF-2356',
+  'New order placed #XF-2346'
 ];
+
+const MOCK_TIMELINES = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  title: TITLES[index],
+  type: `order${index + 1}`,
+  time: mockData.time(index)
+}));
 
 // ----------------------------------------------------------------------
 
@@ -50,7 +35,7 @@ function OrderItem({ item, isLast }) {
   return (
     <TimelineItem>
       <TimelineSeparator>
-        <MTimelineDot
+        <TimelineDot
           color={
             (type === 'order1' && 'primary') ||
             (type === 'order2' && 'success') ||
@@ -83,8 +68,8 @@ export default function AnalyticsOrderTimeline() {
       <CardHeader title="Order Timeline" />
       <CardContent>
         <Timeline>
-          {TIMELINES.map((item, index) => (
-            <OrderItem key={item.title} item={item} isLast={index === TIMELINES.length - 1} />
+          {MOCK_TIMELINES.map((item, index) => (
+            <OrderItem key={item.title} item={item} isLast={index === MOCK_TIMELINES.length - 1} />
           ))}
         </Timeline>
       </CardContent>

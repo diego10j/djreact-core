@@ -1,6 +1,5 @@
 // material
-import { ButtonGroup, Button, Grid } from '@material-ui/core';
-import { MButtonGroup } from '../../../../components/@material-extend';
+import { ButtonGroup, Button, Grid } from '@mui/material';
 //
 import { Block } from '../../Block';
 
@@ -77,23 +76,23 @@ export default function ButtonGroups() {
 
       <Grid item xs={12} md={6}>
         <Block title="Size" sx={style}>
-          <MButtonGroup size="small" variant="contained" color="info">
+          <ButtonGroup size="small" variant="contained" color="info">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="contained" color="info">
+          <ButtonGroup variant="contained" color="info">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup size="large" variant="contained" color="info">
+          <ButtonGroup size="large" variant="contained" color="info">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
         </Block>
       </Grid>
 
@@ -121,131 +120,131 @@ export default function ButtonGroups() {
 
       <Grid item xs={12} md={6}>
         <Block title="Adding Colors" sx={style}>
-          <MButtonGroup variant="contained" color="inherit">
+          <ButtonGroup variant="contained" color="inherit">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="contained">
+          <ButtonGroup variant="contained">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="contained" color="secondary">
+          <ButtonGroup variant="contained" color="secondary">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="contained" color="info">
+          <ButtonGroup variant="contained" color="info">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="contained" color="success">
+          <ButtonGroup variant="contained" color="success">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="contained" color="warning">
+          <ButtonGroup variant="contained" color="warning">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="contained" color="error">
+          <ButtonGroup variant="contained" color="error">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="outlined" color="inherit">
+          <ButtonGroup variant="outlined" color="inherit">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="outlined">
+          <ButtonGroup variant="outlined">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="outlined" color="secondary">
+          <ButtonGroup variant="outlined" color="secondary">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="outlined" color="info">
+          <ButtonGroup variant="outlined" color="info">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="outlined" color="success">
+          <ButtonGroup variant="outlined" color="success">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="outlined" color="warning">
+          <ButtonGroup variant="outlined" color="warning">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="outlined" color="error">
+          <ButtonGroup variant="outlined" color="error">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="text" color="inherit">
+          <ButtonGroup variant="text" color="inherit">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="text">
+          <ButtonGroup variant="text">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="text" color="secondary">
+          <ButtonGroup variant="text" color="secondary">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="text" color="info">
+          <ButtonGroup variant="text" color="info">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="text" color="success">
+          <ButtonGroup variant="text" color="success">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="text" color="warning">
+          <ButtonGroup variant="text" color="warning">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
 
-          <MButtonGroup variant="text" color="error">
+          <ButtonGroup variant="text" color="error">
             <Button>One</Button>
             <Button>Two</Button>
             <Button>Three</Button>
-          </MButtonGroup>
+          </ButtonGroup>
         </Block>
       </Grid>
     </Grid>

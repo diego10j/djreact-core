@@ -1,7 +1,7 @@
 import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 // material
-import { Box, Typography, Link, Stack } from '@material-ui/core';
+import { Box, Typography, Link } from '@mui/material';
 //
 import { MBreadcrumbs } from './@material-extend';
 
@@ -17,8 +17,8 @@ HeaderBreadcrumbs.propTypes = {
 
 export default function HeaderBreadcrumbs({ links, action, heading, moreLink = '' || [], sx, ...other }) {
   return (
-    <Stack sx={sx} mb={5} spacing={2}>
-      <Stack direction="row" alignItems="center">
+    <Box sx={{ mb: 5, ...sx }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant="h4" gutterBottom>
             {heading}
@@ -27,19 +27,21 @@ export default function HeaderBreadcrumbs({ links, action, heading, moreLink = '
         </Box>
 
         {action && <Box sx={{ flexShrink: 0 }}>{action}</Box>}
-      </Stack>
+      </Box>
 
-      {isString(moreLink) ? (
-        <Link href={moreLink} target="_blank" variant="body2">
-          {moreLink}
-        </Link>
-      ) : (
-        moreLink.map((href) => (
-          <Link noWrap key={href} href={href} variant="body2" target="_blank" sx={{ display: 'flex' }}>
-            {href}
+      <Box sx={{ mt: 2 }}>
+        {isString(moreLink) ? (
+          <Link href={moreLink} target="_blank" variant="body2">
+            {moreLink}
           </Link>
-        ))
-      )}
-    </Stack>
+        ) : (
+          moreLink.map((href) => (
+            <Link noWrap key={href} href={href} variant="body2" target="_blank" sx={{ display: 'table' }}>
+              {href}
+            </Link>
+          ))
+        )}
+      </Box>
+    </Box>
   );
 }

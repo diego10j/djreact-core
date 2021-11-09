@@ -1,25 +1,22 @@
-import faker from 'faker';
 import Slider from 'react-slick';
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 // utils
-import { mockImgFeed } from '../../utils/mockImages';
+import mockData from '../../utils/mock-data';
 //
 import { CarouselControlsPaging2, CarouselControlsArrowsBasic2 } from './controls';
 
 // ----------------------------------------------------------------------
 
-const CAROUSELS = [...Array(5)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    title: faker.name.title(),
-    description: faker.lorem.paragraphs(),
-    image: mockImgFeed(setIndex)
-  };
-});
+const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  title: mockData.text.title(index),
+  image: mockData.image.feed(index),
+  description: mockData.text.description(index)
+}));
 
 const RootStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -46,7 +43,6 @@ export default function CarouselBasic3() {
   const carouselRef = useRef();
 
   const settings = {
-    speed: 500,
     dots: true,
     arrows: false,
     autoplay: true,
@@ -69,7 +65,7 @@ export default function CarouselBasic3() {
   return (
     <RootStyle>
       <Slider ref={carouselRef} {...settings}>
-        {CAROUSELS.map((item) => (
+        {MOCK_CAROUSELS.map((item) => (
           <CarouselItem key={item.title} item={item} />
         ))}
       </Slider>

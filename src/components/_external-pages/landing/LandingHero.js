@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import flashFill from '@iconify/icons-eva/flash-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Button, Box, Link, Container, Typography, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Button, Box, Link, Container, Typography, Stack } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 //
@@ -56,7 +56,6 @@ const HeroImgStyle = styled(motion.img)(({ theme }) => ({
   width: '100%',
   margin: 'auto',
   position: 'absolute',
-  filter: `drop-shadow(40px 80px 80px rgba(0, 0, 0, 0.48))`,
   [theme.breakpoints.up('lg')]: {
     right: '8%',
     width: 'auto',
@@ -100,12 +99,14 @@ export default function LandingHero() {
               spacing={1}
               justifyContent={{ xs: 'center', md: 'flex-start' }}
             >
-              <img alt="sketch icon" src="/static/home/ic_sketch.svg" width={20} height={20} />
+              <img alt="sketch icon" src="/static/home/ic_sketch_small.svg" width={20} height={20} />
+
               <Link
                 underline="always"
                 href="https://www.sketch.com/s/0fa4699d-a3ff-4cd5-a3a7-d851eb7e17f0"
                 target="_blank"
-                sx={{ color: 'common.white' }}
+                color="common.white"
+                sx={{ typography: 'body2' }}
               >
                 Preview in Sketch Cloud
               </Link>
@@ -124,12 +125,12 @@ export default function LandingHero() {
             </motion.div>
 
             <Stack direction="row" spacing={1.5} justifyContent={{ xs: 'center', md: 'flex-start' }}>
-              <motion.img variants={varFadeInRight} src="/static/home/ic_m_sketch.svg" />
-              <motion.img variants={varFadeInRight} src="/static/home/ic_m_figma.svg" />
-              <motion.img variants={varFadeInRight} src="/static/home/ic_m_material.svg" />
-              <motion.img variants={varFadeInRight} src="/static/home/ic_m_react.svg" />
-              <motion.img variants={varFadeInRight} src="/static/home/ic_m_js.svg" />
-              <motion.img variants={varFadeInRight} src="/static/home/ic_m_ts.svg" />
+              <motion.img variants={varFadeInRight} src="/static/home/ic_sketch.svg" />
+              <motion.img variants={varFadeInRight} src="/static/home/ic_figma.svg" />
+              <motion.img variants={varFadeInRight} src="/static/home/ic_material.svg" />
+              <motion.img variants={varFadeInRight} src="/static/home/ic_react.svg" />
+              <motion.img variants={varFadeInRight} src="/static/home/ic_js.svg" />
+              <motion.img variants={varFadeInRight} src="/static/home/ic_ts.svg" />
             </Stack>
           </ContentStyle>
         </Container>

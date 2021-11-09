@@ -6,8 +6,8 @@ import phoneFill from '@iconify/icons-eva/phone-fill';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Link, Avatar, Typography, AvatarGroup } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Link, Avatar, Typography, AvatarGroup } from '@mui/material';
 // utils
 import { fToNow } from '../../../utils/formatTime';
 //

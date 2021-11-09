@@ -1,11 +1,11 @@
 import { useState } from 'react';
 // material
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Tab, Tabs, Container, Stack } from '@material-ui/core';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import PhoneIcon from '@mui/icons-material/Phone';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
+import { styled } from '@mui/material/styles';
+import { Box, Tab, Tabs, Container, Stack } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -73,7 +73,7 @@ export default function TabsComponent() {
           <HeaderBreadcrumbs
             heading="Tabs"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Tabs' }]}
-            moreLink="https://next.material-ui.com/components/tabs"
+            moreLink="https://mui.com/components/tabs"
           />
         </Container>
       </Box>

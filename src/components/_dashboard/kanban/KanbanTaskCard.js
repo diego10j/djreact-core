@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import checkmarkCircle2Outline from '@iconify/icons-eva/checkmark-circle-2-outline';
 import radioButtonOffOutline from '@iconify/icons-eva/radio-button-off-outline';
 // material
-import { Paper, Typography, Box, Checkbox } from '@material-ui/core';
+import { Paper, Typography, Box, Checkbox } from '@mui/material';
 //
 import KanbanTaskDetails from './KanbanTaskDetails';
 

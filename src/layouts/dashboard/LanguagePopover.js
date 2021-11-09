@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 // material
-import { alpha } from '@material-ui/core/styles';
-import { Box, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { alpha } from '@mui/material/styles';
+import { Box, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 // hooks
 import useLocales from '../../hooks/useLocales';
 // components

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // material
-import { TextField, Stack } from '@material-ui/core';
-import { DateTimePicker, MobileDateTimePicker, DesktopDateTimePicker } from '@material-ui/lab';
+import { TextField, Stack } from '@mui/material';
+import { DateTimePicker, MobileDateTimePicker, DesktopDateTimePicker } from '@mui/lab';
 //
 import { Block } from '../../Block';
 

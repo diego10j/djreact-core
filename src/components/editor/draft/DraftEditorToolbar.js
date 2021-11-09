@@ -27,7 +27,7 @@ const ICONS = {
   history_redo: '/static/icons/editor/history_redo.svg'
 };
 
-export const editorToolbar = {
+export const toolbarFull = {
   inline: {
     bold: { icon: ICONS.inline_bold, className: 'toggle' },
     italic: { icon: ICONS.inline_italic, className: 'toggle' },
@@ -92,6 +92,23 @@ export const editorToolbar = {
   history: {
     undo: { icon: ICONS.history_undo, className: 'toggle' },
     redo: { icon: ICONS.history_redo, className: 'toggle' }
+  }
+};
+
+export const toolbarSimple = {
+  ...toolbarFull,
+  options: ['inline', 'blockType', 'list', 'textAlign', 'link', 'image', 'remove'],
+  inline: {
+    ...toolbarFull.inline,
+    options: ['bold', 'italic', 'underline']
+  },
+  blockType: {
+    ...toolbarFull.blockType,
+    options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Blockquote']
+  },
+  list: {
+    ...toolbarFull.list,
+    options: ['unordered', 'ordered']
   }
 };
 

@@ -3,8 +3,8 @@ import { useSnackbar } from 'notistack';
 import { useCallback, useState } from 'react';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { LoadingButton } from '@material-ui/lab';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { LoadingButton } from '@mui/lab';
+import { styled } from '@mui/material/styles';
 import {
   Card,
   Grid,
@@ -17,7 +17,7 @@ import {
   Autocomplete,
   FormHelperText,
   FormControlLabel
-} from '@material-ui/core';
+} from '@mui/material';
 // utils
 import fakeRequest from '../../../utils/fakeRequest';
 //
@@ -150,7 +150,7 @@ export default function BlogNewPostForm() {
                       error={Boolean(touched.content && errors.content)}
                     />
                     {touched.content && errors.content && (
-                      <FormHelperText error sx={{ px: 2 }}>
+                      <FormHelperText error sx={{ px: 2, textTransform: 'capitalize' }}>
                         {touched.content && errors.content}
                       </FormHelperText>
                     )}
@@ -204,7 +204,7 @@ export default function BlogNewPostForm() {
                     options={TAGS_OPTION.map((option) => option)}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (
-                        <Chip key={option} size="small" label={option} {...getTagProps({ index })} />
+                        <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
                       ))
                     }
                     renderInput={(params) => <TextField {...params} label="Tags" />}
@@ -231,7 +231,7 @@ export default function BlogNewPostForm() {
                     options={TAGS_OPTION.map((option) => option)}
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (
-                        <Chip key={option} size="small" label={option} {...getTagProps({ index })} />
+                        <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
                       ))
                     }
                     renderInput={(params) => <TextField {...params} label="Meta keywords" />}

@@ -1,5 +1,7 @@
 // material
-import { Container, Grid } from '@material-ui/core';
+import { Container, Grid } from '@mui/material';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import {
@@ -19,9 +21,11 @@ import {
 // ----------------------------------------------------------------------
 
 export default function GeneralEcommerce() {
+  const { themeStretch } = useSettings();
+
   return (
     <Page title="General: E-commerce | Minimal-UI">
-      <Container maxWidth="xl">
+      <Container maxWidth={themeStretch ? false : 'xl'}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
             <EcommerceWelcome />

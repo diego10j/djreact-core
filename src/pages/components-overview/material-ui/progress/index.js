@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Container, Stack } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // components
@@ -81,7 +81,7 @@ export default function ProgressComponent() {
           <HeaderBreadcrumbs
             heading="Progress"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Progress' }]}
-            moreLink="https://next.material-ui.com/components/progress"
+            moreLink="https://mui.com/components/progress"
           />
         </Container>
       </Box>

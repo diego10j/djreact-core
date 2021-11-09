@@ -5,7 +5,7 @@ import arrowheadLeftFill from '@iconify/icons-eva/arrowhead-left-fill';
 import arrowheadRightFill from '@iconify/icons-eva/arrowhead-right-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
-import { Grid, List, Card, Button, ListItem, Checkbox, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Grid, List, Card, Button, Checkbox, ListItemIcon, ListItemText, ListItemButton } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ export default function SimpleTransferList() {
         {items.map((value) => {
           const labelId = `transfer-list-item-${value}-label`;
           return (
-            <ListItem button key={value} role="listitem" onClick={handleToggle(value)}>
+            <ListItemButton key={value} role="listitem" onClick={handleToggle(value)}>
               <ListItemIcon>
                 <Checkbox
                   checked={checked.indexOf(value) !== -1}
@@ -80,7 +80,7 @@ export default function SimpleTransferList() {
                 />
               </ListItemIcon>
               <ListItemText id={labelId} primary={`List item ${value + 1}`} />
-            </ListItem>
+            </ListItemButton>
           );
         })}
       </List>

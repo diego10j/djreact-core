@@ -1,8 +1,8 @@
 import { useState } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Tab } from '@material-ui/core';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import { styled } from '@mui/material/styles';
+import { Box, Container, Tab } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // components

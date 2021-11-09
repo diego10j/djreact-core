@@ -1,9 +1,7 @@
 // material
-import AlarmIcon from '@material-ui/icons/Alarm';
-import { Grid, Button } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
-// components
-import { MButton } from '../../../../components/@material-extend';
+import AlarmIcon from '@mui/icons-material/Alarm';
+import { Grid, Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 //
 import { Block } from '../../Block';
 
@@ -32,24 +30,24 @@ export default function TextButtons() {
 
       <Grid item xs={12} md={6}>
         <Block title="Adding Colors" sx={style}>
-          <MButton color="inherit">Default</MButton>
-          <MButton>Primary</MButton>
-          <MButton color="secondary">Secondary</MButton>
-          <MButton color="info">Info</MButton>
-          <MButton color="success">Success</MButton>
-          <MButton color="warning">Warning</MButton>
-          <MButton color="error">Error</MButton>
+          <Button color="inherit">Default</Button>
+          <Button>Primary</Button>
+          <Button color="secondary">Secondary</Button>
+          <Button color="info">Info</Button>
+          <Button color="success">Success</Button>
+          <Button color="warning">Warning</Button>
+          <Button color="error">Error</Button>
         </Block>
       </Grid>
 
       <Grid item xs={12} md={6}>
         <Block title="With Icon & Loading" sx={style}>
-          <MButton color="error" startIcon={<AlarmIcon />}>
+          <Button color="error" startIcon={<AlarmIcon />}>
             Icon Left
-          </MButton>
-          <MButton color="error" endIcon={<AlarmIcon />}>
+          </Button>
+          <Button color="error" endIcon={<AlarmIcon />}>
             Icon Right
-          </MButton>
+          </Button>
           <LoadingButton loading>Submit</LoadingButton>
           <LoadingButton loading loadingIndicator="Loading...">
             Fetch data
@@ -62,13 +60,13 @@ export default function TextButtons() {
 
       <Grid item xs={12} md={6}>
         <Block title="Size" sx={style}>
-          <MButton color="info" size="small">
+          <Button color="info" size="small">
             Small
-          </MButton>
-          <MButton color="info">Medium</MButton>
-          <MButton color="info" size="large">
+          </Button>
+          <Button color="info">Medium</Button>
+          <Button color="info" size="large">
             Large
-          </MButton>
+          </Button>
         </Block>
       </Grid>
     </Grid>

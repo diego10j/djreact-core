@@ -5,13 +5,13 @@ import alertCircleFill from '@iconify/icons-eva/alert-circle-fill';
 import colorPaletteFill from '@iconify/icons-eva/color-palette-fill';
 import arrowCircleDownFill from '@iconify/icons-eva/arrow-circle-down-fill';
 // material
-import AdbIcon from '@material-ui/icons/Adb';
-import AddIcon from '@material-ui/icons/Add';
-import AppleIcon from '@material-ui/icons/Apple';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Stack, SvgIcon, Container } from '@material-ui/core';
+import AdbIcon from '@mui/icons-material/Adb';
+import AddIcon from '@mui/icons-material/Add';
+import AppleIcon from '@mui/icons-material/Apple';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
+import { styled } from '@mui/material/styles';
+import { Box, Stack, SvgIcon, Container } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -56,7 +56,7 @@ export default function FoundationIcons() {
           <HeaderBreadcrumbs
             heading="Icons"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Icons' }]}
-            moreLink={['https://material-ui.com/components/material-icons', 'https://iconify.design/icon-sets']}
+            moreLink={['https://mui.com/components/material-icons', 'https://iconify.design/icon-sets']}
           />
         </Container>
       </Box>

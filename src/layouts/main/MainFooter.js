@@ -6,8 +6,8 @@ import linkedinFill from '@iconify/icons-eva/linkedin-fill';
 import { Link as ScrollLink } from 'react-scroll';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Grid, Link, Divider, Container, Typography, IconButton, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Grid, Link, Divider, Container, Typography, IconButton, Stack } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../routes/paths';
 //

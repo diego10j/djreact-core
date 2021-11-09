@@ -4,8 +4,8 @@ import { Icon } from '@iconify/react';
 import { Link as ScrollLink } from 'react-scroll';
 import edit2Fill from '@iconify/icons-eva/edit-2-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Grid, Rating, Button, Typography, LinearProgress, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Grid, Rating, Button, Typography, LinearProgress, Stack } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../../utils/formatNumber';
 
@@ -21,7 +21,7 @@ const GridStyle = styled(Grid)(({ theme }) => ({
   alignItems: 'center',
   flexDirection: 'column',
   justifyContent: 'center',
-  '&:nth-child(2)': {
+  '&:nth-of-type(2)': {
     [theme.breakpoints.up('md')]: {
       borderLeft: `solid 1px ${theme.palette.divider}`,
       borderRight: `solid 1px ${theme.palette.divider}`

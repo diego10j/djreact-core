@@ -1,12 +1,11 @@
 // material
-import MailIcon from '@material-ui/icons/Mail';
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Container, Typography } from '@material-ui/core';
+import MailIcon from '@mui/icons-material/Mail';
+import { styled } from '@mui/material/styles';
+import { Box, Grid, Container, Typography, Badge } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
-import { MBadge } from '../../../components/@material-extend';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 //
 import { Block } from '../Block';
@@ -35,7 +34,7 @@ export default function BadgeComponent() {
           <HeaderBreadcrumbs
             heading="Badge"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Badge' }]}
-            moreLink="https://next.material-ui.com/components/badges"
+            moreLink="https://mui.com/components/badges"
           />
         </Container>
       </Box>
@@ -47,27 +46,27 @@ export default function BadgeComponent() {
               title="Basic"
               sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', '& > *': { mx: 1 } }}
             >
-              <MBadge badgeContent={4}>
+              <Badge badgeContent={4}>
                 <MailIcon />
-              </MBadge>
-              <MBadge badgeContent={4} color="primary">
+              </Badge>
+              <Badge badgeContent={4} color="primary">
                 <MailIcon />
-              </MBadge>
-              <MBadge badgeContent={4} color="secondary">
+              </Badge>
+              <Badge badgeContent={4} color="secondary">
                 <MailIcon />
-              </MBadge>
-              <MBadge badgeContent={4} color="info">
+              </Badge>
+              <Badge badgeContent={4} color="info">
                 <MailIcon />
-              </MBadge>
-              <MBadge badgeContent={4} color="success">
+              </Badge>
+              <Badge badgeContent={4} color="success">
                 <MailIcon />
-              </MBadge>
-              <MBadge badgeContent={4} color="warning">
+              </Badge>
+              <Badge badgeContent={4} color="warning">
                 <MailIcon />
-              </MBadge>
-              <MBadge badgeContent={4} color="error">
+              </Badge>
+              <Badge badgeContent={4} color="error">
                 <MailIcon />
-              </MBadge>
+              </Badge>
             </Block>
           </Grid>
 
@@ -76,9 +75,9 @@ export default function BadgeComponent() {
               title="Maximum value"
               sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', '& > *': { mx: 1 } }}
             >
-              <MBadge badgeContent={99} color="error" children={<MailIcon />} />
-              <MBadge badgeContent={100} color="error" children={<MailIcon />} />
-              <MBadge badgeContent={1000} max={999} color="error" children={<MailIcon />} />
+              <Badge badgeContent={99} color="error" children={<MailIcon />} />
+              <Badge badgeContent={100} color="error" children={<MailIcon />} />
+              <Badge badgeContent={1000} max={999} color="error" children={<MailIcon />} />
             </Block>
           </Grid>
 
@@ -87,12 +86,12 @@ export default function BadgeComponent() {
               title="Dot badge"
               sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', '& > *': { mx: 1 } }}
             >
-              <MBadge color="info" variant="dot">
+              <Badge color="info" variant="dot">
                 <MailIcon />
-              </MBadge>
-              <MBadge color="info" variant="dot">
+              </Badge>
+              <Badge color="info" variant="dot">
                 <Typography>Typography</Typography>
-              </MBadge>
+              </Badge>
             </Block>
           </Grid>
 
@@ -101,13 +100,13 @@ export default function BadgeComponent() {
               title="Badge overlap"
               sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', '& > *': { mx: 1 } }}
             >
-              <MBadge color="info" badgeContent=" ">
+              <Badge color="info" badgeContent=" ">
                 <Box sx={{ width: 40, height: 40, bgcolor: 'warning.main' }} />
-              </MBadge>
-              <MBadge color="info" badgeContent=" " variant="dot">
+              </Badge>
+              <Badge color="info" badgeContent=" " variant="dot">
                 <Box sx={{ width: 40, height: 40, bgcolor: 'warning.main' }} />
-              </MBadge>
-              <MBadge color="info" overlap="circular" badgeContent=" ">
+              </Badge>
+              <Badge color="info" overlap="circular" badgeContent=" ">
                 <Box
                   sx={{
                     width: 40,
@@ -116,8 +115,8 @@ export default function BadgeComponent() {
                     bgcolor: 'warning.main'
                   }}
                 />
-              </MBadge>
-              <MBadge color="info" overlap="circular" badgeContent=" " variant="dot">
+              </Badge>
+              <Badge color="info" overlap="circular" badgeContent=" " variant="dot">
                 <Box
                   sx={{
                     width: 40,
@@ -126,7 +125,7 @@ export default function BadgeComponent() {
                     bgcolor: 'warning.main'
                   }}
                 />
-              </MBadge>
+              </Badge>
             </Block>
           </Grid>
         </Grid>

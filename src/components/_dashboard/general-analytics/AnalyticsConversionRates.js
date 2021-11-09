@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import { Box, Card, CardHeader } from '@material-ui/core';
+import { Box, Card, CardHeader } from '@mui/material';
 // utils
 import { fNumber } from '../../../utils/formatNumber';
 //
@@ -18,7 +18,7 @@ export default function AnalyticsConversionRates() {
       y: {
         formatter: (seriesName) => fNumber(seriesName),
         title: {
-          formatter: (seriesName) => `#${seriesName}`
+          formatter: () => ''
         }
       }
     },

@@ -3,8 +3,8 @@ import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 // material
-import { Grid, Button } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Grid, Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 // redux
 import { useDispatch, useSelector } from '../../../../redux/store';
 import { onGotoStep, onBackStep, onNextStep, applyShipping } from '../../../../redux/slices/product';

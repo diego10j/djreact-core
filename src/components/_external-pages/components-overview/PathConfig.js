@@ -17,7 +17,8 @@ export const EXTRA_LIST = [
   'Carousel',
   'Multi language',
   'Animate',
-  'Mega Menu'
+  'Mega Menu',
+  'Form Validation'
 ].map((item) => ({
   name: item,
   href: `/components/${paramCase(item)}`,
@@ -54,7 +55,8 @@ export const MATERIAL_LIST = [
   'Timeline',
   'Tooltip',
   'Transfer List',
-  'TreeView'
+  'TreeView',
+  'Data Grid'
 ].map((item) => ({
   name: item,
   href: `/components/${paramCase(item)}`,

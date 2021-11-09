@@ -1,9 +1,9 @@
 import { isString } from 'lodash';
 import PropTypes from 'prop-types';
 // material
-import { LoadingButton } from '@material-ui/lab';
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Button, Container, Typography, DialogActions } from '@material-ui/core';
+import { LoadingButton } from '@mui/lab';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Button, Container, Typography, DialogActions } from '@mui/material';
 //
 import { DialogAnimate } from '../../animate';
 import Markdown from '../../Markdown';

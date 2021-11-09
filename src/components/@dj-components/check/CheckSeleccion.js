@@ -1,7 +1,7 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 // material
-import { Switch, FormControlLabel, FormGroup } from '@material-ui/core';
+import { Switch, FormControlLabel, FormGroup } from '@mui/material';
 // utils
 import { isDefined, toCapitalize } from '../../../utils/utilitario';
 // ----------------------------------------------------------------------

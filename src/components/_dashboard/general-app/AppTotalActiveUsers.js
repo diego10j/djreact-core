@@ -3,8 +3,8 @@ import ReactApexChart from 'react-apexcharts';
 import trendingUpFill from '@iconify/icons-eva/trending-up-fill';
 import trendingDownFill from '@iconify/icons-eva/trending-down-fill';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Typography, Stack } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Card, Typography, Stack } from '@mui/material';
 // utils
 import { fNumber, fPercent } from '../../../utils/formatNumber';
 
@@ -25,7 +25,7 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 const PERCENT = 2.6;
 const TOTAL_USER = 18765;
-const CHART_DATA = [{ data: [2532, 6632, 4132, 8932, 6332, 2532, 4432, 1232, 3632, 932, 3354] }];
+const CHART_DATA = [{ data: [20, 41, 63, 33, 28, 35, 50, 46, 11, 26] }];
 
 export default function AppTotalActiveUsers() {
   const theme = useTheme();
@@ -40,7 +40,7 @@ export default function AppTotalActiveUsers() {
       y: {
         formatter: (seriesName) => fNumber(seriesName),
         title: {
-          formatter: (seriesName) => `#${seriesName}`
+          formatter: () => ''
         }
       },
       marker: { show: false }

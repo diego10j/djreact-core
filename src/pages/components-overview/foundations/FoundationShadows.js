@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Stack, Box, Paper, Container, Typography } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Stack, Box, Paper, Container, Typography } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components

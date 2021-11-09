@@ -2,15 +2,22 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import arrowLeftFill from '@iconify/icons-eva/arrow-left-fill';
 import arrowRightFill from '@iconify/icons-eva/arrow-right-fill';
+import roundKeyboardArrowLeft from '@iconify/icons-ic/round-keyboard-arrow-left';
+import roundKeyboardArrowRight from '@iconify/icons-ic/round-keyboard-arrow-right';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Typography, Box } from '@mui/material';
 //
 import { MIconButton } from '../../@material-extend';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
+const ICON_SIZE = {
+  width: 20,
+  height: 20
+};
+
+const RootStyle = styled(Box)(({ theme }) => ({
   zIndex: 9,
   display: 'flex',
   alignItems: 'center',
@@ -34,18 +41,23 @@ const ArrowStyle = styled(MIconButton)(({ theme }) => ({
 CarouselControlsArrowsIndex.propTypes = {
   index: PropTypes.number,
   total: PropTypes.number,
+  arrowLine: PropTypes.bool,
   onNext: PropTypes.func,
   onPrevious: PropTypes.func
 };
 
-export default function CarouselControlsArrowsIndex({ index, total, onNext, onPrevious, ...other }) {
+export default function CarouselControlsArrowsIndex({ arrowLine, index, total, onNext, onPrevious, ...other }) {
   const theme = useTheme();
   const isRTL = theme.direction === 'rtl';
 
   return (
     <RootStyle {...other}>
       <ArrowStyle size="small" onClick={onPrevious}>
-        <Icon width={20} height={20} icon={isRTL ? arrowRightFill : arrowLeftFill} />
+        {arrowLine ? (
+          <Icon icon={isRTL ? roundKeyboardArrowRight : roundKeyboardArrowLeft} {...ICON_SIZE} />
+        ) : (
+          <Icon icon={isRTL ? arrowRightFill : arrowLeftFill} {...ICON_SIZE} />
+        )}
       </ArrowStyle>
 
       <Typography variant="subtitle2">
@@ -53,7 +65,11 @@ export default function CarouselControlsArrowsIndex({ index, total, onNext, onPr
       </Typography>
 
       <ArrowStyle size="small" onClick={onNext}>
-        <Icon width={20} height={20} icon={isRTL ? arrowLeftFill : arrowRightFill} />
+        {arrowLine ? (
+          <Icon icon={isRTL ? roundKeyboardArrowLeft : roundKeyboardArrowRight} {...ICON_SIZE} />
+        ) : (
+          <Icon icon={isRTL ? arrowLeftFill : arrowRightFill} {...ICON_SIZE} />
+        )}
       </ArrowStyle>
     </RootStyle>
   );

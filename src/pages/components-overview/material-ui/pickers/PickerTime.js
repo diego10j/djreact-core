@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // material
-import { TextField, Stack } from '@material-ui/core';
-import { TimePicker, MobileTimePicker, StaticTimePicker, DesktopTimePicker } from '@material-ui/lab';
+import { TextField, Stack } from '@mui/material';
+import { TimePicker, MobileTimePicker, StaticTimePicker, DesktopTimePicker } from '@mui/lab';
 //
 import { Block } from '../../Block';
 

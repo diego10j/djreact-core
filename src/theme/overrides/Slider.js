@@ -1,8 +1,14 @@
 // ----------------------------------------------------------------------
 
 export default function Slider(theme) {
+  const isLight = theme.palette.mode === 'light';
+
   return {
     MuiSlider: {
+      defaultProps: {
+        size: 'small'
+      },
+
       styleOverrides: {
         root: {
           '&.Mui-disabled': {
@@ -12,6 +18,10 @@ export default function Slider(theme) {
         markLabel: {
           fontSize: 13,
           color: theme.palette.text.disabled
+        },
+        valueLabel: {
+          borderRadius: 8,
+          backgroundColor: theme.palette.grey[isLight ? 800 : 700]
         }
       }
     }

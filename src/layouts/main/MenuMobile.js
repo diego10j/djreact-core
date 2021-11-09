@@ -6,15 +6,13 @@ import { NavLink as RouterLink, useLocation } from 'react-router-dom';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, List, Drawer, Link, Collapse, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, List, Link, Drawer, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
 // components
 import Logo from '../../components/Logo';
 import NavSection from '../../components/NavSection';
 import Scrollbar from '../../components/Scrollbar';
 import { MIconButton } from '../../components/@material-extend';
-//
-import menuConfig from './MenuConfig';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +20,7 @@ const ICON_SIZE = 22;
 const ITEM_SIZE = 48;
 const PADDING = 2.5;
 
-const ListItemStyle = styled(ListItem)(({ theme }) => ({
+const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
   ...theme.typography.body2,
   height: ITEM_SIZE,
   textTransform: 'capitalize',
@@ -36,17 +34,16 @@ const ListItemStyle = styled(ListItem)(({ theme }) => ({
 MenuMobileItem.propTypes = {
   item: PropTypes.object,
   isOpen: PropTypes.bool,
-  isActive: PropTypes.bool,
   onOpen: PropTypes.func
 };
 
-function MenuMobileItem({ item, isOpen, isActive, onOpen }) {
+function MenuMobileItem({ item, isOpen, onOpen }) {
   const { title, path, icon, children } = item;
 
   if (children) {
     return (
-      <div key={title}>
-        <ListItemStyle button onClick={onOpen}>
+      <>
+        <ListItemStyle onClick={onOpen}>
           <ListItemIcon>{icon}</ListItemIcon>
           <ListItemText disableTypography primary={title} />
           <Box
@@ -59,9 +56,9 @@ function MenuMobileItem({ item, isOpen, isActive, onOpen }) {
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
             <NavSection
-              navConfig={menuConfig[2].children}
+              navConfig={children}
               sx={{
-                '&.MuiList-root:last-child .MuiListItem-root': {
+                '& .MuiList-root:last-of-type .MuiListItemButton-root': {
                   height: 200,
                   backgroundSize: '92%',
                   backgroundPosition: 'center',
@@ -84,7 +81,7 @@ function MenuMobileItem({ item, isOpen, isActive, onOpen }) {
                     bgcolor: 'currentColor'
                   }
                 },
-                '& .MuiListItem-root': {
+                '& .MuiListItemButton-root': {
                   pl: PADDING,
                   '&:before': { display: 'none' },
                   '&.active': { color: 'primary.main', bgcolor: 'transparent' }
@@ -104,22 +101,30 @@ function MenuMobileItem({ item, isOpen, isActive, onOpen }) {
             />
           </Box>
         </Collapse>
-      </div>
+      </>
+    );
+  }
+
+  if (title === 'Documentation') {
+    return (
+      <ListItemStyle href={path} target="_blank" component={Link}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText disableTypography primary={title} />
+      </ListItemStyle>
     );
   }
 
   return (
     <ListItemStyle
-      button
-      key={title}
       to={path}
       component={RouterLink}
+      end={path === '/'}
       sx={{
-        ...(isActive && {
+        '&.active': {
           color: 'primary.main',
           fontWeight: 'fontWeightMedium',
           bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
-        })
+        }
       }}
     >
       <ListItemIcon>{icon}</ListItemIcon>
@@ -130,31 +135,32 @@ function MenuMobileItem({ item, isOpen, isActive, onOpen }) {
 
 MenuMobile.propTypes = {
   isOffset: PropTypes.bool,
-  isHome: PropTypes.bool
+  isHome: PropTypes.bool,
+  navConfig: PropTypes.array
 };
 
-export default function MenuMobile({ isOffset, isHome }) {
+export default function MenuMobile({ isOffset, isHome, navConfig }) {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
-    if (mobileOpen) {
+    if (drawerOpen) {
       handleDrawerClose();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
   const handleDrawerOpen = () => {
-    setMobileOpen(true);
+    setDrawerOpen(true);
   };
 
   const handleDrawerClose = () => {
-    setMobileOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(!open);
+    setDrawerOpen(false);
   };
 
   return (
@@ -171,7 +177,7 @@ export default function MenuMobile({ isOffset, isHome }) {
       </MIconButton>
 
       <Drawer
-        open={mobileOpen}
+        open={drawerOpen}
         onClose={handleDrawerClose}
         ModalProps={{ keepMounted: true }}
         PaperProps={{ sx: { pb: 5, width: 260 } }}
@@ -182,14 +188,8 @@ export default function MenuMobile({ isOffset, isHome }) {
           </Link>
 
           <List disablePadding>
-            {menuConfig.map((link) => (
-              <MenuMobileItem
-                key={link.title}
-                item={link}
-                isOpen={open}
-                onOpen={handleOpen}
-                isActive={pathname === link.path}
-              />
+            {navConfig.map((link) => (
+              <MenuMobileItem key={link.title} item={link} isOpen={open} onOpen={handleOpen} />
             ))}
           </List>
         </Scrollbar>

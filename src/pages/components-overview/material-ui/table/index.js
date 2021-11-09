@@ -1,6 +1,6 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Container, CardHeader, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Card, Container, CardHeader, Stack } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // components
@@ -34,7 +34,7 @@ export default function TableComponent() {
           <HeaderBreadcrumbs
             heading="Table"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Table' }]}
-            moreLink="https://next.material-ui.com/components/tables"
+            moreLink="https://mui.com/components/tables"
           />
         </Container>
       </Box>

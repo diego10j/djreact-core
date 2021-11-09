@@ -4,7 +4,7 @@ import { useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import checkmarkCircle2Fill from '@iconify/icons-eva/checkmark-circle-2-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Stack,
   Paper,
@@ -15,7 +15,7 @@ import {
   Typography,
   RadioGroup,
   FormControlLabel
-} from '@material-ui/core';
+} from '@mui/material';
 //
 import { MHidden } from '../../@material-extend';
 import PaymentNewCardForm from './PaymentNewCardForm';

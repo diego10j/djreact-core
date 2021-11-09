@@ -2,8 +2,8 @@ import { fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Switch, Typography } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Switch, Typography } from '@mui/material';
 //
 import MAP_STYLE from '../assets/map-style-basic-v8.json';
 

@@ -1,55 +1,52 @@
-import faker from 'faker';
-import PropTypes from 'prop-types';
 // material
-import { Card, CardHeader, Typography, Stack } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { Card, CardHeader, Typography, Stack, LinearProgress } from '@mui/material';
 // utils
 import { fPercent, fCurrency } from '../../../utils/formatNumber';
-//
-import { MLinearProgress } from '../../@material-extend';
+import mockData from '../../../utils/mock-data';
 
 // ----------------------------------------------------------------------
 
-const SALES = [
-  {
-    label: 'Total Profit',
-    amount: faker.finance.amount(),
-    value: faker.datatype.number({ min: 9, max: 99, precision: 0.1 })
-  },
-  {
-    label: 'Total Income',
-    amount: faker.finance.amount(),
-    value: faker.datatype.number({ min: 9, max: 99, precision: 0.1 })
-  },
-  {
-    label: 'Total Expenses',
-    amount: faker.finance.amount(),
-    value: faker.datatype.number({ min: 9, max: 99, precision: 0.1 })
-  }
-];
+const LABELS = ['Total Profit', 'Total Income', 'Total Expenses'];
 
-const COLORS = ['primary', 'info', 'warning'];
+const MOCK_SALES = [...Array(3)].map((_, index) => ({
+  label: LABELS[index],
+  amount: mockData.number.price(index) * 100,
+  value: mockData.number.percent(index)
+}));
 
 // ----------------------------------------------------------------------
 
 ProgressItem.propTypes = {
-  progress: PropTypes.object,
-  index: PropTypes.number
+  progress: PropTypes.shape({
+    label: PropTypes.string,
+    amount: PropTypes.number,
+    value: PropTypes.number
+  })
 };
 
-function ProgressItem({ progress, index }) {
+function ProgressItem({ progress }) {
   return (
     <Stack spacing={1}>
       <Stack direction="row" alignItems="center">
         <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
           {progress.label}
         </Typography>
-
-        <Typography variant="body2">{fCurrency(progress.amount)}</Typography>
+        <Typography variant="subtitle2">{fCurrency(progress.amount)}</Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           &nbsp;({fPercent(progress.value)})
         </Typography>
       </Stack>
-      <MLinearProgress variant="determinate" value={progress.value} color={COLORS[index]} />
+
+      <LinearProgress
+        variant="determinate"
+        value={progress.value}
+        color={
+          (progress.label === 'Total Income' && 'info') ||
+          (progress.label === 'Total Expenses' && 'warning') ||
+          'primary'
+        }
+      />
     </Stack>
   );
 }
@@ -59,8 +56,8 @@ export default function EcommerceSalesOverview() {
     <Card>
       <CardHeader title="Sales Overview" />
       <Stack spacing={4} sx={{ p: 3 }}>
-        {SALES.map((progress, index) => (
-          <ProgressItem key={progress.label} progress={progress} index={index} />
+        {MOCK_SALES.map((progress) => (
+          <ProgressItem key={progress.label} progress={progress} />
         ))}
       </Stack>
     </Card>

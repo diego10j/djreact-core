@@ -1,19 +1,19 @@
 import { useState } from 'react';
 // material
-import CheckIcon from '@material-ui/icons/Check';
-import ViewListIcon from '@material-ui/icons/ViewList';
-import ViewQuiltIcon from '@material-ui/icons/ViewQuilt';
-import FormatBoldIcon from '@material-ui/icons/FormatBold';
-import ViewModuleIcon from '@material-ui/icons/ViewModule';
-import FormatItalicIcon from '@material-ui/icons/FormatItalic';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
-import FormatAlignRightIcon from '@material-ui/icons/FormatAlignRight';
-import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
-import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter';
-import { Grid, ToggleButton, ToggleButtonGroup } from '@material-ui/core';
-import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify';
+import CheckIcon from '@mui/icons-material/Check';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import { Grid, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 //
 import { Block } from '../../Block';
 

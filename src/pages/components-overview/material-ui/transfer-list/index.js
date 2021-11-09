@@ -1,6 +1,6 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Container, Stack } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // components
@@ -42,7 +42,7 @@ export default function TransferListComponent() {
           <HeaderBreadcrumbs
             heading="Transfer List"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Transfer List' }]}
-            moreLink="https://next.material-ui.com/components/transfer-list"
+            moreLink="https://mui.com/components/transfer-list"
           />
         </Container>
       </Box>

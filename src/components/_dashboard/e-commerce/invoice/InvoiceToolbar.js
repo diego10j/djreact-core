@@ -7,10 +7,9 @@ import shareFill from '@iconify/icons-eva/share-fill';
 import downloadFill from '@iconify/icons-eva/download-fill';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 // material
-import { Box, Tooltip, IconButton, DialogActions, Stack } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Box, Tooltip, IconButton, DialogActions, Stack, Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 //
-import { MButton } from '../../../@material-extend';
 import { DialogAnimate } from '../../../animate';
 import InvoicePDF from './InvoicePDF';
 
@@ -34,11 +33,11 @@ export default function InvoiceToolbar({ invoice }) {
   return (
     <>
       <Stack mb={5} direction="row" justifyContent="flex-end" spacing={1.5}>
-        <MButton color="error" size="small" variant="contained" endIcon={<Icon icon={shareFill} />}>
+        <Button color="error" size="small" variant="contained" endIcon={<Icon icon={shareFill} />}>
           Share
-        </MButton>
+        </Button>
 
-        <MButton
+        <Button
           color="info"
           size="small"
           variant="contained"
@@ -47,7 +46,7 @@ export default function InvoiceToolbar({ invoice }) {
           sx={{ mx: 1 }}
         >
           Preview
-        </MButton>
+        </Button>
 
         <PDFDownloadLink
           document={<InvoicePDF invoice={invoice} />}

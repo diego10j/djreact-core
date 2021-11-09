@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { v4 as uuidv4 } from 'uuid';
 import { trim } from 'lodash';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -9,8 +9,8 @@ import calendarFill from '@iconify/icons-eva/calendar-fill';
 import radioButtonOffOutline from '@iconify/icons-eva/radio-button-off-outline';
 import checkmarkCircle2Outline from '@iconify/icons-eva/checkmark-circle-2-outline';
 // material
-import { Paper, Stack, Tooltip, Checkbox, Box, OutlinedInput, ClickAwayListener } from '@material-ui/core';
-import { MobileDateRangePicker } from '@material-ui/lab';
+import { Paper, Stack, Tooltip, Checkbox, Box, OutlinedInput, ClickAwayListener } from '@mui/material';
+import { MobileDateRangePicker } from '@mui/lab';
 //
 import { MIconButton } from '../../@material-extend';
 
@@ -114,16 +114,16 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }) {
   });
 
   const handleKeyUpAddTask = (event) => {
-    if (event.key === 'Enter' || event.keyCode === 13) {
+    if (event.key === 'Enter') {
       if (trim(name) !== '') {
-        onAddTask({ ...defaultTask, id: faker.datatype.uuid(), name, due: dueDate, completed });
+        onAddTask({ ...defaultTask, id: uuidv4(), name, due: dueDate, completed });
       }
     }
   };
 
   const handleClickAddTask = () => {
     if (name) {
-      onAddTask({ ...defaultTask, id: faker.datatype.uuid(), name, due: dueDate, completed });
+      onAddTask({ ...defaultTask, id: uuidv4(), name, due: dueDate, completed });
     }
     onCloseAddTask();
   };

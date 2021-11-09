@@ -1,32 +1,24 @@
-import faker from 'faker';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import roundArrowRightAlt from '@iconify/icons-ic/round-arrow-right-alt';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Button, Container, Typography, LinearProgress } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Grid, Button, Container, Typography, LinearProgress } from '@mui/material';
 // utils
 import { fPercent } from '../../../utils/formatNumber';
+import mockData from '../../../utils/mock-data';
 //
-import { varFadeInUp, varFadeInRight, MotionInView } from '../../animate';
 import { MHidden } from '../../@material-extend';
+import { varFadeInUp, varFadeInRight, MotionInView } from '../../animate';
 
 // ----------------------------------------------------------------------
 
-const SKILLS = [
-  {
-    label: 'Development',
-    value: faker.datatype.number({ min: 79, max: 99, precision: 0.1 })
-  },
-  {
-    label: 'Design',
-    value: faker.datatype.number({ min: 79, max: 99, precision: 0.1 })
-  },
-  {
-    label: 'Marketing',
-    value: faker.datatype.number({ min: 79, max: 99, precision: 0.1 })
-  }
-];
+const LABEL = ['Development', 'Design', 'Marketing'];
+
+const MOCK_SKILLS = [...Array(3)].map((_, index) => ({
+  label: LABEL[index],
+  value: mockData.number.percent(index)
+}));
 
 const RootStyle = styled('div')(({ theme }) => ({
   textAlign: 'center',
@@ -40,7 +32,10 @@ const RootStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 ProgressItem.propTypes = {
-  progress: PropTypes.object
+  progress: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.number
+  })
 };
 
 function ProgressItem({ progress }) {
@@ -119,7 +114,7 @@ export default function AboutWhat() {
             </MotionInView>
 
             <Box sx={{ my: 5 }}>
-              {SKILLS.map((progress) => (
+              {MOCK_SKILLS.map((progress) => (
                 <MotionInView key={progress.label} variants={varFadeInRight}>
                   <ProgressItem progress={progress} />
                 </MotionInView>

@@ -10,7 +10,7 @@ import instagramFilled from '@iconify/icons-ant-design/instagram-filled';
 import roundAddShoppingCart from '@iconify/icons-ic/round-add-shopping-cart';
 import { useFormik, Form, FormikProvider, useField } from 'formik';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
+import { useTheme, styled } from '@mui/material/styles';
 import {
   Box,
   Link,
@@ -22,7 +22,7 @@ import {
   TextField,
   Typography,
   FormHelperText
-} from '@material-ui/core';
+} from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../../../redux/store';
 import { addCart, onGotoStep } from '../../../../redux/slices/product';
@@ -31,7 +31,7 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 // utils
 import { fShortenNumber, fCurrency } from '../../../../utils/formatNumber';
 //
-import { MIconButton, MButton } from '../../../@material-extend';
+import { MIconButton } from '../../../@material-extend';
 import Label from '../../../Label';
 import ColorSinglePicker from '../../../ColorSinglePicker';
 
@@ -298,7 +298,7 @@ export default function ProductDetailsSumary() {
           <Divider sx={{ borderStyle: 'dashed' }} />
 
           <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} sx={{ mt: 5 }}>
-            <MButton
+            <Button
               fullWidth
               disabled={isMaxQuantity}
               size="large"
@@ -310,7 +310,7 @@ export default function ProductDetailsSumary() {
               sx={{ whiteSpace: 'nowrap' }}
             >
               Add to Cart
-            </MButton>
+            </Button>
             <Button fullWidth size="large" type="submit" variant="contained">
               Buy Now
             </Button>

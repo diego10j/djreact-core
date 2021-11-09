@@ -7,12 +7,12 @@ import roundViewModule from '@iconify/icons-ic/round-view-module';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Tooltip, Typography, IconButton, ToggleButton, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Tooltip, Typography, IconButton, ToggleButton, Stack, Button } from '@mui/material';
 // utils
 import { fDate } from '../../../utils/formatTime';
 //
-import { MButton, MHidden } from '../../@material-extend';
+import { MHidden } from '../../@material-extend';
 
 // ----------------------------------------------------------------------
 
@@ -75,9 +75,9 @@ export default function CalendarToolbar({ date, view, onNextDate, onPrevDate, on
           <Icon icon={arrowIosBackFill} width={18} height={18} />
         </IconButton>
 
-        <MButton size="small" color="error" variant="contained" onClick={onToday} sx={{ mx: 0.5 }}>
+        <Button size="small" color="error" variant="contained" onClick={onToday} sx={{ mx: 0.5 }}>
           Today
-        </MButton>
+        </Button>
 
         <IconButton onClick={onNextDate}>
           <Icon icon={arrowIosForwardFill} width={18} height={18} />

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // material
-import { List, Avatar, ListItem, Typography, ListItemText, ListItemAvatar } from '@material-ui/core';
+import { List, Avatar, Typography, ListItemText, ListItemAvatar, ListItemButton } from '@mui/material';
 //
 import SearchNotFound from '../../SearchNotFound';
 
@@ -23,9 +23,8 @@ export default function ChatSearchResults({ query, results, onSelectContact }) {
 
       <List disablePadding>
         {results.map((result) => (
-          <ListItem
+          <ListItemButton
             key={result.id}
-            button
             onClick={() => onSelectContact(result)}
             sx={{
               py: 1.5,
@@ -42,7 +41,7 @@ export default function ChatSearchResults({ query, results, onSelectContact }) {
                 variant: 'subtitle2'
               }}
             />
-          </ListItem>
+          </ListItemButton>
         ))}
       </List>
       {!isFound && (

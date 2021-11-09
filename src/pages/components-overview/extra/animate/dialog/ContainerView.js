@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // material
-import { Paper, Button, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
+import { Paper, Button, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 // components
 import { DialogAnimate } from '../../../../../components/animate';
 //

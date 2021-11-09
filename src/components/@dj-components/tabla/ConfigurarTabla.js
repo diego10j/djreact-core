@@ -2,17 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 // material
-import { withStyles, useTheme } from '@material-ui/core/styles';
-import {
-  Dialog,
-  DialogContent,
-  Stack,
-  useMediaQuery,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton
-} from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { withStyles } from '@mui/styles';
+import { Dialog, DialogContent, Stack, useMediaQuery, List, ListItem, ListItemText, IconButton } from '@mui/material';
 // iconos
 import arrowIosUpwardFill from '@iconify/icons-eva/arrow-ios-upward-fill';
 import arrowheadUpFill from '@iconify/icons-eva/arrowhead-up-fill';

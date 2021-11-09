@@ -1,55 +1,33 @@
-import faker from 'faker';
 import PropTypes from 'prop-types';
+import { random } from 'lodash';
 import { Icon } from '@iconify/react';
 import appleFilled from '@iconify/icons-ant-design/apple-filled';
 import windowsFilled from '@iconify/icons-ant-design/windows-filled';
 import androidFilled from '@iconify/icons-ant-design/android-filled';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, CardHeader, Typography, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Card, CardHeader, Typography, Stack } from '@mui/material';
+// utils
+import mockData from '../../../utils/mock-data';
 //
 import Scrollbar from '../../Scrollbar';
 import { fShortenNumber } from '../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
-const INSTALLED = [
-  {
-    name: 'Germany',
-    android: faker.datatype.number(),
-    windows: faker.datatype.number(),
-    apple: faker.datatype.number(),
-    flag: '/static/icons/ic_flag_de.svg'
-  },
-  {
-    name: 'England',
-    android: faker.datatype.number(),
-    windows: faker.datatype.number(),
-    apple: faker.datatype.number(),
-    flag: '/static/icons/ic_flag_en.svg'
-  },
-  {
-    name: 'France',
-    android: faker.datatype.number(),
-    windows: faker.datatype.number(),
-    apple: faker.datatype.number(),
-    flag: '/static/icons/ic_flag_fr.svg'
-  },
-  {
-    name: 'Korean',
-    android: faker.datatype.number(),
-    windows: faker.datatype.number(),
-    apple: faker.datatype.number(),
-    flag: '/static/icons/ic_flags_kr.svg'
-  },
-  {
-    name: 'USA',
-    android: faker.datatype.number(),
-    windows: faker.datatype.number(),
-    apple: faker.datatype.number(),
-    flag: '/static/icons/ic_flags_us.svg'
-  }
-];
+const MOCK_INSTALLED = ['de', 'en', 'fr', 'kr', 'us'].map((country, index) => ({
+  id: mockData.id(index),
+  name:
+    (country === 'de' && 'Germany') ||
+    (country === 'en' && 'England') ||
+    (country === 'fr' && 'France') ||
+    (country === 'kr' && 'Korean') ||
+    'USA',
+  android: random(99999),
+  windows: random(99999),
+  apple: random(99999),
+  flag: `/static/icons/ic_flag_${country}.svg`
+}));
 
 const ItemBlockStyle = styled((props) => <Stack direction="row" alignItems="center" {...props} />)({
   minWidth: 72,
@@ -66,7 +44,14 @@ const ItemIconStyle = styled(Icon)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 CountryItem.propTypes = {
-  country: PropTypes.object
+  country: PropTypes.shape({
+    id: PropTypes.string,
+    flag: PropTypes.string,
+    name: PropTypes.string,
+    android: PropTypes.number,
+    windows: PropTypes.number,
+    apple: PropTypes.number
+  })
 };
 
 function CountryItem({ country }) {
@@ -98,8 +83,8 @@ export default function AppTopInstalledCountries() {
       <CardHeader title="Top Installed Countries" />
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3 }}>
-          {INSTALLED.map((country) => (
-            <CountryItem key={country.name} country={country} />
+          {MOCK_INSTALLED.map((country) => (
+            <CountryItem key={country.id} country={country} />
           ))}
         </Stack>
       </Scrollbar>

@@ -5,8 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Link, Tooltip, Typography, IconButton } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Link, Tooltip, Typography, IconButton } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // utils

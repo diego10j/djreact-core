@@ -3,8 +3,8 @@ import { Icon } from '@iconify/react';
 import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 import roundFilterList from '@iconify/icons-ic/round-filter-list';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Toolbar, Tooltip, Typography, IconButton } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Toolbar, Tooltip, Typography, IconButton } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

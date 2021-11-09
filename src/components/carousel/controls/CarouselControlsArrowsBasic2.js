@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
+
 import { Icon } from '@iconify/react';
 import arrowLeftFill from '@iconify/icons-eva/arrow-left-fill';
 import arrowRightFill from '@iconify/icons-eva/arrow-right-fill';
+import roundKeyboardArrowLeft from '@iconify/icons-ic/round-keyboard-arrow-left';
+import roundKeyboardArrowRight from '@iconify/icons-ic/round-keyboard-arrow-right';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 //
 import { MIconButton } from '../../@material-extend';
 
@@ -11,7 +15,12 @@ import { MIconButton } from '../../@material-extend';
 
 const SIZE = 40;
 
-const RootStyle = styled('div')(({ theme }) => ({
+const ICON_SIZE = {
+  width: 20,
+  height: 20
+};
+
+const RootStyle = styled(Box)(({ theme }) => ({
   top: 0,
   bottom: 0,
   zIndex: 9,
@@ -45,22 +54,31 @@ const ArrowStyle = styled(MIconButton)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 CarouselControlsArrowsBasic2.propTypes = {
+  arrowLine: PropTypes.bool,
   onNext: PropTypes.func,
   onPrevious: PropTypes.func
 };
 
-export default function CarouselControlsArrowsBasic2({ onNext, onPrevious, ...other }) {
+export default function CarouselControlsArrowsBasic2({ arrowLine, onNext, onPrevious, ...other }) {
   const theme = useTheme();
   const isRTL = theme.direction === 'rtl';
 
   return (
     <RootStyle {...other}>
       <ArrowStyle size="small" onClick={onPrevious}>
-        <Icon width={20} height={20} icon={isRTL ? arrowRightFill : arrowLeftFill} />
+        {arrowLine ? (
+          <Icon icon={isRTL ? roundKeyboardArrowRight : roundKeyboardArrowLeft} {...ICON_SIZE} />
+        ) : (
+          <Icon icon={isRTL ? arrowRightFill : arrowLeftFill} {...ICON_SIZE} />
+        )}
       </ArrowStyle>
 
       <ArrowStyle size="small" onClick={onNext}>
-        <Icon width={20} height={20} icon={isRTL ? arrowLeftFill : arrowRightFill} />
+        {arrowLine ? (
+          <Icon icon={isRTL ? roundKeyboardArrowLeft : roundKeyboardArrowRight} {...ICON_SIZE} />
+        ) : (
+          <Icon icon={isRTL ? arrowLeftFill : arrowRightFill} {...ICON_SIZE} />
+        )}
       </ArrowStyle>
     </RootStyle>
   );

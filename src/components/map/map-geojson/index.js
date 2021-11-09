@@ -3,8 +3,8 @@ import { scaleQuantile } from 'd3-scale';
 import MapGL, { Source, Layer } from 'react-map-gl';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 // material
-import { useTheme, alpha } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
+import { useTheme, alpha } from '@mui/material/styles';
+import { Box, Typography } from '@mui/material';
 //
 import { MapControlScale, MapControlGeolocate, MapControlNavigation, MapControlFullscreen } from '../controls';
 import ControlPanel from './ControlPanel';

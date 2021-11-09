@@ -1,6 +1,6 @@
 // material
-import AlarmIcon from '@material-ui/icons/Alarm';
-import { Grid, IconButton } from '@material-ui/core';
+import AlarmIcon from '@mui/icons-material/Alarm';
+import { Grid, IconButton } from '@mui/material';
 // components
 import { MIconButton } from '../../../../components/@material-extend';
 //

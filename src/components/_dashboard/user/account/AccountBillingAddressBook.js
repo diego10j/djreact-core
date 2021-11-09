@@ -4,9 +4,7 @@ import plusFill from '@iconify/icons-eva/plus-fill';
 import editFill from '@iconify/icons-eva/edit-fill';
 import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 // material
-import { Box, Card, Button, Typography, Stack, Paper } from '@material-ui/core';
-//
-import { MButton } from '../../../@material-extend';
+import { Box, Card, Button, Typography, Stack, Paper } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -50,7 +48,7 @@ export default function AccountBillingAddressBook({ addressBook }) {
             </Typography>
 
             <Box sx={{ mt: 1 }}>
-              <MButton
+              <Button
                 color="error"
                 size="small"
                 startIcon={<Icon icon={trash2Fill} />}
@@ -58,7 +56,7 @@ export default function AccountBillingAddressBook({ addressBook }) {
                 sx={{ mr: 1 }}
               >
                 Delete
-              </MButton>
+              </Button>
               <Button size="small" startIcon={<Icon icon={editFill} />} onClick={() => {}}>
                 Edit
               </Button>

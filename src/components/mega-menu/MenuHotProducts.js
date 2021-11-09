@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { Link, Typography, Box } from '@material-ui/core';
+import { Link, Typography, Box } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

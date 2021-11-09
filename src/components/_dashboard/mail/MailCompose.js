@@ -7,18 +7,8 @@ import attach2Fill from '@iconify/icons-eva/attach-2-fill';
 import collapseFill from '@iconify/icons-eva/collapse-fill';
 import roundAddPhotoAlternate from '@iconify/icons-ic/round-add-photo-alternate';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import {
-  Box,
-  Input,
-  Portal,
-  Button,
-  Divider,
-  Backdrop,
-  IconButton,
-  Typography,
-  useMediaQuery
-} from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box, Input, Portal, Button, Divider, Backdrop, IconButton, Typography, useMediaQuery } from '@mui/material';
 //
 import { QuillEditor } from '../../editor';
 

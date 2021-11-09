@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { filter, includes, orderBy } from 'lodash';
 // material
-import { Backdrop, Container, Typography, CircularProgress, Stack } from '@material-ui/core';
+import { Backdrop, Container, Typography, CircularProgress, Stack } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getProducts, filterProducts } from '../../redux/slices/product';
@@ -10,6 +10,8 @@ import { getProducts, filterProducts } from '../../redux/slices/product';
 import { PATH_DASHBOARD } from '../../routes/paths';
 // utils
 import fakeRequest from '../../utils/fakeRequest';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -73,6 +75,7 @@ function applyFilter(products, sortBy, filters) {
 }
 
 export default function EcommerceShop() {
+  const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const [openFilter, setOpenFilter] = useState(false);
   const { products, sortBy, filters } = useSelector((state) => state.product);
@@ -98,6 +101,13 @@ export default function EcommerceShop() {
   });
 
   const { values, resetForm, handleSubmit, isSubmitting, initialValues } = formik;
+
+  const isDefault =
+    !values.priceRange &&
+    !values.rating &&
+    values.gender.length === 0 &&
+    values.colors.length === 0 &&
+    values.category === 'All';
 
   useEffect(() => {
     dispatch(getProducts());
@@ -128,7 +138,7 @@ export default function EcommerceShop() {
         </Backdrop>
       )}
 
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Shop"
           links={[
@@ -141,7 +151,7 @@ export default function EcommerceShop() {
           ]}
         />
 
-        {values !== initialValues && (
+        {!isDefault && (
           <Typography gutterBottom>
             <Typography component="span" variant="subtitle1">
               {filteredProducts.length}
@@ -156,6 +166,7 @@ export default function EcommerceShop() {
             formik={formik}
             isShowReset={openFilter}
             onResetFilter={handleResetFilter}
+            isDefault={isDefault}
           />
 
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>

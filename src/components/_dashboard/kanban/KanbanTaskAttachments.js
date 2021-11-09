@@ -6,8 +6,8 @@ import { useState, useCallback } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import closeFill from '@iconify/icons-eva/close-fill';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Paper } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Paper } from '@mui/material';
 // utils
 import { MIconButton } from '../../@material-extend';
 import { varFadeInRight } from '../../animate';

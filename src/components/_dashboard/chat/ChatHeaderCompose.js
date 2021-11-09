@@ -5,10 +5,9 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import checkmarkFill from '@iconify/icons-eva/checkmark-fill';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Avatar, TextField, Typography, Autocomplete } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Avatar, TextField, Typography, Autocomplete, Chip } from '@mui/material';
 //
-import { MChip } from '../../@material-extend';
 import SearchNotFound from '../../SearchNotFound';
 
 // ----------------------------------------------------------------------
@@ -44,21 +43,19 @@ const AutocompleteStyle = styled('div')(({ theme }) => ({
 ChatHeaderCompose.propTypes = {
   contacts: PropTypes.array,
   recipients: PropTypes.array,
-  onAddRecipient: PropTypes.func
+  onAddRecipients: PropTypes.func
 };
 
-export default function ChatHeaderCompose({ contacts, recipients, onAddRecipient, ...other }) {
+export default function ChatHeaderCompose({ contacts, recipients, onAddRecipients, ...other }) {
   const [query, setQuery] = useState('');
 
   const handleChangeQuery = (event) => {
     setQuery(event.target.value);
   };
 
-  const handleAddRecipient = (e, recipient) => {
+  const handleAddRecipients = (event, recipient) => {
     setQuery('');
-    if (onAddRecipient) {
-      onAddRecipient(recipient);
-    }
+    onAddRecipients(recipient);
   };
 
   return (
@@ -75,7 +72,7 @@ export default function ChatHeaderCompose({ contacts, recipients, onAddRecipient
           popupIcon={null}
           clearText={null}
           noOptionsText={<SearchNotFound searchQuery={query} />}
-          onChange={handleAddRecipient}
+          onChange={handleAddRecipients}
           onInputChange={handleChangeQuery}
           options={contacts}
           getOptionLabel={(recipient) => recipient.name}
@@ -133,13 +130,13 @@ export default function ChatHeaderCompose({ contacts, recipients, onAddRecipient
             recipients.map((recipient, index) => {
               const { id, name, avatar } = recipient;
               return (
-                <MChip
+                <Chip
+                  {...getTagProps({ index })}
                   key={id}
                   size="small"
                   label={name}
                   color="info"
                   avatar={<Avatar alt={name} src={avatar} />}
-                  {...getTagProps({ index })}
                 />
               );
             })

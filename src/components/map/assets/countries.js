@@ -1,4 +1,5 @@
-import faker from 'faker';
+// utils
+import mockData from '../../../utils/mock-data';
 
 // ----------------------------------------------------------------------
 
@@ -9,7 +10,7 @@ export const countries = [
     name: 'Aruba',
     country_code: 'AW',
     capital: 'Oranjestad',
-    photo: faker.image.image()
+    photo: mockData.image.feed(1)
   },
   {
     timezones: ['Asia/Kabul'],
@@ -17,7 +18,7 @@ export const countries = [
     name: 'Afghanistan',
     country_code: 'AF',
     capital: 'Kabul',
-    photo: faker.image.image()
+    photo: mockData.image.feed(2)
   },
   {
     timezones: ['Africa/Luanda'],
@@ -25,7 +26,7 @@ export const countries = [
     name: 'Angola',
     country_code: 'AO',
     capital: 'Luanda',
-    photo: faker.image.image()
+    photo: mockData.image.feed(3)
   },
   {
     timezones: ['Pacific/Efate'],
@@ -33,7 +34,7 @@ export const countries = [
     name: 'Vanuatu',
     country_code: 'VU',
     capital: 'Port Vila',
-    photo: faker.image.image()
+    photo: mockData.image.feed(4)
   },
   {
     timezones: ['Pacific/Wallis'],
@@ -41,7 +42,7 @@ export const countries = [
     name: 'Wallis and Futuna',
     country_code: 'WF',
     capital: 'Mata-Utu',
-    photo: faker.image.image()
+    photo: mockData.image.feed(5)
   },
   {
     timezones: ['Pacific/Apia'],
@@ -49,7 +50,7 @@ export const countries = [
     name: 'Samoa',
     country_code: 'WS',
     capital: 'Apia',
-    photo: faker.image.image()
+    photo: mockData.image.feed(6)
   },
   {
     timezones: ['Asia/Aden'],
@@ -57,7 +58,7 @@ export const countries = [
     name: 'Yemen',
     country_code: 'YE',
     capital: "Sana'a",
-    photo: faker.image.image()
+    photo: mockData.image.feed(7)
   },
   {
     timezones: ['Africa/Johannesburg'],
@@ -65,7 +66,7 @@ export const countries = [
     name: 'South Africa',
     country_code: 'ZA',
     capital: 'Pretoria',
-    photo: faker.image.image()
+    photo: mockData.image.feed(8)
   },
   {
     timezones: ['Africa/Lusaka'],
@@ -73,7 +74,7 @@ export const countries = [
     name: 'Zambia',
     country_code: 'ZM',
     capital: 'Lusaka',
-    photo: faker.image.image()
+    photo: mockData.image.feed(9)
   },
   {
     timezones: ['Africa/Harare'],
@@ -81,6 +82,6 @@ export const countries = [
     name: 'Zimbabwe',
     country_code: 'ZW',
     capital: 'Harare',
-    photo: faker.image.image()
+    photo: mockData.image.feed(10)
   }
 ];

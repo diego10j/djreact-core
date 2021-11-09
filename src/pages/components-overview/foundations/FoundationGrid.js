@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Paper, Radio, Container, Typography, RadioGroup, FormControlLabel, Stack } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box, Grid, Paper, Radio, Container, Typography, RadioGroup, FormControlLabel, Stack } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components

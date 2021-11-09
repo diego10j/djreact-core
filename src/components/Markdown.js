@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 // markdown plugins
 import rehypeRaw from 'rehype-raw';
 import rehypeHighlight from 'rehype-highlight';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Link, Typography, Divider } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Link, Typography, Divider } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -75,41 +74,31 @@ const MarkdownWrapperStyle = styled('div')(({ theme }) => {
   };
 });
 
-LinkTo.propTypes = {
-  href: PropTypes.string,
-  children: PropTypes.node
+const components = {
+  h1: ({ ...props }) => <Typography variant="h1" {...props} />,
+  h2: ({ ...props }) => <Typography variant="h2" {...props} />,
+  h3: ({ ...props }) => <Typography variant="h3" {...props} />,
+  h4: ({ ...props }) => <Typography variant="h4" {...props} />,
+  h5: ({ ...props }) => <Typography variant="h5" {...props} />,
+  h6: ({ ...props }) => <Typography variant="h6" {...props} />,
+  hr: ({ ...props }) => <Divider sx={{ my: 3 }} {...props} />,
+  a: ({ ...props }) => {
+    /* eslint-disable react/prop-types */
+    const { href } = props;
+    return !href.includes('http') ? (
+      <Link {...props} />
+    ) : (
+      <Link target="_blank" rel="nofollow noreferrer noopener" {...props} />
+    );
+  }
 };
-
-function LinkTo({ href, children }) {
-  return !href.includes('http') ? (
-    <Link href={href}>{children}</Link>
-  ) : (
-    <Link href={href} target="_blank" rel="nofollow noreferrer noopener">
-      {children}
-    </Link>
-  );
-}
 
 // ----------------------------------------------------------------------
 
 export default function Markdown({ ...other }) {
   return (
     <MarkdownWrapperStyle>
-      <ReactMarkdown
-        rehypePlugins={[rehypeRaw, rehypeHighlight]}
-        components={{
-          h1: (props) => <Typography variant="h1" {...props} />,
-          h2: (props) => <Typography variant="h2" {...props} />,
-          h3: (props) => <Typography variant="h3" {...props} />,
-          h4: (props) => <Typography variant="h4" {...props} />,
-          h5: (props) => <Typography variant="h5" {...props} />,
-          h6: (props) => <Typography variant="h6" {...props} />,
-          p: (props) => <Typography variant="body1" {...props} />,
-          hr: (props) => <Divider sx={{ my: 3 }} {...props} />,
-          a: LinkTo
-        }}
-        {...other}
-      />
+      <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeHighlight]} components={components} {...other} />
     </MarkdownWrapperStyle>
   );
 }

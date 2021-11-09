@@ -13,7 +13,7 @@ import {
   Typography,
   CardContent,
   InputAdornment
-} from '@material-ui/core';
+} from '@mui/material';
 // utils
 import { fCurrency } from '../../../../utils/formatNumber';
 

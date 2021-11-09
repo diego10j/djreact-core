@@ -7,8 +7,8 @@ import settings2Fill from '@iconify/icons-eva/settings-2-fill';
 import options2Fill from '@iconify/icons-eva/options-2-fill';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
-import { alpha } from '@material-ui/core/styles';
-import { Button, Box, Divider, MenuItem, Typography } from '@material-ui/core';
+import { alpha } from '@mui/material/styles';
+import { Button, Box, Divider, MenuItem, Typography } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // hooks
@@ -18,6 +18,7 @@ import useIsMountedRef from '../../hooks/useIsMountedRef';
 import { MIconButton } from '../../components/@material-extend';
 import MyAvatar from '../../components/MyAvatar';
 import MenuPopover from '../../components/MenuPopover';
+
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [

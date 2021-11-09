@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { isValidToken, setSession } from '../utils/jwt';
 import { llamarServicioGet, llamarServicioPost } from '../services/servicioBase';
+import { getMenuOpciones } from '../layouts/dashboard/SidebarConfig';
 
 // ----------------------------------------------------------------------
 
@@ -83,7 +84,7 @@ function AuthProvider({ children }) {
             photoURL: datos.avatar,
             phoneNumber: '+40 777666555',
             country: 'Ecuador',
-            address: 'Sin Dirección',
+            address: 'Sin Direcci�n',
             state: 'Pichincha',
             city: 'Quito',
             zipCode: '710001',
@@ -156,6 +157,7 @@ function AuthProvider({ children }) {
     localStorage.setItem('avatar', datos.avatar);
     localStorage.setItem('usuario', datos.identificacion);
     setSession(token);
+    getMenuOpciones(); // Forma el menu de opciones
     dispatch({
       type: 'LOGIN',
       payload: {

@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Button, Typography, Container } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Button, Typography, Container } from '@mui/material';
 // components
 import Page from '../components/Page';
 //

@@ -3,8 +3,8 @@ import { Icon } from '@iconify/react';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, List, Avatar, Button, Collapse, ListItem, ListItemText, ListItemAvatar } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, List, Avatar, Button, Collapse, ListItemText, ListItemAvatar, ListItemButton } from '@mui/material';
 //
 import Scrollbar from '../../Scrollbar';
 import BadgeStatus from '../../BadgeStatus';
@@ -31,13 +31,12 @@ Participant.propTypes = {
   onClosePopup: PropTypes.func,
   onShowPopup: PropTypes.func
 };
-
 function Participant({ participant, isOpen, onClosePopup, onShowPopup }) {
   const { name, avatar, status, position } = participant;
 
   return (
     <>
-      <ListItem button disableGutters onClick={onShowPopup} sx={{ height: HEIGHT, px: 2.5 }}>
+      <ListItemButton onClick={onShowPopup} sx={{ height: HEIGHT, px: 2.5 }}>
         <ListItemAvatar>
           <Box sx={{ position: 'relative', width: 40, height: 40 }}>
             <Avatar alt={name} src={avatar} />
@@ -50,7 +49,7 @@ function Participant({ participant, isOpen, onClosePopup, onShowPopup }) {
           primaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
           secondaryTypographyProps={{ noWrap: true }}
         />
-      </ListItem>
+      </ListItemButton>
       <ChatRoomPopup participant={participant} isOpen={isOpen} onClose={onClosePopup} />
     </>
   );
@@ -69,11 +68,10 @@ export default function ChatRoomGroupParticipant({
   selectUserId,
   onShowPopupUserInfo,
   isCollapse,
-  onCollapse,
-  ...other
+  onCollapse
 }) {
   return (
-    <Box {...other}>
+    <>
       <CollapseButtonStyle
         fullWidth
         disableRipple
@@ -86,7 +84,7 @@ export default function ChatRoomGroupParticipant({
 
       <Box sx={{ height: isCollapse ? HEIGHT * 4 : 0 }}>
         <Scrollbar>
-          <Collapse in={isCollapse}>
+          <Collapse in={isCollapse} sx={{ height: isCollapse ? HEIGHT * 4 : 0 }}>
             <List disablePadding>
               {participants.map((participant) => (
                 <Participant
@@ -101,6 +99,6 @@ export default function ChatRoomGroupParticipant({
           </Collapse>
         </Scrollbar>
       </Box>
-    </Box>
+    </>
   );
 }

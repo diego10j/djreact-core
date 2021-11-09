@@ -1,6 +1,6 @@
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Paper, Container, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Paper, Container, Stack } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../../routes/paths';
 // components
@@ -37,7 +37,7 @@ export default function StepperComponent() {
           <HeaderBreadcrumbs
             heading="Stepper"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Stepper' }]}
-            moreLink="https://next.material-ui.com/components/steppers"
+            moreLink="https://mui.com/components/steppers"
           />
         </Container>
       </Box>

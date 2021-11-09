@@ -2,8 +2,8 @@ import { Icon } from '@iconify/react';
 import { useRef, useState, useCallback, useEffect } from 'react';
 import peopleFill from '@iconify/icons-eva/people-fill';
 // material
-import { alpha } from '@material-ui/core/styles';
-import { ListItem, ListItemAvatar, Typography, ListItemText, Avatar } from '@material-ui/core';
+import { alpha } from '@mui/material/styles';
+import { Avatar, Typography, ListItemText, ListItemButton, ListItemAvatar } from '@mui/material';
 // hooks
 import useIsMountedRef from '../../hooks/useIsMountedRef';
 // utils
@@ -53,8 +53,9 @@ export default function ContactsPopover() {
     <>
       <MIconButton
         ref={anchorRef}
-        onClick={handleOpen}
+        size="large"
         color={open ? 'primary' : 'default'}
+        onClick={handleOpen}
         sx={{
           ...(open && {
             bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.focusOpacity)
@@ -74,7 +75,7 @@ export default function ContactsPopover() {
             const { id, name, avatar, status, lastActivity } = contact;
 
             return (
-              <ListItem button disableGutters key={id} sx={{ px: PADDING_ITEM, height: ITEM_HEIGHT }}>
+              <ListItemButton key={id} sx={{ px: PADDING_ITEM, height: ITEM_HEIGHT }}>
                 <ListItemAvatar sx={{ position: 'relative' }}>
                   <Avatar src={avatar} />
                   <BadgeStatus status={status} sx={{ position: 'absolute', right: 1, bottom: 1 }} />
@@ -85,7 +86,7 @@ export default function ContactsPopover() {
                   primary={name}
                   secondary={status === 'offline' && fToNow(lastActivity)}
                 />
-              </ListItem>
+              </ListItemButton>
             );
           })}
         </Scrollbar>

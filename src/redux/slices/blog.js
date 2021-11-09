@@ -120,7 +120,7 @@ export function getPost(title) {
       dispatch(slice.actions.getPostSuccess(response.data.post));
     } catch (error) {
       console.error(error);
-      dispatch(slice.actions.hasError());
+      dispatch(slice.actions.hasError(error));
     }
   };
 }
@@ -138,7 +138,7 @@ export function getRecentPosts(title) {
       dispatch(slice.actions.getRecentPostsSuccess(response.data.recentPosts));
     } catch (error) {
       console.error(error);
-      dispatch(slice.actions.hasError());
+      dispatch(slice.actions.hasError(error));
     }
   };
 }

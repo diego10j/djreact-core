@@ -1,13 +1,12 @@
 import { useState } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Stack, Radio, Container, RadioGroup, FormControl, FormControlLabel } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Stack, Radio, Container, RadioGroup, FormControl, FormControlLabel } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import { MRadio } from '../../../components/@material-extend';
 //
 import { Block } from '../Block';
 
@@ -29,7 +28,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function RadioButtons() {
-  const [value, setValue] = useState('a');
+  const [value, setValue] = useState('a1');
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -49,7 +48,7 @@ export default function RadioButtons() {
           <HeaderBreadcrumbs
             heading="Radio Buttons"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Radio Buttons' }]}
-            moreLink="https://next.material-ui.com/components/radio-buttons"
+            moreLink="https://mui.com/components/radio-buttons"
           />
         </Container>
       </Box>
@@ -91,12 +90,12 @@ export default function RadioButtons() {
               <RadioGroup value={value} onChange={handleChange}>
                 <FormControlLabel value="a1" control={<Radio color="default" />} label="Default" />
                 <FormControlLabel value="a2" control={<Radio />} label="Primary" />
-                <FormControlLabel value="a3" control={<MRadio color="secondary" />} label="Secondary" />
-                <FormControlLabel value="a4" control={<MRadio color="info" />} label="Info" />
-                <FormControlLabel value="a5" control={<MRadio color="success" />} label="Success" />
-                <FormControlLabel value="a6" control={<MRadio color="warning" />} label="Warning" />
-                <FormControlLabel value="a7" control={<MRadio color="error" />} label="Error" />
-                <FormControlLabel disabled value="a8" control={<MRadio color="error" />} label="Disabled" />
+                <FormControlLabel value="a3" control={<Radio color="secondary" />} label="Secondary" />
+                <FormControlLabel value="a4" control={<Radio color="info" />} label="Info" />
+                <FormControlLabel value="a5" control={<Radio color="success" />} label="Success" />
+                <FormControlLabel value="a6" control={<Radio color="warning" />} label="Warning" />
+                <FormControlLabel value="a7" control={<Radio color="error" />} label="Error" />
+                <FormControlLabel disabled value="a8" control={<Radio color="error" />} label="Disabled" />
               </RadioGroup>
             </FormControl>
           </Block>

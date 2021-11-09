@@ -3,8 +3,8 @@ import { findIndex } from 'lodash';
 import PropTypes from 'prop-types';
 import { useState, useRef, useEffect } from 'react';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 // redux
 import { useSelector } from '../../../../redux/store';
 //
@@ -108,7 +108,6 @@ export default function ProductDetailsCarousel() {
   };
 
   const settings1 = {
-    speed: 500,
     dots: false,
     arrows: false,
     slidesToShow: 1,

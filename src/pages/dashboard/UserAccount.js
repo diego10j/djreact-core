@@ -7,12 +7,14 @@ import roundVpnKey from '@iconify/icons-ic/round-vpn-key';
 import roundReceipt from '@iconify/icons-ic/round-receipt';
 import roundAccountBox from '@iconify/icons-ic/round-account-box';
 // material
-import { Container, Tab, Box, Tabs, Stack } from '@material-ui/core';
+import { Container, Tab, Box, Tabs, Stack } from '@mui/material';
 // redux
 import { useDispatch } from '../../redux/store';
 import { getCards, getProfile, getInvoices, getAddressBook, getNotifications } from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -27,6 +29,7 @@ import {
 // ----------------------------------------------------------------------
 
 export default function UserAccount() {
+  const { themeStretch } = useSettings();
   const [currentTab, setCurrentTab] = useState('general');
   const dispatch = useDispatch();
 
@@ -72,7 +75,7 @@ export default function UserAccount() {
 
   return (
     <Page title="User: Account Settings | Minimal-UI">
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Account"
           links={[

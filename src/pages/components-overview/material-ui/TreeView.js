@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import { useSpring, animated } from 'react-spring';
 // material
-import { TreeView, TreeItem } from '@material-ui/lab';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { alpha, experimentalStyled as styled, withStyles } from '@material-ui/core/styles';
-import { Box, Stack, Collapse, Container } from '@material-ui/core';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Stack, Collapse, Container } from '@mui/material';
+import { TreeView, TreeItem, treeItemClasses } from '@mui/lab';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -51,16 +52,20 @@ function TransitionComponent(props) {
   );
 }
 
-const StyledTreeItem = withStyles((theme) => ({
-  iconContainer: {
-    '& .close': { opacity: 0.3 }
-  },
-  group: {
-    marginLeft: 7,
-    paddingLeft: 18,
-    borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`
-  }
-}))((props) => <TreeItem {...props} TransitionComponent={TransitionComponent} />);
+const StyledTreeItem = styled((props) => <TreeItem {...props} TransitionComponent={TransitionComponent} />)(
+  ({ theme }) => ({
+    [`& .${treeItemClasses.iconContainer}`]: {
+      '& .close': {
+        opacity: 0.3
+      }
+    },
+    [`& .${treeItemClasses.group}`]: {
+      marginLeft: 15,
+      paddingLeft: 18,
+      borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`
+    }
+  })
+);
 
 export default function TreesViewComponent() {
   return (
@@ -77,7 +82,7 @@ export default function TreesViewComponent() {
           <HeaderBreadcrumbs
             heading="Tree View"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Tree View' }]}
-            moreLink="https://next.material-ui.com/components/tree-view"
+            moreLink="https://mui.com/components/tree-view"
           />
         </Container>
       </Box>
@@ -130,7 +135,7 @@ export default function TreesViewComponent() {
             </TreeViewStyle>
           </Block>
 
-          <Block title="Customized">
+          <Block title="Customization">
             <TreeViewStyle defaultExpanded={['1']}>
               <StyledTreeItem nodeId="1" label="Main">
                 <StyledTreeItem nodeId="2" label="Hello" />

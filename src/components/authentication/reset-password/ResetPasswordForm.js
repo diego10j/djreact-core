@@ -2,8 +2,8 @@ import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { Form, FormikProvider, useFormik } from 'formik';
 // material
-import { TextField, Alert, Stack } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { TextField, Alert, Stack } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';

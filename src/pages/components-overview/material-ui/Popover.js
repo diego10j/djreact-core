@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Stack, Button, Popover, Container, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Stack, Button, Popover, Container, Typography } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -59,7 +59,7 @@ export default function PopoversComponent() {
           <HeaderBreadcrumbs
             heading="Popover"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Popover' }]}
-            moreLink="https://next.material-ui.com/components/popover"
+            moreLink="https://mui.com/components/popover"
           />
         </Container>
       </Box>

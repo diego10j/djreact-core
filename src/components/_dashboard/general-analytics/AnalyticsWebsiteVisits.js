@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import ReactApexChart from 'react-apexcharts';
 // material
-import { Card, CardHeader, Box } from '@material-ui/core';
+import { Card, CardHeader, Box } from '@mui/material';
 //
 import { BaseOptionChart } from '../../charts';
 
@@ -28,7 +28,7 @@ const CHART_DATA = [
 export default function AnalyticsWebsiteVisits() {
   const chartOptions = merge(BaseOptionChart(), {
     stroke: { width: [0, 2, 3] },
-    plotOptions: { bar: { columnWidth: '11%', borderRadius: 4 } },
+    plotOptions: { bar: { columnWidth: '14%' } },
     fill: { type: ['solid', 'gradient', 'solid'] },
     labels: [
       '01/01/2003',

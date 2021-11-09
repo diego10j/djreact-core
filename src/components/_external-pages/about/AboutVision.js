@@ -1,5 +1,5 @@
 // material
-import { Box, Container, Typography, Grid } from '@material-ui/core';
+import { Box, Container, Typography, Grid } from '@mui/material';
 //
 import { varFadeInUp, varFadeIn, MotionInView } from '../../animate';
 
@@ -34,7 +34,10 @@ export default function AboutVision() {
               <Box
                 component="img"
                 src={`/static/about/${logo}.svg`}
-                sx={{ m: { xs: 1.5, md: 5 }, height: { xs: 24, md: 40 } }}
+                sx={{
+                  m: { xs: 1.5, md: 3 },
+                  height: { xs: 24, md: 32 }
+                }}
               />
             </MotionInView>
           ))}

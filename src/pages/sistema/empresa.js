@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import * as Yup from 'yup';
 // material
-import { Container, Card, Grid, Box } from '@material-ui/core';
+import { Container, Card, Grid, Box } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
 // components

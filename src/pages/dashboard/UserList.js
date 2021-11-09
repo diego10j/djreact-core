@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import {
   Card,
   Table,
@@ -20,12 +20,14 @@ import {
   Typography,
   TableContainer,
   TablePagination
-} from '@material-ui/core';
+} from '@mui/material';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getUserList, deleteUser } from '../../redux/slices/user';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -77,6 +79,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserList() {
+  const { themeStretch } = useSettings();
   const theme = useTheme();
   const dispatch = useDispatch();
   const { userList } = useSelector((state) => state.user);
@@ -146,7 +149,7 @@ export default function UserList() {
 
   return (
     <Page title="User: List | Minimal-UI">
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="User List"
           links={[

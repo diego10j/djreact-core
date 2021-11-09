@@ -1,7 +1,7 @@
 import { useState } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, Checkbox, Container, TextField, Typography, Autocomplete } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Grid, Checkbox, Container, TextField, Typography, Autocomplete } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -43,7 +43,7 @@ export default function AutocompleteComponent() {
           <HeaderBreadcrumbs
             heading="Autocomplete"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Autocomplete' }]}
-            moreLink="https://next.material-ui.com/components/autocomplete"
+            moreLink="https://mui.com/components/autocomplete"
           />
         </Container>
       </Box>

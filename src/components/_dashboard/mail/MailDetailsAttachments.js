@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import arrowCircleDownFill from '@iconify/icons-eva/arrow-circle-down-fill';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Typography, IconButton, Stack } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Typography, IconButton, Stack } from '@mui/material';
 // utils
 import { getFileType, getFileName, getFileThumb } from '../../../utils/getFileFormat';
 //

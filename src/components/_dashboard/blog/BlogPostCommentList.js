@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // material
-import { Box, List } from '@material-ui/core';
+import { Box, List } from '@mui/material';
 //
 import BlogPostCommentItem from './BlogPostCommentItem';
 

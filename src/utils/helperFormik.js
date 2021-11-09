@@ -1,49 +1,62 @@
 import PropTypes from 'prop-types';
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
+// material
+import { alpha, styled } from '@mui/material/styles';
+import { Typography } from '@mui/material';
+// components
 import Scrollbar from '../components/Scrollbar';
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('pre')(({ theme }) => ({
-  ...theme.typography.body1,
   top: 0,
   right: 0,
   bottom: 0,
-  width: 320,
+  width: 250,
   zIndex: 9999999,
   position: 'fixed',
   backdropFilter: 'blur(8px)',
   WebkitBackdropFilter: 'blur(8px)', // Fix on Mobile
-  paddingLeft: theme.spacing(3),
   boxShadow: theme.customShadows.z24,
   color: theme.palette.primary.light,
   background: alpha(theme.palette.grey[900], 0.96),
   '& code': {
-    ...theme.typography.body1
+    ...theme.typography.body2
   }
 }));
 
+const BlockStyle = styled('div')(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderBottom: `dashed 1px ${theme.palette.divider}`
+}));
+
 const LabelStyle = styled('div')(({ theme }) => ({
-  ...theme.typography.subtitle1,
+  ...theme.typography.subtitle2,
   minWidth: 160,
   margin: theme.spacing(1, 0),
   color: theme.palette.primary.lighter
 }));
 
 const BoolStyle = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
   '& code': {
-    color: theme.palette.warning.contrastText,
-    backgroundColor: theme.palette.warning.main
+    ...theme.typography.caption,
+    borderRadius: 4,
+    padding: theme.spacing(0.25, 1),
+    color: theme.palette.error.contrastText,
+    backgroundColor: theme.palette.error.main
   }
 }));
 
 // ----------------------------------------------------------------------
 
 HelperFormik.propTypes = {
-  formik: PropTypes.object
+  formik: PropTypes.object,
+  placement: PropTypes.oneOf(['left', 'right'])
 };
 
-export default function HelperFormik({ formik }) {
+export default function HelperFormik({ formik, placement = 'right' }) {
   const {
     dirty,
     status,
@@ -54,60 +67,82 @@ export default function HelperFormik({ formik }) {
     // submitCount,
     isSubmitting,
     isValidating,
-    initialValues,
+    // initialValues,
     validateOnBlur,
     validateOnMount,
     validateOnChange
   } = formik;
 
-  const Bool = (name, action) => (
+  const BoolValue = (name, action) => (
     <BoolStyle
       sx={{
-        display: 'flex',
-        alignItems: 'center',
         ...(action && {
           '& code': {
-            color: 'warning.contrastText',
+            color: 'primary.contrastText',
             bgcolor: 'primary.main'
           }
         })
       }}
     >
       <LabelStyle>{name}</LabelStyle>
-      <code>:{JSON.stringify(action)}</code>
+      <code>{JSON.stringify(action)}</code>
     </BoolStyle>
   );
 
   return (
-    <RootStyle>
-      <Scrollbar>
-        <LabelStyle>values</LabelStyle>
-        <code>{JSON.stringify(values, null, 2)}</code>
+    <RootStyle
+      sx={{
+        ...(placement === 'left' && {
+          left: 0,
+          right: 'auto'
+        })
+      }}
+    >
+      <Typography variant="subtitle2" sx={{ p: 2, color: 'common.white', bgcolor: 'grey.800' }}>
+        Helper Formik
+      </Typography>
 
-        <LabelStyle>initialValues</LabelStyle>
-        <code>{JSON.stringify(initialValues, null, 2)}</code>
+      <Scrollbar sx={{ height: 1 }}>
+        <BlockStyle>
+          <LabelStyle>values</LabelStyle>
+          <code>{JSON.stringify(values, null, 2)}</code>
+        </BlockStyle>
 
-        <LabelStyle>errors</LabelStyle>
-        <code>{JSON.stringify(errors, null, 2)}</code>
+        {/* <BlockStyle>
+            <LabelStyle>initialValues</LabelStyle>
+            <code>{JSON.stringify(initialValues, null, 2)}</code>
+          </BlockStyle> */}
 
-        <LabelStyle>status</LabelStyle>
-        <code>{JSON.stringify(status, null, 2)}</code>
+        <BlockStyle>
+          <LabelStyle>errors</LabelStyle>
+          <code>{JSON.stringify(errors, null, 2)}</code>
+        </BlockStyle>
 
-        <LabelStyle>touched</LabelStyle>
-        <code>{JSON.stringify(touched, null, 2)}</code>
+        <BlockStyle>
+          <LabelStyle>status</LabelStyle>
+          <code>{JSON.stringify(status, null, 2)}</code>
+        </BlockStyle>
 
-        {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <LabelStyle>submitCount</LabelStyle>
-        <code>:{JSON.stringify(submitCount)}</code>
-      </Box> */}
+        <BlockStyle>
+          <LabelStyle>touched</LabelStyle>
+          <code>{JSON.stringify(touched, null, 2)}</code>
+        </BlockStyle>
 
-        {Bool('isSubmitting', isSubmitting)}
-        {Bool('dirty', dirty)}
-        {Bool('isValid', isValid)}
-        {Bool('isValidating', isValidating)}
-        {Bool('validateOnBlur', validateOnBlur)}
-        {Bool('validateOnChange', validateOnChange)}
-        {Bool('validateOnMount', validateOnMount)}
+        {/* <BlockStyle>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <LabelStyle>submitCount</LabelStyle>
+              <code>:{JSON.stringify(submitCount)}</code>
+            </Box>
+          </BlockStyle> */}
+        <BlockStyle>
+          {BoolValue('isSubmitting', isSubmitting)}
+          {BoolValue('dirty', dirty)}
+          {BoolValue('isValid', isValid)}
+          {BoolValue('isValidating', isValidating)}
+          {BoolValue('validateOnBlur', validateOnBlur)}
+          {BoolValue('validateOnChange', validateOnChange)}
+          {BoolValue('validateOnMount', validateOnMount)}
+        </BlockStyle>
       </Scrollbar>
     </RootStyle>
   );

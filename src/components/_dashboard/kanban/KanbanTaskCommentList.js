@@ -2,7 +2,7 @@ import { findIndex } from 'lodash';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 // material
-import { Stack, Box, Avatar, Typography } from '@material-ui/core';
+import { Stack, Box, Avatar, Typography } from '@mui/material';
 // utils
 import { fToNow } from '../../../utils/formatTime';
 //

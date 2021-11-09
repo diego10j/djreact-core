@@ -1,66 +1,42 @@
-import faker from 'faker';
 import PropTypes from 'prop-types';
+import { noCase } from 'change-case';
+import { random } from 'lodash';
 import { Icon } from '@iconify/react';
 import appleFilled from '@iconify/icons-ant-design/apple-filled';
 import windowsFilled from '@iconify/icons-ant-design/windows-filled';
 // material
-import { useTheme } from '@material-ui/core/styles';
-import { Box, Card, Rating, CardHeader, Typography, Stack } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { Box, Card, Rating, CardHeader, Typography, Stack } from '@mui/material';
 // utils
 import { fCurrency, fShortenNumber } from '../../../utils/formatNumber';
+import mockData from '../../../utils/mock-data';
 //
 import Label from '../../Label';
 import Scrollbar from '../../Scrollbar';
 
 // ----------------------------------------------------------------------
 
-const APPLICATIONS = [
-  {
-    name: 'Chrome',
-    system: 'Mac',
-    price: 0,
-    rating: faker.datatype.number({ min: 0, max: 5, precision: 0.1 }),
-    review: faker.datatype.number(),
-    shortcut: '/static/icons/ic_chrome.svg'
-  },
-  {
-    name: 'Drive',
-    system: 'Mac',
-    price: faker.datatype.number({ min: 4, max: 99, precision: 0.01 }),
-    rating: faker.datatype.number({ min: 0, max: 5, precision: 0.1 }),
-    review: faker.datatype.number(),
-    shortcut: '/static/icons/ic_drive.svg'
-  },
-  {
-    name: 'Dropbox',
-    system: 'Windows',
-    price: faker.datatype.number({ min: 4, max: 99, precision: 0.01 }),
-    rating: faker.datatype.number({ min: 0, max: 5, precision: 0.1 }),
-    review: faker.datatype.number(),
-    shortcut: '/static/icons/ic_dropbox.svg'
-  },
-  {
-    name: 'Evernote',
-    system: 'Mac',
-    price: 0,
-    rating: faker.datatype.number({ min: 0, max: 5, precision: 0.1 }),
-    review: faker.datatype.number(),
-    shortcut: '/static/icons/ic_evernote.svg'
-  },
-  {
-    name: 'Github',
-    system: 'Windows',
-    price: 0,
-    rating: faker.datatype.number({ min: 0, max: 5, precision: 0.1 }),
-    review: faker.datatype.number(),
-    shortcut: '/static/icons/ic_github.svg'
-  }
-];
+const MOCK_APPLICATIONS = ['Chrome', 'Drive', 'Dropbox', 'Evernote', 'Github'].map((appName, index) => ({
+  id: mockData.id(index),
+  name: appName,
+  system: (index === 2 && 'Windows') || (index === 4 && 'Windows') || 'Mac',
+  price: index === 0 || index === 2 || index === 4 ? 0 : mockData.number.price(index),
+  rating: mockData.number.rating(index),
+  review: random(99989, true),
+  shortcut: `/static/icons/ic_${noCase(appName)}.svg`
+}));
 
 // ----------------------------------------------------------------------
 
 ApplicationItem.propTypes = {
-  app: PropTypes.object
+  app: PropTypes.shape({
+    name: PropTypes.string,
+    price: PropTypes.number,
+    rating: PropTypes.number,
+    review: PropTypes.number,
+    shortcut: PropTypes.string,
+    system: PropTypes.string
+  })
 };
 
 function ApplicationItem({ app }) {
@@ -116,8 +92,8 @@ export default function AppTopRelated() {
       <CardHeader title="Top Related Applications" />
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-          {APPLICATIONS.map((app) => (
-            <ApplicationItem key={app.name} app={app} />
+          {MOCK_APPLICATIONS.map((app) => (
+            <ApplicationItem key={app.id} app={app} />
           ))}
         </Stack>
       </Scrollbar>

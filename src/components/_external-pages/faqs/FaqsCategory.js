@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // material
-import { Typography, Box, Grid, Paper } from '@material-ui/core';
+import { Typography, Box, Grid, Paper } from '@mui/material';
 //
 import { varFadeIn, MotionInView } from '../../animate';
 

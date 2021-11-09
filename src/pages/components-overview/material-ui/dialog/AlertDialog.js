@@ -1,8 +1,6 @@
 import { useState } from 'react';
 // material
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@material-ui/core';
-//
-import { MButton } from '../../../../components/@material-extend';
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -19,9 +17,9 @@ export default function AlertDialog() {
 
   return (
     <div>
-      <MButton color="info" variant="outlined" onClick={handleClickOpen}>
+      <Button color="info" variant="outlined" onClick={handleClickOpen}>
         Open alert dialog
-      </MButton>
+      </Button>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Use Google's location service?</DialogTitle>

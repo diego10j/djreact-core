@@ -8,7 +8,7 @@ import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
 import arrowIosBackFill from '@iconify/icons-eva/arrow-ios-back-fill';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Tooltip,
@@ -18,7 +18,7 @@ import {
   FormControl,
   OutlinedInput,
   InputAdornment
-} from '@material-ui/core';
+} from '@mui/material';
 //
 import { MHidden } from '../../@material-extend';
 

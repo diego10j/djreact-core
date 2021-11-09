@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Box,
   Card,
@@ -11,7 +11,7 @@ import {
   Typography,
   CardContent,
   FormControlLabel
-} from '@material-ui/core';
+} from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // utils

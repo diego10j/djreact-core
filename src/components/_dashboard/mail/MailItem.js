@@ -6,8 +6,8 @@ import linkFill from '@iconify/icons-eva/link-fill';
 import starOutline from '@iconify/icons-eva/star-outline';
 import roundLabelImportant from '@iconify/icons-ic/round-label-important';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Link, Tooltip, Typography, Stack } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Link, Tooltip, Typography, Stack, Checkbox } from '@mui/material';
 // redux
 import { useSelector } from '../../../redux/store';
 // utils
@@ -16,7 +16,7 @@ import createAvatar from '../../../utils/createAvatar';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 //
-import { MAvatar, MCheckbox, MHidden } from '../../@material-extend';
+import { MAvatar, MHidden } from '../../@material-extend';
 import Label from '../../Label';
 import MailItemAction from './MailItemAction';
 
@@ -90,9 +90,9 @@ export default function MailItem({ mail, isDense, isSelected, onSelect, onDesele
     >
       <MHidden width="mdDown">
         <Stack direction="row" sx={{ mr: 2 }}>
-          <MCheckbox checked={isSelected} onChange={handleChangeCheckbox} />
+          <Checkbox checked={isSelected} onChange={handleChangeCheckbox} />
           <Tooltip title="Starred">
-            <MCheckbox
+            <Checkbox
               color="warning"
               defaultChecked={mail.isStarred}
               icon={<Icon icon={starOutline} />}
@@ -100,7 +100,7 @@ export default function MailItem({ mail, isDense, isSelected, onSelect, onDesele
             />
           </Tooltip>
           <Tooltip title="Important">
-            <MCheckbox
+            <Checkbox
               color="warning"
               defaultChecked={mail.isImportant}
               checkedIcon={<Icon icon={roundLabelImportant} />}

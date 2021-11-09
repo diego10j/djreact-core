@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Switch, InputBase, Typography } from '@material-ui/core';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Switch, InputBase, Typography } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ const RowStyle = styled('div')(({ theme }) => ({
   textTransform: 'capitalize',
   justifyContent: 'space-between',
   color: theme.palette.common.white,
-  '&:not(:last-child)': {
+  '&:not(:last-of-type)': {
     marginBottom: theme.spacing(1)
   }
 }));

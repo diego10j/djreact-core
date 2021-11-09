@@ -2,11 +2,9 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import heartFill from '@iconify/icons-eva/heart-fill';
 // material
-import { Box, Chip, Avatar, AvatarGroup, FormControlLabel } from '@material-ui/core';
+import { Box, Chip, Avatar, AvatarGroup, FormControlLabel, Checkbox } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../utils/formatNumber';
-//
-import { MCheckbox } from '../../@material-extend';
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +25,7 @@ export default function BlogPostTags({ post, sx }) {
       <Box sx={{ display: 'flex', alignItems: 'center', mt: 3 }}>
         <FormControlLabel
           control={
-            <MCheckbox
+            <Checkbox
               defaultChecked
               size="small"
               color="error"

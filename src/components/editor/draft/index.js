@@ -1,19 +1,28 @@
 import PropTypes from 'prop-types';
 import { Editor } from 'react-draft-wysiwyg';
 //
-import { editorToolbar } from './DraftEditorToolbar';
+import { toolbarFull, toolbarSimple } from './DraftEditorToolbar';
 import DraftEditorStyle from './DraftEditorStyle';
 
 // ----------------------------------------------------------------------
 
 DraftEditor.propTypes = {
+  simple: PropTypes.bool,
+  error: PropTypes.bool,
   sx: PropTypes.object
 };
 
-export default function DraftEditor({ sx, ...other }) {
+export default function DraftEditor({ simple = false, error, sx, ...other }) {
   return (
-    <DraftEditorStyle sx={sx}>
-      <Editor toolbar={editorToolbar} placeholder="Write something awesome..." {...other} />
+    <DraftEditorStyle
+      sx={{
+        ...(error && {
+          border: (theme) => `solid 1px ${theme.palette.error.main}`
+        }),
+        ...sx
+      }}
+    >
+      <Editor toolbar={simple ? toolbarSimple : toolbarFull} placeholder="Write something awesome..." {...other} />
     </DraftEditorStyle>
   );
 }

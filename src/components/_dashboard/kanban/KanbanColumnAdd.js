@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack';
 import plusFill from '@iconify/icons-eva/plus-fill';
 // material
-import { OutlinedInput, Paper, Button, ClickAwayListener } from '@material-ui/core';
+import { OutlinedInput, Paper, Button, ClickAwayListener } from '@mui/material';
 // redux
 import { useDispatch } from '../../../redux/store';
 import { createColumn } from '../../../redux/slices/kanban';
@@ -51,7 +51,7 @@ export default function KanbanColumnAdd() {
   };
 
   const handleKeyUp = (event) => {
-    if (event.key === 'Enter' || event.keyCode === 13) {
+    if (event.key === 'Enter') {
       handleCreateColumn();
     }
   };

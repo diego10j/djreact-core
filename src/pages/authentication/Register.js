@@ -1,7 +1,8 @@
+import { capitalCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Card, Link, Container, Typography, Tooltip } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box, Card, Link, Container, Typography, Tooltip } from '@mui/material';
 // hooks
 import useAuth from '../../hooks/useAuth';
 // routes
@@ -73,14 +74,8 @@ export default function Register() {
               </Typography>
               <Typography sx={{ color: 'text.secondary' }}>Free forever. No credit card needed.</Typography>
             </Box>
-            <Tooltip title={(method === 'firebase' && 'Firebase') || (method === 'cognito' && 'Cognito') || 'JWT'}>
-              <Box
-                component="img"
-                src={`/static/auth/${
-                  (method === 'firebase' && 'ic_firebase') || (method === 'cognito' && 'ic_cognito') || 'ic_jwt'
-                }.png`}
-                sx={{ width: 32, height: 32 }}
-              />
+            <Tooltip title={capitalCase(method)}>
+              <Box component="img" src={`/static/auth/ic_${method}.png`} sx={{ width: 32, height: 32 }} />
             </Tooltip>
           </Box>
 
@@ -90,11 +85,11 @@ export default function Register() {
 
           <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
-            <Link underline="always" sx={{ color: 'text.primary' }}>
+            <Link underline="always" color="text.primary" href="#">
               Terms of Service
             </Link>
             &nbsp;and&nbsp;
-            <Link underline="always" sx={{ color: 'text.primary' }}>
+            <Link underline="always" color="text.primary" href="#">
               Privacy Policy
             </Link>
             .

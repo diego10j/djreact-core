@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import attach2Fill from '@iconify/icons-eva/attach-2-fill';
 import roundAddPhotoAlternate from '@iconify/icons-ic/round-add-photo-alternate';
 // material
-import { Box, Button, TextField, IconButton } from '@material-ui/core';
+import { Box, Button, TextField, IconButton } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

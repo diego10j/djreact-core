@@ -1,18 +1,18 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, alpha } from '@material-ui/core/styles';
+import { alpha } from '@mui/material/styles';
+import { withStyles } from '@mui/styles';
 // material
-import { Button, Dialog, Typography, DialogActions, DialogContent, Stack } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Button, Dialog, Typography, DialogActions, DialogContent, Stack } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 // icons
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 // utils
 import { isDefined } from '../../../utils/utilitario';
 // ----------------------------------------------------------------------
 
 const StyledHelpOutlineIcon = withStyles((theme) => ({
   root: {
-    fontSize: 100,
     color: alpha(theme.palette.primary.main, 0.5)
   }
 }))(HelpOutlineIcon);
@@ -61,7 +61,7 @@ const DialogoConfirmar = forwardRef(
       >
         <DialogContent sx={{ pb: 0 }}>
           <Stack direction="column" justifyContent="center" alignItems="center" spacing={1} sx={{ pb: 2 }}>
-            <StyledHelpOutlineIcon className="animate__animated animated animate__heartBeat" />
+            <StyledHelpOutlineIcon className="animate__animated animated animate__heartBeat" sx={{ fontSize: 100 }} />
             <Typography gutterBottom variant="h3">
               {titulo}
             </Typography>

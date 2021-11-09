@@ -6,14 +6,16 @@ import clockFill from '@iconify/icons-eva/clock-fill';
 import roundVerified from '@iconify/icons-ic/round-verified';
 import roundVerifiedUser from '@iconify/icons-ic/round-verified-user';
 // material
-import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Tab, Card, Grid, Divider, Skeleton, Container, Typography } from '@material-ui/core';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Tab, Card, Grid, Divider, Skeleton, Container, Typography } from '@mui/material';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
 import { getProduct } from '../../redux/slices/product';
 // routes
 import { PATH_DASHBOARD } from '../../routes/paths';
+// hooks
+import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import Markdown from '../../components/Markdown';
@@ -76,6 +78,7 @@ const SkeletonLoad = (
 );
 
 export default function EcommerceProductDetails() {
+  const { themeStretch } = useSettings();
   const dispatch = useDispatch();
   const { name } = useParams();
   const [value, setValue] = useState('1');
@@ -91,7 +94,7 @@ export default function EcommerceProductDetails() {
 
   return (
     <Page title="Ecommerce: Product Details | Minimal-UI">
-      <Container>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading="Product Details"
           links={[
@@ -122,14 +125,7 @@ export default function EcommerceProductDetails() {
             <Grid container sx={{ my: 8 }}>
               {PRODUCT_DESCRIPTION.map((item) => (
                 <Grid item xs={12} md={4} key={item.title}>
-                  <Box
-                    sx={{
-                      my: 2,
-                      mx: 'auto',
-                      maxWidth: 280,
-                      textAlign: 'center'
-                    }}
-                  >
+                  <Box sx={{ my: 2, mx: 'auto', maxWidth: 280, textAlign: 'center' }}>
                     <IconWrapperStyle>
                       <Icon icon={item.icon} width={36} height={36} />
                     </IconWrapperStyle>

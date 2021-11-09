@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // Componente Check de Lectura
 
-import { Stack, Checkbox, Skeleton, Avatar } from '@material-ui/core';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { withStyles } from '@material-ui/core/styles';
+import { Stack, Checkbox, Skeleton, Avatar } from '@mui/material';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { withStyles } from '@mui/styles';
 import { inicialesAvatar, isDefined, stringToColorAvatar } from '../../../utils/utilitario';
 import { backendUrl } from '../../../config';
 
@@ -13,10 +13,10 @@ import { backendUrl } from '../../../config';
 
 const StyledCheckbox = withStyles(() => ({
   root: {
-    backgroundColor: 'transparent',
-    outline: 'none',
-    padding: 0,
-    marggin: 0
+    backgroundColor: 'transparent !important',
+    outline: 'none !important',
+    padding: '0 !important',
+    marggin: '0 !important'
   }
 }))(Checkbox);
 

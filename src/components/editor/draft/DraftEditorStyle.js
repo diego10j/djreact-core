@@ -1,4 +1,4 @@
-import { experimentalStyled as styled } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -108,7 +108,7 @@ const DraftEditorStyle = styled('div')(({ theme }) => {
             color: theme.palette.action.disabled,
             background: theme.palette.action.disabledBackground
           },
-          '&:last-child': {
+          '&:last-of-type': {
             background: 'transparent',
             color: theme.palette.text.primary
           },

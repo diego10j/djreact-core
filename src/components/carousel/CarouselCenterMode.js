@@ -1,4 +1,3 @@
-import faker from 'faker';
 import { useRef } from 'react';
 import Slider from 'react-slick';
 import PropTypes from 'prop-types';
@@ -6,23 +5,21 @@ import { Icon } from '@iconify/react';
 import { Link as RouterLink } from 'react-router-dom';
 import arrowForwardFill from '@iconify/icons-eva/arrow-forward-fill';
 // material
-import { alpha, useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Paper, Link, Typography, CardContent } from '@material-ui/core';
+import { alpha, useTheme, styled } from '@mui/material/styles';
+import { Box, Paper, Link, Typography, CardContent } from '@mui/material';
 // utils
-import { mockImgFeed } from '../../utils/mockImages';
+import mockData from '../../utils/mock-data';
 //
 import { CarouselControlsArrowsBasic2 } from './controls';
 
 // ----------------------------------------------------------------------
 
-const CAROUSELS = [...Array(5)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    title: faker.name.title(),
-    description: faker.lorem.paragraphs(),
-    image: mockImgFeed(setIndex)
-  };
-});
+const MOCK_CAROUSELS = [...Array(5)].map((_, index) => ({
+  id: mockData.id(index),
+  title: mockData.text.title(index),
+  image: mockData.image.feed(index),
+  description: mockData.text.description(index)
+}));
 
 const RootStyle = styled('div')(({ theme }) => ({
   overflow: 'hidden',
@@ -122,7 +119,6 @@ export default function CarouselCenterMode() {
   const theme = useTheme();
 
   const settings = {
-    speed: 500,
     slidesToShow: 3,
     centerMode: true,
     centerPadding: '60px',
@@ -154,7 +150,7 @@ export default function CarouselCenterMode() {
   return (
     <RootStyle>
       <Slider ref={carouselRef} {...settings}>
-        {CAROUSELS.map((item) => (
+        {MOCK_CAROUSELS.map((item) => (
           <CarouselItem key={item.title} item={item} />
         ))}
       </Slider>

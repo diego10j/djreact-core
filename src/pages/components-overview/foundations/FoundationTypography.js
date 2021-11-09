@@ -1,6 +1,6 @@
 // material
-import { useTheme, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Container, Grid, Typography, useMediaQuery } from '@material-ui/core';
+import { useTheme, styled } from '@mui/material/styles';
+import { Box, Container, Grid, Typography, useMediaQuery } from '@mui/material';
 // routes
 import { PATH_PAGE } from '../../../routes/paths';
 // components
@@ -102,7 +102,7 @@ export default function FoundationTypography() {
           <HeaderBreadcrumbs
             heading="Typography"
             links={[{ name: 'Components', href: PATH_PAGE.components }, { name: 'Typography' }]}
-            moreLink="https://next.material-ui.com/components/typography"
+            moreLink="https://mui.com/components/typography"
           />
         </Container>
       </Box>

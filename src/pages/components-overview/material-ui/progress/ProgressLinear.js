@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 // material
-import { Box, Grid, Paper } from '@material-ui/core';
-import { MLinearProgress } from '../../../../components/@material-extend';
+import { Box, Grid, Paper, LinearProgress } from '@mui/material';
 //
 import { Label } from '../../Block';
 
@@ -31,13 +30,13 @@ export default function ProgressLinear({ progress, buffer }) {
         <Label title="Linears Indeterminate" />
         <Paper variant="outlined" sx={style}>
           <Box sx={{ width: '100%' }}>
-            <MLinearProgress color="inherit" /> <br />
-            <MLinearProgress /> <br />
-            <MLinearProgress color="secondary" /> <br />
-            <MLinearProgress color="info" /> <br />
-            <MLinearProgress color="success" /> <br />
-            <MLinearProgress color="warning" /> <br />
-            <MLinearProgress color="error" />
+            <LinearProgress color="inherit" /> <br />
+            <LinearProgress /> <br />
+            <LinearProgress color="secondary" /> <br />
+            <LinearProgress color="info" /> <br />
+            <LinearProgress color="success" /> <br />
+            <LinearProgress color="warning" /> <br />
+            <LinearProgress color="error" />
           </Box>
         </Paper>
       </Grid>
@@ -46,19 +45,19 @@ export default function ProgressLinear({ progress, buffer }) {
         <Label title="Linears Determinate" />
         <Paper variant="outlined" sx={style}>
           <Box sx={{ width: '100%' }}>
-            <MLinearProgress variant="determinate" value={progress} color="inherit" />
+            <LinearProgress variant="determinate" value={progress} color="inherit" />
             <br />
-            <MLinearProgress variant="determinate" value={progress} />
+            <LinearProgress variant="determinate" value={progress} />
             <br />
-            <MLinearProgress variant="determinate" value={progress} color="secondary" />
+            <LinearProgress variant="determinate" value={progress} color="secondary" />
             <br />
-            <MLinearProgress variant="determinate" value={progress} color="info" />
+            <LinearProgress variant="determinate" value={progress} color="info" />
             <br />
-            <MLinearProgress variant="determinate" value={progress} color="success" />
+            <LinearProgress variant="determinate" value={progress} color="success" />
             <br />
-            <MLinearProgress variant="determinate" value={progress} color="warning" />
+            <LinearProgress variant="determinate" value={progress} color="warning" />
             <br />
-            <MLinearProgress variant="determinate" value={progress} color="error" />
+            <LinearProgress variant="determinate" value={progress} color="error" />
           </Box>
         </Paper>
       </Grid>
@@ -67,19 +66,19 @@ export default function ProgressLinear({ progress, buffer }) {
         <Label title="Linears Buffer" />
         <Paper variant="outlined" sx={style}>
           <Box sx={{ width: '100%' }}>
-            <MLinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="inherit" />
+            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="inherit" />
             <br />
-            <MLinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
+            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
             <br />
-            <MLinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="secondary" />
+            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="secondary" />
             <br />
-            <MLinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="info" />
+            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="info" />
             <br />
-            <MLinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="success" />
+            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="success" />
             <br />
-            <MLinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="warning" />
+            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="warning" />
             <br />
-            <MLinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="error" />
+            <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} color="error" />
           </Box>
         </Paper>
       </Grid>
@@ -88,19 +87,19 @@ export default function ProgressLinear({ progress, buffer }) {
         <Label title="Linears Query" />
         <Paper variant="outlined" sx={style}>
           <Box sx={{ width: '100%' }}>
-            <MLinearProgress variant="query" value={progress} valueBuffer={buffer} color="inherit" />
+            <LinearProgress variant="query" value={progress} valueBuffer={buffer} color="inherit" />
             <br />
-            <MLinearProgress variant="query" value={progress} valueBuffer={buffer} />
+            <LinearProgress variant="query" value={progress} valueBuffer={buffer} />
             <br />
-            <MLinearProgress variant="query" value={progress} valueBuffer={buffer} color="secondary" />
+            <LinearProgress variant="query" value={progress} valueBuffer={buffer} color="secondary" />
             <br />
-            <MLinearProgress variant="query" value={progress} valueBuffer={buffer} color="info" />
+            <LinearProgress variant="query" value={progress} valueBuffer={buffer} color="info" />
             <br />
-            <MLinearProgress variant="query" value={progress} valueBuffer={buffer} color="success" />
+            <LinearProgress variant="query" value={progress} valueBuffer={buffer} color="success" />
             <br />
-            <MLinearProgress variant="query" value={progress} valueBuffer={buffer} color="warning" />
+            <LinearProgress variant="query" value={progress} valueBuffer={buffer} color="warning" />
             <br />
-            <MLinearProgress variant="query" value={progress} valueBuffer={buffer} color="error" />
+            <LinearProgress variant="query" value={progress} valueBuffer={buffer} color="error" />
           </Box>
         </Paper>
       </Grid>

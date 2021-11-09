@@ -16,6 +16,7 @@ import {
   Stack,
   Paper,
   Avatar,
+  Checkbox,
   TextField,
   Typography,
   CardHeader,
@@ -23,7 +24,7 @@ import {
   AvatarGroup,
   InputAdornment,
   FormControlLabel
-} from '@material-ui/core';
+} from '@mui/material';
 // utils
 import { fDate } from '../../../../utils/formatTime';
 import { fShortenNumber } from '../../../../utils/formatNumber';
@@ -32,7 +33,6 @@ import useAuth from '../../../../hooks/useAuth';
 //
 import MyAvatar from '../../../MyAvatar';
 import EmojiPicker from '../../../EmojiPicker';
-import { MCheckbox } from '../../../@material-extend';
 
 // ----------------------------------------------------------------------
 
@@ -114,7 +114,7 @@ export default function ProfilePostCard({ post }) {
         <Stack direction="row" alignItems="center">
           <FormControlLabel
             control={
-              <MCheckbox
+              <Checkbox
                 size="small"
                 color="error"
                 checked={isLiked}

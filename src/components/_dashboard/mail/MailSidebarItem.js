@@ -11,9 +11,9 @@ import roundForum from '@iconify/icons-ic/round-forum';
 import trash2Fill from '@iconify/icons-eva/trash-2-fill';
 import roundReport from '@iconify/icons-ic/round-report';
 import roundLabelImportant from '@iconify/icons-ic/round-label-important';
-import { NavLink as RouterLink, useLocation, matchPath } from 'react-router-dom';
+import { NavLink as RouterLink } from 'react-router-dom';
 // material
-import { ListItem, Typography, ListItemText, ListItemIcon } from '@material-ui/core';
+import { Typography, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 
@@ -50,13 +50,10 @@ MailSidebarItem.propTypes = {
 };
 
 export default function MailSidebarItem({ label, ...other }) {
-  const { pathname } = useLocation();
   const isUnread = label.unreadCount > 0;
-  const isActive = linkTo(label) ? !!matchPath({ path: linkTo(label), end: false }, pathname) : false;
 
   return (
-    <ListItem
-      button
+    <ListItemButton
       to={linkTo(label)}
       component={RouterLink}
       sx={{
@@ -65,7 +62,11 @@ export default function MailSidebarItem({ label, ...other }) {
         typography: 'body2',
         color: 'text.secondary',
         textTransform: 'capitalize',
-        ...(isActive && { color: 'text.primary', fontWeight: 'fontWeightMedium', bgcolor: 'action.selected' })
+        '&.active': {
+          color: 'text.primary',
+          fontWeight: 'fontWeightMedium',
+          bgcolor: 'action.selected'
+        }
       }}
       {...other}
     >
@@ -76,6 +77,6 @@ export default function MailSidebarItem({ label, ...other }) {
       <ListItemText disableTypography primary={label.name} />
 
       {isUnread && <Typography variant="caption">{label.unreadCount}</Typography>}
-    </ListItem>
+    </ListItemButton>
   );
 }

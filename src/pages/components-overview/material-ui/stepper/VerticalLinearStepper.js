@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // material
-import { Box, Step, Paper, Button, Stepper, StepLabel, Typography, StepContent } from '@material-ui/core';
+import { Box, Step, Paper, Button, Stepper, StepLabel, Typography, StepContent } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

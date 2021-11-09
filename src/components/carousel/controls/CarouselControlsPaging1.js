@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // material
-import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -37,8 +37,8 @@ export default function CarouselControlsPaging1({ color, ...other }) {
     customPaging: () => (
       <Box
         sx={{
-          width: '100%',
-          height: '100%',
+          width: 1,
+          height: 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'

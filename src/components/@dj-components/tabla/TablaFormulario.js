@@ -1,8 +1,9 @@
 /* eslint-disable prefer-destructuring */
 import React, { forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Grid, TablePagination, Stack } from '@material-ui/core';
+import { experimentalStyled as styled } from '@mui/material/styles';
+import { withStyles } from '@mui/styles';
+import { Box, Grid, TablePagination, Stack } from '@mui/material';
 import { SkeletonFormulario, SkeletonPaginador } from './SkeletonTabla';
 import TablePaginationActions from './PaginationTabla';
 import { ComponenteEditable } from './FilaEditable';

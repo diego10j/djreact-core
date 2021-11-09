@@ -32,7 +32,7 @@ export default function Dialog(theme) {
     MuiDialogTitle: {
       styleOverrides: {
         root: {
-          padding: theme.spacing(0, 0, 0, 0)
+          padding: theme.spacing(3, 3, 0)
         }
       }
     },
@@ -41,9 +41,7 @@ export default function Dialog(theme) {
         root: {
           borderTop: 0,
           borderBottom: 0,
-          padding: theme.spacing(0),
-          paddingLeft: theme.spacing(2),
-          paddingTop: theme.spacing(2)
+          padding: theme.spacing(3)
         }
       }
     },

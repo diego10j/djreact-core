@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import DialogoError from '../components/@dj-components/dialogo/DialogoError';
 
 const ModalErrorContext = React.createContext();
-
 const Modal = ({ modal, unSetModal }) => (
   <DialogoError mensaje={modal.mensaje} titulo={modal.titulo} unSetModal={unSetModal} />
 );

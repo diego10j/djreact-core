@@ -1,125 +1,126 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 // material
-import Check from '@material-ui/icons/Check';
-import SettingsIcon from '@material-ui/icons/Settings';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import VideoLabelIcon from '@material-ui/icons/VideoLabel';
-import { withStyles } from '@material-ui/core/styles';
-import { Box, Step, Paper, Button, Stepper, StepLabel, Typography, StepConnector } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import Check from '@mui/icons-material/Check';
+import SettingsIcon from '@mui/icons-material/Settings';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import VideoLabelIcon from '@mui/icons-material/VideoLabel';
+import {
+  Box,
+  Step,
+  Paper,
+  Button,
+  Stepper,
+  StepLabel,
+  Typography,
+  StepConnector,
+  stepConnectorClasses
+} from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-const QontoConnector = withStyles({
-  alternativeLabel: {
+const STEPS = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+
+const QontoConnector = styled(StepConnector)(({ theme }) => ({
+  [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 10,
     left: 'calc(-50% + 16px)',
     right: 'calc(50% + 16px)'
   },
-  active: {
-    '& $line': {
-      borderColor: '#784af4'
+  [`&.${stepConnectorClasses.active}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      borderColor: theme.palette.success.main
     }
   },
-  completed: {
-    '& $line': {
-      borderColor: '#784af4'
+  [`&.${stepConnectorClasses.completed}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      borderColor: theme.palette.success.main
     }
   },
-  line: {
-    borderColor: '#eaeaf0',
+  [`& .${stepConnectorClasses.line}`]: {
+    borderRadius: 1,
     borderTopWidth: 3,
-    borderRadius: 1
+    borderColor: theme.palette.divider
   }
-})(StepConnector);
+}));
+
+const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+  height: 22,
+  display: 'flex',
+  alignItems: 'center',
+  color: theme.palette.text.disabled,
+  ...(ownerState.active && {
+    color: theme.palette.success.main
+  }),
+  '& .QontoStepIcon-completedIcon': {
+    zIndex: 1,
+    fontSize: 18,
+    color: theme.palette.success.main
+  },
+  '& .QontoStepIcon-circle': {
+    width: 8,
+    height: 8,
+    borderRadius: '50%',
+    backgroundColor: 'currentColor'
+  }
+}));
 
 QontoStepIcon.propTypes = {
   active: PropTypes.bool,
   completed: PropTypes.bool
 };
 
-function QontoStepIcon(props) {
-  const { active, completed } = props;
+function QontoStepIcon({ active, completed }) {
   return (
-    <Box
-      sx={{
-        height: 22,
-        display: 'flex',
-        color: '#eaeaf0',
-        alignItems: 'center',
-        ...(active && { color: '#784af4' })
-      }}
-    >
-      {completed ? (
-        <Check sx={{ color: '#784af4', zIndex: 1, fontSize: 18 }} />
-      ) : (
-        <Box
-          sx={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            bgcolor: 'currentColor'
-          }}
-        />
-      )}
-    </Box>
+    <QontoStepIconRoot ownerState={{ active }}>
+      {completed ? <Check className="QontoStepIcon-completedIcon" /> : <div className="QontoStepIcon-circle" />}
+    </QontoStepIconRoot>
   );
 }
 
-const ColorlibConnector = withStyles({
-  alternativeLabel: { top: 22 },
-  active: {
-    '& $line': {
-      backgroundImage: 'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)'
+const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
+  [`&.${stepConnectorClasses.alternativeLabel}`]: {
+    top: 22
+  },
+  [`&.${stepConnectorClasses.active}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundImage: theme.palette.gradients.error
     }
   },
-  completed: {
-    '& $line': {
-      backgroundImage: 'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)'
+  [`&.${stepConnectorClasses.completed}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundImage: theme.palette.gradients.error
     }
   },
-  line: {
+  [`& .${stepConnectorClasses.line}`]: {
     height: 3,
     border: 0,
     borderRadius: 1,
-    backgroundColor: '#eaeaf0'
+    backgroundColor: theme.palette.divider
   }
-})(StepConnector);
+}));
 
-function ColorlibStepIcon(props) {
-  const { active, completed, icon } = props;
-
-  const icons = {
-    1: <SettingsIcon />,
-    2: <GroupAddIcon />,
-    3: <VideoLabelIcon />
-  };
-
-  return (
-    <Box
-      sx={{
-        zIndex: 1,
-        width: 50,
-        height: 50,
-        color: '#fff',
-        display: 'flex',
-        borderRadius: '50%',
-        alignItems: 'center',
-        backgroundColor: '#ccc',
-        justifyContent: 'center',
-        ...(active && {
-          backgroundImage: 'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
-          boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)'
-        }),
-        ...(completed && {
-          backgroundImage: 'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)'
-        })
-      }}
-    >
-      {icons[String(icon)]}
-    </Box>
-  );
-}
+const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+  zIndex: 1,
+  width: 50,
+  height: 50,
+  display: 'flex',
+  borderRadius: '50%',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.text.disabled,
+  backgroundColor: theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+  ...(ownerState.active && {
+    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+    color: theme.palette.common.white,
+    backgroundImage: theme.palette.gradients.error
+  }),
+  ...(ownerState.completed && {
+    color: theme.palette.common.white,
+    backgroundImage: theme.palette.gradients.error
+  })
+}));
 
 ColorlibStepIcon.propTypes = {
   active: PropTypes.bool,
@@ -127,8 +128,16 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node
 };
 
-function getSteps() {
-  return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+function ColorlibStepIcon(props) {
+  const { active, completed } = props;
+
+  const icons = {
+    1: <SettingsIcon />,
+    2: <GroupAddIcon />,
+    3: <VideoLabelIcon />
+  };
+
+  return <ColorlibStepIconRoot ownerState={{ completed, active }}>{icons[String(props.icon)]}</ColorlibStepIconRoot>;
 }
 
 function getStepContent(step) {
@@ -145,8 +154,7 @@ function getStepContent(step) {
 }
 
 export default function CustomizedSteppers() {
-  const [activeStep, setActiveStep] = useState(1);
-  const steps = getSteps();
+  const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -163,7 +171,7 @@ export default function CustomizedSteppers() {
   return (
     <>
       <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
-        {steps.map((label) => (
+        {STEPS.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
           </Step>
@@ -173,14 +181,14 @@ export default function CustomizedSteppers() {
       <Box sx={{ mb: 5 }} />
 
       <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
-        {steps.map((label) => (
+        {STEPS.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
 
-      {activeStep === steps.length ? (
+      {activeStep === STEPS.length ? (
         <>
           <Paper
             sx={{
@@ -208,7 +216,7 @@ export default function CustomizedSteppers() {
               Back
             </Button>
             <Button variant="contained" onClick={handleNext} sx={{ mr: 1 }}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+              {activeStep === STEPS.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </Box>
         </>

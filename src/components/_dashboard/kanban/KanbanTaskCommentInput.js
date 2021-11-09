@@ -2,7 +2,7 @@ import { Icon } from '@iconify/react';
 import attach2Fill from '@iconify/icons-eva/attach-2-fill';
 import roundAddPhotoAlternate from '@iconify/icons-ic/round-add-photo-alternate';
 // material
-import { Stack, Paper, Button, Tooltip, OutlinedInput } from '@material-ui/core';
+import { Stack, Paper, Button, Tooltip, OutlinedInput } from '@mui/material';
 //
 import { MIconButton } from '../../@material-extend';
 import MyAvatar from '../../MyAvatar';
@@ -19,9 +19,7 @@ export default function KanbanTaskCommentInput() {
           fullWidth
           multiline
           row={2}
-          minRows={2}
           placeholder="Type a message"
-          // value={name}
           sx={{ '& fieldset': { display: 'none' } }}
         />
 

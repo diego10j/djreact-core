@@ -11,7 +11,7 @@ export default function ChartBar() {
   const chartOptions = merge(BaseOptionChart(), {
     stroke: { show: false },
     plotOptions: {
-      bar: { horizontal: true, barHeight: '30%', borderRadius: 4 }
+      bar: { horizontal: true, barHeight: '30%' }
     },
     xaxis: {
       categories: [

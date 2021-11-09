@@ -14,7 +14,7 @@ import {
   DialogContent,
   FormControlLabel,
   DialogContentText
-} from '@material-ui/core';
+} from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -71,6 +71,7 @@ export default function MaxWidthDialog() {
                 autoFocus
                 value={maxWidth}
                 onChange={handleMaxWidthChange}
+                label="maxWidth"
                 inputProps={{
                   name: 'max-width',
                   id: 'max-width'
