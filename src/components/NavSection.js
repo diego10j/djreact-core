@@ -183,7 +183,7 @@ export default function NavSection({ navConfig, isShow = true, ...other }) {
       {navConfig.map((list) => {
         const { subheader, items } = list;
         return (
-          <List key={subheader} disablePadding>
+          <List key={subheader ? 'subheader' : 'main'} disablePadding>
             {isShow && <ListSubheaderStyle>{subheader}</ListSubheaderStyle>}
             {items.map((item) => (
               <NavItem key={item.title} item={item} active={match} isShow={isShow} />
